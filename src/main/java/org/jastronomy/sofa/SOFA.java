@@ -17333,7 +17333,7 @@ public static class SphericalPosition {
        double pmd = pvs.vel.phi * DJY;
 
     /* Return parallax in arcsec. */
-       double px = DR2AS / pvs.vel.r;
+       double px = DR2AS / pvs.pos.r;
 
     /* Return radial velocity in km/s. */
        double rv = 1e-3 * pvs.vel.r * DAU / DAYSEC;
