@@ -14,6 +14,10 @@ package org.jastronomy.sofa;
 
 public class SOFAInternalError extends SOFAException {
 
+    /** Comment for <code>serialVersionUID</code>
+     */
+    private static final long serialVersionUID = 6067803703985219165L;
+
     public SOFAInternalError(String message, int status) {
         super(message, status);
     }

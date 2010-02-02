@@ -66,7 +66,7 @@ public class SOFA {
     /** Days per Julian century */
     public final static double DJC = (36525.0);
 
-    /* Days per Julian millennium */
+    /** Days per Julian millennium */
     public final static double DJM = (365250.0);
 
     /** AU (m) */
@@ -114,6 +114,7 @@ public class SOFA {
     public static class JulianDate {
         /**  MJD zero-point */
         public double djm0;  
+        /** MJD offset */
         public double djm1;
         public JulianDate(double d1, double d2) {
             djm0 = d1;
@@ -122,16 +123,17 @@ public class SOFA {
     }
  
     /**
+     * Decompose radians into degrees, arcminutes, arcseconds, fraction.
     **  - - - - - - - -
     **   i a u A 2 a f
     **  - - - - - - - -
     **
-    **  Decompose radians into degrees, arcminutes, arcseconds, fraction.
+    **  
     **
-    **  This function is derived from the International Astronomical Union's
+    **  <p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **  <p>Status:  vector/matrix support function.
     **
     **  Given:
     **     ndp     int     resolution (Note 1)
@@ -145,8 +147,8 @@ public class SOFA {
     **     jauD2tf      decompose days to hms
     **
     **  Notes:
-    **
-    **  1) The argument ndp is interpreted as follows:
+    **<ol>
+    **  <li> The argument ndp is interpreted as follows:
     **
     **     ndp         resolution
     **      :      ...0000 00 00
@@ -163,7 +165,7 @@ public class SOFA {
     **      3            0 00 00.001
     **      :            0 00 00.000...
     **
-    **  2) The largest positive useful value for ndp is determined by the
+    **  <li> The largest positive useful value for ndp is determined by the
     **     size of angle, the format of doubles on the target platform, and
     **     the risk of overflowing idmsf[3].  On a typical platform, for
     **     angle up to 2pi, the available floating-point precision might
@@ -171,11 +173,11 @@ public class SOFA {
     **     ndp=9, set by the capacity of a 32-bit int, or ndp=4 if int is
     **     only 16 bits.
     **
-    **  3) The absolute value of angle may exceed 2pi.  In cases where it
+    **  <li> The absolute value of angle may exceed 2pi.  In cases where it
     **     does not, it is up to the caller to test for and handle the
     **     case where angle is very nearly 2pi and rounds up to 360 degrees,
     **     by testing for idmsf[0]=360 and setting idmsf[0-3] to zero.
-    **
+    **</ol>
     **  This revision:  2008 May 27
     **
     **  SOFA release 2009-12-31
@@ -19910,9 +19912,18 @@ public static class SphericalPosition {
     /*
      * constant arrays set outside jauXy06 to avoid problems with 65535 byte limit on function size
      */
+    static {
+        /* need to define this function because it appears that javac lumps all of the staticly defined initalizers into one function on 
+         * compilation - so this will force a second function */
+        init_mfals();
+    }
+    /** Fundamental-argument multipliers:  luni-solar terms */
+    private static int mfals[][]; //IMPL would like to be final really
     
-    /* Fundamental-argument multipliers:  luni-solar terms */
-    private static final int mfals[][] = {
+    private static void init_mfals(){
+        
+    mfals = new int[][]
+    {
 
    /* 1-10 */
       {  0,   0,   0,   0,   1 },
@@ -20699,6 +20710,7 @@ public static class SphericalPosition {
       {  1,   0,  -2,   0,  -3 },
       {  0,   0,   4,  -4,   4 }
    };
+    }
 
 
     /* Fundamental-argument multipliers:  planetary terms */

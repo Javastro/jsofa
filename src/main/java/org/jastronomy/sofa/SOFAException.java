@@ -14,6 +14,9 @@ package org.jastronomy.sofa;
 
 public class SOFAException extends Exception {
 
+    /** Comment for <code>serialVersionUID</code>
+     */
+    private static final long serialVersionUID = 4100437038026589596L;
     /** Original SOFA status value;
      */
     private int status;

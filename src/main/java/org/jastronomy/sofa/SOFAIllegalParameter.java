@@ -14,6 +14,10 @@ package org.jastronomy.sofa;
 
 public class SOFAIllegalParameter extends SOFAException {
 
+    /** Comment for <code>serialVersionUID</code>
+     */
+    private static final long serialVersionUID = 4164536110692125140L;
+
     public SOFAIllegalParameter(String message, int status) {
         super(message, status);
     }

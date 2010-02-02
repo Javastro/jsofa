@@ -14,6 +14,10 @@ package org.jastronomy.sofa;
 
 public class SOFAFailedConvergenceException extends SOFAException {
 
+    /** Comment for <code>serialVersionUID</code>
+     */
+    private static final long serialVersionUID = 4417087001300889769L;
+
     public SOFAFailedConvergenceException(String message, int status) {
         super(message, status);
     }
