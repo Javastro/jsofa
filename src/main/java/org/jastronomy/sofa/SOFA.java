@@ -3,15 +3,15 @@
  * 
  * Created on 26 Jan 2010 by Paul Harrison (paul.harrison@manchester.ac.uk)
  *
- * Adapted from official SOFA C implementation http://www.iausofa.org/
+ * Adapted from official SOFA C implementation http://www.jausofa.org/
  */ 
 
-package org.iau;
+package org.jastronomy.sofa;
 
 import static java.lang.Math.*; //IMPL strictmath better?
 
 /**
- * Java implementation of Standards of Fundamental Astronomy. @link http://www.iausofa.org/.
+ * Java implementation of Standards of Fundamental Astronomy. @link http://www.jausofa.org/.
  * 
  * This code has been created by hand translating the official C version.
  * 
@@ -142,7 +142,7 @@ public class SOFA {
     **     idmsf   int[4]  degrees, arcminutes, arcseconds, fraction
     **
     **  Called:
-    **     iauD2tf      decompose days to hms
+    **     jauD2tf      decompose days to hms
     **
     **  Notes:
     **
@@ -182,13 +182,13 @@ public class SOFA {
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
-    public static char iauA2af(final int ndp, final double angle,  int idsf[] ){
+    public static char jauA2af(final int ndp, final double angle,  int idsf[] ){
         /* Hours to degrees * radians to turns */
         final double F = 15.0 / D2PI;
 
 
      /* Scale then use days to h,m,s function. */
-        char retval = iauD2tf(ndp, angle*F, idsf);
+        char retval = jauD2tf(ndp, angle*F, idsf);
 
         return retval;
 
@@ -218,7 +218,7 @@ public class SOFA {
     **     ihmsf   int[4]  hours, minutes, seconds, fraction
     **
     **  Called:
-    **     iauD2tf      decompose days to hms
+    **     jauD2tf      decompose days to hms
     **
     **  Notes:
     **
@@ -258,10 +258,10 @@ public class SOFA {
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
-    public static char iauA2tf(final int ndp, final double angle, int ihmsf[])
+    public static char jauA2tf(final int ndp, final double angle, int ihmsf[])
     {
     /* Scale then use days to h,m,s function. */
-     return  iauD2tf(ndp, angle/D2PI, ihmsf);
+     return  jauD2tf(ndp, angle/D2PI, ihmsf);
 
      }
     
@@ -290,7 +290,7 @@ public class SOFA {
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
-    public static double iauAnp(final double a)
+    public static double jauAnp(final double a)
    {
        double w;
 
@@ -303,7 +303,7 @@ public class SOFA {
     }
     
 
-    public static double iauAnpm(final double a)
+    public static double jauAnpm(final double a)
     /**
     **  - - - - - - - -
     **   i a u A n p m
@@ -347,7 +347,7 @@ public class SOFA {
         public double dra;
     };
 
-    public static FrameBias iauBi00()
+    public static FrameBias jauBi00()
     /**
     **  - - - - - - - -
     **   i a u B i 0 0
@@ -419,7 +419,7 @@ public class SOFA {
         }
     
 
-    public static void iauBp00(final double  date1, final double date2,
+    public static void jauBp00(final double  date1, final double date2,
                  double rb[][], double rp[][], double rbp[][])
     /**
     **  - - - - - - - -
@@ -477,14 +477,14 @@ public class SOFA {
     **     arguments.  The arrays are filled in the order given.
     **
     **  Called:
-    **     iauBi00      frame bias components, IAU 2000
-    **     iauPr00      IAU 2000 precession adjustments
-    **     iauIr        initialize r-matrix to identity
-    **     iauRx        rotate around X-axis
-    **     iauRy        rotate around Y-axis
-    **     iauRz        rotate around Z-axis
-    **     iauCr        copy r-matrix
-    **     iauRxr       product of two r-matrices
+    **     jauBi00      frame bias components, IAU 2000
+    **     jauPr00      IAU 2000 precession adjustments
+    **     jauIr        initialize r-matrix to identity
+    **     jauRx        rotate around X-axis
+    **     jauRy        rotate around Y-axis
+    **     jauRz        rotate around Z-axis
+    **     jauCr        copy r-matrix
+    **     jauRxr       product of two r-matrices
     **
     **  Reference:
     **     "Expressions for the Celestial Intermediate Pole and Celestial
@@ -513,7 +513,7 @@ public class SOFA {
        t = ((date1 - DJ00) + date2) / DJC;
 
     /* Frame bias. */
-       FrameBias fb = iauBi00();
+       FrameBias fb = jauBi00();
        dpsibi = fb.dpsibi;
        depsbi = fb.depsbi;
        dra0 = fb.dra;
@@ -523,34 +523,34 @@ public class SOFA {
        chia   = (  10.5526 + (-2.38064 + (-0.001125) * t) * t) * t * DAS2R;
 
     /* Apply IAU 2000 precession corrections. */
-       NutationDeltaTerms pc = iauPr00(date1, date2);
+       NutationDeltaTerms pc = jauPr00(date1, date2);
        dpsipr = pc.dpsipr;  depspr = pc.depspr;
        psia = psia77 + dpsipr;
        oma  = oma77  + depspr;
 
     /* Frame bias matrix: GCRS to J2000.0. */
-       iauIr(rbw);
-       iauRz(dra0, rbw);
-       iauRy(dpsibi * sin(EPS0), rbw);
-       iauRx(-depsbi, rbw);
-       iauCr(rbw, rb);
+       jauIr(rbw);
+       jauRz(dra0, rbw);
+       jauRy(dpsibi * sin(EPS0), rbw);
+       jauRx(-depsbi, rbw);
+       jauCr(rbw, rb);
 
     /* Precession matrix: J2000.0 to mean of date. */
-       iauIr(rp);
-       iauRx(EPS0,  rp);
-       iauRz(-psia, rp);
-       iauRx(-oma,  rp);
-       iauRz(chia,  rp);
+       jauIr(rp);
+       jauRx(EPS0,  rp);
+       jauRz(-psia, rp);
+       jauRx(-oma,  rp);
+       jauRz(chia,  rp);
 
     /* Bias-precession matrix: GCRS to mean of date. */
-       iauRxr(rp, rbw, rbp);
+       jauRxr(rp, rbw, rbp);
 
        return;
 
         }
     
 
-    public static void iauBp06(final double date1, final double date2,
+    public static void jauBp06(final double date1, final double date2,
                  double rb[][], double rp[][], double rbp[][])
     /**
     **  - - - - - - - -
@@ -603,11 +603,11 @@ public class SOFA {
     **     applying frame bias then precession.  It is the product rp x rb.
     **
     **  Called:
-    **     iauPfw06     bias-precession F-W angles, IAU 2006
-    **     iauFw2m      F-W angles to r-matrix
-    **     iauPmat06    PB matrix, IAU 2006
-    **     iauTr        transpose r-matrix
-    **     iauRxr       product of two r-matrices
+    **     jauPfw06     bias-precession F-W angles, IAU 2006
+    **     jauFw2m      F-W angles to r-matrix
+    **     jauPmat06    PB matrix, IAU 2006
+    **     jauTr        transpose r-matrix
+    **     jauRxr       product of two r-matrices
     **
     **  References:
     **
@@ -626,15 +626,15 @@ public class SOFA {
 
 
     /* B matrix. */
-       FWPrecessionAngles fw = iauPfw06(DJM0, DJM00);
-       iauFw2m(fw.gamb, fw.phib, fw.psib, fw.epsa, rb);
+       FWPrecessionAngles fw = jauPfw06(DJM0, DJM00);
+       jauFw2m(fw.gamb, fw.phib, fw.psib, fw.epsa, rb);
 
     /* PxB matrix. */
-       iauPmat06(date1, date2, rbp);
+       jauPmat06(date1, date2, rbp);
 
     /* P matrix. */
-       iauTr(rb, rbt);
-       iauRxr(rbp, rbt, rp);
+       jauTr(rb, rbt);
+       jauRxr(rbp, rbt, rp);
 
        return;
 
@@ -656,7 +656,7 @@ public class SOFA {
             this.y = y;
         }
      }
-    public static CelestialIntermediatePole  iauBpn2xy(double rbpn[][])
+    public static CelestialIntermediatePole  jauBpn2xy(double rbpn[][])
     /**
     **  - - - - - - - - - -
     **   i a u B p n 2 x y
@@ -709,7 +709,7 @@ public class SOFA {
         }
     
 
-    public static void iauC2i00a(double date1, double date2, double rc2i[][])
+    public static void jauC2i00a(double date1, double date2, double rc2i[][])
     /**
     **  - - - - - - - - - -
     **   i a u C 2 i 0 0 a
@@ -763,11 +763,11 @@ public class SOFA {
     **     Rotation Angle and RPOM is the polar motion matrix.
     **
     **  3) A faster, but slightly less accurate result (about 1 mas), can be
-    **     obtained by using instead the iauC2i00b function.
+    **     obtained by using instead the jauC2i00b function.
     **
     **  Called:
-    **     iauPnm00a    classical NPB matrix, IAU 2000A
-    **     iauC2ibpn    celestial-to-intermediate matrix, given NPB matrix
+    **     jauPnm00a    classical NPB matrix, IAU 2000A
+    **     jauC2ibpn    celestial-to-intermediate matrix, given NPB matrix
     **
     **  References:
     **
@@ -793,17 +793,17 @@ public class SOFA {
 
 
     /* Obtain the celestial-to-true matrix (IAU 2000A). */
-       iauPnm00a(date1, date2, rbpn);
+       jauPnm00a(date1, date2, rbpn);
 
     /* Form the celestial-to-intermediate matrix. */
-       iauC2ibpn(date1, date2, rbpn, rc2i);
+       jauC2ibpn(date1, date2, rbpn, rc2i);
 
        return;
 
         }
     
 
-    public static void iauC2i00b(double date1, double date2, double rc2i[][])
+    public static void jauC2i00b(double date1, double date2, double rc2i[][])
     /**
     **  - - - - - - - - - -
     **   i a u C 2 i 0 0 b
@@ -857,11 +857,11 @@ public class SOFA {
     **     Rotation Angle and RPOM is the polar motion matrix.
     **
     **  3) The present function is faster, but slightly less accurate (about
-    **     1 mas), than the iauC2i00a function.
+    **     1 mas), than the jauC2i00a function.
     **
     **  Called:
-    **     iauPnm00b    classical NPB matrix, IAU 2000B
-    **     iauC2ibpn    celestial-to-intermediate matrix, given NPB matrix
+    **     jauPnm00b    classical NPB matrix, IAU 2000B
+    **     jauC2ibpn    celestial-to-intermediate matrix, given NPB matrix
     **
     **  References:
     **
@@ -887,17 +887,17 @@ public class SOFA {
 
 
     /* Obtain the celestial-to-true matrix (IAU 2000B). */
-       iauPnm00b(date1, date2, rbpn);
+       jauPnm00b(date1, date2, rbpn);
 
     /* Form the celestial-to-intermediate matrix. */
-       iauC2ibpn(date1, date2, rbpn, rc2i);
+       jauC2ibpn(date1, date2, rbpn, rc2i);
 
        return;
 
         }
     
 
-    public static void iauC2i06a(double date1, double date2, double rc2i[][])
+    public static void jauC2i06a(double date1, double date2, double rc2i[][])
     /**
     **  - - - - - - - - - -
     **   i a u _ c 2 i 0 6 a
@@ -951,10 +951,10 @@ public class SOFA {
     **     Rotation Angle and RPOM is the polar motion matrix.
     **
     **  Called:
-    **     iauPnm06a    classical NPB matrix, IAU 2006/2000A
-    **     iauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     iauS06       the CIO locator s, Given X,Y, IAU 2006
-    **     iauC2ixys    celestial-to-intermediate matrix, Given X,Y and s
+    **     jauPnm06a    classical NPB matrix, IAU 2006/2000A
+    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
+    **     jauS06       the CIO locator s, Given X,Y, IAU 2006
+    **     jauC2ixys    celestial-to-intermediate matrix, Given X,Y and s
     **
     **  References:
     **
@@ -972,23 +972,23 @@ public class SOFA {
 
 
     /* Obtain the celestial-to-true matrix (IAU 2006/2000A). */
-       iauPnm06a(date1, date2, rbpn);
+       jauPnm06a(date1, date2, rbpn);
 
     /* Extract the X,Y coordinates. */
-       CelestialIntermediatePole cip = iauBpn2xy(rbpn);
+       CelestialIntermediatePole cip = jauBpn2xy(rbpn);
 
     /* Obtain the CIO locator. */
-       s = iauS06(date1, date2, cip.x, cip.y);
+       s = jauS06(date1, date2, cip.x, cip.y);
 
     /* Form the celestial-to-intermediate matrix. */
-       iauC2ixys(cip.x, cip.y, s, rc2i);
+       jauC2ixys(cip.x, cip.y, s, rc2i);
 
        return;
 
         }
     
 
-    public static void iauC2ibpn(double date1, double date2, double rbpn[][],
+    public static void jauC2ibpn(double date1, double date2, double rbpn[][],
                    double rc2i[][])
     /**
     **  - - - - - - - - - -
@@ -1050,8 +1050,8 @@ public class SOFA {
     **     specific to the IAU 2000 models.
     **
     **  Called:
-    **     iauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     iauC2ixy     celestial-to-intermediate matrix, given X,Y
+    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
+    **     jauC2ixy     celestial-to-intermediate matrix, given X,Y
     **
     **  References:
     **     "Expressions for the Celestial Intermediate Pole and Celestial
@@ -1073,17 +1073,17 @@ public class SOFA {
     {
 
     /* Extract the X,Y coordinates. */
-       CelestialIntermediatePole cip = iauBpn2xy(rbpn);
+       CelestialIntermediatePole cip = jauBpn2xy(rbpn);
 
     /* Form the celestial-to-intermediate matrix (n.b. IAU 2000 specific). */
-       iauC2ixy(date1, date2, cip.x, cip.y, rc2i);
+       jauC2ixy(date1, date2, cip.x, cip.y, rc2i);
 
        return;
 
         }
     
 
-    public static  void iauC2ixy(double date1, double date2, double x, double y,
+    public static  void jauC2ixy(double date1, double date2, double x, double y,
                   double rc2i[][])
     /**
     **  - - - - - - - - -
@@ -1145,8 +1145,8 @@ public class SOFA {
     **     specific to the IAU 2000 models.
     **
     **  Called:
-    **     iauC2ixys    celestial-to-intermediate matrix, given X,Y and s
-    **     iauS00       the CIO locator s, given X,Y, IAU 2000A
+    **     jauC2ixys    celestial-to-intermediate matrix, given X,Y and s
+    **     jauS00       the CIO locator s, given X,Y, IAU 2000A
     **
     **  Reference:
     **
@@ -1162,14 +1162,14 @@ public class SOFA {
 
     {
     /* Compute s and then the matrix. */
-       iauC2ixys(x, y, iauS00(date1, date2, x, y), rc2i);
+       jauC2ixys(x, y, jauS00(date1, date2, x, y), rc2i);
 
        return;
 
         }
     
 
-    public static void iauC2ixys(double x, double y, double s, double rc2i[][])
+    public static void jauC2ixys(double x, double y, double s, double rc2i[][])
     /**
     **  - - - - - - - - - -
     **   i a u C 2 i x y s
@@ -1212,9 +1212,9 @@ public class SOFA {
     **     Rotation Angle and RPOM is the polar motion matrix.
     **
     **  Called:
-    **     iauIr        initialize r-matrix to identity
-    **     iauRz        rotate around Z-axis
-    **     iauRy        rotate around Y-axis
+    **     jauIr        initialize r-matrix to identity
+    **     jauRz        rotate around Z-axis
+    **     jauRy        rotate around Y-axis
     **
     **  Reference:
     **
@@ -1237,16 +1237,16 @@ public class SOFA {
        d = atan(sqrt(r2 / (1.0 - r2)));
 
     /* Form the matrix. */
-       iauIr(rc2i);
-       iauRz(e, rc2i);
-       iauRy(d, rc2i);
-       iauRz(-(e+s), rc2i);
+       jauIr(rc2i);
+       jauRz(e, rc2i);
+       jauRy(d, rc2i);
+       jauRz(-(e+s), rc2i);
 
        return;
 
         }
     
-    public static SphericalPosition iauC2s(double p[])
+    public static SphericalPosition jauC2s(double p[])
     /**
     **  - - - - - - -
     **   i a u C 2 s
@@ -1297,7 +1297,7 @@ public class SOFA {
         }
     
 
-    public static  void iauC2t00a(final double tta, final double ttb, final double uta, final double utb,
+    public static  void jauC2t00a(final double tta, final double ttb, final double uta, final double utb,
                    final double xp, final double yp, double rc2t[][])
     /**
     **  - - - - - - - - - -
@@ -1362,14 +1362,14 @@ public class SOFA {
     **     angle and RPOM is the polar motion matrix.
     **
     **  4) A faster, but slightly less accurate result (about 1 mas), can
-    **     be obtained by using instead the iauC2t00b function.
+    **     be obtained by using instead the jauC2t00b function.
     **
     **  Called:
-    **     iauC2i00a    celestial-to-intermediate matrix, IAU 2000A
-    **     iauEra00     Earth rotation angle, IAU 2000
-    **     iauSp00      the TIO locator s', IERS 2000
-    **     iauPom00     polar motion matrix
-    **     iauC2tcio    form CIO-based celestial-to-terrestrial matrix
+    **     jauC2i00a    celestial-to-intermediate matrix, IAU 2000A
+    **     jauEra00     Earth rotation angle, IAU 2000
+    **     jauSp00      the TIO locator s', IERS 2000
+    **     jauPom00     polar motion matrix
+    **     jauC2tcio    form CIO-based celestial-to-terrestrial matrix
     **
     **  Reference:
     **
@@ -1387,26 +1387,26 @@ public class SOFA {
 
 
     /* Form the celestial-to-intermediate matrix for this TT (IAU 2000A). */
-       iauC2i00a(tta, ttb, rc2i );
+       jauC2i00a(tta, ttb, rc2i );
 
     /* Predict the Earth rotation angle for this UT1. */
-       era = iauEra00(uta, utb);
+       era = jauEra00(uta, utb);
 
     /* Estimate s'. */
-       sp = iauSp00(tta, ttb);
+       sp = jauSp00(tta, ttb);
 
     /* Form the polar motion matrix. */
-       iauPom00(xp, yp, sp, rpom);
+       jauPom00(xp, yp, sp, rpom);
 
     /* Combine to form the celestial-to-terrestrial matrix. */
-       iauC2tcio(rc2i, era, rpom, rc2t);
+       jauC2tcio(rc2i, era, rpom, rc2t);
 
        return;
 
         }
     
 
-    public static void iauC2t00b(final double tta, final double ttb, final double uta, final double utb,
+    public static void jauC2t00b(final double tta, final double ttb, final double uta, final double utb,
                    final double xp, final double yp, double rc2t[][])
     /**
     **  - - - - - - - - - -
@@ -1471,13 +1471,13 @@ public class SOFA {
     **     angle and RPOM is the polar motion matrix.
     **
     **  4) The present function is faster, but slightly less accurate (about
-    **     1 mas), than the iauC2t00a function.
+    **     1 mas), than the jauC2t00a function.
     **
     **  Called:
-    **     iauC2i00b    celestial-to-intermediate matrix, IAU 2000B
-    **     iauEra00     Earth rotation angle, IAU 2000
-    **     iauPom00     polar motion matrix
-    **     iauC2tcio    form CIO-based celestial-to-terrestrial matrix
+    **     jauC2i00b    celestial-to-intermediate matrix, IAU 2000B
+    **     jauEra00     Earth rotation angle, IAU 2000
+    **     jauPom00     polar motion matrix
+    **     jauC2tcio    form CIO-based celestial-to-terrestrial matrix
     **
     **  Reference:
     **
@@ -1495,23 +1495,23 @@ public class SOFA {
 
 
     /* Form the celestial-to-intermediate matrix for this TT (IAU 2000B). */
-       iauC2i00b(tta, ttb, rc2i);
+       jauC2i00b(tta, ttb, rc2i);
 
     /* Predict the Earth rotation angle for this UT1. */
-       era = iauEra00(uta, utb);
+       era = jauEra00(uta, utb);
 
     /* Form the polar motion matrix (neglecting s'). */
-       iauPom00(xp, yp, 0.0, rpom);
+       jauPom00(xp, yp, 0.0, rpom);
 
     /* Combine to form the celestial-to-terrestrial matrix. */
-       iauC2tcio(rc2i, era, rpom, rc2t);
+       jauC2tcio(rc2i, era, rpom, rc2t);
 
        return;
 
         }
     
 
-    public static void iauC2t06a(final double tta, final double ttb, final double uta, final double utb,
+    public static void jauC2t06a(final double tta, final double ttb, final double uta, final double utb,
                   final double xp, final double yp, double rc2t[][])
     /**
     **  - - - - - - - - - -
@@ -1577,11 +1577,11 @@ public class SOFA {
     **     angle and RPOM is the polar motion matrix.
     **
     **  Called:
-    **     iauC2i06a    celestial-to-intermediate matrix, IAU 2006/2000A
-    **     iauEra00     Earth rotation angle, IAU 2000
-    **     iauSp00      the TIO locator s', IERS 2000
-    **     iauPom00     polar motion matrix
-    **     iauC2tcio    form CIO-based celestial-to-terrestrial matrix
+    **     jauC2i06a    celestial-to-intermediate matrix, IAU 2006/2000A
+    **     jauEra00     Earth rotation angle, IAU 2000
+    **     jauSp00      the TIO locator s', IERS 2000
+    **     jauPom00     polar motion matrix
+    **     jauC2tcio    form CIO-based celestial-to-terrestrial matrix
     **
     **  Reference:
     **
@@ -1599,26 +1599,26 @@ public class SOFA {
 
 
     /* Form the celestial-to-intermediate matrix for this TT. */
-       iauC2i06a(tta, ttb, rc2i);
+       jauC2i06a(tta, ttb, rc2i);
 
     /* Predict the Earth rotation angle for this UT1. */
-       era = iauEra00(uta, utb);
+       era = jauEra00(uta, utb);
 
     /* Estimate s'. */
-       sp = iauSp00(tta, ttb);
+       sp = jauSp00(tta, ttb);
 
     /* Form the polar motion matrix. */
-       iauPom00(xp, yp, sp, rpom);
+       jauPom00(xp, yp, sp, rpom);
 
     /* Combine to form the celestial-to-terrestrial matrix. */
-       iauC2tcio(rc2i, era, rpom, rc2t);
+       jauC2tcio(rc2i, era, rpom, rc2t);
 
        return;
 
         }
     
 
-    public static void iauC2tcio(final double rc2i[][], final double era, final double rpom[][],
+    public static void jauC2tcio(final double rc2i[][], final double era, final double rpom[][],
                    double rc2t[][])
     /**
     **  - - - - - - - - - -
@@ -1666,9 +1666,9 @@ public class SOFA {
     **     Reference System (see IERS Conventions 2003).
     **
     **  Called:
-    **     iauCr        copy r-matrix
-    **     iauRz        rotate around Z-axis
-    **     iauRxr       product of two r-matrices
+    **     jauCr        copy r-matrix
+    **     jauRz        rotate around Z-axis
+    **     jauRxr       product of two r-matrices
     **
     **  Reference:
     **
@@ -1686,16 +1686,16 @@ public class SOFA {
 
 
     /* Construct the matrix. */
-       iauCr(rc2i, r);
-       iauRz(era, r);
-       iauRxr(rpom, r, rc2t);
+       jauCr(rc2i, r);
+       jauRz(era, r);
+       jauRxr(rpom, r, rc2t);
 
        return;
 
         }
     
 
-    public static void iauC2teqx(final double rbpn[][], final double gst, final double rpom[][],
+    public static void jauC2teqx(final double rbpn[][], final double gst, final double rpom[][],
                    double rc2t[][])
     /**
     **  - - - - - - - - - -
@@ -1743,9 +1743,9 @@ public class SOFA {
     **     Reference System (see IERS Conventions 2003).
     **
     **  Called:
-    **     iauCr        copy r-matrix
-    **     iauRz        rotate around Z-axis
-    **     iauRxr       product of two r-matrices
+    **     jauCr        copy r-matrix
+    **     jauRz        rotate around Z-axis
+    **     jauRxr       product of two r-matrices
     **
     **  Reference:
     **
@@ -1763,16 +1763,16 @@ public class SOFA {
 
 
     /* Construct the matrix. */
-       iauCr(rbpn, r);
-       iauRz(gst, r);
-       iauRxr(rpom, r, rc2t);
+       jauCr(rbpn, r);
+       jauRz(gst, r);
+       jauRxr(rpom, r, rc2t);
 
        return;
 
         }
     
 
-    public static void iauC2tpe(final double tta, final double ttb, final double uta, final double utb,
+    public static void jauC2tpe(final double tta, final double ttb, final double uta, final double utb,
             final double dpsi, final double deps, final double xp, final double yp,
             double rc2t[][])
     /**
@@ -1848,12 +1848,12 @@ public class SOFA {
     **     specific to the IAU 2000 models.
     **
     **  Called:
-    **     iauPn00      bias/precession/nutation results, IAU 2000
-    **     iauGmst00    Greenwich mean sidereal time, IAU 2000
-    **     iauSp00      the TIO locator s', IERS 2000
-    **     iauEe00      equation of the equinoxes, IAU 2000
-    **     iauPom00     polar motion matrix
-    **     iauC2teqx    form equinox-based celestial-to-terrestrial matrix
+    **     jauPn00      bias/precession/nutation results, IAU 2000
+    **     jauGmst00    Greenwich mean sidereal time, IAU 2000
+    **     jauSp00      the TIO locator s', IERS 2000
+    **     jauEe00      equation of the equinoxes, IAU 2000
+    **     jauPom00     polar motion matrix
+    **     jauC2teqx    form equinox-based celestial-to-terrestrial matrix
     **
     **  Reference:
     **
@@ -1870,29 +1870,29 @@ public class SOFA {
        double rpom[][] = new double[3][3]; 
 
     /* Form the celestial-to-true matrix for this TT. */
-       PrecessionNutation pn = iauPn00(tta, ttb, dpsi, deps);
+       PrecessionNutation pn = jauPn00(tta, ttb, dpsi, deps);
 
     /* Predict the Greenwich Mean Sidereal Time for this UT1 and TT. */
-       double gmst = iauGmst00(uta, utb, tta, ttb);
+       double gmst = jauGmst00(uta, utb, tta, ttb);
 
     /* Predict the equation of the equinoxes given TT and nutation. */
-       double ee = iauEe00(tta, ttb, pn.epsa, dpsi);
+       double ee = jauEe00(tta, ttb, pn.epsa, dpsi);
 
     /* Estimate s'. */
-       double sp = iauSp00(tta, ttb);
+       double sp = jauSp00(tta, ttb);
 
     /* Form the polar motion matrix. */
-       iauPom00(xp, yp, sp, rpom);
+       jauPom00(xp, yp, sp, rpom);
 
     /* Combine to form the celestial-to-terrestrial matrix. */
-       iauC2teqx(pn.rbpn, gmst + ee, rpom, rc2t);
+       jauC2teqx(pn.rbpn, gmst + ee, rpom, rc2t);
 
        return;
 
         }
     
 
-    public static void iauC2txy(double tta, double ttb, double uta, double utb,
+    public static void jauC2txy(double tta, double ttb, double uta, double utb,
                   double x, double y, double xp, double yp,
                   double rc2t[][])
     /**
@@ -1965,11 +1965,11 @@ public class SOFA {
     **     specific to the IAU 2000 models.
     **
     **  Called:
-    **     iauC2ixy     celestial-to-intermediate matrix, given X,Y
-    **     iauEra00     Earth rotation angle, IAU 2000
-    **     iauSp00      the TIO locator s', IERS 2000
-    **     iauPom00     polar motion matrix
-    **     iauC2tcio    form CIO-based celestial-to-terrestrial matrix
+    **     jauC2ixy     celestial-to-intermediate matrix, given X,Y
+    **     jauEra00     Earth rotation angle, IAU 2000
+    **     jauSp00      the TIO locator s', IERS 2000
+    **     jauPom00     polar motion matrix
+    **     jauC2tcio    form CIO-based celestial-to-terrestrial matrix
     **
     ** Reference:
     **
@@ -1987,25 +1987,25 @@ public class SOFA {
 
 
     /* Form the celestial-to-intermediate matrix for this TT. */
-       iauC2ixy(tta, ttb, x, y, rc2i);
+       jauC2ixy(tta, ttb, x, y, rc2i);
 
     /* Predict the Earth rotation angle for this UT1. */
-       era = iauEra00(uta, utb);
+       era = jauEra00(uta, utb);
 
     /* Estimate s'. */
-       sp = iauSp00(tta, ttb);
+       sp = jauSp00(tta, ttb);
 
     /* Form the polar motion matrix. */
-       iauPom00(xp, yp, sp, rpom);
+       jauPom00(xp, yp, sp, rpom);
 
     /* Combine to form the celestial-to-terrestrial matrix. */
-       iauC2tcio(rc2i, era, rpom, rc2t);
+       jauC2tcio(rc2i, era, rpom, rc2t);
 
        return;
 
         }
     
-    public static JulianDate iauCal2jd(int iy, int im, int id) throws SOFAIllegalParameter
+    public static JulianDate jauCal2jd(int iy, int im, int id) throws SOFAIllegalParameter
     /**
     **  - - - - - - - - - -
     **   i a u C a l 2 j d
@@ -2100,7 +2100,7 @@ public class SOFA {
         }
     
 
-    public static void iauCp(double p[], double c[])
+    public static void jauCp(double p[], double c[])
     /**
     **  - - - - - -
     **   i a u C p
@@ -2135,7 +2135,7 @@ public class SOFA {
         }
     
 
-    public static void iauCpv(double pv[][], double c[][])
+    public static void jauCpv(double pv[][], double c[][])
     /**
     **  - - - - - - -
     **   i a u C p v
@@ -2155,7 +2155,7 @@ public class SOFA {
     **     c      double[2][3]    copy
     **
     **  Called:
-    **     iauCp        copy p-vector
+    **     jauCp        copy p-vector
     **
     **  This revision:  2008 May 11
     **
@@ -2164,15 +2164,15 @@ public class SOFA {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
     {
-       iauCp(pv[0], c[0]);
-       iauCp(pv[1], c[1]);
+       jauCp(pv[0], c[0]);
+       jauCp(pv[1], c[1]);
 
        return;
 
         }
     
 
-    public static void iauCr(double r[][], double c[][])
+    public static void jauCr(double r[][], double c[][])
     /**
     **  - - - - - -
     **   i a u C r
@@ -2192,7 +2192,7 @@ public class SOFA {
     **   char[]     double[3][3]    copy
     **
     **  Called:
-    **     iauCp        copy p-vector
+    **     jauCp        copy p-vector
     **
     **  This revision:  2008 May 11
     **
@@ -2201,16 +2201,16 @@ public class SOFA {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
     {
-       iauCp(r[0], c[0]);
-       iauCp(r[1], c[1]);
-       iauCp(r[2], c[2]);
+       jauCp(r[0], c[0]);
+       jauCp(r[1], c[1]);
+       jauCp(r[2], c[2]);
 
        return;
 
         }
     
 
-   public static char iauD2tf(final int ndp, final double days, int ihmsf[])
+   public static char jauD2tf(final int ndp, final double days, int ihmsf[])
     /**
     **  - - - - - - - -
     **   i a u D 2 t f
@@ -2326,7 +2326,7 @@ public class SOFA {
     
     
  
-    public static double iauDat(int iy, int im, int id, double fd ) throws SOFAIllegalParameter, SOFAInternalError
+    public static double jauDat(int iy, int im, int id, double fd ) throws SOFAIllegalParameter, SOFAInternalError
     /**
     **  - - - - - - -
     **   i a u D a t
@@ -2441,7 +2441,7 @@ public class SOFA {
     **     the 1992 Explanatory Supplement.
     **
     **  Called:
-    **     iauCal2jd    Gregorian calendar to Julian Day number
+    **     jauCal2jd    Gregorian calendar to Julian Day number
     **
     **  This revision:  2009 July 11
     **
@@ -2450,7 +2450,7 @@ public class SOFA {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
     {
-    /* Release year for this version of iauDat */
+    /* Release year for this version of jauDat */
      final int IYV = 2009;
 
     /* Reference dates (MJD) and drift rates (s/day), pre leap seconds */
@@ -2541,7 +2541,7 @@ public class SOFA {
        if (fd < 0.0 || fd >= 1.0) throw new SOFAIllegalParameter("bad day fraction", -4);
 
     /* Convert the date into an MJD. */
-       JulianDate jd = iauCal2jd(iy, im, id);
+       JulianDate jd = jauCal2jd(iy, im, id);
        djm0 = jd.djm0 ; djm = jd.djm1;
 
     /* If pre-UTC year, set warning status and give up. */
@@ -2573,7 +2573,7 @@ public class SOFA {
         }
     
 
-    public static  double iauDtdb(double date1, double date2,
+    public static  double jauDtdb(double date1, double date2,
                    double ut, double elong, double u, double v)
     /**
     **  - - - - - - - -
@@ -2596,7 +2596,7 @@ public class SOFA {
     **             :
     **            TCG             <-  time scale for GCRS
     **             :
-    **      "periodic" terms      <-  iauDtdb  is an implementation
+    **      "periodic" terms      <-  jauDtdb  is an implementation
     **             :
     **    rate adjustment (L_C)   <-  function of solar-system ephemeris
     **             :
@@ -2606,7 +2606,7 @@ public class SOFA {
     **             :
     **            TDB             <-  TCB scaled to track TT
     **             :
-    **      "periodic" terms      <-  -iau_DTDB is an approximation
+    **      "periodic" terms      <-  -jau_DTDB is an approximation
     **             :
     **            TT              <-  terrestrial time
     **
@@ -3741,7 +3741,7 @@ public class SOFA {
         }
     
 
-    public static double iauEe00(double date1, double date2, double epsa, double dpsi)
+    public static double jauEe00(double date1, double date2, double epsa, double dpsi)
     /**
     **  - - - - - - - -
     **   i a u E e 0 0
@@ -3795,7 +3795,7 @@ public class SOFA {
     **     (2002).
     **
     **  Called:
-    **     iauEect00    equation of the equinoxes complementary terms
+    **     jauEect00    equation of the equinoxes complementary terms
     **
     **  References:
     **
@@ -3817,14 +3817,14 @@ public class SOFA {
 
 
     /* Equation of the equinoxes. */
-       ee = dpsi * cos(epsa) + iauEect00(date1, date2);
+       ee = dpsi * cos(epsa) + jauEect00(date1, date2);
 
        return ee;
 
         }
     
 
-    public static double iauEe00a(double date1, double date2)
+    public static double jauEe00a(double date1, double date2)
     /**
     **  - - - - - - - - -
     **   i a u E e 0 0 a
@@ -3873,10 +3873,10 @@ public class SOFA {
     **     (2002).
     **
     **  Called:
-    **     iauPr00      IAU 2000 precession adjustments
-    **     iauObl80     mean obliquity, IAU 1980
-    **     iauNut00a    nutation, IAU 2000A
-    **     iauEe00      equation of the equinoxes, IAU 2000
+    **     jauPr00      IAU 2000 precession adjustments
+    **     jauObl80     mean obliquity, IAU 1980
+    **     jauNut00a    nutation, IAU 2000A
+    **     jauEe00      equation of the equinoxes, IAU 2000
     **
     **  References:
     **
@@ -3898,23 +3898,23 @@ public class SOFA {
 
 
     /* IAU 2000 precession-rate adjustments. */
-       NutationDeltaTerms nutd = iauPr00(date1, date2);
+       NutationDeltaTerms nutd = jauPr00(date1, date2);
 
     /* Mean obliquity, consistent with IAU 2000 precession-nutation. */
-       epsa = iauObl80(date1, date2) + nutd.depspr;
+       epsa = jauObl80(date1, date2) + nutd.depspr;
 
     /* Nutation in longitude. */
-       NutationTerms nut = iauNut00a(date1, date2);
+       NutationTerms nut = jauNut00a(date1, date2);
 
     /* Equation of the equinoxes. */
-       ee = iauEe00(date1, date2, epsa, nut.dpsi);
+       ee = jauEe00(date1, date2, epsa, nut.dpsi);
 
        return ee;
 
         }
     
 
-    public static  double iauEe00b(double date1, double date2)
+    public static  double jauEe00b(double date1, double date2)
     /**
     **  - - - - - - - - -
     **   i a u E e 0 0 b
@@ -3965,10 +3965,10 @@ public class SOFA {
     **     2003 and Capitaine et al. (2003).
     **
     **  Called:
-    **     iauPr00      IAU 2000 precession adjustments
-    **     iauObl80     mean obliquity, IAU 1980
-    **     iauNut00b    nutation, IAU 2000B
-    **     iauEe00      equation of the equinoxes, IAU 2000
+    **     jauPr00      IAU 2000 precession adjustments
+    **     jauObl80     mean obliquity, IAU 1980
+    **     jauNut00b    nutation, IAU 2000B
+    **     jauEe00      equation of the equinoxes, IAU 2000
     **
     **  References:
     **
@@ -3994,22 +3994,22 @@ public class SOFA {
 
 
     /* IAU 2000 precession-rate adjustments. */
-       NutationDeltaTerms nutd = iauPr00(date1, date2);
+       NutationDeltaTerms nutd = jauPr00(date1, date2);
 
     /* Mean obliquity, consistent with IAU 2000 precession-nutation. */
-       double epsa = iauObl80(date1, date2) + nutd.depspr;
+       double epsa = jauObl80(date1, date2) + nutd.depspr;
 
     /* Nutation in longitude. dpsi, deps*/
-       NutationTerms nut = iauNut00b(date1, date2 );
+       NutationTerms nut = jauNut00b(date1, date2 );
 
     /* Equation of the equinoxes. */
-       ee = iauEe00(date1, date2, epsa, nut.dpsi);
+       ee = jauEe00(date1, date2, epsa, nut.dpsi);
 
        return ee;
 
         }
  
-    public static double iauEe06a(double date1, double date2)
+    public static double jauEe06a(double date1, double date2)
     /**
     **  - - - - - - - - -
     **   i a u E e 0 6 a
@@ -4055,9 +4055,9 @@ public class SOFA {
     **        Greenwich apparent ST = GMST + equation of the equinoxes
     **
     **  Called:
-    **     iauAnpm      normalize angle into range +/- pi
-    **     iauGst06a    Greenwich apparent sidereal time, IAU 2006/2000A
-    **     iauGmst06    Greenwich mean sidereal time, IAU 2006
+    **     jauAnpm      normalize angle into range +/- pi
+    **     jauGst06a    Greenwich apparent sidereal time, IAU 2006/2000A
+    **     jauGmst06    Greenwich mean sidereal time, IAU 2006
     **
     **  Reference:
     **
@@ -4075,11 +4075,11 @@ public class SOFA {
 
 
     /* Apparent and mean sidereal times. */
-       gst06a = iauGst06a(0.0, 0.0, date1, date2);
-       gmst06 = iauGmst06(0.0, 0.0, date1, date2);
+       gst06a = jauGst06a(0.0, 0.0, date1, date2);
+       gmst06 = jauGmst06(0.0, 0.0, date1, date2);
 
     /* Equation of the equinoxes. */
-       ee  = iauAnpm(gst06a - gmst06);
+       ee  = jauAnpm(gst06a - gmst06);
 
        return ee;
 
@@ -4097,7 +4097,7 @@ public class SOFA {
      } 
 
 
-    public static double iauEect00(double date1, double date2)
+    public static double jauEect00(double date1, double date2)
     /**
     **  - - - - - - - - - -
     **   i a u E e c t 0 0
@@ -4170,14 +4170,14 @@ public class SOFA {
     **     IERS Conventions 2003).
     **
     **  Called:
-    **     iauFal03     mean anomaly of the Moon
-    **     iauFalp03    mean anomaly of the Sun
-    **     iauFaf03     mean argument of the latitude of the Moon
-    **     iauFad03     mean elongation of the Moon from the Sun
-    **     iauFaom03    mean longitude of the Moon's ascending node
-    **     iauFave03    mean longitude of Venus
-    **     iauFae03     mean longitude of Earth
-    **     iauFapa03    general accumulated precession in longitude
+    **     jauFal03     mean anomaly of the Moon
+    **     jauFalp03    mean anomaly of the Sun
+    **     jauFaf03     mean argument of the latitude of the Moon
+    **     jauFad03     mean elongation of the Moon from the Sun
+    **     jauFaom03    mean longitude of the Moon's ascending node
+    **     jauFave03    mean longitude of Venus
+    **     jauFae03     mean longitude of Earth
+    **     jauFapa03    general accumulated precession in longitude
     **
     **  References:
     **
@@ -4280,28 +4280,28 @@ public class SOFA {
     /* Fundamental Arguments (from IERS Conventions 2003) */
 
     /* Mean anomaly of the Moon. */
-       fa[0] = iauFal03(t);
+       fa[0] = jauFal03(t);
 
     /* Mean anomaly of the Sun. */
-       fa[1] = iauFalp03(t);
+       fa[1] = jauFalp03(t);
 
     /* Mean longitude of the Moon minus that of the ascending node. */
-       fa[2] = iauFaf03(t);
+       fa[2] = jauFaf03(t);
 
     /* Mean elongation of the Moon from the Sun. */
-       fa[3] = iauFad03(t);
+       fa[3] = jauFad03(t);
 
     /* Mean longitude of the ascending node of the Moon. */
-       fa[4] = iauFaom03(t);
+       fa[4] = jauFaom03(t);
 
     /* Mean longitude of Venus. */
-       fa[5] = iauFave03(t);
+       fa[5] = jauFave03(t);
 
     /* Mean longitude of Earth. */
-       fa[6] = iauFae03(t);
+       fa[6] = jauFae03(t);
 
     /* General precession in longitude. */
-       fa[7] = iauFapa03(t);
+       fa[7] = jauFapa03(t);
 
     /* Evaluate the EE complementary terms. */
        s0 = 0.0;
@@ -4350,7 +4350,7 @@ public class SOFA {
             this.f = f;
         }
     }
-    public static  ReferenceEllipsoid iauEform ( int n ) throws SOFAIllegalParameter
+    public static  ReferenceEllipsoid jauEform ( int n ) throws SOFAIllegalParameter
     /**
     **  - - - - - - - - -
     **   i a u E f o r m
@@ -4457,7 +4457,7 @@ public class SOFA {
     }
     
 
-    public static double iauEo06a(double date1, double date2)
+    public static double jauEo06a(double date1, double date2)
     /**
     **  - - - - - - - - -
     **   i a u E o 0 6 a
@@ -4505,10 +4505,10 @@ public class SOFA {
     **     equinoxes (including the small correction terms).
     **
     **  Called:
-    **     iauPnm06a    classical NPB matrix, IAU 2006/2000A
-    **     iauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     iauS06       the CIO locator s, given X,Y, IAU 2006
-    **     iauEors      equation of the origins, Given NPB matrix and s
+    **     jauPnm06a    classical NPB matrix, IAU 2006/2000A
+    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
+    **     jauS06       the CIO locator s, given X,Y, IAU 2006
+    **     jauEors      equation of the origins, Given NPB matrix and s
     **
     **  References:
     **
@@ -4527,23 +4527,23 @@ public class SOFA {
 
 
     /* Classical nutation x precession x bias matrix. */
-       iauPnm06a(date1, date2, r);
+       jauPnm06a(date1, date2, r);
 
     /* Extract CIP coordinates. */
-       CelestialIntermediatePole cip = iauBpn2xy(r);
+       CelestialIntermediatePole cip = jauBpn2xy(r);
 
     /* The CIO locator, s. */
-       s = iauS06(date1, date2, cip.x, cip.y);
+       s = jauS06(date1, date2, cip.x, cip.y);
 
     /* Solve for the EO. */
-       eo = iauEors(r, s);
+       eo = jauEors(r, s);
 
        return eo;
 
         }
     
 
-    public static double iauEors(double rnpb[][], double s)
+    public static double jauEors(double rnpb[][], double s)
     /**
     **  - - - - - - - -
     **   i a u E o r s
@@ -4606,7 +4606,7 @@ public class SOFA {
         }
     
 
-    public static double iauEpb(double dj1, double dj2)
+    public static double jauEpb(double dj1, double dj2)
     /**
     **  - - - - - - -
     **   i a u E p b
@@ -4656,7 +4656,7 @@ public class SOFA {
 
         }
     
-    public static JulianDate iauEpb2jd(double epb)
+    public static JulianDate jauEpb2jd(double epb)
     /**
     **  - - - - - - - - - -
     **   i a u E p b 2 j d
@@ -4703,7 +4703,7 @@ public class SOFA {
         }
     
 
-    public static double iauEpj(double dj1, double dj2)
+    public static double jauEpj(double dj1, double dj2)
     /**
     **  - - - - - - -
     **   i a u E p j
@@ -4751,7 +4751,7 @@ public class SOFA {
         }
     
 
-    public static JulianDate iauEpj2jd(double epj)
+    public static JulianDate jauEpj2jd(double epj)
     /**
     **  - - - - - - - - - -
     **   i a u E p j 2 j d
@@ -4798,7 +4798,7 @@ public class SOFA {
         }
     
 
-    public static int iauEpv00(final double date1, final double date2,
+    public static int jauEpv00(final double date1, final double date2,
                  double pvh[][], double pvb[][])
     /**
     **  - - - - - - - - -
@@ -7337,7 +7337,7 @@ public class SOFA {
         }
     
 
-    public static double iauEqeq94(double date1, double date2)
+    public static double jauEqeq94(double date1, double date2)
     /**
     **  - - - - - - - - - -
     **   i a u E q e q 9 4
@@ -7382,8 +7382,8 @@ public class SOFA {
     **        Greenwich apparent ST = GMST + equation of the equinoxes
     **
     **  Called:
-    **     iauNut80     nutation, IAU 1980
-    **     iauObl80     mean obliquity, IAU 1980
+    **     jauNut80     nutation, IAU 1980
+    **     jauObl80     mean obliquity, IAU 1980
     **
     **  References:
     **
@@ -7407,13 +7407,13 @@ public class SOFA {
 
     /* Longitude of the mean ascending node of the lunar orbit on the */
     /* ecliptic, measured from the mean equinox of date. */
-       om = iauAnpm((450160.280 + (-482890.539
+       om = jauAnpm((450160.280 + (-482890.539
                + (7.455 + 0.008 * t) * t) * t) * DAS2R
                + fmod(-5.0 * t, 1.0) * D2PI);
 
     /* Nutation components and mean obliquity. */
-       NutationTerms nt = iauNut80(date1, date2);
-       eps0 = iauObl80(date1, date2);
+       NutationTerms nt = jauNut80(date1, date2);
+       eps0 = jauObl80(date1, date2);
 
     /* Equation of the equinoxes. */
        ee = nt.dpsi*cos(eps0) + DAS2R*(0.00264*sin(om) + 0.000063*sin(om+om));
@@ -7423,7 +7423,7 @@ public class SOFA {
         }
     
 
-    public static double iauEra00(double dj1, double dj2)
+    public static double jauEra00(double dj1, double dj2)
     /**
     **  - - - - - - - - -
     **   i a u E r a 0 0
@@ -7472,7 +7472,7 @@ public class SOFA {
     **     (2003), Chap. 5, Eq. 14.
     **
     **  Called:
-    **     iauAnp       normalize angle into range 0 to 2pi
+    **     jauAnp       normalize angle into range 0 to 2pi
     **
     **  References:
     **
@@ -7506,7 +7506,7 @@ public class SOFA {
        f = fmod(d1, 1.0) + fmod(d2, 1.0);
 
     /* Earth rotation angle at this UT1. */
-       theta = iauAnp(D2PI * (f + 0.7790572732640
+       theta = jauAnp(D2PI * (f + 0.7790572732640
                                 + 0.00273781191135448 * t));
 
        return theta;
@@ -7514,7 +7514,7 @@ public class SOFA {
         }
     
 
-    public static double iauFad03(double t)
+    public static double jauFad03(double t)
     /**
     **  - - - - - - - - -
     **   i a u F a d 0 3
@@ -7572,7 +7572,7 @@ public class SOFA {
         }
     
 
-    public static double iauFae03(double t)
+    public static double jauFae03(double t)
     /**
     **  - - - - - - - - -
     **   i a u F a e 0 3
@@ -7629,7 +7629,7 @@ public class SOFA {
         }
     
 
-    public static double iauFaf03(double t)
+    public static double jauFaf03(double t)
     /**
     **  - - - - - - - - -
     **   i a u F a f 0 3
@@ -7690,7 +7690,7 @@ public class SOFA {
         }
     
 
-    public static double iauFaju03(double t)
+    public static double jauFaju03(double t)
     /**
     **  - - - - - - - - - -
     **   i a u F a j u 0 3
@@ -7747,7 +7747,7 @@ public class SOFA {
         }
     
 
-    public static double iauFal03(double t)
+    public static double jauFal03(double t)
     /**
     **  - - - - - - - - -
     **   i a u F a l 0 3
@@ -7805,7 +7805,7 @@ public class SOFA {
         }
     
 
-    public static double iauFalp03(double t)
+    public static double jauFalp03(double t)
     /**
     **  - - - - - - - - - -
     **   i a u F a l p 0 3
@@ -7863,7 +7863,7 @@ public class SOFA {
         }
     
 
-    public static double iauFama03(double t)
+    public static double jauFama03(double t)
     /**
     **  - - - - - - - - - -
     **   i a u F a m a 0 3
@@ -7920,7 +7920,7 @@ public class SOFA {
         }
     
 
-    public static double iauFame03(double t)
+    public static double jauFame03(double t)
     /**
     **  - - - - - - - - - -
     **   i a u F a m e 0 3
@@ -7978,7 +7978,7 @@ public class SOFA {
     
 
 
-    public static double iauFane03(double t)
+    public static double jauFane03(double t)
     /**
     **  - - - - - - - - - -
     **   i a u F a n e 0 3
@@ -8032,7 +8032,7 @@ public class SOFA {
         }
     
 
-    public static double iauFaom03(double t)
+    public static double jauFaom03(double t)
     /**
     **  - - - - - - - - - -
     **   i a u F a o m 0 3
@@ -8091,7 +8091,7 @@ public class SOFA {
         }
     
 
-    public static double iauFapa03(double t)
+    public static double jauFapa03(double t)
     /**
     **  - - - - - - - - - -
     **   i a u F a p a 0 3
@@ -8149,7 +8149,7 @@ public class SOFA {
         }
     
 
-    public static double iauFasa03(double t)
+    public static double jauFasa03(double t)
     /**
     **  - - - - - - - - - -
     **   i a u F a s a 0 3
@@ -8206,7 +8206,7 @@ public class SOFA {
         }
     
 
-    public static double iauFaur03(double t)
+    public static double jauFaur03(double t)
     /**
     **  - - - - - - - - - -
     **   i a u F a u r 0 3
@@ -8260,7 +8260,7 @@ public class SOFA {
         }
     
 
-    public static double iauFave03(double t)
+    public static double jauFave03(double t)
     /**
     **  - - - - - - - - - -
     **   i a u F a v e 0 3
@@ -8317,7 +8317,7 @@ public class SOFA {
         }
     
 
-    public static CatalogCoords iauFk52h(double r5, double d5,
+    public static CatalogCoords jauFk52h(double r5, double d5,
                   double dr5, double dd5, double px5, double rv5)
     /**
     **  - - - - - - - - -
@@ -8359,15 +8359,15 @@ public class SOFA {
     **     rotation and spin;  zonal errors in the FK5 catalog are not
     **     taken into account.
     **
-    **  4) See also iauH2fk5, iauFk5hz, iauHfk5z.
+    **  4) See also jauH2fk5, jauFk5hz, jauHfk5z.
     **
     **  Called:
-    **     iauStarpv    star catalog data to space motion pv-vector
-    **     iauFk5hip    FK5 to Hipparcos rotation and spin
-    **     iauRxp       product of r-matrix and p-vector
-    **     iauPxp       vector product of two p-vectors
-    **     iauPpp       p-vector plus p-vector
-    **     iauPvstar    space motion pv-vector to star catalog data
+    **     jauStarpv    star catalog data to space motion pv-vector
+    **     jauFk5hip    FK5 to Hipparcos rotation and spin
+    **     jauRxp       product of r-matrix and p-vector
+    **     jauPxp       vector product of two p-vectors
+    **     jauPpp       p-vector plus p-vector
+    **     jauPvstar    space motion pv-vector to star catalog data
     **
     **  Reference:
     **
@@ -8385,30 +8385,30 @@ public class SOFA {
 
 
     /* FK5 barycentric position/velocity pv-vector (normalized). */
-       iauStarpv(r5, d5, dr5, dd5, px5, rv5, pv5);
+       jauStarpv(r5, d5, dr5, dd5, px5, rv5, pv5);
 
     /* FK5 to Hipparcos orientation matrix and spin vector. */
-       iauFk5hip(r5h, s5h);
+       jauFk5hip(r5h, s5h);
 
     /* Make spin units per day instead of per year. */
        for ( i = 0; i < 3; s5h[i++] /= 365.25 );
 
     /* Orient the FK5 position into the Hipparcos system. */
-       iauRxp(r5h, pv5[0], pvh[0]);
+       jauRxp(r5h, pv5[0], pvh[0]);
 
     /* Apply spin to the position giving an extra space motion component. */
-       iauPxp(pv5[0], s5h, wxp);
+       jauPxp(pv5[0], s5h, wxp);
 
     /* Add this component to the FK5 space motion. */
-       iauPpp(wxp, pv5[1], vv);
+       jauPpp(wxp, pv5[1], vv);
 
     /* Orient the FK5 space motion into the Hipparcos system. */
-       iauRxp(r5h, vv, pvh[1]);
+       jauRxp(r5h, vv, pvh[1]);
 
     /* Hipparcos pv-vector to spherical. */
        CatalogCoords cat = null;
        try {
-           cat = iauPvstar(pvh);
+           cat = jauPvstar(pvh);
        } catch (SOFAInternalError e) {
            //original code ignored possibility of error too...
            e.printStackTrace();
@@ -8419,7 +8419,7 @@ public class SOFA {
         }
     
 
-    public static void iauFk5hip(double r5h[][], double s5h[] )
+    public static void jauFk5hip(double r5h[][], double s5h[] )
     /**
     **  - - - - - - - - - -
     **   i a u F k 5 h i p
@@ -8454,7 +8454,7 @@ public class SOFA {
     **     TDB).
     **
     **  Called:
-    **     iauRv2m      r-vector to r-matrix
+    **     jauRv2m      r-vector to r-matrix
     **
     **  Reference:
     **
@@ -8488,7 +8488,7 @@ public class SOFA {
        v[2] = epz;
 
     /* Re-express as an r-matrix. */
-       iauRv2m(v, r5h);
+       jauRv2m(v, r5h);
 
     /* Hipparcos wrt FK5 spin expressed as an r-vector. */
        s5h[0] = omx;
@@ -8514,7 +8514,7 @@ public static class SphericalPosition {
           this.delta = delta;
       }
   }
-    public static SphericalPosition iauFk5hz(double r5, double d5, double date1, double date2
+    public static SphericalPosition jauFk5hz(double r5, double d5, double date1, double date2
                   )
     /**
     **  - - - - - - - - -
@@ -8572,17 +8572,17 @@ public static class SphericalPosition {
     **  4) The position returned by this function is in the Hipparcos
     **     reference system but at date date1+date2.
     **
-    **  5) See also iauFk52h, iauH2fk5, iauHfk5z.
+    **  5) See also jauFk52h, jauH2fk5, jauHfk5z.
     **
     **  Called:
-    **     iauS2c       spherical coordinates to unit vector
-    **     iauFk5hip    FK5 to Hipparcos rotation and spin
-    **     iauSxp       multiply p-vector by scalar
-    **     iauRv2m      r-vector to r-matrix
-    **     iauTrxp      product of transpose of r-matrix and p-vector
-    **     iauPxp       vector product of two p-vectors
-    **     iauC2s       p-vector to spherical
-    **     iauAnp       normalize angle into range 0 to 2pi
+    **     jauS2c       spherical coordinates to unit vector
+    **     jauFk5hip    FK5 to Hipparcos rotation and spin
+    **     jauSxp       multiply p-vector by scalar
+    **     jauRv2m      r-vector to r-matrix
+    **     jauTrxp      product of transpose of r-matrix and p-vector
+    **     jauPxp       vector product of two p-vectors
+    **     jauC2s       p-vector to spherical
+    **     jauAnp       normalize angle into range 0 to 2pi
     **
     **  Reference:
     **
@@ -8603,26 +8603,26 @@ public static class SphericalPosition {
        t = - ((date1 - DJ00) + date2) / DJY;
 
     /* FK5 barycentric position vector. */
-       iauS2c(r5, d5, p5e);
+       jauS2c(r5, d5, p5e);
 
     /* FK5 to Hipparcos orientation matrix and spin vector. */
-       iauFk5hip(r5h, s5h);
+       jauFk5hip(r5h, s5h);
 
     /* Accumulated Hipparcos wrt FK5 spin over that interval. */
-       iauSxp(t, s5h, vst);
+       jauSxp(t, s5h, vst);
 
     /* Express the accumulated spin as a rotation matrix. */
-       iauRv2m(vst, rst);
+       jauRv2m(vst, rst);
 
     /* Derotate the vector's FK5 axes back to date. */
-       iauTrxp(rst, p5e, p5);
+       jauTrxp(rst, p5e, p5);
 
     /* Rotate the vector into the Hipparcos system. */
-       iauRxp(r5h, p5, ph);
+       jauRxp(r5h, p5, ph);
 
     /* Hipparcos vector to spherical. */
-       SphericalPosition sc = iauC2s(ph);
-       double rh = iauAnp(sc.alpha);
+       SphericalPosition sc = jauC2s(ph);
+       double rh = jauAnp(sc.alpha);
        sc.alpha = rh;
        
        return sc;
@@ -8630,7 +8630,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauFw2m(double gamb, double phib, double psi, double eps,
+    public static void jauFw2m(double gamb, double phib, double psi, double eps,
                  double r[][])
     /**
     **  - - - - - - - -
@@ -8692,9 +8692,9 @@ public static class SphericalPosition {
     **     be obtained by combining these three appropriately.
     **
     **  Called:
-    **     iauIr        initialize r-matrix to identity
-    **     iauRz        rotate around Z-axis
-    **     iauRx        rotate around X-axis
+    **     jauIr        initialize r-matrix to identity
+    **     jauRz        rotate around Z-axis
+    **     jauRx        rotate around X-axis
     **
     **  Reference:
     **
@@ -8708,18 +8708,18 @@ public static class SphericalPosition {
     */
     {
     /* Construct the matrix. */
-       iauIr(r);
-       iauRz(gamb, r);
-       iauRx(phib, r);
-       iauRz(-psi, r);
-       iauRx(-eps, r);
+       jauIr(r);
+       jauRz(gamb, r);
+       jauRx(phib, r);
+       jauRz(-psi, r);
+       jauRx(-eps, r);
 
        return;
 
         }
     
 
-    public static CelestialIntermediatePole iauFw2xy(double gamb, double phib, double psi, double eps)
+    public static CelestialIntermediatePole jauFw2xy(double gamb, double phib, double psi, double eps)
     /**
     **  - - - - - - - - -
     **   i a u F w 2 x y
@@ -8765,8 +8765,8 @@ public static class SphericalPosition {
     **     X,Y are elements (3,1) and (3,2) of the matrix.
     **
     **  Called:
-    **     iauFw2m      F-W angles to r-matrix
-    **     iauBpn2xy    extract CIP X,Y coordinates from NPB matrix
+    **     jauFw2m      F-W angles to r-matrix
+    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
     **
     **  Reference:
     **
@@ -8783,10 +8783,10 @@ public static class SphericalPosition {
 
 
     /* Form NxPxB matrix. */
-       iauFw2m(gamb, phib, psi, eps, r);
+       jauFw2m(gamb, phib, psi, eps, r);
 
     /* Extract CIP X,Y. */
-       return iauBpn2xy(r);
+       return jauBpn2xy(r);
 
     }
 
@@ -8803,7 +8803,7 @@ public static class SphericalPosition {
             this.height = height;
         }
 }
-    public static GeodeticCoord iauGc2gd ( int n, double xyz[] ) throws SOFAIllegalParameter
+    public static GeodeticCoord jauGc2gd ( int n, double xyz[] ) throws SOFAIllegalParameter
     /**
     **  - - - - - - - - -
     **   i a u G c 2 g d
@@ -8851,11 +8851,11 @@ public static class SphericalPosition {
     **     error status -2 is theoretically impossible.  In all error cases,
     **     phi and height are both set to -1e9.
     **
-    **  4) The inverse transformation is performed in the function iauGd2gc.
+    **  4) The inverse transformation is performed in the function jauGd2gc.
     **
     **  Called:
-    **     iauEform     Earth reference ellipsoids
-    **     iauGc2gde    geocentric to geodetic transformation, general
+    **     jauEform     Earth reference ellipsoids
+    **     jauGc2gde    geocentric to geodetic transformation, general
     **
     **  This revision:  2010 January 18
     **
@@ -8868,10 +8868,10 @@ public static class SphericalPosition {
 
 
     /* Obtain reference ellipsoid parameters. */
-       ReferenceEllipsoid el = iauEform ( n );
+       ReferenceEllipsoid el = jauEform ( n );
 
     /* If OK, transform x,y,z to longitude, geodetic latitude, height. */
-       gc = iauGc2gde ( el.a, el.f, xyz);
+       gc = jauGc2gde ( el.a, el.f, xyz);
 
     /* Return the status. */
        return gc;
@@ -8927,10 +8927,10 @@ public static class SphericalPosition {
     **     unchanged.
     **
     **  6) The inverse transformation is performed in the function
-    **     iauGd2gce.
+    **     jauGd2gce.
     **
     **  7) The transformation for a standard ellipsoid (such as WGS84) can
-    **     more conveniently be performed by calling iauGc2gd, which uses a
+    **     more conveniently be performed by calling jauGc2gd, which uses a
     **     numerical code (1 for WGS84) to identify the required A and F
     **     values.
     **
@@ -8947,7 +8947,7 @@ public static class SphericalPosition {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
  * 
     */
-    public static GeodeticCoord iauGc2gde ( double a, double f, double xyz[] ) throws SOFAIllegalParameter
+    public static GeodeticCoord jauGc2gde ( double a, double f, double xyz[] ) throws SOFAIllegalParameter
         {
        double aeps2, e2, e4t, ec2, ec, b, x, y, z, p2, absz, p, s0, pn, zc,
                      c0, c02, c03, s02, s03, a02, a0, a03, d0, f0, b0, s1,
@@ -9036,7 +9036,7 @@ public static class SphericalPosition {
     }
     
 
-    public static double[] iauGd2gc ( int n, double elong, double phi, double height ) throws SOFAIllegalParameter, SOFAInternalError
+    public static double[] jauGd2gc ( int n, double elong, double phi, double height ) throws SOFAIllegalParameter, SOFAInternalError
     /**
     **  - - - - - - - - -
     **   i a u G d 2 g c
@@ -9086,12 +9086,12 @@ public static class SphericalPosition {
     **     lead to arithmetic exceptions.  In all error cases, xyz is set
     **     to zeros.
     **
-    **  4) The inverse transformation is performed in the function iauGc2gd.
+    **  4) The inverse transformation is performed in the function jauGc2gd.
     **
     **  Called:
-    **     iauEform     Earth reference ellipsoids
-    **     iauGd2gce    geodetic to geocentric transformation, general
-    **     iauZp        zero p-vector
+    **     jauEform     Earth reference ellipsoids
+    **     jauGd2gce    geodetic to geocentric transformation, general
+    **     jauZp        zero p-vector
     **
     **  This revision:  2010 January 18
     **
@@ -9103,16 +9103,16 @@ public static class SphericalPosition {
 
 
     /* Obtain reference ellipsoid parameters. */
-       ReferenceEllipsoid em = iauEform ( n );
+       ReferenceEllipsoid em = jauEform ( n );
 
     /* If OK, transform longitude, geodetic latitude, height to x,y,z. */
-      return iauGd2gce ( em.a, em.f, elong, phi, height );
+      return jauGd2gce ( em.a, em.f, elong, phi, height );
   
     
     }
     
 
-    public static double[] iauGd2gce ( double a, double f, double elong, double phi,
+    public static double[] jauGd2gce ( double a, double f, double elong, double phi,
                     double height ) throws SOFAInternalError
     /**
     **  - - - - - - - - - -
@@ -9158,10 +9158,10 @@ public static class SphericalPosition {
     **     to arithmetic exceptions.  If an error occurs, xyz is unchanged.
     **
     **  5) The inverse transformation is performed in the function
-    **     iauGc2gde.
+    **     jauGc2gde.
     **
     **  6) The transformation for a standard ellipsoid (such as WGS84) can
-    **     more conveniently be performed by calling iauGd2gc,  which uses a
+    **     more conveniently be performed by calling jauGd2gc,  which uses a
     **     numerical code (1 for WGS84) to identify the required a and f
     **     values.
     **
@@ -9208,7 +9208,7 @@ public static class SphericalPosition {
     }
     
 
-    public static double iauGmst00(double uta, double utb, double tta, double ttb)
+    public static double jauGmst00(double uta, double utb, double tta, double ttb)
     /**
     **  - - - - - - - - - -
     **   i a u G m s t 0 0
@@ -9269,8 +9269,8 @@ public static class SphericalPosition {
     **     Conventions 2003.
     **
     **  Called:
-    **     iauEra00     Earth rotation angle, IAU 2000
-    **     iauAnp       normalize angle into range 0 to 2pi
+    **     jauEra00     Earth rotation angle, IAU 2000
+    **     jauAnp       normalize angle into range 0 to 2pi
     **
     **  References:
     **
@@ -9295,7 +9295,7 @@ public static class SphericalPosition {
        t = ((tta - DJ00) + ttb) / DJC;
 
     /* Greenwich Mean Sidereal Time, IAU 2000. */
-       gmst = iauAnp(iauEra00(uta, utb) +
+       gmst = jauAnp(jauEra00(uta, utb) +
                        (     0.014506   +
                        (  4612.15739966 +
                        (     1.39667721 +
@@ -9308,7 +9308,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double iauGmst06(double uta, double utb, double tta, double ttb)
+    public static double jauGmst06(double uta, double utb, double tta, double ttb)
     /**
     **  - - - - - - - - - -
     **   i a u G m s t 0 6
@@ -9363,8 +9363,8 @@ public static class SphericalPosition {
     **  4) The result is returned in the range 0 to 2pi.
     **
     **  Called:
-    **     iauEra00     Earth rotation angle, IAU 2000
-    **     iauAnp       normalize angle into range 0 to 2pi
+    **     jauEra00     Earth rotation angle, IAU 2000
+    **     jauAnp       normalize angle into range 0 to 2pi
     **
     **  Reference:
     **
@@ -9385,7 +9385,7 @@ public static class SphericalPosition {
        t = ((tta - DJ00) + ttb) / DJC;
 
     /* Greenwich mean sidereal time, IAU 2006. */
-       gmst = iauAnp(iauEra00(uta, utb) +
+       gmst = jauAnp(jauEra00(uta, utb) +
                       (    0.014506     +
                       (  4612.156534    +
                       (     1.3915817   +
@@ -9399,7 +9399,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double iauGmst82(double dj1, double dj2)
+    public static double jauGmst82(double dj1, double dj2)
     /**
     **  - - - - - - - - - -
     **   i a u G m s t 8 2
@@ -9455,7 +9455,7 @@ public static class SphericalPosition {
     **     added, but omitting whole days to conserve accuracy.
     **
     **  Called:
-    **     iauAnp       normalize angle into range 0 to 2pi
+    **     jauAnp       normalize angle into range 0 to 2pi
     **
     **  References:
     **
@@ -9498,14 +9498,14 @@ public static class SphericalPosition {
        f = DAYSEC * (fmod(d1, 1.0) + fmod(d2, 1.0));
 
     /* GMST at this UT1. */
-       gmst = iauAnp(DS2R * ((A + (B + (C + D * t) * t) * t) + f));
+       gmst = jauAnp(DS2R * ((A + (B + (C + D * t) * t) * t) + f));
 
        return gmst;
 
         }
     
 
-    public static double iauGst00a(double uta, double utb, double tta, double ttb)
+    public static double jauGst00a(double uta, double utb, double tta, double ttb)
     /**
     **  - - - - - - - - - -
     **   i a u G s t 0 0 a
@@ -9566,9 +9566,9 @@ public static class SphericalPosition {
     **     Conventions 2003.
     **
     **  Called:
-    **     iauGmst00    Greenwich mean sidereal time, IAU 2000
-    **     iauEe00a     equation of the equinoxes, IAU 2000A
-    **     iauAnp       normalize angle into range 0 to 2pi
+    **     jauGmst00    Greenwich mean sidereal time, IAU 2000
+    **     jauEe00a     equation of the equinoxes, IAU 2000A
+    **     jauAnp       normalize angle into range 0 to 2pi
     **
     **  References:
     **
@@ -9589,16 +9589,16 @@ public static class SphericalPosition {
        double gmst00, ee00a, gst;
 
 
-       gmst00 = iauGmst00(uta, utb, tta, ttb);
-       ee00a = iauEe00a(tta, ttb);
-       gst = iauAnp(gmst00 + ee00a);
+       gmst00 = jauGmst00(uta, utb, tta, ttb);
+       ee00a = jauEe00a(tta, ttb);
+       gst = jauAnp(gmst00 + ee00a);
 
        return gst;
 
         }
     
 
-    public static double iauGst00b(double uta, double utb)
+    public static double jauGst00b(double uta, double utb)
     /**
     **  - - - - - - - - - -
     **   i a u G s t 0 0 b
@@ -9663,9 +9663,9 @@ public static class SphericalPosition {
     **     Conventions 2003.
     **
     **  Called:
-    **     iauGmst00    Greenwich mean sidereal time, IAU 2000
-    **     iauEe00b     equation of the equinoxes, IAU 2000B
-    **     iauAnp       normalize angle into range 0 to 2pi
+    **     jauGmst00    Greenwich mean sidereal time, IAU 2000
+    **     jauEe00b     equation of the equinoxes, IAU 2000B
+    **     jauAnp       normalize angle into range 0 to 2pi
     **
     **  References:
     **
@@ -9690,16 +9690,16 @@ public static class SphericalPosition {
        double gmst00, ee00b, gst;
 
 
-       gmst00 = iauGmst00(uta, utb, uta, utb);
-       ee00b = iauEe00b(uta, utb);
-       gst = iauAnp(gmst00 + ee00b);
+       gmst00 = jauGmst00(uta, utb, uta, utb);
+       ee00b = jauEe00b(uta, utb);
+       gst = jauAnp(gmst00 + ee00b);
 
        return gst;
 
         }
     
 
-    public static double iauGst06(double uta, double utb, double tta, double ttb,
+    public static double jauGst06(double uta, double utb, double tta, double ttb,
                     double rnpb[][])
     /**
     **  - - - - - - - - -
@@ -9758,11 +9758,11 @@ public static class SphericalPosition {
     **  4) The result is returned in the range 0 to 2pi.
     **
     **  Called:
-    **     iauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     iauS06       the CIO locator s, given X,Y, IAU 2006
-    **     iauAnp       normalize angle into range 0 to 2pi
-    **     iauEra00     Earth rotation angle, IAU 2000
-    **     iauEors      equation of the origins, given NPB matrix and s
+    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
+    **     jauS06       the CIO locator s, given X,Y, IAU 2006
+    **     jauAnp       normalize angle into range 0 to 2pi
+    **     jauEra00     Earth rotation angle, IAU 2000
+    **     jauEors      equation of the origins, given NPB matrix and s
     **
     **  Reference:
     **
@@ -9779,22 +9779,22 @@ public static class SphericalPosition {
 
 
     /* Extract CIP coordinates. */
-       CelestialIntermediatePole cip = iauBpn2xy(rnpb);
+       CelestialIntermediatePole cip = jauBpn2xy(rnpb);
 
     /* The CIO locator, s. */
-       s = iauS06(tta, ttb, cip.x, cip.y);
+       s = jauS06(tta, ttb, cip.x, cip.y);
 
     /* Greenwich apparent sidereal time. */
-       era = iauEra00(uta, utb);
-       eors = iauEors(rnpb, s);
-       gst = iauAnp(era - eors);
+       era = jauEra00(uta, utb);
+       eors = jauEors(rnpb, s);
+       gst = jauAnp(era - eors);
 
        return gst;
 
         }
     
 
-    public static double iauGst06a(double uta, double utb, double tta, double ttb)
+    public static double jauGst06a(double uta, double utb, double tta, double ttb)
     /**
     **  - - - - - - - - - -
     **   i a u G s t 0 6 a
@@ -9852,8 +9852,8 @@ public static class SphericalPosition {
     **  4) The result is returned in the range 0 to 2pi.
     **
     **  Called:
-    **     iauPnm06a    classical NPB matrix, IAU 2006/2000A
-    **     iauGst06     Greenwich apparent ST, IAU 2006, given NPB matrix
+    **     jauPnm06a    classical NPB matrix, IAU 2006/2000A
+    **     jauGst06     Greenwich apparent ST, IAU 2006, given NPB matrix
     **
     **  Reference:
     **
@@ -9870,17 +9870,17 @@ public static class SphericalPosition {
 
 
     /* Classical nutation x precession x bias matrix, IAU 2000A. */
-       iauPnm06a(tta, ttb, rnpb);
+       jauPnm06a(tta, ttb, rnpb);
 
     /* Greenwich apparent sidereal time. */
-       gst = iauGst06(uta, utb, tta, ttb, rnpb);
+       gst = jauGst06(uta, utb, tta, ttb, rnpb);
 
        return gst;
 
         }
     
 
-    public static double iauGst94(double uta, double utb)
+    public static double jauGst94(double uta, double utb)
     /**
     **  - - - - - - - - -
     **   i a u G s t 9 4
@@ -9936,9 +9936,9 @@ public static class SphericalPosition {
     **  4) The result is returned in the range 0 to 2pi.
     **
     **  Called:
-    **     iauGmst82    Greenwich mean sidereal time, IAU 1982
-    **     iauEqeq94    equation of the equinoxes, IAU 1994
-    **     iauAnp       normalize angle into range 0 to 2pi
+    **     jauGmst82    Greenwich mean sidereal time, IAU 1982
+    **     jauEqeq94    equation of the equinoxes, IAU 1994
+    **     jauAnp       normalize angle into range 0 to 2pi
     **
     **  References:
     **
@@ -9957,16 +9957,16 @@ public static class SphericalPosition {
        double gmst82, eqeq94, gst;
 
 
-       gmst82 = iauGmst82(uta, utb);
-       eqeq94 = iauEqeq94(uta, utb);
-       gst = iauAnp(gmst82  + eqeq94);
+       gmst82 = jauGmst82(uta, utb);
+       eqeq94 = jauEqeq94(uta, utb);
+       gst = jauAnp(gmst82  + eqeq94);
 
        return gst;
 
         }
     
 
-    public static CatalogCoords iauH2fk5(double rh, double dh,
+    public static CatalogCoords jauH2fk5(double rh, double dh,
                   double drh, double ddh, double pxh, double rvh)
     /**
     **  - - - - - - - - -
@@ -10008,17 +10008,17 @@ public static class SphericalPosition {
     **     rotation and spin;  zonal errors in the FK5 catalog are not
     **     taken into account.
     **
-    **  4) See also iauFk52h, iauFk5hz, iauHfk5z.
+    **  4) See also jauFk52h, jauFk5hz, jauHfk5z.
     **
     **  Called:
-    **     iauStarpv    star catalog data to space motion pv-vector
-    **     iauFk5hip    FK5 to Hipparcos rotation and spin
-    **     iauRv2m      r-vector to r-matrix
-    **     iauRxp       product of r-matrix and p-vector
-    **     iauTrxp      product of transpose of r-matrix and p-vector
-    **     iauPxp       vector product of two p-vectors
-    **     iauPmp       p-vector minus p-vector
-    **     iauPvstar    space motion pv-vector to star catalog data
+    **     jauStarpv    star catalog data to space motion pv-vector
+    **     jauFk5hip    FK5 to Hipparcos rotation and spin
+    **     jauRv2m      r-vector to r-matrix
+    **     jauRxp       product of r-matrix and p-vector
+    **     jauTrxp      product of transpose of r-matrix and p-vector
+    **     jauPxp       vector product of two p-vectors
+    **     jauPmp       p-vector minus p-vector
+    **     jauPvstar    space motion pv-vector to star catalog data
     **
     **  Reference:
     **
@@ -10036,33 +10036,33 @@ public static class SphericalPosition {
 
 
     /* Hipparcos barycentric position/velocity pv-vector (normalized). */
-       iauStarpv(rh, dh, drh, ddh, pxh, rvh, pvh);
+       jauStarpv(rh, dh, drh, ddh, pxh, rvh, pvh);
 
     /* FK5 to Hipparcos orientation matrix and spin vector. */
-       iauFk5hip(r5h, s5h);
+       jauFk5hip(r5h, s5h);
 
     /* Make spin units per day instead of per year. */
        for ( i = 0; i < 3; s5h[i++] /= 365.25 );
 
     /* Orient the spin into the Hipparcos system. */
-       iauRxp(r5h, s5h, sh);
+       jauRxp(r5h, s5h, sh);
 
     /* De-orient the Hipparcos position into the FK5 system. */
-       iauTrxp(r5h, pvh[0], pv5[0]);
+       jauTrxp(r5h, pvh[0], pv5[0]);
 
     /* Apply spin to the position giving an extra space motion component. */
-       iauPxp(pvh[0], sh, wxp);
+       jauPxp(pvh[0], sh, wxp);
 
     /* Subtract this component from the Hipparcos space motion. */
-       iauPmp(pvh[1], wxp, vv);
+       jauPmp(pvh[1], wxp, vv);
 
     /* De-orient the Hipparcos space motion into the FK5 system. */
-       iauTrxp(r5h, vv, pv5[1]);
+       jauTrxp(r5h, vv, pv5[1]);
 
     /* FK5 pv-vector to spherical., r5, d5, dr5, dd5, px5, rv5 */
        CatalogCoords cat = null;
        try {
-           cat = iauPvstar(pv5);
+           cat = jauPvstar(pv5);
        } catch (SOFAInternalError e) {
            // original code just ignored this possibility
            e.printStackTrace();
@@ -10073,7 +10073,7 @@ public static class SphericalPosition {
         }
     
 
-    public static CatalogCoords iauHfk5z(double rh, double dh, double date1, double date2)
+    public static CatalogCoords jauHfk5z(double rh, double dh, double date1, double date2)
     /**
     **  - - - - - - - - -
     **   i a u H f k 5 z
@@ -10134,18 +10134,18 @@ public static class SphericalPosition {
     **  5) The position returned by this function is in the FK5 J2000.0
     **     reference system but at date date1+date2.
     **
-    **  6) See also iauFk52h, iauH2fk5, iauFk5zhz.
+    **  6) See also jauFk52h, jauH2fk5, jauFk5zhz.
     **
     **  Called:
-    **     iauS2c       spherical coordinates to unit vector
-    **     iauFk5hip    FK5 to Hipparcos rotation and spin
-    **     iauRxp       product of r-matrix and p-vector
-    **     iauSxp       multiply p-vector by scalar
-    **     iauRxr       product of two r-matrices
-    **     iauTrxp      product of transpose of r-matrix and p-vector
-    **     iauPxp       vector product of two p-vectors
-    **     iauPv2s      pv-vector to spherical
-    **     iauAnp       normalize angle into range 0 to 2pi
+    **     jauS2c       spherical coordinates to unit vector
+    **     jauFk5hip    FK5 to Hipparcos rotation and spin
+    **     jauRxp       product of r-matrix and p-vector
+    **     jauSxp       multiply p-vector by scalar
+    **     jauRxr       product of two r-matrices
+    **     jauTrxp      product of transpose of r-matrix and p-vector
+    **     jauPxp       vector product of two p-vectors
+    **     jauPv2s      pv-vector to spherical
+    **     jauAnp       normalize angle into range 0 to 2pi
     **
     **  Reference:
     **
@@ -10167,42 +10167,42 @@ public static class SphericalPosition {
        t = ((date1 - DJ00) + date2) / DJY;
 
     /* Hipparcos barycentric position vector (normalized). */
-       iauS2c(rh, dh, ph);
+       jauS2c(rh, dh, ph);
 
     /* FK5 to Hipparcos orientation matrix and spin vector. */
-       iauFk5hip(r5h, s5h);
+       jauFk5hip(r5h, s5h);
 
     /* Rotate the spin into the Hipparcos system. */
-       iauRxp(r5h, s5h, sh);
+       jauRxp(r5h, s5h, sh);
 
     /* Accumulated Hipparcos wrt FK5 spin over that interval. */
-       iauSxp(t, s5h, vst);
+       jauSxp(t, s5h, vst);
 
     /* Express the accumulated spin as a rotation matrix. */
-       iauRv2m(vst, rst);
+       jauRv2m(vst, rst);
 
     /* Rotation matrix:  accumulated spin, then FK5 to Hipparcos. */
-       iauRxr(r5h, rst, r5ht);
+       jauRxr(r5h, rst, r5ht);
 
     /* De-orient & de-spin the Hipparcos position into FK5 J2000.0. */
-       iauTrxp(r5ht, ph, pv5e[0]);
+       jauTrxp(r5ht, ph, pv5e[0]);
 
     /* Apply spin to the position giving a space motion. */
-       iauPxp(sh, ph, vv);
+       jauPxp(sh, ph, vv);
 
     /* De-orient & de-spin the Hipparcos space motion into FK5 J2000.0. */
-       iauTrxp(r5ht, vv, pv5e[1]);
+       jauTrxp(r5ht, vv, pv5e[1]);
 
     /* FK5 position/velocity pv-vector to spherical. */
-       SphericalPositionVelocity pvs = iauPv2s(pv5e);
-       double r5 = iauAnp(pvs.pos.theta);
+       SphericalPositionVelocity pvs = jauPv2s(pv5e);
+       double r5 = jauAnp(pvs.pos.theta);
 
        return new CatalogCoords(r5, pvs.pos.phi, pvs.vel.theta, pvs.vel.phi, 0.0, 0.0);
 
         }
     
 
-    public static void iauIr(double r[][])
+    public static void jauIr(double r[][])
     /**
     **  - - - - - -
     **   i a u I r
@@ -10219,7 +10219,7 @@ public static class SphericalPosition {
     **     r       double[3][3]    r-matrix
     **
     **  Called:
-    **     iauZr        zero r-matrix
+    **     jauZr        zero r-matrix
     **
     **  This revision:  2008 May 11
     **
@@ -10228,7 +10228,7 @@ public static class SphericalPosition {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
     {
-       iauZr(r);
+       jauZr(r);
        r[0][0] = 1.0;
        r[1][1] = 1.0;
        r[2][2] = 1.0;
@@ -10250,7 +10250,7 @@ public static class SphericalPosition {
             this.fd = fd;
         }
     }
-    public static Calendar iauJd2cal(double dj1, double dj2) throws SOFAIllegalParameter
+    public static Calendar jauJd2cal(double dj1, double dj2) throws SOFAIllegalParameter
     /**
     **  - - - - - - - - - -
     **   i a u J d 2 c a l
@@ -10358,7 +10358,7 @@ public static class SphericalPosition {
 
         }
      
-    public static int iauJdcalf(int ndp, double dj1, double dj2, int iymdf[])
+    public static int jauJdcalf(int ndp, double dj1, double dj2, int iymdf[])
     /**
     **  - - - - - - - - - -
     **   i a u J d c a l f
@@ -10404,13 +10404,13 @@ public static class SphericalPosition {
     **     the Gregorian Calendar, nor is the AD/BC numbering convention
     **     observed.
     **
-    **  3) Refer to the function iauJd2cal.
+    **  3) Refer to the function jauJd2cal.
     **
     **  4) NDP should be 4 or less if internal overflows are to be
     **     avoided on machines which use 16-bit integers.
     **
     **  Called:
-    **     iauJd2cal    JD to Gregorian calendar
+    **     jauJd2cal    JD to Gregorian calendar
     **
     **  Reference:
     **
@@ -10462,7 +10462,7 @@ public static class SphericalPosition {
 
        /* Convert to Gregorian Calendar. */
        try {
-           Calendar cal = iauJd2cal(d1, d2);
+           Calendar cal = jauJd2cal(d1, d2);
            iymdf[0] = cal.iy;
            iymdf[1] = cal.im;
            iymdf[2] = cal.id;
@@ -10477,7 +10477,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauNum00a(double date1, double date2, double rmatn[][])
+    public static void jauNum00a(double date1, double date2, double rmatn[][])
     /**
     **  - - - - - - - - - -
     **   i a u N u m 0 0 a
@@ -10523,10 +10523,10 @@ public static class SphericalPosition {
     **     equatorial triad of date.
     **
     **  3) A faster, but slightly less accurate result (about 1 mas), can be
-    **     obtained by using instead the iauNum00b function.
+    **     obtained by using instead the jauNum00b function.
     **
     **  Called:
-    **     iauPn00a     bias/precession/nutation, IAU 2000A
+    **     jauPn00a     bias/precession/nutation, IAU 2000A
     **
     **  Reference:
     **
@@ -10543,7 +10543,7 @@ public static class SphericalPosition {
     {
 
     /* Obtain the required matrix (discarding other results). */
-       PrecessionNutation pn = iauPn00a(date1, date2);
+       PrecessionNutation pn = jauPn00a(date1, date2);
 
        for (int i = 0; i < 3; i++) {
            for (int j = 0; j < 3; j++) {
@@ -10557,7 +10557,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauNum00b(double date1, double date2, double rmatn[][])
+    public static void jauNum00b(double date1, double date2, double rmatn[][])
     /**
     **  - - - - - - - - - -
     **   i a u N u m 0 0 b
@@ -10603,10 +10603,10 @@ public static class SphericalPosition {
     **     equatorial triad of date.
     **
     **  3) The present function is faster, but slightly less accurate (about
-    **     1 mas), than the iauNum00a function.
+    **     1 mas), than the jauNum00a function.
     **
     **  Called:
-    **     iauPn00b     bias/precession/nutation, IAU 2000B
+    **     jauPn00b     bias/precession/nutation, IAU 2000B
     **
     **  Reference:
     **
@@ -10623,7 +10623,7 @@ public static class SphericalPosition {
     {
 
     /* Obtain the required matrix (discarding other results). */
-       PrecessionNutation pn = iauPn00b(date1, date2);
+       PrecessionNutation pn = jauPn00b(date1, date2);
        for (int i = 0; i < 3; i++) {
            for (int j = 0; j < 3; j++) {
                rmatn[i][j] = pn.rn[i][j];
@@ -10636,7 +10636,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauNum06a(double date1, double date2, double rmatn[][])
+    public static void jauNum06a(double date1, double date2, double rmatn[][])
     /**
     **  - - - - - - - - - -
     **   i a u N u m 0 6 a
@@ -10682,9 +10682,9 @@ public static class SphericalPosition {
     **     equatorial triad of date.
     **
     **  Called:
-    **     iauObl06     mean obliquity, IAU 2006
-    **     iauNut06a    nutation, IAU 2006/2000A
-    **     iauNumat     form nutation matrix
+    **     jauObl06     mean obliquity, IAU 2006
+    **     jauNut06a    nutation, IAU 2006/2000A
+    **     jauNumat     form nutation matrix
     **
     **  Reference:
     **
@@ -10703,20 +10703,20 @@ public static class SphericalPosition {
 
 
     /* Mean obliquity. */
-       eps = iauObl06(date1, date2);
+       eps = jauObl06(date1, date2);
 
     /* Nutation components. */
-       NutationTerms nut = iauNut06a(date1, date2);
+       NutationTerms nut = jauNut06a(date1, date2);
 
     /* Nutation matrix. */
-       iauNumat(eps, nut.dpsi, nut.deps, rmatn);
+       jauNumat(eps, nut.dpsi, nut.deps, rmatn);
 
        return;
 
         }
     
 
-    public static void iauNumat(double epsa, double dpsi, double deps, double rmatn[][])
+    public static void jauNumat(double epsa, double dpsi, double deps, double rmatn[][])
     /**
     **  - - - - - - - - -
     **   i a u N u m a t
@@ -10752,9 +10752,9 @@ public static class SphericalPosition {
     **     respect to the mean equatorial triad of date.
     **
     **  Called:
-    **     iauIr        initialize r-matrix to identity
-    **     iauRx        rotate around X-axis
-    **     iauRz        rotate around Z-axis
+    **     jauIr        initialize r-matrix to identity
+    **     jauRx        rotate around X-axis
+    **     jauRz        rotate around Z-axis
     **
     **  Reference:
     **
@@ -10770,10 +10770,10 @@ public static class SphericalPosition {
     */
     {
     /* Build the rotation matrix. */
-       iauIr(rmatn);
-       iauRx(epsa, rmatn);
-       iauRz(-dpsi, rmatn);
-       iauRx(-(epsa + deps), rmatn);
+       jauIr(rmatn);
+       jauRx(epsa, rmatn);
+       jauRz(-dpsi, rmatn);
+       jauRx(-(epsa + deps), rmatn);
 
        return;
 
@@ -10789,7 +10789,7 @@ public static class SphericalPosition {
             this.deps = deps;
         }
     }
-    public static NutationTerms iauNut00a(double date1, double date2 )
+    public static NutationTerms jauNut00a(double date1, double date2 )
     /**
     **  - - - - - - - - - -
     **   i a u N u t 0 0 a
@@ -10861,14 +10861,14 @@ public static class SphericalPosition {
     **     offsets between the GCRS and mean poles and (ii) the adjustments
     **     in longitude and obliquity due to the changed precession rates.
     **     These additional functions, namely frame bias and precession
-    **     adjustments, are supported by the SOFA functions iauBi00  and
-    **     iauPr00.
+    **     adjustments, are supported by the SOFA functions jauBi00  and
+    **     jauPr00.
     **
     **  6) The MHB2000 algorithm also provides "total" nutations, comprising
     **     the arithmetic sum of the frame bias, precession adjustments,
     **     luni-solar nutation and planetary nutation.  These total
     **     nutations can be used in combination with an existing IAU 1976
-    **     precession implementation, such as iauPmat76,  to deliver GCRS-
+    **     precession implementation, such as jauPmat76,  to deliver GCRS-
     **     to-true predictions of sub-mas accuracy at current dates.
     **     However, there are three shortcomings in the MHB2000 model that
     **     must be taken into account if more accurate or definitive results
@@ -10900,7 +10900,7 @@ public static class SphericalPosition {
     **
     **     For these reasons, the SOFA functions do not generate the "total
     **     nutations" directly, though they can of course easily be
-    **     generated by calling iauBi00, iauPr00 and the present function
+    **     generated by calling jauBi00, jauPr00 and the present function
     **     and adding the results.
     **
     **  7) The MHB2000 model contains 41 instances where the same frequency
@@ -10909,17 +10909,17 @@ public static class SphericalPosition {
     **     algorithm, this small inefficiency has not been corrected.
     **
     **  Called:
-    **     iauFal03     mean anomaly of the Moon
-    **     iauFaf03     mean argument of the latitude of the Moon
-    **     iauFaom03    mean longitude of the Moon's ascending node
-    **     iauFame03    mean longitude of Mercury
-    **     iauFave03    mean longitude of Venus
-    **     iauFae03     mean longitude of Earth
-    **     iauFama03    mean longitude of Mars
-    **     iauFaju03    mean longitude of Jupiter
-    **     iauFasa03    mean longitude of Saturn
-    **     iauFaur03    mean longitude of Uranus
-    **     iauFapa03    general accumulated precession in longitude
+    **     jauFal03     mean anomaly of the Moon
+    **     jauFaf03     mean argument of the latitude of the Moon
+    **     jauFaom03    mean longitude of the Moon's ascending node
+    **     jauFame03    mean longitude of Mercury
+    **     jauFave03    mean longitude of Venus
+    **     jauFae03     mean longitude of Earth
+    **     jauFama03    mean longitude of Mars
+    **     jauFaju03    mean longitude of Jupiter
+    **     jauFasa03    mean longitude of Saturn
+    **     jauFaur03    mean longitude of Uranus
+    **     jauFapa03    general accumulated precession in longitude
     **
     **  References:
     **
@@ -12709,7 +12709,7 @@ public static class SphericalPosition {
     /* Fundamental (Delaunay) arguments */
 
     /* Mean anomaly of the Moon (IERS 2003). */
-       el = iauFal03(t);
+       el = jauFal03(t);
 
     /* Mean anomaly of the Sun (MHB2000). */
        elp = fmod(1287104.79305  +
@@ -12720,7 +12720,7 @@ public static class SphericalPosition {
 
     /* Mean longitude of the Moon minus that of the ascending node */
     /* (IERS 2003. */
-       f = iauFaf03(t);
+       f = jauFaf03(t);
 
     /* Mean elongation of the Moon from the Sun (MHB2000). */
        d = fmod(1072260.70369  +
@@ -12730,7 +12730,7 @@ public static class SphericalPosition {
               t * (-0.00003169)))), TURNAS) * DAS2R;
 
     /* Mean longitude of the ascending node of the Moon (IERS 2003). */
-       om = iauFaom03(t);
+       om = jauFaom03(t);
 
     /* Initialize the nutation values. */
        dp = 0.0;
@@ -12782,16 +12782,16 @@ public static class SphericalPosition {
        aom = fmod(2.18243920 - 33.757045 * t, D2PI);
 
     /* General accumulated precession in longitude (IERS 2003). */
-       apa = iauFapa03(t);
+       apa = jauFapa03(t);
 
     /* Planetary longitudes, Mercury through Uranus (IERS 2003). */
-       alme = iauFame03(t);
-       alve = iauFave03(t);
-       alea = iauFae03(t);
-       alma = iauFama03(t);
-       alju = iauFaju03(t);
-       alsa = iauFasa03(t);
-       alur = iauFaur03(t);
+       alme = jauFame03(t);
+       alve = jauFave03(t);
+       alea = jauFae03(t);
+       alma = jauFama03(t);
+       alju = jauFaju03(t);
+       alsa = jauFasa03(t);
+       alur = jauFaur03(t);
 
     /* Neptune longitude (MHB2000). */
        alne = fmod(5.321159000 + 3.8127774000 * t, D2PI);
@@ -12840,7 +12840,7 @@ public static class SphericalPosition {
        }
     
 
-    public static NutationTerms iauNut00b(double date1, double date2)
+    public static NutationTerms jauNut00b(double date1, double date2)
     /**
     **  - - - - - - - - - -
     **   i a u N u t 0 0 b
@@ -12908,7 +12908,7 @@ public static class SphericalPosition {
     **     The function delivers a pole accurate to 1 mas from 1900 to 2100
     **     (usually better than 1 mas, very occasionally just outside
     **     1 mas).  The full IAU 2000A model, which is implemented in the
-    **     function iauNut00a (q.v.), delivers considerably greater accuracy
+    **     function jauNut00a (q.v.), delivers considerably greater accuracy
     **     at current dates;  however, to realize this improved accuracy,
     **     corrections for the essentially unpredictable free-core-nutation
     **     (FCN) must also be included.
@@ -12919,18 +12919,18 @@ public static class SphericalPosition {
     **     adjustments in longitude and obliquity due to the changed
     **     precession rates.  These additional functions, namely frame bias
     **     and precession adjustments, are supported by the SOFA functions
-    **     iauBi00  and iauPr00.
+    **     jauBi00  and jauPr00.
     **
     **  6) The MHB_2000_SHORT algorithm also provides "total" nutations,
     **     comprising the arithmetic sum of the frame bias, precession
     **     adjustments, and nutation (luni-solar + planetary).  These total
     **     nutations can be used in combination with an existing IAU 1976
-    **     precession implementation, such as iauPmat76,  to deliver GCRS-
+    **     precession implementation, such as jauPmat76,  to deliver GCRS-
     **     to-true predictions of mas accuracy at current epochs.  However,
-    **     for symmetry with the iauNut00a  function (q.v. for the reasons),
+    **     for symmetry with the jauNut00a  function (q.v. for the reasons),
     **     the SOFA functions do not generate the "total nutations"
     **     directly.  Should they be required, they could of course easily
-    **     be generated by calling iauBi00, iauPr00 and the present function
+    **     be generated by calling jauBi00, jauPr00 and the present function
     **     and adding the results.
     **
     **  7) The IAU 2000B model includes "planetary bias" terms that are
@@ -13175,7 +13175,7 @@ public static class SphericalPosition {
     }
     
 
-    public static NutationTerms iauNut06a(double date1, double date2)
+    public static NutationTerms jauNut06a(double date1, double date2)
     /**
     **  - - - - - - - - - -
     **   i a u N u t 0 6 a
@@ -13229,7 +13229,7 @@ public static class SphericalPosition {
     **     microarcseconds, apart from the free core nutation.
     **
     **  Called:
-    **     iauNut00a    nutation, IAU 2000A
+    **     jauNut00a    nutation, IAU 2000A
     **
     **  References:
     **
@@ -13269,7 +13269,7 @@ public static class SphericalPosition {
        fj2 = -2.7774e-6 * t;
 
     /* Obtain IAU 2000A nutation. */
-       NutationTerms nt = iauNut00a(date1, date2);
+       NutationTerms nt = jauNut00a(date1, date2);
        
     /* Apply P03 adjustments (Wallace & Capitaine, 2006, Eqs.5). */
        return new NutationTerms( nt.dpsi + nt.dpsi * (0.4697e-6 + fj2),
@@ -13277,7 +13277,7 @@ public static class SphericalPosition {
 
      }
     
-    public static NutationTerms iauNut80(double date1, double date2)
+    public static NutationTerms jauNut80(double date1, double date2)
     /**
     **  - - - - - - - - -
     **   i a u N u t 8 0
@@ -13322,7 +13322,7 @@ public static class SphericalPosition {
     **     date.
     **
     **  Called:
-    **     iauAnpm      normalize angle into range +/- pi
+    **     jauAnpm      normalize angle into range +/- pi
     **
     **  Reference:
     **
@@ -13507,28 +13507,28 @@ public static class SphericalPosition {
     /* --------------------- */
 
     /* Mean longitude of Moon minus mean longitude of Moon's perigee. */
-       el = iauAnpm(
+       el = jauAnpm(
             (485866.733 + (715922.633 + (31.310 + 0.064 * t) * t) * t)
             * DAS2R + fmod(1325.0 * t, 1.0) * D2PI);
 
     /* Mean longitude of Sun minus mean longitude of Sun's perigee. */
-       elp = iauAnpm(
+       elp = jauAnpm(
              (1287099.804 + (1292581.224 + (-0.577 - 0.012 * t) * t) * t)
              * DAS2R + fmod(99.0 * t, 1.0) * D2PI);
 
     /* Mean longitude of Moon minus mean longitude of Moon's node. */
-       f = iauAnpm(
+       f = jauAnpm(
            (335778.877 + (295263.137 + (-13.257 + 0.011 * t) * t) * t)
            * DAS2R + fmod(1342.0 * t, 1.0) * D2PI);
 
     /* Mean elongation of Moon from Sun. */
-       d = iauAnpm(
+       d = jauAnpm(
            (1072261.307 + (1105601.328 + (-6.891 + 0.019 * t) * t) * t)
            * DAS2R + fmod(1236.0 * t, 1.0) * D2PI);
 
     /* Longitude of the mean ascending node of the lunar orbit on the */
     /* ecliptic, measured from the mean equinox of date. */
-       om = iauAnpm(
+       om = jauAnpm(
             (450160.280 + (-482890.539 + (7.455 + 0.008 * t) * t) * t)
             * DAS2R + fmod(-5.0 * t, 1.0) * D2PI);
 
@@ -13564,7 +13564,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauNutm80(double date1, double date2, double rmatn[][])
+    public static void jauNutm80(double date1, double date2, double rmatn[][])
     /**
     **  - - - - - - - - - -
     **   i a u N u t m 8 0
@@ -13610,9 +13610,9 @@ public static class SphericalPosition {
     **     respect to the mean equatorial triad of date.
     **
     **  Called:
-    **     iauNut80     nutation, IAU 1980
-    **     iauObl80     mean obliquity, IAU 1980
-    **     iauNumat     form nutation matrix
+    **     jauNut80     nutation, IAU 1980
+    **     jauObl80     mean obliquity, IAU 1980
+    **     jauNumat     form nutation matrix
     **
     **  This revision:  2008 May 12
     **
@@ -13623,18 +13623,18 @@ public static class SphericalPosition {
     {
  
     /* Nutation components and mean obliquity. */
-       NutationTerms nt = iauNut80(date1, date2);
-       double epsa = iauObl80(date1, date2);
+       NutationTerms nt = jauNut80(date1, date2);
+       double epsa = jauObl80(date1, date2);
 
     /* Build the rotation matrix. */
-       iauNumat(epsa, nt.dpsi, nt.deps, rmatn);
+       jauNumat(epsa, nt.dpsi, nt.deps, rmatn);
 
        return;
 
         }
     
 
-    public static double iauObl06(double date1, double date2)
+    public static double jauObl06(double date1, double date2)
     /**
     **  - - - - - - - - -
     **   i a u O b l 0 6
@@ -13707,7 +13707,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double iauObl80(double date1, double date2)
+    public static double jauObl80(double date1, double date2)
     /**
     **  - - - - - - - - -
     **   i a u O b l 8 0
@@ -13838,7 +13838,7 @@ public static class SphericalPosition {
             this.psi = psi;
         }
     }
-    public static PrecessionAngles iauP06e(double date1, double date2)
+    public static PrecessionAngles jauP06e(double date1, double date2)
     /**
     **  - - - - - - - -
     **   i a u P 0 6 e
@@ -13921,11 +13921,11 @@ public static class SphericalPosition {
     **     IAU 2000A frame bias and nutation.  The quoted polynomials are
     **     used in other SOFA functions:
     **
-    **     . iauXy06  contains the polynomial parts of the X and Y series.
+    **     . jauXy06  contains the polynomial parts of the X and Y series.
     **
-    **     . iauS06  contains the polynomial part of the s+XY/2 series.
+    **     . jauS06  contains the polynomial part of the s+XY/2 series.
     **
-    **     . iauPfw06  implements the series for the Fukushima-Williams
+    **     . jauPfw06  implements the series for the Fukushima-Williams
     **       angles that are with respect to the GCRS pole (i.e. the variants
     **       that include frame bias).
     **
@@ -13937,9 +13937,9 @@ public static class SphericalPosition {
     **  5) The parameterization used by SOFA is the Fukushima-Williams angles
     **     referred directly to the GCRS pole.  These are the final four
     **     arguments returned by the present function, but are more
-    **     efficiently calculated by calling the function iauPfw06.   SOFA
+    **     efficiently calculated by calling the function jauPfw06.   SOFA
     **     also supports the direct computation of the CIP GCRS X,Y by
-    **     series, available by calling iauXy06.
+    **     series, available by calling jauXy06.
     **
     **  6) The agreement between the different parameterizations is at the
     **     1 microarcsecond level in the present era.
@@ -13957,7 +13957,7 @@ public static class SphericalPosition {
     **     Hilton, J. et al., 2006, Celest.Mech.Dyn.Astron. 94, 351
     **
     **  Called:
-    **     iauObl06     mean obliquity, IAU 2006
+    **     jauObl06     mean obliquity, IAU 2006
     **
     **  This revision:  2009 December 17
     **
@@ -14037,7 +14037,7 @@ public static class SphericalPosition {
 
     /* Mean obliquity of the ecliptic. */
 
-       epsa = iauObl06(date1, date2);
+       epsa = jauObl06(date1, date2);
 
     /* Planetary precession. */
 
@@ -14114,7 +14114,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauP2pv(double p[] , double pv[][])
+    public static void jauP2pv(double p[] , double pv[][])
     /**
     **  - - - - - - - -
     **   i a u P 2 p v
@@ -14134,8 +14134,8 @@ public static class SphericalPosition {
     **     pv       double[2][3]    pv-vector
     **
     **  Called:
-    **     iauCp        copy p-vector
-    **     iauZp        zero p-vector
+    **     jauCp        copy p-vector
+    **     jauZp        zero p-vector
     **
     **  This revision:  2008 May 11
     **
@@ -14144,8 +14144,8 @@ public static class SphericalPosition {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
     {
-       iauCp(p, pv[0]);
-       iauZp(pv[1]);
+       jauCp(p, pv[0]);
+       jauZp(pv[1]);
 
        return;
 
@@ -14165,7 +14165,7 @@ public static class SphericalPosition {
         }
     }
     
-    public static PolarCoordinate iauP2s(double p[])
+    public static PolarCoordinate jauP2s(double p[])
     /**
     **  - - - - - - -
     **   i a u P 2 s
@@ -14193,8 +14193,8 @@ public static class SphericalPosition {
     **  2) At either pole, zero theta is returned.
     **
     **  Called:
-    **     iauC2s       p-vector to spherical
-    **     iauPm        modulus of p-vector
+    **     jauC2s       p-vector to spherical
+    **     jauPm        modulus of p-vector
     **
     **  This revision:  2008 May 22
     **
@@ -14203,15 +14203,15 @@ public static class SphericalPosition {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
     {
-       SphericalPosition sc = iauC2s(p);
-       double r = iauPm(p);
+       SphericalPosition sc = jauC2s(p);
+       double r = jauPm(p);
 
        return new PolarCoordinate(sc.alpha, sc.delta, r);
 
         }
     
 
-    public static double iauPap(double a[] , double b[] )
+    public static double jauPap(double a[] , double b[] )
     /**
     **  - - - - - - -
     **   i a u P a p
@@ -14247,11 +14247,11 @@ public static class SphericalPosition {
     **  4) If vector a is at a pole, the result is ill-defined.
     **
     **  Called:
-    **     iauPn        decompose p-vector into modulus and direction
-    **     iauPm        modulus of p-vector
-    **     iauPxp       vector product of two p-vectors
-    **     iauPmp       p-vector minus p-vector
-    **     iauPdp       scalar product of two p-vectors
+    **     jauPn        decompose p-vector into modulus and direction
+    **     jauPm        modulus of p-vector
+    **     jauPxp       vector product of two p-vectors
+    **     jauPmp       p-vector minus p-vector
+    **     jauPdp       scalar product of two p-vectors
     **
     **  This revision:  2008 May 25
     **
@@ -14264,10 +14264,10 @@ public static class SphericalPosition {
 
 
     /* Modulus and direction of the a vector. */
-       NormalizedVector nv = iauPn(a );
+       NormalizedVector nv = jauPn(a );
        am = nv.r; au = nv.u;
     /* Modulus of the b vector. */
-       bm = iauPm(b);
+       bm = jauPm(b);
 
     /* Deal with the case of a null vector. */
        if ((am == 0.0) || (bm == 0.0)) {
@@ -14284,14 +14284,14 @@ public static class SphericalPosition {
           eta[2] =  xa*xa + ya*ya;
 
        /* The "east" axis tangential from a (same length). */
-          iauPxp(eta, au, xi);
+          jauPxp(eta, au, xi);
 
        /* The vector from a to b. */
-          iauPmp(b, a, a2b);
+          jauPmp(b, a, a2b);
 
        /* Resolve into components along the north and east axes. */
-          st = iauPdp(a2b, xi);
-          ct = iauPdp(a2b, eta);
+          st = jauPdp(a2b, xi);
+          ct = jauPdp(a2b, eta);
 
        /* Deal with degenerate cases. */
           if ((st == 0.0) && (ct == 0.0)) ct = 1.0;
@@ -14305,7 +14305,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double iauPas(double al, double ap, double bl, double bp)
+    public static double jauPas(double al, double ap, double bl, double bp)
     /**
     **  - - - - - - -
     **   i a u P a s
@@ -14356,7 +14356,7 @@ public static class SphericalPosition {
         }
     
 
-    public static EulerAngles iauPb06(double date1, double date2)
+    public static EulerAngles jauPb06(double date1, double date2)
     /**
     **  - - - - - - - -
     **   i a u P b 0 6
@@ -14417,11 +14417,11 @@ public static class SphericalPosition {
     **
     **  4) Should zeta_A, z_A, theta_A angles be required that do not
     **     contain frame bias, they are available by calling the SOFA
-    **     function iauP06e.
+    **     function jauP06e.
     **
     **  Called:
-    **     iauPmat06    PB matrix, IAU 2006
-    **     iauRz        rotate around Z-axis
+    **     jauPmat06    PB matrix, IAU 2006
+    **     jauRz        rotate around Z-axis
     **
     **  This revision:  2008 May 26
     **
@@ -14434,13 +14434,13 @@ public static class SphericalPosition {
 
 
     /* Precession matrix via Fukushima-Williams angles. */
-       iauPmat06(date1, date2, r);
+       jauPmat06(date1, date2, r);
 
     /* Solve for z. */
        double bz = atan2(r[1][2], r[0][2]);
 
     /* Remove it from the matrix. */
-       iauRz(bz, r);
+       jauRz(bz, r);
 
     /* Solve for the remaining two angles. */
        double bzeta = atan2 (r[1][0], r[1][1]);
@@ -14454,7 +14454,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double iauPdp(double a[] , double b[] )
+    public static double jauPdp(double a[] , double b[] )
     /**
     **  - - - - - - -
     **   i a u P d p
@@ -14516,7 +14516,7 @@ public static class SphericalPosition {
             this.epsa = epsa;
         }
     }
-    public static FWPrecessionAngles iauPfw06(double date1, double date2 )
+    public static FWPrecessionAngles jauPfw06(double date1, double date2 )
     /**
     **  - - - - - - - - -
     **   i a u P f w 0 6
@@ -14591,7 +14591,7 @@ public static class SphericalPosition {
     **     Hilton, J. et al., 2006, Celest.Mech.Dyn.Astron. 94, 351
     **
     **  Called:
-    **     iauObl06     mean obliquity, IAU 2006
+    **     jauObl06     mean obliquity, IAU 2006
     **
     **  This revision:  2009 December 17
     **
@@ -14628,14 +14628,14 @@ public static class SphericalPosition {
                (    -0.000026452  +
                (    -0.0000000148 )
                * t) * t) * t) * t) * t) * DAS2R;
-       double epsa =  iauObl06(date1, date2);
+       double epsa =  jauObl06(date1, date2);
 
        return new FWPrecessionAngles(gamb, phib, psib, epsa);
 
         }
     
 
-    public static int iauPlan94(double date1, double date2, int np, double pv[][])
+    public static int jauPlan94(double date1, double date2, int np, double pv[][])
     /**
     **  - - - - - - - - - -
     **   i a u P l a n 9 4
@@ -14693,7 +14693,7 @@ public static class SphericalPosition {
     **
     **  3) For np=3 the result is for the Earth-Moon Barycenter.  To obtain
     **     the heliocentric position and velocity of the Earth, use instead
-    **     the SOFA function iauEpv00.
+    **     the SOFA function jauEpv00.
     **
     **  4) On successful return, the array pv contains the following:
     **
@@ -14791,7 +14791,7 @@ public static class SphericalPosition {
     **     which in turn takes precedence over the remote date warning.
     **
     **  Called:
-    **     iauAnp       normalize angle into range 0 to 2pi
+    **     jauAnp       normalize angle into range 0 to 2pi
     **
     **  Reference:  Simon, J.L, Bretagnon, P., Chapront, J.,
     **              Chapront-Touze, M., Francou, G., and Laskar, J.,
@@ -15012,13 +15012,13 @@ public static class SphericalPosition {
           de = e[np][0] +
              ( e[np][1] +
                e[np][2] * t) * t;
-          dp = iauAnpm((3600.0 * pi[np][0] +
+          dp = jauAnpm((3600.0 * pi[np][0] +
                                 (pi[np][1] +
                                  pi[np][2] * t) * t) * DAS2R);
           di = (3600.0 * dinc[np][0] +
                         (dinc[np][1] +
                          dinc[np][2] * t) * t) * DAS2R;
-          dom = iauAnpm((3600.0 * omega[np][0] +
+          dom = jauAnpm((3600.0 * omega[np][0] +
                                  (omega[np][1] +
                                   omega[np][2] * t) * t) * DAS2R);
 
@@ -15104,7 +15104,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double iauPm(double p[] )
+    public static double jauPm(double p[] )
     /**
     **  - - - - - -
     **   i a u P m
@@ -15142,7 +15142,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauPmat00(double date1, double date2, double rbp[][])
+    public static void jauPmat00(double date1, double date2, double rbp[][])
     /**
     **  - - - - - - - - - -
     **   i a u P m a t 0 0
@@ -15189,7 +15189,7 @@ public static class SphericalPosition {
     **     respect to the mean equatorial triad of the given date.
     **
     **  Called:
-    **     iauBp00      frame bias and precession matrices, IAU 2000
+    **     jauBp00      frame bias and precession matrices, IAU 2000
     **
     **  Reference:
     **
@@ -15208,14 +15208,14 @@ public static class SphericalPosition {
 
 
     /* Obtain the required matrix (discarding others). */
-       iauBp00(date1, date2, rb, rp, rbp);
+       jauBp00(date1, date2, rb, rp, rbp);
 
        return;
 
         }
     
 
-    public static void iauPmat06(double date1, double date2, double rbp[][])
+    public static void jauPmat06(double date1, double date2, double rbp[][])
     /**
     **  - - - - - - - - - -
     **   i a u P m a t 0 6
@@ -15262,8 +15262,8 @@ public static class SphericalPosition {
     **     respect to the mean equatorial triad of the given date.
     **
     **  Called:
-    **     iauPfw06     bias-precession F-W angles, IAU 2006
-    **     iauFw2m      F-W angles to r-matrix
+    **     jauPfw06     bias-precession F-W angles, IAU 2006
+    **     jauFw2m      F-W angles to r-matrix
     **
     **  References:
     **
@@ -15280,17 +15280,17 @@ public static class SphericalPosition {
     {
 
     /* Bias-precession Fukushima-Williams angles. */
-       FWPrecessionAngles fw = iauPfw06(date1, date2);
+       FWPrecessionAngles fw = jauPfw06(date1, date2);
 
     /* Form the matrix. */
-       iauFw2m(fw.gamb, fw.phib, fw.psib, fw.epsa, rbp);
+       jauFw2m(fw.gamb, fw.phib, fw.psib, fw.epsa, rbp);
 
        return;
 
         }
     
 
-    public static void iauPmat76(double date1, double date2, double rmatp[][])
+    public static void jauPmat76(double date1, double date2, double rmatp[][])
     /**
     **  - - - - - - - - - -
     **   i a u P m a t 7 6
@@ -15348,11 +15348,11 @@ public static class SphericalPosition {
     **     5600AD and exceed 1000 arcsec outside 6800BC to 8200AD.
     **
     **  Called:
-    **     iauPrec76    accumulated precession angles, IAU 1976
-    **     iauIr        initialize r-matrix to identity
-    **     iauRz        rotate around Z-axis
-    **     iauRy        rotate around Y-axis
-    **     iauCr        copy r-matrix
+    **     jauPrec76    accumulated precession angles, IAU 1976
+    **     jauIr        initialize r-matrix to identity
+    **     jauRz        rotate around Z-axis
+    **     jauRy        rotate around Y-axis
+    **     jauCr        copy r-matrix
     **
     **  References:
     **
@@ -15372,21 +15372,21 @@ public static class SphericalPosition {
 
 
     /* Precession Euler angles, J2000.0 to specified date. */
-       EulerAngles euler = iauPrec76(DJ00, 0.0, date1, date2);
+       EulerAngles euler = jauPrec76(DJ00, 0.0, date1, date2);
 
     /* Form the rotation matrix. */
-       iauIr(  wmat);
-       iauRz( -euler.zeta, wmat);
-       iauRy(  euler.theta, wmat);
-       iauRz( -euler.z, wmat);
-       iauCr( wmat, rmatp);
+       jauIr(  wmat);
+       jauRz( -euler.zeta, wmat);
+       jauRy(  euler.theta, wmat);
+       jauRz( -euler.z, wmat);
+       jauCr( wmat, rmatp);
 
        return;
 
         }
     
 
-    public static void  iauPmp(double a[] , double b[] , double amb[] )
+    public static void  jauPmp(double a[] , double b[] , double amb[] )
     /**
     **  - - - - - - -
     **   i a u P m p
@@ -15439,7 +15439,7 @@ public static class SphericalPosition {
             this.u = u;
         }
     }
-    public static NormalizedVector iauPn(double p[])
+    public static NormalizedVector jauPn(double p[])
     /**
     **  - - - - - -
     **   i a u P n
@@ -15468,9 +15468,9 @@ public static class SphericalPosition {
     **     arguments.
     **
     **  Called:
-    **     iauPm        modulus of p-vector
-    **     iauZp        zero p-vector
-    **     iauSxp       multiply p-vector by scalar
+    **     jauPm        modulus of p-vector
+    **     jauZp        zero p-vector
+    **     jauSxp       multiply p-vector by scalar
     **
     **  This revision:  2008 November 18
     **
@@ -15482,17 +15482,17 @@ public static class SphericalPosition {
        double w;
 
     /* Obtain the modulus and test for zero. */
-       w = iauPm(p);
+       w = jauPm(p);
        NormalizedVector nv = new NormalizedVector(w, new double[3]);
        if (w == 0.0) {
 
        /* Null vector. */
-          iauZp(nv.u);
+          jauZp(nv.u);
 
        } else {
 
        /* Unit vector. */
-          iauSxp(1.0/w, p, nv.u);
+          jauSxp(1.0/w, p, nv.u);
        }
 
 
@@ -15501,7 +15501,7 @@ public static class SphericalPosition {
         }
     
 
-    public static PrecessionNutation  iauPn00(double date1, double date2, double dpsi, double deps)
+    public static PrecessionNutation  jauPn00(double date1, double date2, double dpsi, double deps)
     /**
     **  - - - - - - - -
     **   i a u P n 0 0
@@ -15581,12 +15581,12 @@ public static class SphericalPosition {
     **     arguments.  The arrays are filled in the order given.
     **
     **  Called:
-    **     iauPr00      IAU 2000 precession adjustments
-    **     iauObl80     mean obliquity, IAU 1980
-    **     iauBp00      frame bias and precession matrices, IAU 2000
-    **     iauCr        copy r-matrix
-    **     iauNumat     form nutation matrix
-    **     iauRxr       product of two r-matrices
+    **     jauPr00      IAU 2000 precession adjustments
+    **     jauObl80     mean obliquity, IAU 1980
+    **     jauBp00      frame bias and precession matrices, IAU 2000
+    **     jauCr        copy r-matrix
+    **     jauNumat     form nutation matrix
+    **     jauRxr       product of two r-matrices
     **
     **  Reference:
     **
@@ -15614,21 +15614,21 @@ public static class SphericalPosition {
 
 
     /* IAU 2000 precession-rate adjustments. */
-       NutationDeltaTerms nut = iauPr00(date1, date2);
+       NutationDeltaTerms nut = jauPr00(date1, date2);
 
     /* Mean obliquity, consistent with IAU 2000 precession-nutation. */
-       double epsa = iauObl80(date1, date2) + nut.depspr;
+       double epsa = jauObl80(date1, date2) + nut.depspr;
 
     /* Frame bias and precession matrices and their product. */
-       iauBp00(date1, date2, rb, rp, rbpw);
-       iauCr(rbpw, rbp);
+       jauBp00(date1, date2, rb, rp, rbpw);
+       jauCr(rbpw, rbp);
 
     /* Nutation matrix. */
-       iauNumat(epsa, dpsi, deps, rnw);
-       iauCr(rnw, rn);
+       jauNumat(epsa, dpsi, deps, rnw);
+       jauCr(rnw, rn);
 
     /* Bias-precession-nutation matrix (classical). */
-       iauRxr(rnw, rbpw, rbpn);
+       jauRxr(rnw, rbpw, rbpn);
 
        return new PrecessionNutation(dpsi, deps, epsa, rb, rp, rbp, rn, rbpn);
 
@@ -15662,7 +15662,7 @@ public static class SphericalPosition {
         }
         
     }
-    public static PrecessionNutation iauPn00a(double date1, double date2)
+    public static PrecessionNutation jauPn00a(double date1, double date2)
     /**
     **  - - - - - - - - -
     **   i a u P n 0 0 a
@@ -15713,9 +15713,9 @@ public static class SphericalPosition {
     **  2)  The nutation components (luni-solar + planetary, IAU 2000A) in
     **      longitude and obliquity are in radians and with respect to the
     **      equinox and ecliptic of date.  Free core nutation is omitted;
-    **      for the utmost accuracy, use the iauPn00  function, where the
+    **      for the utmost accuracy, use the jauPn00  function, where the
     **      nutation components are caller-specified.  For faster but
-    **      slightly less accurate results, use the iauPn00b function.
+    **      slightly less accurate results, use the jauPn00b function.
     **
     **  3)  The mean obliquity is consistent with the IAU 2000 precession.
     **
@@ -15745,8 +15745,8 @@ public static class SphericalPosition {
     **      arguments.  The arrays are filled in the order given.
     **
     **  Called:
-    **     iauNut00a    nutation, IAU 2000A
-    **     iauPn00      bias/precession/nutation results, IAU 2000
+    **     jauNut00a    nutation, IAU 2000A
+    **     jauPn00      bias/precession/nutation results, IAU 2000
     **
     **  Reference:
     **
@@ -15766,16 +15766,16 @@ public static class SphericalPosition {
     */
     {
     /* Nutation. */
-       NutationTerms nut = iauNut00a(date1, date2);
+       NutationTerms nut = jauNut00a(date1, date2);
 
     /* Remaining results. */
-       return iauPn00(date1, date2, nut.dpsi, nut.deps);
+       return jauPn00(date1, date2, nut.dpsi, nut.deps);
 
  
         }
     
 
-    public static PrecessionNutation iauPn00b(double date1, double date2)
+    public static PrecessionNutation jauPn00b(double date1, double date2)
     /**
     **  - - - - - - - - -
     **   i a u P n 0 0 b
@@ -15826,8 +15826,8 @@ public static class SphericalPosition {
     **  2)  The nutation components (luni-solar + planetary, IAU 2000B) in
     **      longitude and obliquity are in radians and with respect to the
     **      equinox and ecliptic of date.  For more accurate results, but
-    **      at the cost of increased computation, use the iauPn00a function.
-    **      For the utmost accuracy, use the iauPn00  function, where the
+    **      at the cost of increased computation, use the jauPn00a function.
+    **      For the utmost accuracy, use the jauPn00  function, where the
     **      nutation components are caller-specified.
     **
     **  3)  The mean obliquity is consistent with the IAU 2000 precession.
@@ -15858,8 +15858,8 @@ public static class SphericalPosition {
     **      arguments.  The arrays are filled in the stated order.
     **
     **  Called:
-    **     iauNut00b    nutation, IAU 2000B
-    **     iauPn00      bias/precession/nutation results, IAU 2000
+    **     jauNut00b    nutation, IAU 2000B
+    **     jauPn00      bias/precession/nutation results, IAU 2000
     **
     **  Reference:
     **
@@ -15879,16 +15879,16 @@ public static class SphericalPosition {
     */
     {
     /* Nutation. */
-       NutationTerms nut = iauNut00b(date1, date2);
+       NutationTerms nut = jauNut00b(date1, date2);
 
     /* Remaining results. */
-       return iauPn00(date1, date2, nut.dpsi, nut.deps);
+       return jauPn00(date1, date2, nut.dpsi, nut.deps);
 
 
         }
     
 
-    public static PrecessionNutation iauPn06(double date1, double date2, double dpsi, double deps)
+    public static PrecessionNutation jauPn06(double date1, double date2, double dpsi, double deps)
     /**
     **  - - - - - - - -
     **   i a u P n 0 6
@@ -15971,11 +15971,11 @@ public static class SphericalPosition {
     **      arguments.  The arrays are filled in the stated order.
     **
     **  Called:
-    **     iauPfw06     bias-precession F-W angles, IAU 2006
-    **     iauFw2m      F-W angles to r-matrix
-    **     iauCr        copy r-matrix
-    **     iauTr        transpose r-matrix
-    **     iauRxr       product of two r-matrices
+    **     jauPfw06     bias-precession F-W angles, IAU 2006
+    **     jauFw2m      F-W angles to r-matrix
+    **     jauCr        copy r-matrix
+    **     jauTr        transpose r-matrix
+    **     jauRxr       product of two r-matrices
     **
     **  References:
     **
@@ -15996,30 +15996,30 @@ public static class SphericalPosition {
 
 
     /* Bias-precession Fukushima-Williams angles of J2000.0 = frame bias. */
-       FWPrecessionAngles fw = iauPfw06(DJM0, DJM00);
+       FWPrecessionAngles fw = jauPfw06(DJM0, DJM00);
 
     /* B matrix. */
-       iauFw2m(fw.gamb, fw.phib, fw.psib, fw.epsa, r1);
-       iauCr(r1, rb);
+       jauFw2m(fw.gamb, fw.phib, fw.psib, fw.epsa, r1);
+       jauCr(r1, rb);
 
     /* Bias-precession Fukushima-Williams angles of date. */
-       fw = iauPfw06(date1, date2);
+       fw = jauPfw06(date1, date2);
 
     /* Bias-precession matrix. */
-       iauFw2m(fw.gamb, fw.phib, fw.psib, fw.epsa, r2);
-       iauCr(r2, rbp);
+       jauFw2m(fw.gamb, fw.phib, fw.psib, fw.epsa, r2);
+       jauCr(r2, rbp);
 
     /* Solve for precession matrix. */
-       iauTr(r1, rt);
-       iauRxr(r2, rt, rp);
+       jauTr(r1, rt);
+       jauRxr(r2, rt, rp);
 
     /* Equinox-based bias-precession-nutation matrix. */
-       iauFw2m(fw.gamb, fw.phib, fw.psib + dpsi, fw.epsa + deps, r1);
-       iauCr(r1, rbpn);
+       jauFw2m(fw.gamb, fw.phib, fw.psib + dpsi, fw.epsa + deps, r1);
+       jauCr(r1, rbpn);
 
     /* Solve for nutation matrix. */
-       iauTr(r2, rt);
-       iauRxr(r1, rt, rn);
+       jauTr(r2, rt);
+       jauRxr(r1, rt, rn);
 
     /* Obliquity, mean of date. */
        double epsa = fw.epsa;
@@ -16029,7 +16029,7 @@ public static class SphericalPosition {
         }
     
 
-    public static PrecessionNutation iauPn06a(double date1, double date2)
+    public static PrecessionNutation jauPn06a(double date1, double date2)
     /**
     **  - - - - - - - - -
     **   i a u P n 0 6 a
@@ -16080,7 +16080,7 @@ public static class SphericalPosition {
     **  2)  The nutation components (luni-solar + planetary, IAU 2000A) in
     **      longitude and obliquity are in radians and with respect to the
     **      equinox and ecliptic of date.  Free core nutation is omitted;
-    **      for the utmost accuracy, use the iauPn06 function, where the
+    **      for the utmost accuracy, use the jauPn06 function, where the
     **      nutation components are caller-specified.
     **
     **  3)  The mean obliquity is consistent with the IAU 2006 precession.
@@ -16108,8 +16108,8 @@ public static class SphericalPosition {
     **      arguments.  The arrays are filled in the stated order.
     **
     **  Called:
-    **     iauNut06a    nutation, IAU 2006/2000A
-    **     iauPn06      bias/precession/nutation results, IAU 2006
+    **     jauNut06a    nutation, IAU 2006/2000A
+    **     jauPn06      bias/precession/nutation results, IAU 2006
     **
     **  Reference:
     **
@@ -16123,15 +16123,15 @@ public static class SphericalPosition {
     */
     {
     /* Nutation. */
-       NutationTerms nut = iauNut06a(date1, date2);
+       NutationTerms nut = jauNut06a(date1, date2);
 
     /* Remaining results. */
-       return iauPn06(date1, date2, nut.dpsi, nut.deps);
+       return jauPn06(date1, date2, nut.dpsi, nut.deps);
 
         }
     
 
-    public static void iauPnm00a(double date1, double date2, double rbpn[][])
+    public static void jauPnm00a(double date1, double date2, double rbpn[][])
     /**
     **  - - - - - - - - - -
     **   i a u P n m 0 0 a
@@ -16178,10 +16178,10 @@ public static class SphericalPosition {
     **     the Geocentric Celestial Reference System (IAU, 2000).
     **
     **  3) A faster, but slightly less accurate result (about 1 mas), can be
-    **     obtained by using instead the iauPnm00b function.
+    **     obtained by using instead the jauPnm00b function.
     **
     **  Called:
-    **     iauPn00a     bias/precession/nutation, IAU 2000A
+    **     jauPn00a     bias/precession/nutation, IAU 2000A
     **
     **  Reference:
     **
@@ -16198,7 +16198,7 @@ public static class SphericalPosition {
     {
 
     /* Obtain the required matrix (discarding other results). */
-        PrecessionNutation pn = iauPn00a(date1, date2);
+        PrecessionNutation pn = jauPn00a(date1, date2);
         /* copy the array contents to the result IMPL better to simply use as return value */
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j <3; j++) {
@@ -16211,7 +16211,7 @@ public static class SphericalPosition {
     }
 
 
-    public static void iauPnm00b(double date1, double date2, double rbpn[][])
+    public static void jauPnm00b(double date1, double date2, double rbpn[][])
     /**
     **  - - - - - - - - - -
     **   i a u P n m 0 0 b
@@ -16258,10 +16258,10 @@ public static class SphericalPosition {
     **     the Geocentric Celestial Reference System (IAU, 2000).
     **
     **  3) The present function is faster, but slightly less accurate (about
-    **     1 mas), than the iauPnm00a function.
+    **     1 mas), than the jauPnm00a function.
     **
     **  Called:
-    **     iauPn00b     bias/precession/nutation, IAU 2000B
+    **     jauPn00b     bias/precession/nutation, IAU 2000B
     **
     **  Reference:
     **
@@ -16278,7 +16278,7 @@ public static class SphericalPosition {
     {
 
     /* Obtain the required matrix (discarding other results). */
-       PrecessionNutation pn = iauPn00b(date1, date2);
+       PrecessionNutation pn = jauPn00b(date1, date2);
        /* copy the array contents to the result IMPL better to simply use as return value */
        for (int i = 0; i < 3; i++) {
            for (int j = 0; j <3; j++) {
@@ -16292,7 +16292,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauPnm06a(double date1, double date2, double rnpb[][])
+    public static void jauPnm06a(double date1, double date2, double rnpb[][])
     /**
     **  - - - - - - - - - -
     **   i a u P n m 0 6 a
@@ -16339,9 +16339,9 @@ public static class SphericalPosition {
     **     the Geocentric Celestial Reference System (IAU, 2000).
     **
     **  Called:
-    **     iauPfw06     bias-precession F-W angles, IAU 2006
-    **     iauNut06a    nutation, IAU 2006/2000A
-    **     iauFw2m      F-W angles to r-matrix
+    **     jauPfw06     bias-precession F-W angles, IAU 2006
+    **     jauNut06a    nutation, IAU 2006/2000A
+    **     jauFw2m      F-W angles to r-matrix
     **
     **  Reference:
     **
@@ -16356,20 +16356,20 @@ public static class SphericalPosition {
     {
 
     /* Fukushima-Williams angles for frame bias and precession. */
-       FWPrecessionAngles fw = iauPfw06(date1, date2);
+       FWPrecessionAngles fw = jauPfw06(date1, date2);
 
     /* Nutation components. */
-       NutationTerms nut = iauNut06a(date1, date2);
+       NutationTerms nut = jauNut06a(date1, date2);
 
     /* Equinox based nutation x precession x bias matrix. */
-       iauFw2m(fw.gamb, fw.phib, fw.psib + nut.dpsi, fw.epsa + nut.deps, rnpb);
+       jauFw2m(fw.gamb, fw.phib, fw.psib + nut.dpsi, fw.epsa + nut.deps, rnpb);
 
        return;
 
         }
     
 
-    public static void iauPnm80(double date1, double date2, double rmatpn[][])
+    public static void jauPnm80(double date1, double date2, double rmatpn[][])
     /**
     **  - - - - - - - - -
     **   i a u P n m 8 0
@@ -16416,9 +16416,9 @@ public static class SphericalPosition {
     **     respect to the mean equatorial triad of epoch J2000.0.
     **
     **  Called:
-    **     iauPmat76    precession matrix, IAU 1976
-    **     iauNutm80    nutation matrix, IAU 1980
-    **     iauRxr       product of two r-matrices
+    **     jauPmat76    precession matrix, IAU 1976
+    **     jauNutm80    nutation matrix, IAU 1980
+    **     jauRxr       product of two r-matrices
     **
     **  Reference:
     **
@@ -16437,20 +16437,20 @@ public static class SphericalPosition {
 
 
     /* Precession matrix, J2000.0 to date. */
-       iauPmat76(date1, date2, rmatp);
+       jauPmat76(date1, date2, rmatp);
 
     /* Nutation matrix. */
-       iauNutm80(date1, date2, rmatn);
+       jauNutm80(date1, date2, rmatn);
 
     /* Combine the matrices:  PN = N x P. */
-       iauRxr(rmatn, rmatp, rmatpn);
+       jauRxr(rmatn, rmatp, rmatpn);
 
        return;
 
         }
     
 
-    public static void iauPom00(double xp, double yp, double sp, double rpom[][])
+    public static void jauPom00(double xp, double yp, double sp, double rpom[][])
     /**
     **  - - - - - - - - - -
     **   i a u P o m 0 0
@@ -16483,7 +16483,7 @@ public static class SphericalPosition {
     **     integration, and so is in essence unpredictable.  However, it is
     **     dominated by a secular drift of about 47 microarcseconds per
     **     century, and so can be taken into account by using s' = -47*t,
-    **     where t is centuries since J2000.0.  The function iauSp00
+    **     where t is centuries since J2000.0.  The function jauSp00
     **     implements this approximation.
     **
     **  3) The matrix operates in the sense V(TRS) = rpom * V(CIP), meaning
@@ -16491,10 +16491,10 @@ public static class SphericalPosition {
     **     direction to a celestial source.
     **
     **  Called:
-    **     iauIr        initialize r-matrix to identity
-    **     iauRz        rotate around Z-axis
-    **     iauRy        rotate around Y-axis
-    **     iauRx        rotate around X-axis
+    **     jauIr        initialize r-matrix to identity
+    **     jauRz        rotate around Z-axis
+    **     jauRy        rotate around Y-axis
+    **     jauRx        rotate around X-axis
     **
     **  Reference:
     **
@@ -16510,17 +16510,17 @@ public static class SphericalPosition {
     {
 
     /* Construct the matrix. */
-       iauIr(rpom);
-       iauRz(sp, rpom);
-       iauRy(-xp, rpom);
-       iauRx(-yp, rpom);
+       jauIr(rpom);
+       jauRz(sp, rpom);
+       jauRy(-xp, rpom);
+       jauRx(-yp, rpom);
 
        return;
 
         }
     
 
-    public static void iauPpp(double a[] , double b[] , double apb[] )
+    public static void jauPpp(double a[] , double b[] , double apb[] )
     /**
     **  - - - - - - -
     **   i a u P p p
@@ -16560,7 +16560,7 @@ public static class SphericalPosition {
         }
     
 
-    static void iauPpsp(double a[] , double s, double b[] , double apsb[] )
+    static void jauPpsp(double a[] , double s, double b[] , double apsb[] )
     /**
     **  - - - - - - - -
     **   i a u P p s p
@@ -16585,8 +16585,8 @@ public static class SphericalPosition {
     **     It is permissible for any of a, b and apsb to be the same array.
     **
     **  Called:
-    **     iauSxp       multiply p-vector by scalar
-    **     iauPpp       p-vector plus p-vector
+    **     jauSxp       multiply p-vector by scalar
+    **     jauPpp       p-vector plus p-vector
     **
     **  This revision:  2008 November 18
     **
@@ -16599,10 +16599,10 @@ public static class SphericalPosition {
 
 
     /* s*b. */
-       iauSxp(s, b, sb);
+       jauSxp(s, b, sb);
 
     /* a + s*b. */
-       iauPpp(a, sb, apsb);
+       jauPpp(a, sb, apsb);
 
        return;
 
@@ -16619,7 +16619,7 @@ public static class SphericalPosition {
         }
     }
 
-    static NutationDeltaTerms iauPr00(double date1, double date2)
+    static NutationDeltaTerms jauPr00(double date1, double date2)
     /**
     **  - - - - - - - -
     **   i a u P r 0 0
@@ -16728,7 +16728,7 @@ public static class SphericalPosition {
             this.theta = theta;
         }
     }
-    static EulerAngles iauPrec76(double ep01, double ep02, double ep11, double ep12)
+    static EulerAngles jauPrec76(double ep01, double ep02, double ep11, double ep12)
                    
     /**
     **  - - - - - - - - - -
@@ -16831,7 +16831,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauPv2p(double pv[][], double p[] )
+    public static void jauPv2p(double pv[][], double p[] )
     /**
     **  - - - - - - - -
     **   i a u P v 2 p
@@ -16851,7 +16851,7 @@ public static class SphericalPosition {
     **     p       double[3]        p-vector
     **
     **  Called:
-    **     iauCp        copy p-vector
+    **     jauCp        copy p-vector
     **
     **  This revision:  2008 May 11
     **
@@ -16860,7 +16860,7 @@ public static class SphericalPosition {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
     {
-       iauCp(pv[0], p);
+       jauCp(pv[0], p);
 
        return;
 
@@ -16876,7 +16876,7 @@ public static class SphericalPosition {
             vel = new PolarCoordinate(td,pd,rd);
         }
     }
-    public static SphericalPositionVelocity iauPv2s(double pv[][])
+    public static SphericalPositionVelocity jauPv2s(double pv[][])
     /**
     **  - - - - - - - -
     **   i a u P v 2 s
@@ -16973,7 +16973,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauPvdpv(double a[][], double b[][], double adb[] )
+    public static void jauPvdpv(double a[][], double b[][], double adb[] )
     /**
     **  - - - - - - - - -
     **   i a u P v d p v
@@ -17001,7 +17001,7 @@ public static class SphericalPosition {
     **     dot-product of the two p-vectors and its derivative.
     **
     **  Called:
-    **     iauPdp       scalar product of two p-vectors
+    **     jauPdp       scalar product of two p-vectors
     **
     **  This revision:  2008 May 22
     **
@@ -17014,13 +17014,13 @@ public static class SphericalPosition {
 
 
     /* a . b = constant part of result. */
-       adb[0] = iauPdp(a[0], b[0]);
+       adb[0] = jauPdp(a[0], b[0]);
 
     /* a . bdot */
-       adbd = iauPdp(a[0], b[1]);
+       adbd = jauPdp(a[0], b[1]);
 
     /* adot . b */
-       addb = iauPdp(a[1], b[0]);
+       addb = jauPdp(a[1], b[0]);
 
     /* Velocity part of result. */
        adb[1] = adbd + addb;
@@ -17038,7 +17038,7 @@ public static class SphericalPosition {
             this.s = s;
         }
     }
-    public static PVModulus iauPvm(double pv[][])
+    public static PVModulus jauPvm(double pv[][])
     /**
     **  - - - - - - -
     **   i a u P v m
@@ -17059,7 +17059,7 @@ public static class SphericalPosition {
     **     s      double         modulus of velocity component
     **
     **  Called:
-    **     iauPm        modulus of p-vector
+    **     jauPm        modulus of p-vector
     **
     **  This revision:  2008 May 22
     **
@@ -17069,17 +17069,17 @@ public static class SphericalPosition {
     */
     {
     /* Distance. */
-       double r = iauPm(pv[0]);
+       double r = jauPm(pv[0]);
 
     /* Speed. */
-       double s = iauPm(pv[1]);
+       double s = jauPm(pv[1]);
 
        return new PVModulus(r, s);
 
         }
     
 
-    public static void iauPvmpv(double a[][], double b[][], double amb[][])
+    public static void jauPvmpv(double a[][], double b[][], double amb[][])
     /**
     **  - - - - - - - - -
     **   i a u P v m p v
@@ -17104,7 +17104,7 @@ public static class SphericalPosition {
     **     arguments.
     **
     **  Called:
-    **     iauPmp       p-vector minus p-vector
+    **     jauPmp       p-vector minus p-vector
     **
     **  This revision:  2008 November 18
     **
@@ -17113,15 +17113,15 @@ public static class SphericalPosition {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
     {
-       iauPmp(a[0], b[0], amb[0]);
-       iauPmp(a[1], b[1], amb[1]);
+       jauPmp(a[0], b[0], amb[0]);
+       jauPmp(a[1], b[1], amb[1]);
 
        return;
 
         }
     
 
-    public static void iauPvppv(double a[][], double b[][], double apb[][])
+    public static void jauPvppv(double a[][], double b[][], double apb[][])
     /**
     **  - - - - - - - - -
     **   i a u P v p p v
@@ -17146,7 +17146,7 @@ public static class SphericalPosition {
     **     arguments.
     **
     **  Called:
-    **     iauPpp       p-vector plus p-vector
+    **     jauPpp       p-vector plus p-vector
     **
     **  This revision:  2008 November 18
     **
@@ -17155,8 +17155,8 @@ public static class SphericalPosition {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
     {
-       iauPpp(a[0], b[0], apb[0]);
-       iauPpp(a[1], b[1], apb[1]);
+       jauPpp(a[0], b[0], apb[0]);
+       jauPpp(a[1], b[1], apb[1]);
 
        return;
 
@@ -17181,7 +17181,7 @@ public static class SphericalPosition {
             this.rv = rv;
         }
     }
-    public static CatalogCoords iauPvstar(double pv[][]) throws SOFAInternalError
+    public static CatalogCoords jauPvstar(double pv[][]) throws SOFAInternalError
     /**
     **  - - - - - - - - - -
     **   i a u P v s t a r
@@ -17226,7 +17226,7 @@ public static class SphericalPosition {
     **     limited by the intrinsic accuracy of the proper-motion and
     **     radial-velocity data;  moreover, the supplied pv-vector is likely
     **     to be merely an intermediate result (for example generated by the
-    **     function iauStarpv), so that a change of time unit will cancel
+    **     function jauStarpv), so that a change of time unit will cancel
     **     out overall.
     **
     **     In accordance with normal star-catalog conventions, the object's
@@ -17262,17 +17262,17 @@ public static class SphericalPosition {
     **     assumed.  If the speed is greater than or equal to the speed of
     **     light, the function aborts with an error status.
     **
-    **  6) The inverse transformation is performed by the function iauStarpv.
+    **  6) The inverse transformation is performed by the function jauStarpv.
     **
     **  Called:
-    **     iauPn        decompose p-vector into modulus and direction
-    **     iauPdp       scalar product of two p-vectors
-    **     iauSxp       multiply p-vector by scalar
-    **     iauPmp       p-vector minus p-vector
-    **     iauPm        modulus of p-vector
-    **     iauPpp       p-vector plus p-vector
-    **     iauPv2s      pv-vector to spherical
-    **     iauAnp       normalize angle into range 0 to 2pi
+    **     jauPn        decompose p-vector into modulus and direction
+    **     jauPdp       scalar product of two p-vectors
+    **     jauSxp       multiply p-vector by scalar
+    **     jauPmp       p-vector minus p-vector
+    **     jauPm        modulus of p-vector
+    **     jauPpp       p-vector plus p-vector
+    **     jauPv2s      pv-vector to spherical
+    **     jauAnp       normalize angle into range 0 to 2pi
     **
     **  Reference:
     **
@@ -17290,15 +17290,15 @@ public static class SphericalPosition {
 
 
     /* Isolate the radial component of the velocity (AU/day, inertial). */
-       NormalizedVector nv = iauPn(pv[0]);
+       NormalizedVector nv = jauPn(pv[0]);
        r = nv.r;
        x = nv.u;
-       vr = iauPdp(x, pv[1]);
-       iauSxp(vr, x, ur);
+       vr = jauPdp(x, pv[1]);
+       jauSxp(vr, x, ur);
 
     /* Isolate the transverse component of the velocity (AU/day, inertial). */
-       iauPmp(pv[1], ur, ut);
-       vt = iauPm(ut);
+       jauPmp(pv[1], ur, ut);
+       vt = jauPm(ut);
 
     /* Special-relativity dimensionless parameters. */
        bett = vt / DC;
@@ -17312,21 +17312,21 @@ public static class SphericalPosition {
 
     /* Apply relativistic correction factor to radial velocity component. */
        w = (betr != 0) ? (betr - del) / (betr * d) : 1.0;
-       iauSxp(w, ur, usr);
+       jauSxp(w, ur, usr);
 
     /* Apply relativistic correction factor to tangential velocity */
     /* component.                                                  */
-       iauSxp(1.0/d, ut, ust);
+       jauSxp(1.0/d, ut, ust);
 
     /* Combine the two to obtain the observed velocity vector (AU/day). */
-       iauPpp(usr, ust, pv[1]);
+       jauPpp(usr, ust, pv[1]);
 
     /* Cartesian to spherical. */
-       SphericalPositionVelocity pvs = iauPv2s(pv);
+       SphericalPositionVelocity pvs = jauPv2s(pv);
        if (pvs.pos.r == 0.0) throw new SOFAInternalError("null position vector", -2);
 
     /* Return RA in range 0 to 2pi. */
-       double ra = iauAnp(pvs.pos.theta);
+       double ra = jauAnp(pvs.pos.theta);
 
     /* Return proper motions in radians per year. */
        double pmr = pvs.vel.theta * DJY;
@@ -17344,7 +17344,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauPvu(double dt, double pv[][], double upv[][])
+    public static void jauPvu(double dt, double pv[][], double upv[][])
     /**
     **  - - - - - - -
     **   i a u P v u
@@ -17374,8 +17374,8 @@ public static class SphericalPosition {
     **  3) It is permissible for pv and upv to be the same array.
     **
     **  Called:
-    **     iauPpsp      p-vector plus scaled p-vector
-    **     iauCp        copy p-vector
+    **     jauPpsp      p-vector plus scaled p-vector
+    **     jauCp        copy p-vector
     **
     **  This revision:  2008 November 17
     **
@@ -17384,15 +17384,15 @@ public static class SphericalPosition {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
     {
-       iauPpsp(pv[0], dt, pv[1], upv[0]);
-       iauCp(pv[1], upv[1]);
+       jauPpsp(pv[0], dt, pv[1], upv[0]);
+       jauCp(pv[1], upv[1]);
 
        return;
 
         }
     
 
-    public static void iauPvup(double dt, double pv[][], double p[] )
+    public static void jauPvup(double dt, double pv[][], double p[] )
     /**
     **  - - - - - - - -
     **   i a u P v u p
@@ -17435,7 +17435,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauPvxpv(double a[][], double b[][], double axb[][])
+    public static void jauPvxpv(double a[][], double b[][], double axb[][])
     /**
     **  - - - - - - - - -
     **   i a u P v x p v
@@ -17466,9 +17466,9 @@ public static class SphericalPosition {
     **     arguments.
     **
     **  Called:
-    **     iauCpv       copy pv-vector
-    **     iauPxp       vector product of two p-vectors
-    **     iauPpp       p-vector plus p-vector
+    **     jauCpv       copy pv-vector
+    **     jauPxp       vector product of two p-vectors
+    **     jauPpp       p-vector plus p-vector
     **
     **  This revision:  2008 November 18
     **
@@ -17481,23 +17481,23 @@ public static class SphericalPosition {
 
 
     /* Make copies of the inputs. */
-       iauCpv(a, wa);
-       iauCpv(b, wb);
+       jauCpv(a, wa);
+       jauCpv(b, wb);
 
     /* a x b = position part of result. */
-       iauPxp(wa[0], wb[0], axb[0]);
+       jauPxp(wa[0], wb[0], axb[0]);
 
     /* a x bdot + adot x b = velocity part of result. */
-       iauPxp(wa[0], wb[1], axbd);
-       iauPxp(wa[1], wb[0], adxb);
-       iauPpp(axbd, adxb, axb[1]);
+       jauPxp(wa[0], wb[1], axbd);
+       jauPxp(wa[1], wb[0], adxb);
+       jauPpp(axbd, adxb, axb[1]);
 
        return;
 
         }
     
 
-    public static void iauPxp(double a[] , double b[] , double axb[] )
+    public static void jauPxp(double a[] , double b[] , double axb[] )
     /**
     **  - - - - - - -
     **   i a u P x p
@@ -17546,7 +17546,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauRm2v(double r[][], double w[] )
+    public static void jauRm2v(double r[][], double w[] )
     /**
     **  - - - - - - - -
     **   i a u R m 2 v
@@ -17571,7 +17571,7 @@ public static class SphericalPosition {
     **     some arbitrary axis called the Euler axis.  The "rotation vector"
     **     returned by this function has the same direction as the Euler axis,
     **     and its magnitude is the angle in radians.  (The magnitude and
-    **     direction can be separated by means of the function iauPn.)
+    **     direction can be separated by means of the function jauPn.)
     **
     **  2) If r is null, so is the result.  If r is not a rotation matrix
     **     the result is undefined;  r must be proper (i.e. have a positive
@@ -17612,7 +17612,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauRv2m(double w[] , double r[][])
+    public static void jauRv2m(double w[] , double r[][])
     /**
     **  - - - - - - - -
     **   i a u R v 2 m
@@ -17685,7 +17685,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauRx(double phi, double r[][])
+    public static void jauRx(double phi, double r[][])
     /**
     **  - - - - - -
     **   i a u R x
@@ -17710,9 +17710,9 @@ public static class SphericalPosition {
     **  anticlockwise as seen looking towards the origin from positive x.
     **
     **  Called:
-    **     iauIr        initialize r-matrix to identity
-    **     iauRxr       product of two r-matrices
-    **     iauCr        copy r-matrix
+    **     jauIr        initialize r-matrix to identity
+    **     jauRxr       product of two r-matrices
+    **     jauCr        copy r-matrix
     **
     **  This revision:  2008 May 22
     **
@@ -17727,24 +17727,24 @@ public static class SphericalPosition {
     /* Matrix representing new rotation. */
        s = sin(phi);
        c = cos(phi);
-       iauIr(a);
+       jauIr(a);
        a[1][1] =  c;
        a[2][1] = -s;
        a[1][2] =  s;
        a[2][2] =  c;
 
     /* Rotate. */
-       iauRxr(a, r, w);
+       jauRxr(a, r, w);
 
     /* Return result. */
-       iauCr(w, r);
+       jauCr(w, r);
 
        return;
 
         }
     
 
-    public static void iauRxp(double r[][], double p[] , double rp[] )
+    public static void jauRxp(double r[][], double p[] , double rp[] )
     /**
     **  - - - - - - -
     **   i a u R x p
@@ -17768,7 +17768,7 @@ public static class SphericalPosition {
     **     It is permissible for p and rp to be the same array.
     **
     **  Called:
-    **     iauCp        copy p-vector
+    **     jauCp        copy p-vector
     **
     **  This revision:  2008 October 28
     **
@@ -17791,14 +17791,14 @@ public static class SphericalPosition {
        }
 
     /* Return the result. */
-       iauCp(wrp, rp);
+       jauCp(wrp, rp);
 
        return;
 
         }
     
 
-    public static void iauRxpv(double r[][], double pv[][], double rpv[][])
+    public static void jauRxpv(double r[][], double pv[][], double rpv[][])
     /**
     **  - - - - - - - -
     **   i a u R x p v
@@ -17822,7 +17822,7 @@ public static class SphericalPosition {
     **     It is permissible for pv and rpv to be the same array.
     **
     **  Called:
-    **     iauRxp       product of r-matrix and p-vector
+    **     jauRxp       product of r-matrix and p-vector
     **
     **  This revision:  2008 October 28
     **
@@ -17831,15 +17831,15 @@ public static class SphericalPosition {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
     {
-       iauRxp(r, pv[0], rpv[0]);
-       iauRxp(r, pv[1], rpv[1]);
+       jauRxp(r, pv[0], rpv[0]);
+       jauRxp(r, pv[1], rpv[1]);
 
        return;
 
         }
     
 
-    public static void iauRxr(double a[][], double b[][], double atb[][])
+    public static void jauRxr(double a[][], double b[][], double atb[][])
     /**
     **  - - - - - - -
     **   i a u R x r
@@ -17864,7 +17864,7 @@ public static class SphericalPosition {
     **     arguments.
     **
     **  Called:
-    **     iauCr        copy r-matrix
+    **     jauCr        copy r-matrix
     **
     **  This revision:  2008 November 18
     **
@@ -17886,14 +17886,14 @@ public static class SphericalPosition {
              wm[i][j] = w;
           }
        }
-       iauCr(wm, atb);
+       jauCr(wm, atb);
 
        return;
 
         }
     
 
-    public static void iauRy(double theta, double r[][])
+    public static void jauRy(double theta, double r[][])
     /**
     **  - - - - - -
     **   i a u R y
@@ -17918,9 +17918,9 @@ public static class SphericalPosition {
     **  anticlockwise as seen looking towards the origin from positive y.
     **
     **  Called:
-    **     iauIr        initialize r-matrix to identity
-    **     iauRxr       product of two r-matrices
-    **     iauCr        copy r-matrix
+    **     jauIr        initialize r-matrix to identity
+    **     jauRxr       product of two r-matrices
+    **     jauCr        copy r-matrix
     **
     **  This revision:  2008 May 22
     **
@@ -17935,24 +17935,24 @@ public static class SphericalPosition {
     /* Matrix representing new rotation. */
        s = sin(theta);
        c = cos(theta);
-       iauIr(a);
+       jauIr(a);
        a[0][0] =  c;
        a[2][0] =  s;
        a[0][2] = -s;
        a[2][2] =  c;
 
     /* Rotate. */
-       iauRxr(a, r, w);
+       jauRxr(a, r, w);
 
     /* Return result. */
-       iauCr(w, r);
+       jauCr(w, r);
 
        return;
 
         }
     
 
-    public static void iauRz(double psi, double r[][])
+    public static void jauRz(double psi, double r[][])
     /**
     **  - - - - - -
     **   i a u R z
@@ -17977,9 +17977,9 @@ public static class SphericalPosition {
     **  anticlockwise as seen looking towards the origin from positive z.
     **
     **  Called:
-    **     iauIr        initialize r-matrix to identity
-    **     iauRxr       product of two r-matrices
-    **     iauCr        copy r-matrix
+    **     jauIr        initialize r-matrix to identity
+    **     jauRxr       product of two r-matrices
+    **     jauCr        copy r-matrix
     **
     **  This revision:  2008 May 22
     **
@@ -17994,24 +17994,24 @@ public static class SphericalPosition {
     /* Matrix representing new rotation. */
        s = sin(psi);
        c = cos(psi);
-       iauIr(a);
+       jauIr(a);
        a[0][0] =  c;
        a[1][0] = -s;
        a[0][1] =  s;
        a[1][1] =  c;
 
     /* Rotate. */
-       iauRxr(a, r, w);
+       jauRxr(a, r, w);
 
     /* Return result. */
-       iauCr(w, r);
+       jauCr(w, r);
 
        return;
 
         }
     
 
-    public static double iauS00(double date1, double date2, double x, double y)
+    public static double jauS00(double date1, double date2, double x, double y)
     /**
     **  - - - - - - -
     **   i a u S 0 0
@@ -18070,14 +18070,14 @@ public static class SphericalPosition {
     **  4) The model is consistent with the IAU 2000A precession-nutation.
     **
     **  Called:
-    **     iauFal03     mean anomaly of the Moon
-    **     iauFalp03    mean anomaly of the Sun
-    **     iauFaf03     mean argument of the latitude of the Moon
-    **     iauFad03     mean elongation of the Moon from the Sun
-    **     iauFaom03    mean longitude of the Moon's ascending node
-    **     iauFave03    mean longitude of Venus
-    **     iauFae03     mean longitude of Earth
-    **     iauFapa03    general accumulated precession in longitude
+    **     jauFal03     mean anomaly of the Moon
+    **     jauFalp03    mean anomaly of the Sun
+    **     jauFaf03     mean argument of the latitude of the Moon
+    **     jauFad03     mean elongation of the Moon from the Sun
+    **     jauFaom03    mean longitude of the Moon's ascending node
+    **     jauFave03    mean longitude of Venus
+    **     jauFae03     mean longitude of Earth
+    **     jauFapa03    general accumulated precession in longitude
     **
     **  References:
     **
@@ -18249,28 +18249,28 @@ public static class SphericalPosition {
     /* Fundamental Arguments (from IERS Conventions 2003) */
 
     /* Mean anomaly of the Moon. */
-       fa[0] = iauFal03(t);
+       fa[0] = jauFal03(t);
 
     /* Mean anomaly of the Sun. */
-       fa[1] = iauFalp03(t);
+       fa[1] = jauFalp03(t);
 
     /* Mean longitude of the Moon minus that of the ascending node. */
-       fa[2] = iauFaf03(t);
+       fa[2] = jauFaf03(t);
 
     /* Mean elongation of the Moon from the Sun. */
-       fa[3] = iauFad03(t);
+       fa[3] = jauFad03(t);
 
     /* Mean longitude of the ascending node of the Moon. */
-       fa[4] = iauFaom03(t);
+       fa[4] = jauFaom03(t);
 
     /* Mean longitude of Venus. */
-       fa[5] = iauFave03(t);
+       fa[5] = jauFave03(t);
 
     /* Mean longitude of Earth. */
-       fa[6] = iauFae03(t);
+       fa[6] = jauFae03(t);
 
     /* General precession in longitude. */
-       fa[7] = iauFapa03(t);
+       fa[7] = jauFapa03(t);
 
     /* Evaluate s. */
        w0 = sp[0];
@@ -18332,7 +18332,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double iauS00a(double date1, double date2)
+    public static double jauS00a(double date1, double date2)
     /**
     **  - - - - - - - -
     **   i a u S 0 0 a
@@ -18385,13 +18385,13 @@ public static class SphericalPosition {
     **     is more compact than a direct series for s would be.  The present
     **     function uses the full IAU 2000A nutation model when predicting
     **     the CIP position.  Faster results, with no significant loss of
-    **     accuracy, can be obtained via the function iauS00b, which uses
+    **     accuracy, can be obtained via the function jauS00b, which uses
     **     instead the IAU 2000B truncated model.
     **
     **  Called:
-    **     iauPnm00a     classical NPB matrix, IAU 2000A
-    **     iauBnp2xy     extract CIP X,Y from the BPN matrix
-    **     iauS00        the CIO locator s, given X,Y, IAU 2000A
+    **     jauPnm00a     classical NPB matrix, IAU 2000A
+    **     jauBnp2xy     extract CIP X,Y from the BPN matrix
+    **     jauS00        the CIO locator s, given X,Y, IAU 2000A
     **
     **  References:
     **
@@ -18417,20 +18417,20 @@ public static class SphericalPosition {
 
 
     /* Bias-precession-nutation-matrix, IAU 2000A. */
-       iauPnm00a(date1, date2, rbpn);
+       jauPnm00a(date1, date2, rbpn);
 
     /* Extract the CIP coordinates. */
-       CelestialIntermediatePole cip = iauBpn2xy(rbpn);
+       CelestialIntermediatePole cip = jauBpn2xy(rbpn);
 
     /* Compute the CIO locator s, given the CIP coordinates. */
-       s = iauS00(date1, date2, cip.x, cip.y);
+       s = jauS00(date1, date2, cip.x, cip.y);
 
        return s;
 
         }
     
 
-    public static double iauS00b(double date1, double date2)
+    public static double jauS00b(double date1, double date2)
     /**
     **  - - - - - - - -
     **   i a u S 0 0 b
@@ -18482,14 +18482,14 @@ public static class SphericalPosition {
     **     are the x and y components of the CIP unit vector;  this series
     **     is more compact than a direct series for s would be.  The present
     **     function uses the IAU 2000B truncated nutation model when
-    **     predicting the CIP position.  The function iauS00a uses instead
+    **     predicting the CIP position.  The function jauS00a uses instead
     **     the full IAU 2000A model, but with no significant increase in
     **     accuracy and at some cost in speed.
     **
     **  Called:
-    **     iauPnm00b     classical NPB matrix, IAU 2000B
-    **     iauBnp2xy     extract CIP X,Y from the BPN matrix
-    **     iauS00        the CIO locator s, given X,Y, IAU 2000A
+    **     jauPnm00b     classical NPB matrix, IAU 2000B
+    **     jauBnp2xy     extract CIP X,Y from the BPN matrix
+    **     jauS00        the CIO locator s, given X,Y, IAU 2000A
     **
     **  References:
     **
@@ -18515,20 +18515,20 @@ public static class SphericalPosition {
 
 
     /* Bias-precession-nutation-matrix, IAU 2000B. */
-       iauPnm00b(date1, date2, rbpn);
+       jauPnm00b(date1, date2, rbpn);
 
     /* Extract the CIP coordinates. */
-       CelestialIntermediatePole cip = iauBpn2xy(rbpn);
+       CelestialIntermediatePole cip = jauBpn2xy(rbpn);
 
     /* Compute the CIO locator s, given the CIP coordinates. */
-       s = iauS00(date1, date2, cip.x, cip.y);
+       s = jauS00(date1, date2, cip.x, cip.y);
 
        return s;
 
         }
     
 
-    public static double iauS06(double date1, double date2, double x, double y)
+    public static double jauS06(double date1, double date2, double x, double y)
     /**
     **  - - - - - - -
     **   i a u S 0 6
@@ -18589,14 +18589,14 @@ public static class SphericalPosition {
     **     IAU 2000A nutation (with P03 adjustments).
     **
     **  Called:
-    **     iauFal03     mean anomaly of the Moon
-    **     iauFalp03    mean anomaly of the Sun
-    **     iauFaf03     mean argument of the latitude of the Moon
-    **     iauFad03     mean elongation of the Moon from the Sun
-    **     iauFaom03    mean longitude of the Moon's ascending node
-    **     iauFave03    mean longitude of Venus
-    **     iauFae03     mean longitude of Earth
-    **     iauFapa03    general accumulated precession in longitude
+    **     jauFal03     mean anomaly of the Moon
+    **     jauFalp03    mean anomaly of the Sun
+    **     jauFaf03     mean argument of the latitude of the Moon
+    **     jauFad03     mean elongation of the Moon from the Sun
+    **     jauFaom03    mean longitude of the Moon's ascending node
+    **     jauFave03    mean longitude of Venus
+    **     jauFae03     mean longitude of Earth
+    **     jauFapa03    general accumulated precession in longitude
     **
     **  References:
     **
@@ -18763,28 +18763,28 @@ public static class SphericalPosition {
     /* Fundamental Arguments (from IERS Conventions 2003) */
 
     /* Mean anomaly of the Moon. */
-       fa[0] = iauFal03(t);
+       fa[0] = jauFal03(t);
 
     /* Mean anomaly of the Sun. */
-       fa[1] = iauFalp03(t);
+       fa[1] = jauFalp03(t);
 
     /* Mean longitude of the Moon minus that of the ascending node. */
-       fa[2] = iauFaf03(t);
+       fa[2] = jauFaf03(t);
 
     /* Mean elongation of the Moon from the Sun. */
-       fa[3] = iauFad03(t);
+       fa[3] = jauFad03(t);
 
     /* Mean longitude of the ascending node of the Moon. */
-       fa[4] = iauFaom03(t);
+       fa[4] = jauFaom03(t);
 
     /* Mean longitude of Venus. */
-       fa[5] = iauFave03(t);
+       fa[5] = jauFave03(t);
 
     /* Mean longitude of Earth. */
-       fa[6] = iauFae03(t);
+       fa[6] = jauFae03(t);
 
     /* General precession in longitude. */
-       fa[7] = iauFapa03(t);
+       fa[7] = jauFapa03(t);
 
     /* Evaluate s. */
        w0 = sp[0];
@@ -18846,7 +18846,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double iauS06a(double date1, double date2)
+    public static double jauS06a(double date1, double date2)
     /**
     **  - - - - - - - -
     **   i a u S 0 6 a
@@ -18901,9 +18901,9 @@ public static class SphericalPosition {
     **     the CIP position.
     **
     **  Called:
-    **     iauPnm06a    classical NPB matrix, IAU 2006/2000A
-    **     iauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     iauS06       the CIO locator s, given X,Y, IAU 2006
+    **     jauPnm06a    classical NPB matrix, IAU 2006/2000A
+    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
+    **     jauS06       the CIO locator s, given X,Y, IAU 2006
     **
     **  References:
     **
@@ -18933,20 +18933,20 @@ public static class SphericalPosition {
 
 
     /* Bias-precession-nutation-matrix, IAU 20006/2000A. */
-       iauPnm06a(date1, date2, rnpb);
+       jauPnm06a(date1, date2, rnpb);
 
     /* Extract the CIP coordinates. */
-       CelestialIntermediatePole cip = iauBpn2xy(rnpb);
+       CelestialIntermediatePole cip = jauBpn2xy(rnpb);
 
     /* Compute the CIO locator s, given the CIP coordinates. */
-       s = iauS06(date1, date2, cip.x, cip.y);
+       s = jauS06(date1, date2, cip.x, cip.y);
 
        return s;
 
         }
     
 
-    public static void iauS2c(double theta, double phi, double c[] )
+    public static void jauS2c(double theta, double phi, double c[] )
     /**
     **  - - - - - - -
     **   i a u S 2 c
@@ -18986,7 +18986,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauS2p(double theta, double phi, double r, double p[] )
+    public static void jauS2p(double theta, double phi, double r, double p[] )
     /**
     **  - - - - - - -
     **   i a u S 2 p
@@ -19008,8 +19008,8 @@ public static class SphericalPosition {
     **     p       double[3]    Cartesian coordinates
     **
     **  Called:
-    **     iauS2c       spherical coordinates to unit vector
-    **     iauSxp       multiply p-vector by scalar
+    **     jauS2c       spherical coordinates to unit vector
+    **     jauSxp       multiply p-vector by scalar
     **
     **  This revision:  2008 May 11
     **
@@ -19021,15 +19021,15 @@ public static class SphericalPosition {
        double u[] = new double[3];
 
 
-       iauS2c(theta, phi, u);
-       iauSxp(r, u, p);
+       jauS2c(theta, phi, u);
+       jauSxp(r, u, p);
 
        return;
 
         }
     
 
-    public static void iauS2pv(double theta, double phi, double r,
+    public static void jauS2pv(double theta, double phi, double r,
                  double td, double pd, double rd,
                  double pv[][])
     /**
@@ -19087,7 +19087,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauS2xpv(double s1, double s2, double pv[][], double spv[][])
+    public static void jauS2xpv(double s1, double s2, double pv[][], double spv[][])
     /**
     **  - - - - - - - - -
     **   i a u S 2 x p v
@@ -19112,7 +19112,7 @@ public static class SphericalPosition {
     **     It is permissible for pv and spv to be the same array.
     **
     **  Called:
-    **     iauSxp       multiply p-vector by scalar
+    **     jauSxp       multiply p-vector by scalar
     **
     **  This revision:  2008 October 28
     **
@@ -19121,15 +19121,15 @@ public static class SphericalPosition {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
     {
-       iauSxp(s1, pv[0], spv[0]);
-       iauSxp(s2, pv[1], spv[1]);
+       jauSxp(s1, pv[0], spv[0]);
+       jauSxp(s2, pv[1], spv[1]);
 
        return;
 
         }
     
 
-    public static double iauSepp(double a[] , double b[] )
+    public static double jauSepp(double a[] , double b[] )
     /**
     **  - - - - - - - -
     **   i a u S e p p
@@ -19160,9 +19160,9 @@ public static class SphericalPosition {
     **     the angle.
     **
     **  Called:
-    **     iauPxp       vector product of two p-vectors
-    **     iauPm        modulus of p-vector
-    **     iauPdp       scalar product of two p-vectors
+    **     jauPxp       vector product of two p-vectors
+    **     jauPm        modulus of p-vector
+    **     jauPdp       scalar product of two p-vectors
     **
     **  This revision:  2008 May 22
     **
@@ -19175,11 +19175,11 @@ public static class SphericalPosition {
 
 
     /* Sine of angle between the vectors, multiplied by the two moduli. */
-       iauPxp(a, b, axb);
-       ss = iauPm(axb);
+       jauPxp(a, b, axb);
+       ss = jauPm(axb);
 
     /* Cosine of the angle, multiplied by the two moduli. */
-       cs = iauPdp(a, b);
+       cs = jauPdp(a, b);
 
     /* The angle. */
        s = ((ss != 0.0) || (cs != 0.0)) ? atan2(ss, cs) : 0.0;
@@ -19189,7 +19189,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double iauSeps(double al, double ap, double bl, double bp)
+    public static double jauSeps(double al, double ap, double bl, double bp)
     /**
     **  - - - - - - - -
     **   i a u S e p s
@@ -19212,8 +19212,8 @@ public static class SphericalPosition {
     **            double       angular separation (radians)
     **
     **  Called:
-    **     iauS2c       spherical coordinates to unit vector
-    **     iauSepp      angular separation between two p-vectors
+    **     jauS2c       spherical coordinates to unit vector
+    **     jauSepp      angular separation between two p-vectors
     **
     **  This revision:  2008 May 16
     **
@@ -19226,18 +19226,18 @@ public static class SphericalPosition {
 
 
     /* Spherical to Cartesian. */
-       iauS2c(al, ap, ac);
-       iauS2c(bl, bp, bc);
+       jauS2c(al, ap, ac);
+       jauS2c(bl, bp, bc);
 
     /* Angle between the vectors. */
-       s = iauSepp(ac, bc);
+       s = jauSepp(ac, bc);
 
        return s;
 
         }
     
 
-    public static double iauSp00(double date1, double date2)
+    public static double jauSp00(double date1, double date2)
     /**
     **  - - - - - - - -
     **   i a u S p 0 0
@@ -19310,7 +19310,7 @@ public static class SphericalPosition {
         }
     
 
-    public static CatalogCoords iauStarpm(double ra1, double dec1,
+    public static CatalogCoords jauStarpm(double ra1, double dec1,
                   double pmr1, double pmd1, double px1, double rv1,
                   double ep1a, double ep1b, double ep2a, double ep2b) throws SOFAInternalError
     /**
@@ -19400,24 +19400,24 @@ public static class SphericalPosition {
     **
     **  6) An extremely small (or zero or negative) parallax is interpreted
     **     to mean that the object is on the "celestial sphere", the radius
-    **     of which is an arbitrary (large) value (see the iauStarpv
+    **     of which is an arbitrary (large) value (see the jauStarpv
     **     function for the value used).  When the distance is overridden in
     **     this way, the status, initially zero, has 1 added to it.
     **
     **  7) If the space velocity is a significant fraction of c (see the
-    **     constant VMAX in the function iauStarpv),  it is arbitrarily set
+    **     constant VMAX in the function jauStarpv),  it is arbitrarily set
     **     to zero.  When this action occurs, 2 is added to the status.
     **
-    **  8) The relativistic adjustment carried out in the iauStarpv function
+    **  8) The relativistic adjustment carried out in the jauStarpv function
     **     involves an iterative calculation.  If the process fails to
     **     converge within a set number of iterations, 4 is added to the
     **     status.
     **
     **  Called:
-    **     iauStarpv    star catalog data to space motion pv-vector
-    **     iauPvu       update a pv-vector
-    **     iauPdp       scalar product of two p-vectors
-    **     iauPvstar    space motion pv-vector to star catalog data
+    **     jauStarpv    star catalog data to space motion pv-vector
+    **     jauPvu       update a pv-vector
+    **     jauPdp       scalar product of two p-vectors
+    **     jauPvstar    space motion pv-vector to star catalog data
     **
     **  This revision:  2008 May 16
     **
@@ -19432,40 +19432,40 @@ public static class SphericalPosition {
 
 
     /* RA,Dec etc. at the "before" epoch to space motion pv-vector. */
-       j1 = iauStarpv(ra1, dec1, pmr1, pmd1, px1, rv1, pv1);
+       j1 = jauStarpv(ra1, dec1, pmr1, pmd1, px1, rv1, pv1);
 
     /* Light time when observed (days). */
-       tl1 = iauPm(pv1[0]) / DC;
+       tl1 = jauPm(pv1[0]) / DC;
 
     /* Time interval, "before" to "after" (days). */
        dt = (ep2a - ep1a) + (ep2b - ep1b);
 
     /* Move star along track from the "before" observed position to the */
     /* "after" geometric position. */
-       iauPvu(dt + tl1, pv1, pv);
+       jauPvu(dt + tl1, pv1, pv);
 
     /* From this geometric position, deduce the observed light time (days) */
     /* at the "after" epoch (with theoretically unneccessary error check). */
-       r2 = iauPdp(pv[0], pv[0]);
-       rdv = iauPdp(pv[0], pv[1]);
-       v2 = iauPdp(pv[1], pv[1]);
+       r2 = jauPdp(pv[0], pv[0]);
+       rdv = jauPdp(pv[0], pv[1]);
+       v2 = jauPdp(pv[1], pv[1]);
        c2mv2 = DC*DC - v2;
        if (c2mv2 <=  0) throw new SOFAInternalError("internal error", -1);
        tl2 = (-rdv + sqrt(rdv*rdv + c2mv2*r2)) / c2mv2;
 
     /* Move the position along track from the observed place at the */
     /* "before" epoch to the observed place at the "after" epoch. */
-       iauPvu(dt + (tl1 - tl2), pv1, pv2);
+       jauPvu(dt + (tl1 - tl2), pv1, pv2);
 
     /* Space motion pv-vector to RA,Dec etc. at the "after" epoch. */
-       CatalogCoords cat = iauPvstar(pv2);
+       CatalogCoords cat = jauPvstar(pv2);
 
        return cat;
 
         }
     
 
-    public static int iauStarpv(double ra, double dec,
+    public static int jauStarpv(double ra, double dec,
                   double pmr, double pmd, double px, double rv,
                   double pv[][])
     /**
@@ -19567,17 +19567,17 @@ public static class SphericalPosition {
     **     iterations, 4 is added to the status.
     **
     **  9) The inverse transformation is performed by the function
-    **     iauPvstar.
+    **     jauPvstar.
     **
     **  Called:
-    **     iauS2pv      spherical coordinates to pv-vector
-    **     iauPm        modulus of p-vector
-    **     iauZp        zero p-vector
-    **     iauPn        decompose p-vector into modulus and direction
-    **     iauPdp       scalar product of two p-vectors
-    **     iauSxp       multiply p-vector by scalar
-    **     iauPmp       p-vector minus p-vector
-    **     iauPpp       p-vector plus p-vector
+    **     jauS2pv      spherical coordinates to pv-vector
+    **     jauPm        modulus of p-vector
+    **     jauZp        zero p-vector
+    **     jauPn        decompose p-vector into modulus and direction
+    **     jauPdp       scalar product of two p-vectors
+    **     jauSxp       multiply p-vector by scalar
+    **     jauPmp       p-vector minus p-vector
+    **     jauPpp       p-vector plus p-vector
     **
     **  Reference:
     **
@@ -19626,25 +19626,25 @@ public static class SphericalPosition {
        decd = pmd / DJY;
 
     /* To pv-vector (AU,AU/day). */
-       iauS2pv(ra, dec, r, rad, decd, rd, pv);
+       jauS2pv(ra, dec, r, rad, decd, rd, pv);
 
     /* If excessive velocity, arbitrarily set it to zero. */
-       v = iauPm(pv[1]);
+       v = jauPm(pv[1]);
        if (v / DC > VMAX) {
-          iauZp(pv[1]);
+          jauZp(pv[1]);
           iwarn += 2;
        }
 
     /* Isolate the radial component of the velocity (AU/day). */
-       NormalizedVector nv = iauPn(pv[0]);
+       NormalizedVector nv = jauPn(pv[0]);
        w = nv.r;
        x = nv.u;
-       vsr = iauPdp(x, pv[1]);
-       iauSxp(vsr, x, usr);
+       vsr = jauPdp(x, pv[1]);
+       jauSxp(vsr, x, usr);
 
     /* Isolate the transverse component of the velocity (AU/day). */
-       iauPmp(pv[1], usr, ust);
-       vst = iauPm(ust);
+       jauPmp(pv[1], usr, ust);
+       vst = jauPm(ust);
 
     /* Special-relativity dimensionless parameters. */
        betsr = vsr / DC;
@@ -19672,13 +19672,13 @@ public static class SphericalPosition {
 
     /* Replace observed radial velocity with inertial value. */
        w = (betsr != 0.0) ? d + del / betsr : 1.0;
-       iauSxp(w, usr, ur);
+       jauSxp(w, usr, ur);
 
     /* Replace observed tangential velocity with inertial value. */
-       iauSxp(d, ust, ut);
+       jauSxp(d, ust, ut);
 
     /* Combine the two to obtain the inertial space velocity. */
-       iauPpp(ur, ut, pv[1]);
+       jauPpp(ur, ut, pv[1]);
 
     /* Return the status. */
        return iwarn;
@@ -19686,7 +19686,7 @@ public static class SphericalPosition {
         }
     
 
-    public static  void iauSxp(double s, double p[] , double sp[] )
+    public static  void jauSxp(double s, double p[] , double sp[] )
     /**
     **  - - - - - - -
     **   i a u S x p
@@ -19725,7 +19725,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauSxpv(double s, double pv[][], double spv[][])
+    public static void jauSxpv(double s, double pv[][], double spv[][])
     /**
     **  - - - - - - - -
     **   i a u S x p v
@@ -19749,7 +19749,7 @@ public static class SphericalPosition {
     **     It is permissible for pv and psv to be the same array
     **
     **  Called:
-    **     iauS2xpv     multiply pv-vector by two scalars
+    **     jauS2xpv     multiply pv-vector by two scalars
     **
     **  This revision:  2008 October 28
     **
@@ -19758,13 +19758,13 @@ public static class SphericalPosition {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
     {
-       iauS2xpv(s, s, pv, spv);
+       jauS2xpv(s, s, pv, spv);
 
        return;
 
         }
 
-    public static void iauTr(double r[][], double rt[][])
+    public static void jauTr(double r[][], double rt[][])
     /**
     **  - - - - - -
     **   i a u T r
@@ -19787,7 +19787,7 @@ public static class SphericalPosition {
     **     It is permissible for r and rt to be the same array.
     **
     **  Called:
-    **     iauCr        copy r-matrix
+    **     jauCr        copy r-matrix
     **
     **  This revision:  2008 May 22
     **
@@ -19805,14 +19805,14 @@ public static class SphericalPosition {
              wm[i][j] = r[j][i];
           }
        }
-       iauCr(wm, rt);
+       jauCr(wm, rt);
 
        return;
 
         }
     
 
-    public static void iauTrxp(double r[][], double p[] , double trp[] )
+    public static void jauTrxp(double r[][], double p[] , double trp[] )
     /**
     **  - - - - - - - -
     **   i a u T r x p
@@ -19836,8 +19836,8 @@ public static class SphericalPosition {
     **     It is permissible for p and trp to be the same array.
     **
     **  Called:
-    **     iauTr        transpose r-matrix
-    **     iauRxp       product of r-matrix and p-vector
+    **     jauTr        transpose r-matrix
+    **     jauRxp       product of r-matrix and p-vector
     **
     **  This revision:  2008 October 28
     **
@@ -19850,17 +19850,17 @@ public static class SphericalPosition {
 
 
     /* Transpose of matrix r. */
-       iauTr(r, tr);
+       jauTr(r, tr);
 
     /* Matrix tr * vector p -> vector trp. */
-       iauRxp(tr, p, trp);
+       jauRxp(tr, p, trp);
 
        return;
 
         }
     
 
-    public static void iauTrxpv(double r[][], double pv[][], double trpv[][])
+    public static void jauTrxpv(double r[][], double pv[][], double trpv[][])
     /**
     **  - - - - - - - - -
     **   i a u T r x p v
@@ -19884,8 +19884,8 @@ public static class SphericalPosition {
     **     It is permissible for pv and trpv to be the same array.
     **
     **  Called:
-    **     iauTr        transpose r-matrix
-    **     iauRxpv      product of r-matrix and pv-vector
+    **     jauTr        transpose r-matrix
+    **     jauRxpv      product of r-matrix and pv-vector
     **
     **  This revision:  2008 October 28
     **
@@ -19898,17 +19898,17 @@ public static class SphericalPosition {
 
 
     /* Transpose of matrix r. */
-       iauTr(r, tr);
+       jauTr(r, tr);
 
     /* Matrix tr * vector pv -> vector trpv. */
-       iauRxpv(tr, pv, trpv);
+       jauRxpv(tr, pv, trpv);
 
        return;
 
         }
     
     /*
-     * constant arrays set outside iauXy06 to avoid problems with 65535 byte limit on function size
+     * constant arrays set outside jauXy06 to avoid problems with 65535 byte limit on function size
      */
     
     /* Fundamental-argument multipliers:  luni-solar terms */
@@ -21493,7 +21493,7 @@ public static class SphericalPosition {
           {  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0 }
        };
 
-    public static CelestialIntermediatePole iauXy06(double date1, double date2)
+    public static CelestialIntermediatePole jauXy06(double date1, double date2)
     /**
     **  - - - - - - - -
     **   i a u X y 0 6
@@ -21543,27 +21543,27 @@ public static class SphericalPosition {
     **     (1999).
     **
     **  4) This is an alternative to the angles-based method, via the SOFA
-    **     function iauFw2xy and as used in iauXys06a for example.  The two
+    **     function jauFw2xy and as used in jauXys06a for example.  The two
     **     methods agree at the 1 microarcsecond level (at present), a
     **     negligible amount compared with the intrinsic accuracy of the
     **     models.  However, it would be unwise to mix the two methods
     **     (angles-based and series-based) in a single application.
     **
     **  Called:
-    **     iauFal03     mean anomaly of the Moon
-    **     iauFalp03    mean anomaly of the Sun
-    **     iauFaf03     mean argument of the latitude of the Moon
-    **     iauFad03     mean elongation of the Moon from the Sun
-    **     iauFaom03    mean longitude of the Moon's ascending node
-    **     iauFame03    mean longitude of Mercury
-    **     iauFave03    mean longitude of Venus
-    **     iauFae03     mean longitude of Earth
-    **     iauFama03    mean longitude of Mars
-    **     iauFaju03    mean longitude of Jupiter
-    **     iauFasa03    mean longitude of Saturn
-    **     iauFaur03    mean longitude of Uranus
-    **     iauFane03    mean longitude of Neptune
-    **     iauFapa03    general accumulated precession in longitude
+    **     jauFal03     mean anomaly of the Moon
+    **     jauFalp03    mean anomaly of the Sun
+    **     jauFaf03     mean argument of the latitude of the Moon
+    **     jauFad03     mean elongation of the Moon from the Sun
+    **     jauFaom03    mean longitude of the Moon's ascending node
+    **     jauFame03    mean longitude of Mercury
+    **     jauFave03    mean longitude of Venus
+    **     jauFae03     mean longitude of Earth
+    **     jauFama03    mean longitude of Mars
+    **     jauFaju03    mean longitude of Jupiter
+    **     jauFasa03    mean longitude of Saturn
+    **     jauFaur03    mean longitude of Uranus
+    **     jauFane03    mean longitude of Neptune
+    **     jauFapa03    general accumulated precession in longitude
     **
     **  References:
     **
@@ -22500,32 +22500,32 @@ public static class SphericalPosition {
     /* --------------------------------- */
 
     /* Mean anomaly of the Moon. */
-       fa[0] = iauFal03(t);
+       fa[0] = jauFal03(t);
 
     /* Mean anomaly of the Sun. */
-       fa[1] = iauFalp03(t);
+       fa[1] = jauFalp03(t);
 
     /* Mean argument of the latitude of the Moon. */
-       fa[2] = iauFaf03(t);
+       fa[2] = jauFaf03(t);
 
     /* Mean elongation of the Moon from the Sun. */
-       fa[3] = iauFad03(t);
+       fa[3] = jauFad03(t);
 
     /* Mean longitude of the ascending node of the Moon. */
-       fa[4] = iauFaom03(t);
+       fa[4] = jauFaom03(t);
 
     /* Planetary longitudes, Mercury through Neptune. */
-       fa[5] = iauFame03(t);
-       fa[6] = iauFave03(t);
-       fa[7] = iauFae03(t);
-       fa[8] = iauFama03(t);
-       fa[9] = iauFaju03(t);
-       fa[10] = iauFasa03(t);
-       fa[11] = iauFaur03(t);
-       fa[12] = iauFane03(t);
+       fa[5] = jauFame03(t);
+       fa[6] = jauFave03(t);
+       fa[7] = jauFae03(t);
+       fa[8] = jauFama03(t);
+       fa[9] = jauFaju03(t);
+       fa[10] = jauFasa03(t);
+       fa[11] = jauFaur03(t);
+       fa[12] = jauFane03(t);
 
     /* General accumulated precession in longitude. */
-       fa[13] = iauFapa03(t);
+       fa[13] = jauFapa03(t);
 
     /* -------------------------------------- */
     /* Polynomial part of precession-nutation */
@@ -22626,7 +22626,7 @@ public static class SphericalPosition {
         }
     
 
-    public static ICRFrame iauXys00a(double date1, double date2)
+    public static ICRFrame jauXys00a(double date1, double date2)
     /**
     **  - - - - - - - - - -
     **   i a u X y s 0 0 a
@@ -22677,12 +22677,12 @@ public static class SphericalPosition {
     **     Intermediate Origin on the equator of the CIP.
     **
     **  4) A faster, but slightly less accurate result (about 1 mas for
-    **     X,Y), can be obtained by using instead the iauXys00b function.
+    **     X,Y), can be obtained by using instead the jauXys00b function.
     **
     **  Called:
-    **     iauPnm00a    classical NPB matrix, IAU 2000A
-    **     iauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     iauS00       the CIO locator s, given X,Y, IAU 2000A
+    **     jauPnm00a    classical NPB matrix, IAU 2000A
+    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
+    **     jauS00       the CIO locator s, given X,Y, IAU 2000A
     **
     **  Reference:
     **
@@ -22700,13 +22700,13 @@ public static class SphericalPosition {
 
 
     /* Form the bias-precession-nutation matrix, IAU 2000A. */
-       iauPnm00a(date1, date2, rbpn);
+       jauPnm00a(date1, date2, rbpn);
 
     /* Extract X,Y. */
-       CelestialIntermediatePole cip = iauBpn2xy(rbpn);
+       CelestialIntermediatePole cip = jauBpn2xy(rbpn);
 
     /* Obtain s. */
-       double s = iauS00(date1, date2, cip.x, cip.y);
+       double s = jauS00(date1, date2, cip.x, cip.y);
 
        return new ICRFrame(cip, s);
 
@@ -22733,7 +22733,7 @@ public static class SphericalPosition {
             this.s = s;
         }
     }
-    public static ICRFrame iauXys00b(double date1, double date2)
+    public static ICRFrame jauXys00b(double date1, double date2)
     /**
     **  - - - - - - - - - -
     **   i a u X y s 0 0 b
@@ -22784,12 +22784,12 @@ public static class SphericalPosition {
     **     Intermediate Origin on the equator of the CIP.
     **
     **  4) The present function is faster, but slightly less accurate (about
-    **     1 mas in X,Y), than the iauXys00a function.
+    **     1 mas in X,Y), than the jauXys00a function.
     **
     **  Called:
-    **     iauPnm00b    classical NPB matrix, IAU 2000B
-    **     iauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     iauS00       the CIO locator s, given X,Y, IAU 2000A
+    **     jauPnm00b    classical NPB matrix, IAU 2000B
+    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
+    **     jauS00       the CIO locator s, given X,Y, IAU 2000A
     **
     **  Reference:
     **
@@ -22807,20 +22807,20 @@ public static class SphericalPosition {
 
 
     /* Form the bias-precession-nutation matrix, IAU 2000A. */
-       iauPnm00b(date1, date2, rbpn);
+       jauPnm00b(date1, date2, rbpn);
 
     /* Extract X,Y. */
-       CelestialIntermediatePole cip = iauBpn2xy(rbpn);
+       CelestialIntermediatePole cip = jauBpn2xy(rbpn);
 
     /* Obtain s. */
-       double s = iauS00(date1, date2, cip.x, cip.y);
+       double s = jauS00(date1, date2, cip.x, cip.y);
 
        return new ICRFrame(cip, s);
 
         }
     
 
-    public static ICRFrame iauXys06a(double date1, double date2)
+    public static ICRFrame jauXys06a(double date1, double date2)
     /**
     **  - - - - - - - - - -
     **   i a u X y s 0 6 a
@@ -22870,12 +22870,12 @@ public static class SphericalPosition {
     **     Intermediate Origin on the equator of the CIP.
     **
     **  4) Series-based solutions for generating X and Y are also available:
-    **     see Capitaine & Wallace (2006) and iauXy06.
+    **     see Capitaine & Wallace (2006) and jauXy06.
     **
     **  Called:
-    **     iauPnm06a    classical NPB matrix, IAU 2006/2000A
-    **     iauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     iauS06       the CIO locator s, given X,Y, IAU 2006
+    **     jauPnm06a    classical NPB matrix, IAU 2006/2000A
+    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
+    **     jauS06       the CIO locator s, given X,Y, IAU 2006
     **
     **  References:
     **
@@ -22894,20 +22894,20 @@ public static class SphericalPosition {
 
 
     /* Form the bias-precession-nutation matrix, IAU 2000A. */
-       iauPnm06a(date1, date2, rbpn);
+       jauPnm06a(date1, date2, rbpn);
 
     /* Extract X,Y. */
-       CelestialIntermediatePole cip = iauBpn2xy(rbpn);
+       CelestialIntermediatePole cip = jauBpn2xy(rbpn);
 
     /* Obtain s. */
-       double s = iauS06(date1, date2, cip.x, cip.y);
+       double s = jauS06(date1, date2, cip.x, cip.y);
 
        return new ICRFrame(cip, s);
 
         }
     
 
-    public static void iauZp(double p[] )
+    public static void jauZp(double p[] )
     /**
     **  - - - - - -
     **   i a u Z p
@@ -22939,7 +22939,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void iauZpv(double pv[][])
+    public static void jauZpv(double pv[][])
     /**
     **  - - - - - - -
     **   i a u Z p v
@@ -22956,7 +22956,7 @@ public static class SphericalPosition {
     **     pv       double[2][3]      pv-vector
     **
     **  Called:
-    **     iauZp        zero p-vector
+    **     jauZp        zero p-vector
     **
     **  This revision:  2008 May 11
     **
@@ -22965,15 +22965,15 @@ public static class SphericalPosition {
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
     {
-       iauZp(pv[0]);
-       iauZp(pv[1]);
+       jauZp(pv[0]);
+       jauZp(pv[1]);
 
        return;
 
         }
     
 
-    public static void iauZr(double r[][])
+    public static void jauZr(double r[][])
     /**
     **  - - - - - -
     **   i a u Z r

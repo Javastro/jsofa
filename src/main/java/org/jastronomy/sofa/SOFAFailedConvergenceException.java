@@ -10,11 +10,11 @@
  *
  */ 
 
-package org.iau;
+package org.jastronomy.sofa;
 
-public class SOFAIllegalParameter extends SOFAException {
+public class SOFAFailedConvergenceException extends SOFAException {
 
-    public SOFAIllegalParameter(String message, int status) {
+    public SOFAFailedConvergenceException(String message, int status) {
         super(message, status);
     }
 

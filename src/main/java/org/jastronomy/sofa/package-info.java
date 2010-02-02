@@ -16,4 +16,4 @@
  * @since February 2010
  * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
  */
-package org.iau;
+package org.jastronomy.sofa;

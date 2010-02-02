@@ -1,45 +1,48 @@
 /*
  * $Id$
  * 
+ * 
  * Created on 26 Jan 2010 by Paul Harrison (paul.harrison@manchester.ac.uk)
- * Copyright 2010 Astrogrid. All rights reserved.
  *
- * This software is published under the terms of the Astrogrid 
- * Software License, a copy of which has been included 
- * with this distribution in the LICENSE.txt file.  
+ * Adapted from official SOFA C implementation http://www.jausofa.org/
+ *
  *
  */ 
 
-package org.iau;
+package org.jastronomy.sofa;
 
 
-import org.iau.SOFA.Calendar;
-import org.iau.SOFA.CatalogCoords;
-import org.iau.SOFA.CelestialIntermediatePole;
-import org.iau.SOFA.EulerAngles;
-import org.iau.SOFA.FWPrecessionAngles;
-import org.iau.SOFA.FrameBias;
-import org.iau.SOFA.GeodeticCoord;
-import org.iau.SOFA.ICRFrame;
-import org.iau.SOFA.JulianDate;
-import org.iau.SOFA.NormalizedVector;
-import org.iau.SOFA.NutationDeltaTerms;
-import org.iau.SOFA.NutationTerms;
-import org.iau.SOFA.PVModulus;
-import org.iau.SOFA.PolarCoordinate;
-import org.iau.SOFA.PrecessionAngles;
-import org.iau.SOFA.PrecessionNutation;
-import org.iau.SOFA.ReferenceEllipsoid;
-import org.iau.SOFA.SphericalPosition;
-import org.iau.SOFA.SphericalPositionVelocity;
 
 
+import static org.jastronomy.sofa.SOFA.*;
 import static org.junit.Assert.*;
+
+import org.jastronomy.sofa.SOFAException;
+import org.jastronomy.sofa.SOFAIllegalParameter;
+import org.jastronomy.sofa.SOFAInternalError;
+import org.jastronomy.sofa.SOFA.Calendar;
+import org.jastronomy.sofa.SOFA.CatalogCoords;
+import org.jastronomy.sofa.SOFA.CelestialIntermediatePole;
+import org.jastronomy.sofa.SOFA.EulerAngles;
+import org.jastronomy.sofa.SOFA.FWPrecessionAngles;
+import org.jastronomy.sofa.SOFA.FrameBias;
+import org.jastronomy.sofa.SOFA.GeodeticCoord;
+import org.jastronomy.sofa.SOFA.ICRFrame;
+import org.jastronomy.sofa.SOFA.JulianDate;
+import org.jastronomy.sofa.SOFA.NormalizedVector;
+import org.jastronomy.sofa.SOFA.NutationDeltaTerms;
+import org.jastronomy.sofa.SOFA.NutationTerms;
+import org.jastronomy.sofa.SOFA.PVModulus;
+import org.jastronomy.sofa.SOFA.PolarCoordinate;
+import org.jastronomy.sofa.SOFA.PrecessionAngles;
+import org.jastronomy.sofa.SOFA.PrecessionNutation;
+import org.jastronomy.sofa.SOFA.ReferenceEllipsoid;
+import org.jastronomy.sofa.SOFA.SphericalPosition;
+import org.jastronomy.sofa.SOFA.SphericalPositionVelocity;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import static org.iau.SOFA.*;
 import static java.lang.Math.*;
 
 public class SOFATest {
@@ -105,6 +108,7 @@ public class SOFATest {
           System.out.printf("%s passed: %s want %d got %d\n",
                         func, test, ivalok, ival);
        }
+       assertEquals(func+" "+test, ival, ivalok);
        return;
     }
 
@@ -136,14 +140,13 @@ public class SOFATest {
 
 
        a = val - valok;
-       if (abs(a) > dval) {
-          f = abs(valok / a);
-          System.err.printf("%s failed: %s want %.20g got %.20g (1/%.3g)\n",
-                 func, test, valok, val, f);
-       } else if (verbose) {
-          System.out.printf("%s passed: %s want %.20g got %.20g\n",
-                 func, test, valok, val);
+       f = abs(valok / a);
+       String msg = String.format("%s: %s want %.20g got %.20g (1/%.3g)\n",
+                 func, test, valok, val, f); 
+       if (verbose && abs(a) <= dval) {
+          System.out.println("passed: " + msg);
        }
+       assertTrue(msg, abs(a) <= dval);
        return;
     }
 
@@ -154,12 +157,12 @@ public class SOFATest {
     **   t _ a 2 a f
     **  - - - - - - -
     **
-    **  Test iauA2af function.
+    **  Test jauA2af function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauA2af, viv
+    **  Called:  jauA2af, viv
     **
     **  This revision:  2008 November 30
     */
@@ -168,14 +171,14 @@ public class SOFATest {
        char s;
 
 
-       s = iauA2af(4, 2.345, idmsf);
+       s = jauA2af(4, 2.345, idmsf);
 
-       viv(s, '+', "iauA2af", "s");
+       viv(s, '+', "jauA2af", "s");
 
-       viv(idmsf[0],  134, "iauA2af", "0");
-       viv(idmsf[1],   21, "iauA2af", "1");
-       viv(idmsf[2],   30, "iauA2af", "2");
-       viv(idmsf[3], 9706, "iauA2af", "3");
+       viv(idmsf[0],  134, "jauA2af", "0");
+       viv(idmsf[1],   21, "jauA2af", "1");
+       viv(idmsf[2],   30, "jauA2af", "2");
+       viv(idmsf[3], 9706, "jauA2af", "3");
 
     }
 
@@ -186,12 +189,12 @@ public class SOFATest {
     **   t _ a 2 t f
     **  - - - - - - -
     **
-    **  Test iauA2tf function.
+    **  Test jauA2tf function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauA2tf, viv
+    **  Called:  jauA2tf, viv
     **
     **  This revision:  2008 November 30
     */
@@ -200,14 +203,14 @@ public class SOFATest {
        char s;
 
 
-       s = iauA2tf(4, -3.01234, ihmsf);
+       s = jauA2tf(4, -3.01234, ihmsf);
 
-       viv((int)s, '-', "iauA2tf", "s");
+       viv((int)s, '-', "jauA2tf", "s");
 
-       viv(ihmsf[0],   11, "iauA2tf", "0");
-       viv(ihmsf[1],   30, "iauA2tf", "1");
-       viv(ihmsf[2],   22, "iauA2tf", "2");
-       viv(ihmsf[3], 6484, "iauA2tf", "3");
+       viv(ihmsf[0],   11, "jauA2tf", "0");
+       viv(ihmsf[1],   30, "jauA2tf", "1");
+       viv(ihmsf[2],   22, "jauA2tf", "2");
+       viv(ihmsf[3], 6484, "jauA2tf", "3");
 
     }
 
@@ -218,17 +221,17 @@ public class SOFATest {
     **   t _ a n p
     **  - - - - - -
     **
-    **  Test iauAnp function.
+    **  Test jauAnp function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauAnp, vvd
+    **  Called:  jauAnp, vvd
     **
     **  This revision:  2008 November 30
     */
     {
-       vvd(iauAnp(-0.1), 6.183185307179586477, 1e-12, "iauAnp", "");
+       vvd(jauAnp(-0.1), 6.183185307179586477, 1e-12, "jauAnp", "");
     }
 
     @Test
@@ -238,17 +241,17 @@ public class SOFATest {
     **   t _ a n p m
     **  - - - - - - -
     **
-    **  Test iauAnpm function.
+    **  Test jauAnpm function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauAnpm, vvd
+    **  Called:  jauAnpm, vvd
     **
     **  This revision:  2008 November 30
     */
     {
-       vvd(iauAnpm(-4.0), 2.283185307179586477, 1e-12, "iauAnpm", "");
+       vvd(jauAnpm(-4.0), 2.283185307179586477, 1e-12, "jauAnpm", "");
     }
 
     @Test
@@ -258,25 +261,25 @@ public class SOFATest {
     **   t _ b i 0 0
     **  - - - - - - -
     **
-    **  Test iauBi00 function.
+    **  Test jauBi00 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauBi00, vvd
+    **  Called:  jauBi00, vvd
     **
     **  This revision:  2009 November 4
     */
     {
 
-       FrameBias ret = iauBi00();
+       FrameBias ret = jauBi00();
 
        vvd(ret.dpsibi, -0.2025309152835086613e-6, 1e-12,
-          "iauBi00", "dpsibi");
+          "jauBi00", "dpsibi");
        vvd(ret.depsbi, -0.3306041454222147847e-7, 1e-12,
-          "iauBi00", "depsbi");
+          "jauBi00", "depsbi");
        vvd(ret.dra, -0.7078279744199225506e-7, 1e-12,
-          "iauBi00", "dra");
+          "jauBi00", "dra");
     }
 
     @Test
@@ -286,12 +289,12 @@ public class SOFATest {
     **   t _ b p 0 0
     **  - - - - - - -
     **
-    **  Test iauBp00 function.
+    **  Test jauBp00 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauBp00, vvd
+    **  Called:  jauBp00, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -299,64 +302,64 @@ public class SOFATest {
        double rb[][] = new double[3][3], rp[][] = new double[3][3], rbp[][] = new double[3][3];
 
 
-       iauBp00(2400000.5, 50123.9999, rb, rp, rbp);
+       jauBp00(2400000.5, 50123.9999, rb, rp, rbp);
 
        vvd(rb[0][0], 0.9999999999999942498, 1e-12,
-           "iauBp00", "rb11");
+           "jauBp00", "rb11");
        vvd(rb[0][1], -0.7078279744199196626e-7, 1e-16,
-           "iauBp00", "rb12");
+           "jauBp00", "rb12");
        vvd(rb[0][2], 0.8056217146976134152e-7, 1e-16,
-           "iauBp00", "rb13");
+           "jauBp00", "rb13");
        vvd(rb[1][0], 0.7078279477857337206e-7, 1e-16,
-           "iauBp00", "rb21");
+           "jauBp00", "rb21");
        vvd(rb[1][1], 0.9999999999999969484, 1e-12,
-           "iauBp00", "rb22");
+           "jauBp00", "rb22");
        vvd(rb[1][2], 0.3306041454222136517e-7, 1e-16,
-           "iauBp00", "rb23");
+           "jauBp00", "rb23");
        vvd(rb[2][0], -0.8056217380986972157e-7, 1e-16,
-           "iauBp00", "rb31");
+           "jauBp00", "rb31");
        vvd(rb[2][1], -0.3306040883980552500e-7, 1e-16,
-           "iauBp00", "rb32");
+           "jauBp00", "rb32");
        vvd(rb[2][2], 0.9999999999999962084, 1e-12,
-           "iauBp00", "rb33");
+           "jauBp00", "rb33");
 
        vvd(rp[0][0], 0.9999995504864048241, 1e-12,
-           "iauBp00", "rp11");
+           "jauBp00", "rp11");
        vvd(rp[0][1], 0.8696113836207084411e-3, 1e-14,
-           "iauBp00", "rp12");
+           "jauBp00", "rp12");
        vvd(rp[0][2], 0.3778928813389333402e-3, 1e-14,
-           "iauBp00", "rp13");
+           "jauBp00", "rp13");
        vvd(rp[1][0], -0.8696113818227265968e-3, 1e-14,
-           "iauBp00", "rp21");
+           "jauBp00", "rp21");
        vvd(rp[1][1], 0.9999996218879365258, 1e-12,
-           "iauBp00", "rp22");
+           "jauBp00", "rp22");
        vvd(rp[1][2], -0.1690679263009242066e-6, 1e-14,
-           "iauBp00", "rp23");
+           "jauBp00", "rp23");
        vvd(rp[2][0], -0.3778928854764695214e-3, 1e-14,
-           "iauBp00", "rp31");
+           "jauBp00", "rp31");
        vvd(rp[2][1], -0.1595521004195286491e-6, 1e-14,
-           "iauBp00", "rp32");
+           "jauBp00", "rp32");
        vvd(rp[2][2], 0.9999999285984682756, 1e-12,
-           "iauBp00", "rp33");
+           "jauBp00", "rp33");
 
        vvd(rbp[0][0], 0.9999995505175087260, 1e-12,
-           "iauBp00", "rbp11");
+           "jauBp00", "rbp11");
        vvd(rbp[0][1], 0.8695405883617884705e-3, 1e-14,
-           "iauBp00", "rbp12");
+           "jauBp00", "rbp12");
        vvd(rbp[0][2], 0.3779734722239007105e-3, 1e-14,
-           "iauBp00", "rbp13");
+           "jauBp00", "rbp13");
        vvd(rbp[1][0], -0.8695405990410863719e-3, 1e-14,
-           "iauBp00", "rbp21");
+           "jauBp00", "rbp21");
        vvd(rbp[1][1], 0.9999996219494925900, 1e-12,
-           "iauBp00", "rbp22");
+           "jauBp00", "rbp22");
        vvd(rbp[1][2], -0.1360775820404982209e-6, 1e-14,
-           "iauBp00", "rbp23");
+           "jauBp00", "rbp23");
        vvd(rbp[2][0], -0.3779734476558184991e-3, 1e-14,
-           "iauBp00", "rbp31");
+           "jauBp00", "rbp31");
        vvd(rbp[2][1], -0.1925857585832024058e-6, 1e-14,
-           "iauBp00", "rbp32");
+           "jauBp00", "rbp32");
        vvd(rbp[2][2], 0.9999999285680153377, 1e-12,
-           "iauBp00", "rbp33");
+           "jauBp00", "rbp33");
     }
 
     @Test
@@ -366,12 +369,12 @@ public class SOFATest {
     **   t _ b p 0 6
     **  - - - - - - -
     **
-    **  Test iauBp06 function.
+    **  Test jauBp06 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauBp06, vvd
+    **  Called:  jauBp06, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -379,64 +382,64 @@ public class SOFATest {
        double rb[][] = new double[3][3], rp[][] = new double[3][3], rbp[][] = new double[3][3];
 
 
-       iauBp06(2400000.5, 50123.9999, rb, rp, rbp);
+       jauBp06(2400000.5, 50123.9999, rb, rp, rbp);
 
        vvd(rb[0][0], 0.9999999999999942497, 1e-12,
-           "iauBp06", "rb11");
+           "jauBp06", "rb11");
        vvd(rb[0][1], -0.7078368960971557145e-7, 1e-14,
-           "iauBp06", "rb12");
+           "jauBp06", "rb12");
        vvd(rb[0][2], 0.8056213977613185606e-7, 1e-14,
-           "iauBp06", "rb13");
+           "jauBp06", "rb13");
        vvd(rb[1][0], 0.7078368694637674333e-7, 1e-14,
-           "iauBp06", "rb21");
+           "jauBp06", "rb21");
        vvd(rb[1][1], 0.9999999999999969484, 1e-12,
-           "iauBp06", "rb22");
+           "jauBp06", "rb22");
        vvd(rb[1][2], 0.3305943742989134124e-7, 1e-14,
-           "iauBp06", "rb23");
+           "jauBp06", "rb23");
        vvd(rb[2][0], -0.8056214211620056792e-7, 1e-14,
-           "iauBp06", "rb31");
+           "jauBp06", "rb31");
        vvd(rb[2][1], -0.3305943172740586950e-7, 1e-14,
-           "iauBp06", "rb32");
+           "jauBp06", "rb32");
        vvd(rb[2][2], 0.9999999999999962084, 1e-12,
-           "iauBp06", "rb33");
+           "jauBp06", "rb33");
 
        vvd(rp[0][0], 0.9999995504864960278, 1e-12,
-           "iauBp06", "rp11");
+           "jauBp06", "rp11");
        vvd(rp[0][1], 0.8696112578855404832e-3, 1e-14,
-           "iauBp06", "rp12");
+           "jauBp06", "rp12");
        vvd(rp[0][2], 0.3778929293341390127e-3, 1e-14,
-           "iauBp06", "rp13");
+           "jauBp06", "rp13");
        vvd(rp[1][0], -0.8696112560510186244e-3, 1e-14,
-           "iauBp06", "rp21");
+           "jauBp06", "rp21");
        vvd(rp[1][1], 0.9999996218880458820, 1e-12,
-           "iauBp06", "rp22");
+           "jauBp06", "rp22");
        vvd(rp[1][2], -0.1691646168941896285e-6, 1e-14,
-           "iauBp06", "rp23");
+           "jauBp06", "rp23");
        vvd(rp[2][0], -0.3778929335557603418e-3, 1e-14,
-           "iauBp06", "rp31");
+           "jauBp06", "rp31");
        vvd(rp[2][1], -0.1594554040786495076e-6, 1e-14,
-           "iauBp06", "rp32");
+           "jauBp06", "rp32");
        vvd(rp[2][2], 0.9999999285984501222, 1e-12,
-           "iauBp06", "rp33");
+           "jauBp06", "rp33");
 
        vvd(rbp[0][0], 0.9999995505176007047, 1e-12,
-           "iauBp06", "rbp11");
+           "jauBp06", "rbp11");
        vvd(rbp[0][1], 0.8695404617348208406e-3, 1e-14,
-           "iauBp06", "rbp12");
+           "jauBp06", "rbp12");
        vvd(rbp[0][2], 0.3779735201865589104e-3, 1e-14,
-           "iauBp06", "rbp13");
+           "jauBp06", "rbp13");
        vvd(rbp[1][0], -0.8695404723772031414e-3, 1e-14,
-           "iauBp06", "rbp21");
+           "jauBp06", "rbp21");
        vvd(rbp[1][1], 0.9999996219496027161, 1e-12,
-           "iauBp06", "rbp22");
+           "jauBp06", "rbp22");
        vvd(rbp[1][2], -0.1361752497080270143e-6, 1e-14,
-           "iauBp06", "rbp23");
+           "jauBp06", "rbp23");
        vvd(rbp[2][0], -0.3779734957034089490e-3, 1e-14,
-           "iauBp06", "rbp31");
+           "jauBp06", "rbp31");
        vvd(rbp[2][1], -0.1924880847894457113e-6, 1e-14,
-           "iauBp06", "rbp32");
+           "jauBp06", "rbp32");
        vvd(rbp[2][2], 0.9999999285679971958, 1e-12,
-           "iauBp06", "rbp33");
+           "jauBp06", "rbp33");
     }
 
     @Test
@@ -446,12 +449,12 @@ public class SOFATest {
     **   t _ b p n 2 x y
     **  - - - - - - - - -
     **
-    **  Test iauBpn2xy function.
+    **  Test jauBpn2xy function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauBpn2xy, vvd
+    **  Called:  jauBpn2xy, vvd
     **
     **  This revision:  2008 May 26
     */
@@ -471,10 +474,10 @@ public class SOFATest {
        rbpn[2][1] = -4.281337229063151e-5;
        rbpn[2][2] =  9.999994012499173e-1;
 
-       CelestialIntermediatePole ret = iauBpn2xy(rbpn);
+       CelestialIntermediatePole ret = jauBpn2xy(rbpn);
 
-       vvd(ret.x,  1.093465510215479e-3, 1e-12, "iauBpn2xy", "x");
-       vvd(ret.y, -4.281337229063151e-5, 1e-12, "iauBpn2xy", "y");
+       vvd(ret.x,  1.093465510215479e-3, 1e-12, "jauBpn2xy", "x");
+       vvd(ret.y, -4.281337229063151e-5, 1e-12, "jauBpn2xy", "y");
 
     }
 
@@ -485,12 +488,12 @@ public class SOFATest {
     **   t _ c 2 i 0 0 a
     **  - - - - - - - - -
     **
-    **  Test iauC2i00a function.
+    **  Test jauC2i00a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauC2i00a, vvd
+    **  Called:  jauC2i00a, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -498,28 +501,28 @@ public class SOFATest {
        double rc2i[][] = new double[3][3];
 
 
-       iauC2i00a(2400000.5, 53736.0, rc2i);
+       jauC2i00a(2400000.5, 53736.0, rc2i);
 
        vvd(rc2i[0][0], 0.9999998323037165557, 1e-12,
-           "iauC2i00a", "11");
+           "jauC2i00a", "11");
        vvd(rc2i[0][1], 0.5581526348992140183e-9, 1e-12,
-           "iauC2i00a", "12");
+           "jauC2i00a", "12");
        vvd(rc2i[0][2], -0.5791308477073443415e-3, 1e-12,
-           "iauC2i00a", "13");
+           "jauC2i00a", "13");
 
        vvd(rc2i[1][0], -0.2384266227870752452e-7, 1e-12,
-           "iauC2i00a", "21");
+           "jauC2i00a", "21");
        vvd(rc2i[1][1], 0.9999999991917405258, 1e-12,
-           "iauC2i00a", "22");
+           "jauC2i00a", "22");
        vvd(rc2i[1][2], -0.4020594955028209745e-4, 1e-12,
-           "iauC2i00a", "23");
+           "jauC2i00a", "23");
 
        vvd(rc2i[2][0], 0.5791308472168152904e-3, 1e-12,
-           "iauC2i00a", "31");
+           "jauC2i00a", "31");
        vvd(rc2i[2][1], 0.4020595661591500259e-4, 1e-12,
-           "iauC2i00a", "32");
+           "jauC2i00a", "32");
        vvd(rc2i[2][2], 0.9999998314954572304, 1e-12,
-           "iauC2i00a", "33");
+           "jauC2i00a", "33");
 
     }
 
@@ -530,12 +533,12 @@ public class SOFATest {
     **   t _ c 2 i 0 0 b
     **  - - - - - - - - -
     **
-    **  Test iauC2i00b function.
+    **  Test jauC2i00b function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauC2i00b, vvd
+    **  Called:  jauC2i00b, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -543,28 +546,28 @@ public class SOFATest {
        double rc2i[][] = new double[3][3];
 
 
-       iauC2i00b(2400000.5, 53736.0, rc2i);
+       jauC2i00b(2400000.5, 53736.0, rc2i);
 
        vvd(rc2i[0][0], 0.9999998323040954356, 1e-12,
-           "iauC2i00b", "11");
+           "jauC2i00b", "11");
        vvd(rc2i[0][1], 0.5581526349131823372e-9, 1e-12,
-           "iauC2i00b", "12");
+           "jauC2i00b", "12");
        vvd(rc2i[0][2], -0.5791301934855394005e-3, 1e-12,
-           "iauC2i00b", "13");
+           "jauC2i00b", "13");
 
        vvd(rc2i[1][0], -0.2384239285499175543e-7, 1e-12,
-           "iauC2i00b", "21");
+           "jauC2i00b", "21");
        vvd(rc2i[1][1], 0.9999999991917574043, 1e-12,
-           "iauC2i00b", "22");
+           "jauC2i00b", "22");
        vvd(rc2i[1][2], -0.4020552974819030066e-4, 1e-12,
-           "iauC2i00b", "23");
+           "jauC2i00b", "23");
 
        vvd(rc2i[2][0], 0.5791301929950208873e-3, 1e-12,
-           "iauC2i00b", "31");
+           "jauC2i00b", "31");
        vvd(rc2i[2][1], 0.4020553681373720832e-4, 1e-12,
-           "iauC2i00b", "32");
+           "jauC2i00b", "32");
        vvd(rc2i[2][2], 0.9999998314958529887, 1e-12,
-           "iauC2i00b", "33");
+           "jauC2i00b", "33");
 
     }
 
@@ -575,12 +578,12 @@ public class SOFATest {
     **   t _ c 2 i 0 6 a
     **  - - - - - - - - -
     **
-    **  Test iauC2i06a function.
+    **  Test jauC2i06a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauC2i06a, vvd
+    **  Called:  jauC2i06a, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -588,28 +591,28 @@ public class SOFATest {
        double rc2i[][] = new double[3][3];
 
 
-       iauC2i06a(2400000.5, 53736.0, rc2i);
+       jauC2i06a(2400000.5, 53736.0, rc2i);
 
        vvd(rc2i[0][0], 0.9999998323037159379, 1e-12,
-           "iauC2i06a", "11");
+           "jauC2i06a", "11");
        vvd(rc2i[0][1], 0.5581121329587613787e-9, 1e-12,
-           "iauC2i06a", "12");
+           "jauC2i06a", "12");
        vvd(rc2i[0][2], -0.5791308487740529749e-3, 1e-12,
-           "iauC2i06a", "13");
+           "jauC2i06a", "13");
 
        vvd(rc2i[1][0], -0.2384253169452306581e-7, 1e-12,
-           "iauC2i06a", "21");
+           "jauC2i06a", "21");
        vvd(rc2i[1][1], 0.9999999991917467827, 1e-12,
-           "iauC2i06a", "22");
+           "jauC2i06a", "22");
        vvd(rc2i[1][2], -0.4020579392895682558e-4, 1e-12,
-           "iauC2i06a", "23");
+           "jauC2i06a", "23");
 
        vvd(rc2i[2][0], 0.5791308482835292617e-3, 1e-12,
-           "iauC2i06a", "31");
+           "jauC2i06a", "31");
        vvd(rc2i[2][1], 0.4020580099454020310e-4, 1e-12,
-           "iauC2i06a", "32");
+           "jauC2i06a", "32");
        vvd(rc2i[2][2], 0.9999998314954628695, 1e-12,
-           "iauC2i06a", "33");
+           "jauC2i06a", "33");
 
     }
 
@@ -620,12 +623,12 @@ public class SOFATest {
     **   t _ c 2 i b p n
     **  - - - - - - - - -
     **
-    **  Test iauC2ibpn function.
+    **  Test jauC2ibpn function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauC2ibpn, vvd
+    **  Called:  jauC2ibpn, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -645,28 +648,28 @@ public class SOFATest {
        rbpn[2][1] = -4.281337229063151e-5;
        rbpn[2][2] =  9.999994012499173e-1;
 
-       iauC2ibpn(2400000.5, 50123.9999, rbpn, rc2i);
+       jauC2ibpn(2400000.5, 50123.9999, rbpn, rc2i);
 
        vvd(rc2i[0][0], 0.9999994021664089977, 1e-12,
-           "iauC2ibpn", "11");
+           "jauC2ibpn", "11");
        vvd(rc2i[0][1], -0.3869195948017503664e-8, 1e-12,
-           "iauC2ibpn", "12");
+           "jauC2ibpn", "12");
        vvd(rc2i[0][2], -0.1093465511383285076e-2, 1e-12,
-           "iauC2ibpn", "13");
+           "jauC2ibpn", "13");
 
        vvd(rc2i[1][0], 0.5068413965715446111e-7, 1e-12,
-           "iauC2ibpn", "21");
+           "jauC2ibpn", "21");
        vvd(rc2i[1][1], 0.9999999990835075686, 1e-12,
-           "iauC2ibpn", "22");
+           "jauC2ibpn", "22");
        vvd(rc2i[1][2], 0.4281334246452708915e-4, 1e-12,
-           "iauC2ibpn", "23");
+           "jauC2ibpn", "23");
 
        vvd(rc2i[2][0], 0.1093465510215479000e-2, 1e-12,
-           "iauC2ibpn", "31");
+           "jauC2ibpn", "31");
        vvd(rc2i[2][1], -0.4281337229063151000e-4, 1e-12,
-           "iauC2ibpn", "32");
+           "jauC2ibpn", "32");
        vvd(rc2i[2][2], 0.9999994012499173103, 1e-12,
-           "iauC2ibpn", "33");
+           "jauC2ibpn", "33");
 
     }
 
@@ -677,12 +680,12 @@ public class SOFATest {
     **   t _ c 2 i x y
     **  - - - - - - - -
     **
-    **  Test iauC2ixy function.
+    **  Test jauC2ixy function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauC2ixy, vvd
+    **  Called:  jauC2ixy, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -693,28 +696,28 @@ public class SOFATest {
        x = 0.5791308486706011000e-3;
        y = 0.4020579816732961219e-4;
 
-       iauC2ixy(2400000.5, 53736, x, y, rc2i);
+       jauC2ixy(2400000.5, 53736, x, y, rc2i);
 
        vvd(rc2i[0][0], 0.9999998323037157138, 1e-12,
-           "iauC2ixy", "11");
+           "jauC2ixy", "11");
        vvd(rc2i[0][1], 0.5581526349032241205e-9, 1e-12,
-           "iauC2ixy", "12");
+           "jauC2ixy", "12");
        vvd(rc2i[0][2], -0.5791308491611263745e-3, 1e-12,
-           "iauC2ixy", "13");
+           "jauC2ixy", "13");
 
        vvd(rc2i[1][0], -0.2384257057469842953e-7, 1e-12,
-           "iauC2ixy", "21");
+           "jauC2ixy", "21");
        vvd(rc2i[1][1], 0.9999999991917468964, 1e-12,
-           "iauC2ixy", "22");
+           "jauC2ixy", "22");
        vvd(rc2i[1][2], -0.4020579110172324363e-4, 1e-12,
-           "iauC2ixy", "23");
+           "jauC2ixy", "23");
 
        vvd(rc2i[2][0], 0.5791308486706011000e-3, 1e-12,
-           "iauC2ixy", "31");
+           "jauC2ixy", "31");
        vvd(rc2i[2][1], 0.4020579816732961219e-4, 1e-12,
-           "iauC2ixy", "32");
+           "jauC2ixy", "32");
        vvd(rc2i[2][2], 0.9999998314954627590, 1e-12,
-           "iauC2ixy", "33");
+           "jauC2ixy", "33");
 
     }
 
@@ -725,12 +728,12 @@ public class SOFATest {
     **   t _ c 2 i x y s
     **  - - - - - - - - -
     **
-    **  Test iauC2ixys function.
+    **  Test jauC2ixys function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauC2ixys, vvd
+    **  Called:  jauC2ixys, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -742,28 +745,28 @@ public class SOFATest {
        y =  0.4020579816732961219e-4;
        s = -0.1220040848472271978e-7;
 
-       iauC2ixys(x, y, s, rc2i);
+       jauC2ixys(x, y, s, rc2i);
 
        vvd(rc2i[0][0], 0.9999998323037157138, 1e-12,
-           "iauC2ixys", "11");
+           "jauC2ixys", "11");
        vvd(rc2i[0][1], 0.5581984869168499149e-9, 1e-12,
-           "iauC2ixys", "12");
+           "jauC2ixys", "12");
        vvd(rc2i[0][2], -0.5791308491611282180e-3, 1e-12,
-           "iauC2ixys", "13");
+           "jauC2ixys", "13");
 
        vvd(rc2i[1][0], -0.2384261642670440317e-7, 1e-12,
-           "iauC2ixys", "21");
+           "jauC2ixys", "21");
        vvd(rc2i[1][1], 0.9999999991917468964, 1e-12,
-           "iauC2ixys", "22");
+           "jauC2ixys", "22");
        vvd(rc2i[1][2], -0.4020579110169668931e-4, 1e-12,
-           "iauC2ixys", "23");
+           "jauC2ixys", "23");
 
        vvd(rc2i[2][0], 0.5791308486706011000e-3, 1e-12,
-           "iauC2ixys", "31");
+           "jauC2ixys", "31");
        vvd(rc2i[2][1], 0.4020579816732961219e-4, 1e-12,
-           "iauC2ixys", "32");
+           "jauC2ixys", "32");
        vvd(rc2i[2][2], 0.9999998314954627590, 1e-12,
-           "iauC2ixys", "33");
+           "jauC2ixys", "33");
 
     }
 
@@ -774,12 +777,12 @@ public class SOFATest {
     **   t _ c 2 s
     **  - - - - - -
     **
-    **  Test iauC2s function.
+    **  Test jauC2s function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauC2s, vvd
+    **  Called:  jauC2s, vvd
     **
     **  This revision:  2008 May 27
     */
@@ -791,10 +794,10 @@ public class SOFATest {
        p[1] = -50.0;
        p[2] =  25.0;
 
-       SphericalPosition ret = iauC2s(p);
+       SphericalPosition ret = jauC2s(p);
 
-       vvd(ret.alpha, -0.4636476090008061162, 1e-14, "iauC2s", "theta");
-       vvd(ret.delta, 0.2199879773954594463, 1e-14, "iauC2s", "phi");
+       vvd(ret.alpha, -0.4636476090008061162, 1e-14, "jauC2s", "theta");
+       vvd(ret.delta, 0.2199879773954594463, 1e-14, "jauC2s", "phi");
 
     }
 
@@ -805,12 +808,12 @@ public class SOFATest {
     **   t _ c 2 t 0 0 a
     **  - - - - - - - - -
     **
-    **  Test iauC2t00a function.
+    **  Test jauC2t00a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauC2t00a, vvd
+    **  Called:  jauC2t00a, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -825,28 +828,28 @@ public class SOFATest {
        xp = 2.55060238e-7;
        yp = 1.860359247e-6;
 
-       iauC2t00a(tta, ttb, uta, utb, xp, yp, rc2t);
+       jauC2t00a(tta, ttb, uta, utb, xp, yp, rc2t);
 
        vvd(rc2t[0][0], -0.1810332128307182668, 1e-12,
-           "iauC2t00a", "11");
+           "jauC2t00a", "11");
        vvd(rc2t[0][1], 0.9834769806938457836, 1e-12,
-           "iauC2t00a", "12");
+           "jauC2t00a", "12");
        vvd(rc2t[0][2], 0.6555535638688341725e-4, 1e-12,
-           "iauC2t00a", "13");
+           "jauC2t00a", "13");
 
        vvd(rc2t[1][0], -0.9834768134135984552, 1e-12,
-           "iauC2t00a", "21");
+           "jauC2t00a", "21");
        vvd(rc2t[1][1], -0.1810332203649520727, 1e-12,
-           "iauC2t00a", "22");
+           "jauC2t00a", "22");
        vvd(rc2t[1][2], 0.5749801116141056317e-3, 1e-12,
-           "iauC2t00a", "23");
+           "jauC2t00a", "23");
 
        vvd(rc2t[2][0], 0.5773474014081406921e-3, 1e-12,
-           "iauC2t00a", "31");
+           "jauC2t00a", "31");
        vvd(rc2t[2][1], 0.3961832391770163647e-4, 1e-12,
-           "iauC2t00a", "32");
+           "jauC2t00a", "32");
        vvd(rc2t[2][2], 0.9999998325501692289, 1e-12,
-           "iauC2t00a", "33");
+           "jauC2t00a", "33");
 
     }
 
@@ -857,12 +860,12 @@ public class SOFATest {
     **   t _ c 2 t 0 0 b
     **  - - - - - - - - -
     **
-    **  Test iauC2t00b function.
+    **  Test jauC2t00b function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauC2t00b, vvd
+    **  Called:  jauC2t00b, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -877,28 +880,28 @@ public class SOFATest {
        xp = 2.55060238e-7;
        yp = 1.860359247e-6;
 
-       iauC2t00b(tta, ttb, uta, utb, xp, yp, rc2t);
+       jauC2t00b(tta, ttb, uta, utb, xp, yp, rc2t);
 
        vvd(rc2t[0][0], -0.1810332128439678965, 1e-12,
-           "iauC2t00b", "11");
+           "jauC2t00b", "11");
        vvd(rc2t[0][1], 0.9834769806913872359, 1e-12,
-           "iauC2t00b", "12");
+           "jauC2t00b", "12");
        vvd(rc2t[0][2], 0.6555565082458415611e-4, 1e-12,
-           "iauC2t00b", "13");
+           "jauC2t00b", "13");
 
        vvd(rc2t[1][0], -0.9834768134115435923, 1e-12,
-           "iauC2t00b", "21");
+           "jauC2t00b", "21");
        vvd(rc2t[1][1], -0.1810332203784001946, 1e-12,
-           "iauC2t00b", "22");
+           "jauC2t00b", "22");
        vvd(rc2t[1][2], 0.5749793922030017230e-3, 1e-12,
-           "iauC2t00b", "23");
+           "jauC2t00b", "23");
 
        vvd(rc2t[2][0], 0.5773467471863534901e-3, 1e-12,
-           "iauC2t00b", "31");
+           "jauC2t00b", "31");
        vvd(rc2t[2][1], 0.3961790411549945020e-4, 1e-12,
-           "iauC2t00b", "32");
+           "jauC2t00b", "32");
        vvd(rc2t[2][2], 0.9999998325505635738, 1e-12,
-           "iauC2t00b", "33");
+           "jauC2t00b", "33");
 
     }
 
@@ -909,12 +912,12 @@ public class SOFATest {
     **   t _ c 2 t 0 6 a
     **  - - - - - - - - -
     **
-    **  Test iauC2t06a function.
+    **  Test jauC2t06a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauC2t06a, vvd
+    **  Called:  jauC2t06a, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -929,28 +932,28 @@ public class SOFATest {
        xp = 2.55060238e-7;
        yp = 1.860359247e-6;
 
-       iauC2t06a(tta, ttb, uta, utb, xp, yp, rc2t);
+       jauC2t06a(tta, ttb, uta, utb, xp, yp, rc2t);
 
        vvd(rc2t[0][0], -0.1810332128305897282, 1e-12,
-           "iauC2t06a", "11");
+           "jauC2t06a", "11");
        vvd(rc2t[0][1], 0.9834769806938592296, 1e-12,
-           "iauC2t06a", "12");
+           "jauC2t06a", "12");
        vvd(rc2t[0][2], 0.6555550962998436505e-4, 1e-12,
-           "iauC2t06a", "13");
+           "jauC2t06a", "13");
 
        vvd(rc2t[1][0], -0.9834768134136214897, 1e-12,
-           "iauC2t06a", "21");
+           "jauC2t06a", "21");
        vvd(rc2t[1][1], -0.1810332203649130832, 1e-12,
-           "iauC2t06a", "22");
+           "jauC2t06a", "22");
        vvd(rc2t[1][2], 0.5749800844905594110e-3, 1e-12,
-           "iauC2t06a", "23");
+           "jauC2t06a", "23");
 
        vvd(rc2t[2][0], 0.5773474024748545878e-3, 1e-12,
-           "iauC2t06a", "31");
+           "jauC2t06a", "31");
        vvd(rc2t[2][1], 0.3961816829632690581e-4, 1e-12,
-           "iauC2t06a", "32");
+           "jauC2t06a", "32");
        vvd(rc2t[2][2], 0.9999998325501747785, 1e-12,
-           "iauC2t06a", "33");
+           "jauC2t06a", "33");
 
     }
 
@@ -961,12 +964,12 @@ public class SOFATest {
     **   t _ c 2 t c i o
     **  - - - - - - - - -
     **
-    **  Test iauC2tcio function.
+    **  Test jauC2tcio function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauC2tcio, vvd
+    **  Called:  jauC2tcio, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -1001,28 +1004,28 @@ public class SOFATest {
        rpom[2][2] =  0.9999999999982369658;
 
 
-       iauC2tcio(rc2i, era, rpom, rc2t);
+       jauC2tcio(rc2i, era, rpom, rc2t);
 
        vvd(rc2t[0][0], -0.1810332128307110439, 1e-12,
-           "iauC2tcio", "11");
+           "jauC2tcio", "11");
        vvd(rc2t[0][1], 0.9834769806938470149, 1e-12,
-           "iauC2tcio", "12");
+           "jauC2tcio", "12");
        vvd(rc2t[0][2], 0.6555535638685466874e-4, 1e-12,
-           "iauC2tcio", "13");
+           "jauC2tcio", "13");
 
        vvd(rc2t[1][0], -0.9834768134135996657, 1e-12,
-           "iauC2tcio", "21");
+           "jauC2tcio", "21");
        vvd(rc2t[1][1], -0.1810332203649448367, 1e-12,
-           "iauC2tcio", "22");
+           "jauC2tcio", "22");
        vvd(rc2t[1][2], 0.5749801116141106528e-3, 1e-12,
-           "iauC2tcio", "23");
+           "jauC2tcio", "23");
 
        vvd(rc2t[2][0], 0.5773474014081407076e-3, 1e-12,
-           "iauC2tcio", "31");
+           "jauC2tcio", "31");
        vvd(rc2t[2][1], 0.3961832391772658944e-4, 1e-12,
-           "iauC2tcio", "32");
+           "jauC2tcio", "32");
        vvd(rc2t[2][2], 0.9999998325501691969, 1e-12,
-           "iauC2tcio", "33");
+           "jauC2tcio", "33");
 
     }
 
@@ -1033,12 +1036,12 @@ public class SOFATest {
     **   t _ c 2 t e q x
     **  - - - - - - - - -
     **
-    **  Test iauC2teqx function.
+    **  Test jauC2teqx function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauC2teqx, vvd
+    **  Called:  jauC2teqx, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -1072,28 +1075,28 @@ public class SOFATest {
        rpom[2][1] =  0.1860359247002413923e-5;
        rpom[2][2] =  0.9999999999982369658;
 
-       iauC2teqx(rbpn, gst, rpom, rc2t);
+       jauC2teqx(rbpn, gst, rpom, rc2t);
 
        vvd(rc2t[0][0], -0.1810332128528685730, 1e-12,
-           "iauC2teqx", "11");
+           "jauC2teqx", "11");
        vvd(rc2t[0][1], 0.9834769806897685071, 1e-12,
-           "iauC2teqx", "12");
+           "jauC2teqx", "12");
        vvd(rc2t[0][2], 0.6555535639982634449e-4, 1e-12,
-           "iauC2teqx", "13");
+           "jauC2teqx", "13");
 
        vvd(rc2t[1][0], -0.9834768134095211257, 1e-12,
-           "iauC2teqx", "21");
+           "jauC2teqx", "21");
        vvd(rc2t[1][1], -0.1810332203871023800, 1e-12,
-           "iauC2teqx", "22");
+           "jauC2teqx", "22");
        vvd(rc2t[1][2], 0.5749801116126438962e-3, 1e-12,
-           "iauC2teqx", "23");
+           "jauC2teqx", "23");
 
        vvd(rc2t[2][0], 0.5773474014081539467e-3, 1e-12,
-           "iauC2teqx", "31");
+           "jauC2teqx", "31");
        vvd(rc2t[2][1], 0.3961832391768640871e-4, 1e-12,
-           "iauC2teqx", "32");
+           "jauC2teqx", "32");
        vvd(rc2t[2][2], 0.9999998325501691969, 1e-12,
-           "iauC2teqx", "33");
+           "jauC2teqx", "33");
 
     }
 
@@ -1104,12 +1107,12 @@ public class SOFATest {
     **   t _ c 2 t p e
     **  - - - - - - - -
     **
-    **  Test iauC2tpe function.
+    **  Test jauC2tpe function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauC2tpe, vvd
+    **  Called:  jauC2tpe, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -1126,28 +1129,28 @@ public class SOFATest {
        xp = 2.55060238e-7;
        yp = 1.860359247e-6;
 
-       iauC2tpe(tta, ttb, uta, utb, dpsi, deps, xp, yp, rc2t);
+       jauC2tpe(tta, ttb, uta, utb, dpsi, deps, xp, yp, rc2t);
 
        vvd(rc2t[0][0], -0.1813677995763029394, 1e-12,
-           "iauC2tpe", "11");
+           "jauC2tpe", "11");
        vvd(rc2t[0][1], 0.9023482206891683275, 1e-12,
-           "iauC2tpe", "12");
+           "jauC2tpe", "12");
        vvd(rc2t[0][2], -0.3909902938641085751, 1e-12,
-           "iauC2tpe", "13");
+           "jauC2tpe", "13");
 
        vvd(rc2t[1][0], -0.9834147641476804807, 1e-12,
-           "iauC2tpe", "21");
+           "jauC2tpe", "21");
        vvd(rc2t[1][1], -0.1659883635434995121, 1e-12,
-           "iauC2tpe", "22");
+           "jauC2tpe", "22");
        vvd(rc2t[1][2], 0.7309763898042819705e-1, 1e-12,
-           "iauC2tpe", "23");
+           "jauC2tpe", "23");
 
        vvd(rc2t[2][0], 0.1059685430673215247e-2, 1e-12,
-           "iauC2tpe", "31");
+           "jauC2tpe", "31");
        vvd(rc2t[2][1], 0.3977631855605078674, 1e-12,
-           "iauC2tpe", "32");
+           "jauC2tpe", "32");
        vvd(rc2t[2][2], 0.9174875068792735362, 1e-12,
-           "iauC2tpe", "33");
+           "jauC2tpe", "33");
 
     }
 
@@ -1158,12 +1161,12 @@ public class SOFATest {
     **   t _ c 2 t x y
     **  - - - - - - - -
     **
-    **  Test iauC2txy function.
+    **  Test jauC2txy function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauC2txy, vvd
+    **  Called:  jauC2txy, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -1180,28 +1183,28 @@ public class SOFATest {
        xp = 2.55060238e-7;
        yp = 1.860359247e-6;
 
-       iauC2txy(tta, ttb, uta, utb, x, y, xp, yp, rc2t);
+       jauC2txy(tta, ttb, uta, utb, x, y, xp, yp, rc2t);
 
        vvd(rc2t[0][0], -0.1810332128306279253, 1e-12,
-           "iauC2txy", "11");
+           "jauC2txy", "11");
        vvd(rc2t[0][1], 0.9834769806938520084, 1e-12,
-           "iauC2txy", "12");
+           "jauC2txy", "12");
        vvd(rc2t[0][2], 0.6555551248057665829e-4, 1e-12,
-           "iauC2txy", "13");
+           "jauC2txy", "13");
 
        vvd(rc2t[1][0], -0.9834768134136142314, 1e-12,
-           "iauC2txy", "21");
+           "jauC2txy", "21");
        vvd(rc2t[1][1], -0.1810332203649529312, 1e-12,
-           "iauC2txy", "22");
+           "jauC2txy", "22");
        vvd(rc2t[1][2], 0.5749800843594139912e-3, 1e-12,
-           "iauC2txy", "23");
+           "jauC2txy", "23");
 
        vvd(rc2t[2][0], 0.5773474028619264494e-3, 1e-12,
-           "iauC2txy", "31");
+           "jauC2txy", "31");
        vvd(rc2t[2][1], 0.3961816546911624260e-4, 1e-12,
-           "iauC2txy", "32");
+           "jauC2txy", "32");
        vvd(rc2t[2][2], 0.9999998325501746670, 1e-12,
-           "iauC2txy", "33");
+           "jauC2txy", "33");
 
     }
 
@@ -1212,12 +1215,12 @@ public class SOFATest {
     **   t _ c a l 2 j d
     **  - - - - - - - - -
     **
-    **  Test iauCal2jd function.
+    **  Test jauCal2jd function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauCal2jd, vvd, viv
+    **  Called:  jauCal2jd, vvd, viv
     **
     **  This revision:  2008 May 27
     */
@@ -1225,15 +1228,15 @@ public class SOFATest {
 
 
        try {
-        JulianDate jd = iauCal2jd(2003, 06, 01);
+        JulianDate jd = jauCal2jd(2003, 06, 01);
 
-           vvd(jd.djm0, 2400000.5, 0.0, "iauCal2jd", "djm0");
-           vvd(jd.djm1,    52791.0, 0.0, "iauCal2jd", "djm");
+           vvd(jd.djm0, 2400000.5, 0.0, "jauCal2jd", "djm0");
+           vvd(jd.djm1,    52791.0, 0.0, "jauCal2jd", "djm");
     } catch (SOFAIllegalParameter e) {
-        fail("iauCal2jd should not throw execption");
+        fail("jauCal2jd should not throw execption");
     }
 
-     //  viv(j, 0, "iauCal2jd", "j");
+     //  viv(j, 0, "jauCal2jd", "j");
 
     }
 
@@ -1244,12 +1247,12 @@ public class SOFATest {
     **   t _ c p
     **  - - - - -
     **
-    **  Test iauCp function.
+    **  Test jauCp function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauCp, vvd
+    **  Called:  jauCp, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -1261,11 +1264,11 @@ public class SOFATest {
        p[1] =  1.2;
        p[2] = -2.5;
 
-       iauCp(p, c);
+       jauCp(p, c);
 
-       vvd(c[0],  0.3, 0.0, "iauCp", "1");
-       vvd(c[1],  1.2, 0.0, "iauCp", "2");
-       vvd(c[2], -2.5, 0.0, "iauCp", "3");
+       vvd(c[0],  0.3, 0.0, "jauCp", "1");
+       vvd(c[1],  1.2, 0.0, "jauCp", "2");
+       vvd(c[2], -2.5, 0.0, "jauCp", "3");
     }
 
     @Test
@@ -1275,12 +1278,12 @@ public class SOFATest {
     **   t _ c p v
     **  - - - - - -
     **
-    **  Test iauCpv function.
+    **  Test jauCpv function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauCpv, vvd
+    **  Called:  jauCpv, vvd
     **
     **  This revision:  2008 May 25
     */
@@ -1296,15 +1299,15 @@ public class SOFATest {
        pv[1][1] =  3.1;
        pv[1][2] =  0.9;
 
-       iauCpv(pv, c);
+       jauCpv(pv, c);
 
-       vvd(c[0][0],  0.3, 0.0, "iauCpv", "p1");
-       vvd(c[0][1],  1.2, 0.0, "iauCpv", "p2");
-       vvd(c[0][2], -2.5, 0.0, "iauCpv", "p3");
+       vvd(c[0][0],  0.3, 0.0, "jauCpv", "p1");
+       vvd(c[0][1],  1.2, 0.0, "jauCpv", "p2");
+       vvd(c[0][2], -2.5, 0.0, "jauCpv", "p3");
 
-       vvd(c[1][0], -0.5, 0.0, "iauCpv", "v1");
-       vvd(c[1][1],  3.1, 0.0, "iauCpv", "v2");
-       vvd(c[1][2],  0.9, 0.0, "iauCpv", "v3");
+       vvd(c[1][0], -0.5, 0.0, "jauCpv", "v1");
+       vvd(c[1][1],  3.1, 0.0, "jauCpv", "v2");
+       vvd(c[1][2],  0.9, 0.0, "jauCpv", "v3");
 
     }
 
@@ -1315,12 +1318,12 @@ public class SOFATest {
     **   t _ c r
     **  - - - - -
     **
-    **  Test iauCr function.
+    **  Test jauCr function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauCr, vvd
+    **  Called:  jauCr, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -1340,19 +1343,19 @@ public class SOFATest {
        r[2][1] = 4.0;
        r[2][2] = 5.0;
 
-       iauCr(r, c);
+       jauCr(r, c);
 
-       vvd(c[0][0], 2.0, 0.0, "iauCr", "11");
-       vvd(c[0][1], 3.0, 0.0, "iauCr", "12");
-       vvd(c[0][2], 2.0, 0.0, "iauCr", "13");
+       vvd(c[0][0], 2.0, 0.0, "jauCr", "11");
+       vvd(c[0][1], 3.0, 0.0, "jauCr", "12");
+       vvd(c[0][2], 2.0, 0.0, "jauCr", "13");
 
-       vvd(c[1][0], 3.0, 0.0, "iauCr", "21");
-       vvd(c[1][1], 2.0, 0.0, "iauCr", "22");
-       vvd(c[1][2], 3.0, 0.0, "iauCr", "23");
+       vvd(c[1][0], 3.0, 0.0, "jauCr", "21");
+       vvd(c[1][1], 2.0, 0.0, "jauCr", "22");
+       vvd(c[1][2], 3.0, 0.0, "jauCr", "23");
 
-       vvd(c[2][0], 3.0, 0.0, "iauCr", "31");
-       vvd(c[2][1], 4.0, 0.0, "iauCr", "32");
-       vvd(c[2][2], 5.0, 0.0, "iauCr", "33");
+       vvd(c[2][0], 3.0, 0.0, "jauCr", "31");
+       vvd(c[2][1], 4.0, 0.0, "jauCr", "32");
+       vvd(c[2][2], 5.0, 0.0, "jauCr", "33");
     }
 
     @Test
@@ -1362,12 +1365,12 @@ public class SOFATest {
     **   t _ d 2 t f
     **  - - - - - - -
     **
-    **  Test iauD2tf function.
+    **  Test jauD2tf function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauD2tf, viv, vvd
+    **  Called:  jauD2tf, viv, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -1376,14 +1379,14 @@ public class SOFATest {
        char s;
 
 
-       s = iauD2tf(4, -0.987654321, ihmsf);
+       s = jauD2tf(4, -0.987654321, ihmsf);
 
-       viv((int)s, '-', "iauD2tf", "s");
+       viv((int)s, '-', "jauD2tf", "s");
 
-       viv(ihmsf[0], 23, "iauD2tf", "0");
-       viv(ihmsf[1], 42, "iauD2tf", "1");
-       viv(ihmsf[2], 13, "iauD2tf", "2");
-       viv(ihmsf[3], 3333, "iauD2tf", "3");
+       viv(ihmsf[0], 23, "jauD2tf", "0");
+       viv(ihmsf[1], 42, "jauD2tf", "1");
+       viv(ihmsf[2], 13, "jauD2tf", "2");
+       viv(ihmsf[3], 3333, "jauD2tf", "3");
 
     }
 
@@ -1394,12 +1397,12 @@ public class SOFATest {
     **   t _ d a t
     **  - - - - - -
     **
-    **  Test iauDat function.
+    **  Test jauDat function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauDat, vvd, viv
+    **  Called:  jauDat, vvd, viv
     **
     **  This revision:  2008 November 29
     */
@@ -1408,19 +1411,19 @@ public class SOFATest {
 
 
        try {
-           deltat = iauDat(2003, 6, 1, 0.0);
+           deltat = jauDat(2003, 6, 1, 0.0);
 
-           vvd(deltat, 32.0, 0.0, "iauDat", "d1");
+           vvd(deltat, 32.0, 0.0, "jauDat", "d1");
        } catch (Exception e) {
-           fail("iauDat j1");
+           fail("jauDat j1");
        }
 
        try {
-           deltat = iauDat(2008, 1, 17, 0.0);
+           deltat = jauDat(2008, 1, 17, 0.0);
 
-           vvd(deltat, 33.0, 0.0, "iauDat", "d2");
+           vvd(deltat, 33.0, 0.0, "jauDat", "d2");
        } catch (Exception e) {
-           fail("iauDat j2");
+           fail("jauDat j2");
        }
 
     }
@@ -1432,12 +1435,12 @@ public class SOFATest {
     **   t _ d t d b
     **  - - - - - - -
     **
-    **  Test iauDtdb function.
+    **  Test jauDtdb function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauDtdb, vvd
+    **  Called:  jauDtdb, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -1445,9 +1448,9 @@ public class SOFATest {
        double dtdb;
 
 
-       dtdb = iauDtdb(2448939.5, 0.123, 0.76543, 5.0123, 5525.242, 3190.0);
+       dtdb = jauDtdb(2448939.5, 0.123, 0.76543, 5.0123, 5525.242, 3190.0);
 
-       vvd(dtdb, -0.1280368005936998991e-2, 1e-15, "iauDtdb", "");
+       vvd(dtdb, -0.1280368005936998991e-2, 1e-15, "jauDtdb", "");
 
     }
 
@@ -1458,12 +1461,12 @@ public class SOFATest {
     **   t _ e e 0 0
     **  - - - - - - -
     **
-    **  Test iauEe00 function.
+    **  Test jauEe00 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauEe00, vvd
+    **  Called:  jauEe00, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -1474,9 +1477,9 @@ public class SOFATest {
        epsa =  0.4090789763356509900;
        dpsi = -0.9630909107115582393e-5;
 
-       ee = iauEe00(2400000.5, 53736.0, epsa, dpsi);
+       ee = jauEe00(2400000.5, 53736.0, epsa, dpsi);
 
-       vvd(ee, -0.8834193235367965479e-5, 1e-18, "iauEe00", "");
+       vvd(ee, -0.8834193235367965479e-5, 1e-18, "jauEe00", "");
 
     }
 
@@ -1487,12 +1490,12 @@ public class SOFATest {
     **   t _ e e 0 0 a
     **  - - - - - - - -
     **
-    **  Test iauEe00a function.
+    **  Test jauEe00a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauEe00a, vvd
+    **  Called:  jauEe00a, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -1500,9 +1503,9 @@ public class SOFATest {
        double ee;
 
 
-       ee = iauEe00a(2400000.5, 53736.0);
+       ee = jauEe00a(2400000.5, 53736.0);
 
-       vvd(ee, -0.8834192459222588227e-5, 1e-18, "iauEe00a", "");
+       vvd(ee, -0.8834192459222588227e-5, 1e-18, "jauEe00a", "");
 
     }
 
@@ -1513,12 +1516,12 @@ public class SOFATest {
     **   t _ e e 0 0 b
     **  - - - - - - - -
     **
-    **  Test iauEe00b function.
+    **  Test jauEe00b function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauEe00b, vvd
+    **  Called:  jauEe00b, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -1526,9 +1529,9 @@ public class SOFATest {
        double ee;
 
 
-       ee = iauEe00b(2400000.5, 53736.0);
+       ee = jauEe00b(2400000.5, 53736.0);
 
-       vvd(ee, -0.8835700060003032831e-5, 1e-18, "iauEe00b", "");
+       vvd(ee, -0.8835700060003032831e-5, 1e-18, "jauEe00b", "");
 
     }
 
@@ -1539,12 +1542,12 @@ public class SOFATest {
     **   t _ e e 0 6 a
     **  - - - - - - - -
     **
-    **  Test iauEe06a function.
+    **  Test jauEe06a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauEe06a, vvd
+    **  Called:  jauEe06a, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -1552,9 +1555,9 @@ public class SOFATest {
        double ee;
 
 
-       ee = iauEe06a(2400000.5, 53736.0);
+       ee = jauEe06a(2400000.5, 53736.0);
 
-       vvd(ee, -0.8834195072043790156e-5, 1e-15, "iauEe06a", "");
+       vvd(ee, -0.8834195072043790156e-5, 1e-15, "jauEe06a", "");
     }
 
     @Test
@@ -1564,12 +1567,12 @@ public class SOFATest {
     **   t _ e e c t 0 0
     **  - - - - - - - - -
     **
-    **  Test iauEect00 function.
+    **  Test jauEect00 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauEect00, vvd
+    **  Called:  jauEect00, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -1577,9 +1580,9 @@ public class SOFATest {
        double eect;
 
 
-       eect = iauEect00(2400000.5, 53736.0);
+       eect = jauEect00(2400000.5, 53736.0);
 
-       vvd(eect, 0.2046085004885125264e-8, 1e-20, "iauEect00", "");
+       vvd(eect, 0.2046085004885125264e-8, 1e-20, "jauEect00", "");
 
     }
 
@@ -1590,12 +1593,12 @@ public class SOFATest {
     **   t _ e f o r m
     **  - - - - - - - -
     **
-    **  Test iauEform function.
+    **  Test jauEform function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauEform, viv, vvd
+    **  Called:  jauEform, viv, vvd
     **
     **  This revision:  2010 January 18
     */
@@ -1603,34 +1606,34 @@ public class SOFATest {
         ReferenceEllipsoid ef;
 
         try {
-            ef = iauEform( 0 );
-            fail("iauEform should throw exception for illegal identifier");
+            ef = jauEform( 0 );
+            fail("jauEform should throw exception for illegal identifier");
         } catch (SOFAIllegalParameter e) {
         }
 
 
         try {
-            ef = iauEform( 1 );
+            ef = jauEform( 1 );
 
-            vvd(ef.a, 6378137.0, 1e-10, "iauEform", "a");
-            vvd(ef.f, 0.0033528106647474807, 1e-18, "iauEform", "f");
+            vvd(ef.a, 6378137.0, 1e-10, "jauEform", "a");
+            vvd(ef.f, 0.0033528106647474807, 1e-18, "jauEform", "f");
 
-            ef = iauEform( 2 );
+            ef = jauEform( 2 );
 
-            vvd(ef.a, 6378137.0, 1e-10, "iauEform", "a");
-            vvd(ef.f, 0.0033528106811823189, 1e-18, "iauEform", "f");
+            vvd(ef.a, 6378137.0, 1e-10, "jauEform", "a");
+            vvd(ef.f, 0.0033528106811823189, 1e-18, "jauEform", "f");
 
-            ef = iauEform( 3 );
+            ef = jauEform( 3 );
 
-            vvd(ef.a, 6378135.0, 1e-10, "iauEform", "a");
-            vvd(ef.f, 0.0033527794541675049, 1e-18, "iauEform", "f");
+            vvd(ef.a, 6378135.0, 1e-10, "jauEform", "a");
+            vvd(ef.f, 0.0033527794541675049, 1e-18, "jauEform", "f");
         } catch (SOFAIllegalParameter e) {
-            fail("iauEform should not throw exception for legal identifier");
+            fail("jauEform should not throw exception for legal identifier");
         }
 
         try {
-            ef = iauEform( 4 );
-            fail("iauEform should throw exception for illegal identifier");
+            ef = jauEform( 4 );
+            fail("jauEform should throw exception for illegal identifier");
         } catch (SOFAIllegalParameter e) {
 
         }
@@ -1643,12 +1646,12 @@ public class SOFATest {
     **   t _ e o 0 6 a
     **  - - - - - - - -
     **
-    **  Test iauEo06a function.
+    **  Test jauEo06a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauEo06a, vvd
+    **  Called:  jauEo06a, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -1656,9 +1659,9 @@ public class SOFATest {
        double eo;
 
 
-       eo = iauEo06a(2400000.5, 53736.0);
+       eo = jauEo06a(2400000.5, 53736.0);
 
-       vvd(eo, -0.1332882371941833644e-2, 1e-15, "iauEo06a", "");
+       vvd(eo, -0.1332882371941833644e-2, 1e-15, "jauEo06a", "");
 
     }
 
@@ -1669,12 +1672,12 @@ public class SOFATest {
     **   t _ e o r s
     **  - - - - - - -
     **
-    **  Test iauEors function.
+    **  Test jauEors function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauEors, vvd
+    **  Called:  jauEors, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -1696,9 +1699,9 @@ public class SOFATest {
 
        s = -0.1220040848472271978e-7;
 
-       eo = iauEors(rnpb, s);
+       eo = jauEors(rnpb, s);
 
-       vvd(eo, -0.1332882715130744606e-2, 1e-14, "iauEors", "");
+       vvd(eo, -0.1332882715130744606e-2, 1e-14, "jauEors", "");
 
     }
 
@@ -1709,12 +1712,12 @@ public class SOFATest {
     **   t _ e p b
     **  - - - - - -
     **
-    **  Test iauEpb function.
+    **  Test jauEpb function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauEpb, vvd
+    **  Called:  jauEpb, vvd
     **
     **  This revision:  2008 May 27
     */
@@ -1722,9 +1725,9 @@ public class SOFATest {
        double epb;
 
 
-       epb = iauEpb(2415019.8135, 30103.18648);
+       epb = jauEpb(2415019.8135, 30103.18648);
 
-       vvd(epb, 1982.418424159278580, 1e-12, "iauEpb", "");
+       vvd(epb, 1982.418424159278580, 1e-12, "jauEpb", "");
 
     }
 
@@ -1735,12 +1738,12 @@ public class SOFATest {
     **   t _ e p b 2 j d
     **  - - - - - - - - -
     **
-    **  Test iauEpb2jd function.
+    **  Test jauEpb2jd function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauEpb2jd, vvd
+    **  Called:  jauEpb2jd, vvd
     **
     **  This revision:  2008 November 29
     */
@@ -1750,10 +1753,10 @@ public class SOFATest {
 
        epb = 1957.3;
 
-       JulianDate jd = iauEpb2jd(epb);
+       JulianDate jd = jauEpb2jd(epb);
 
-       vvd(jd.djm0, 2400000.5, 1e-9, "iauEpb2jd", "djm0");
-       vvd(jd.djm1, 35948.1915101513, 1e-9, "iauEpb2jd", "mjd");
+       vvd(jd.djm0, 2400000.5, 1e-9, "jauEpb2jd", "djm0");
+       vvd(jd.djm1, 35948.1915101513, 1e-9, "jauEpb2jd", "mjd");
 
     }
 
@@ -1764,12 +1767,12 @@ public class SOFATest {
     **   t _ e p j
     **  - - - - - -
     **
-    **  Test iauEpj function.
+    **  Test jauEpj function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauEpj, vvd
+    **  Called:  jauEpj, vvd
     **
     **  This revision:  2008 May 27
     */
@@ -1777,9 +1780,9 @@ public class SOFATest {
        double epj;
 
 
-       epj = iauEpj(2451545, -7392.5);
+       epj = jauEpj(2451545, -7392.5);
 
-       vvd(epj, 1979.760438056125941, 1e-12, "iauEpj", "");
+       vvd(epj, 1979.760438056125941, 1e-12, "jauEpj", "");
 
     }
 
@@ -1790,12 +1793,12 @@ public class SOFATest {
     **   t _ e p j 2 j d
     **  - - - - - - - - -
     **
-    **  Test iauEpj2jd function.
+    **  Test jauEpj2jd function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauEpj2jd, vvd
+    **  Called:  jauEpj2jd, vvd
     **
     **  This revision:  2008 November 29
     */
@@ -1805,10 +1808,10 @@ public class SOFATest {
 
        epj = 1996.8;
 
-       JulianDate jd = iauEpj2jd(epj);
+       JulianDate jd = jauEpj2jd(epj);
 
-       vvd(jd.djm0, 2400000.5, 1e-9, "iauEpj2jd", "djm0");
-       vvd(jd.djm1,    50375.7, 1e-9, "iauEpj2jd", "mjd");
+       vvd(jd.djm0, 2400000.5, 1e-9, "jauEpj2jd", "djm0");
+       vvd(jd.djm1,    50375.7, 1e-9, "jauEpj2jd", "mjd");
 
     }
 
@@ -1819,12 +1822,12 @@ public class SOFATest {
     **   t _ e p v 0 0
     **  - - - - - - - -
     **
-    **  Test iauEpv00 function.
+    **  Test jauEpv00 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called: iauEpv00, vvd, viv
+    **  Called: jauEpv00, vvd, viv
     **
     **  This revision:  2008 November 28
     */
@@ -1833,37 +1836,37 @@ public class SOFATest {
        int j;
 
 
-       j = iauEpv00(2400000.5, 53411.52501161, pvh, pvb);
+       j = jauEpv00(2400000.5, 53411.52501161, pvh, pvb);
 
        vvd(pvh[0][0], -0.7757238809297706813, 1e-14,
-           "iauEpv00", "ph(x)");
+           "jauEpv00", "ph(x)");
        vvd(pvh[0][1], 0.5598052241363340596, 1e-14,
-           "iauEpv00", "ph(y)");
+           "jauEpv00", "ph(y)");
        vvd(pvh[0][2], 0.2426998466481686993, 1e-14,
-           "iauEpv00", "ph(z)");
+           "jauEpv00", "ph(z)");
 
        vvd(pvh[1][0], -0.1091891824147313846e-1, 1e-15,
-           "iauEpv00", "vh(x)");
+           "jauEpv00", "vh(x)");
        vvd(pvh[1][1], -0.1247187268440845008e-1, 1e-15,
-           "iauEpv00", "vh(y)");
+           "jauEpv00", "vh(y)");
        vvd(pvh[1][2], -0.5407569418065039061e-2, 1e-15,
-           "iauEpv00", "vh(z)");
+           "jauEpv00", "vh(z)");
 
        vvd(pvb[0][0], -0.7714104440491111971, 1e-14,
-           "iauEpv00", "pb(x)");
+           "jauEpv00", "pb(x)");
        vvd(pvb[0][1], 0.5598412061824171323, 1e-14,
-           "iauEpv00", "pb(y)");
+           "jauEpv00", "pb(y)");
        vvd(pvb[0][2], 0.2425996277722452400, 1e-14,
-           "iauEpv00", "pb(z)");
+           "jauEpv00", "pb(z)");
 
        vvd(pvb[1][0], -0.1091874268116823295e-1, 1e-15,
-           "iauEpv00", "vb(x)");
+           "jauEpv00", "vb(x)");
        vvd(pvb[1][1], -0.1246525461732861538e-1, 1e-15,
-           "iauEpv00", "vb(y)");
+           "jauEpv00", "vb(y)");
        vvd(pvb[1][2], -0.5404773180966231279e-2, 1e-15,
-           "iauEpv00", "vb(z)");
+           "jauEpv00", "vb(z)");
 
-       viv(j, 0, "iauEpv00", "j");
+       viv(j, 0, "jauEpv00", "j");
 
     }
 
@@ -1874,12 +1877,12 @@ public class SOFATest {
     **   t _ e q e q 9 4
     **  - - - - - - - - -
     **
-    **  Test iauEqeq94 function.
+    **  Test jauEqeq94 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauEqeq94, vvd
+    **  Called:  jauEqeq94, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -1887,9 +1890,9 @@ public class SOFATest {
        double eqeq;
 
 
-       eqeq = iauEqeq94(2400000.5, 41234.0);
+       eqeq = jauEqeq94(2400000.5, 41234.0);
 
-       vvd(eqeq, 0.5357758254609256894e-4, 1e-17, "iauEqeq94", "");
+       vvd(eqeq, 0.5357758254609256894e-4, 1e-17, "jauEqeq94", "");
 
     }
 
@@ -1900,12 +1903,12 @@ public class SOFATest {
     **   t _ e r a 0 0
     **  - - - - - - - -
     **
-    **  Test iauEra00 function.
+    **  Test jauEra00 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauEra00, vvd
+    **  Called:  jauEra00, vvd
     **
     **  This revision:  2008 May 26
     */
@@ -1913,9 +1916,9 @@ public class SOFATest {
        double era00;
 
 
-       era00 = iauEra00(2400000.5, 54388.0);
+       era00 = jauEra00(2400000.5, 54388.0);
 
-       vvd(era00, 0.4022837240028158102, 1e-12, "iauEra00", "");
+       vvd(era00, 0.4022837240028158102, 1e-12, "jauEra00", "");
 
     }
 
@@ -1926,18 +1929,18 @@ public class SOFATest {
     **   t _ f a d 0 3
     **  - - - - - - - -
     **
-    **  Test iauFad03 function.
+    **  Test jauFad03 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFad03, vvd
+    **  Called:  jauFad03, vvd
     **
     **  This revision:  2008 May 22
     */
     {
-       vvd(iauFad03(0.80), 1.946709205396925672, 1e-12,
-           "iauFad03", "");
+       vvd(jauFad03(0.80), 1.946709205396925672, 1e-12,
+           "jauFad03", "");
     }
 
     @Test
@@ -1947,18 +1950,18 @@ public class SOFATest {
     **   t _ f a e 0 3
     **  - - - - - - - -
     **
-    **  Test iauFae03 function.
+    **  Test jauFae03 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFae03, vvd
+    **  Called:  jauFae03, vvd
     **
     **  This revision:  2008 May 22
     */
     {
-       vvd(iauFae03(0.80), 1.744713738913081846, 1e-12,
-           "iauFae03", "");
+       vvd(jauFae03(0.80), 1.744713738913081846, 1e-12,
+           "jauFae03", "");
     }
 
     @Test
@@ -1968,18 +1971,18 @@ public class SOFATest {
     **   t _ f a f 0 3
     **  - - - - - - - -
     **
-    **  Test iauFaf03 function.
+    **  Test jauFaf03 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFaf03, vvd
+    **  Called:  jauFaf03, vvd
     **
     **  This revision:  2008 May 22
     */
     {
-       vvd(iauFaf03(0.80), 0.2597711366745499518, 1e-12,
-           "iauFaf03", "");
+       vvd(jauFaf03(0.80), 0.2597711366745499518, 1e-12,
+           "jauFaf03", "");
     }
 
     @Test
@@ -1989,18 +1992,18 @@ public class SOFATest {
     **   t _ f a j u 0 3
     **  - - - - - - - - -
     **
-    **  Test iauFaju03 function.
+    **  Test jauFaju03 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFaju03, vvd
+    **  Called:  jauFaju03, vvd
     **
     **  This revision:  2008 May 22
     */
     {
-       vvd(iauFaju03(0.80), 5.275711665202481138, 1e-12,
-           "iauFaju03", "");
+       vvd(jauFaju03(0.80), 5.275711665202481138, 1e-12,
+           "jauFaju03", "");
     }
 
     @Test
@@ -2010,18 +2013,18 @@ public class SOFATest {
     **   t _ f a l 0 3
     **  - - - - - - - -
     **
-    **  Test iauFal03 function.
+    **  Test jauFal03 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFal03, vvd
+    **  Called:  jauFal03, vvd
     **
     **  This revision:  2008 May 22
     */
     {
-       vvd(iauFal03(0.80), 5.132369751108684150, 1e-12,
-           "iauFal03", "");
+       vvd(jauFal03(0.80), 5.132369751108684150, 1e-12,
+           "jauFal03", "");
     }
 
     @Test
@@ -2031,18 +2034,18 @@ public class SOFATest {
     **   t _ f a l p 0 3
     **  - - - - - - - - -
     **
-    **  Test iauFalp03 function.
+    **  Test jauFalp03 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFalp03, vvd
+    **  Called:  jauFalp03, vvd
     **
     **  This revision:  2008 May 22
     */
     {
-       vvd(iauFalp03(0.80), 6.226797973505507345, 1e-12,
-          "iauFalp03", "");
+       vvd(jauFalp03(0.80), 6.226797973505507345, 1e-12,
+          "jauFalp03", "");
     }
 
     @Test
@@ -2052,18 +2055,18 @@ public class SOFATest {
     **   t _ f a m a 0 3
     **  - - - - - - - - -
     **
-    **  Test iauFama03 function.
+    **  Test jauFama03 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFama03, vvd
+    **  Called:  jauFama03, vvd
     **
     **  This revision:  2008 May 22
     */
     {
-       vvd(iauFama03(0.80), 3.275506840277781492, 1e-12,
-           "iauFama03", "");
+       vvd(jauFama03(0.80), 3.275506840277781492, 1e-12,
+           "jauFama03", "");
     }
 
     @Test
@@ -2073,18 +2076,18 @@ public class SOFATest {
     **   t _ f a m e 0 3
     **  - - - - - - - - -
     **
-    **  Test iauFame03 function.
+    **  Test jauFame03 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFame03, vvd
+    **  Called:  jauFame03, vvd
     **
     **  This revision:  2008 May 22
     */
     {
-       vvd(iauFame03(0.80), 5.417338184297289661, 1e-12,
-           "iauFame03", "");
+       vvd(jauFame03(0.80), 5.417338184297289661, 1e-12,
+           "jauFame03", "");
     }
 
     @Test
@@ -2094,18 +2097,18 @@ public class SOFATest {
     **   t _ f a n e 0 3
     **  - - - - - - - - -
     **
-    **  Test iauFane03 function.
+    **  Test jauFane03 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFane03, vvd
+    **  Called:  jauFane03, vvd
     **
     **  This revision:  2008 May 22
     */
     {
-       vvd(iauFane03(0.80), 2.079343830860413523, 1e-12,
-           "iauFane03", "");
+       vvd(jauFane03(0.80), 2.079343830860413523, 1e-12,
+           "jauFane03", "");
     }
 
     @Test
@@ -2115,18 +2118,18 @@ public class SOFATest {
     **   t _ f a o m 0 3
     **  - - - - - - - - -
     **
-    **  Test iauFaom03 function.
+    **  Test jauFaom03 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFaom03, vvd
+    **  Called:  jauFaom03, vvd
     **
     **  This revision:  2008 May 22
     */
     {
-       vvd(iauFaom03(0.80), -5.973618440951302183, 1e-12,
-           "iauFaom03", "");
+       vvd(jauFaom03(0.80), -5.973618440951302183, 1e-12,
+           "jauFaom03", "");
     }
 
     @Test
@@ -2136,18 +2139,18 @@ public class SOFATest {
     **   t _ f a p a 0 3
     **  - - - - - - - - -
     **
-    **  Test iauFapa03 function.
+    **  Test jauFapa03 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFapa03, vvd
+    **  Called:  jauFapa03, vvd
     **
     **  This revision:  2008 November 28
     */
     {
-       vvd(iauFapa03(0.80), 0.1950884762240000000e-1, 1e-12,
-           "iauFapa03", "");
+       vvd(jauFapa03(0.80), 0.1950884762240000000e-1, 1e-12,
+           "jauFapa03", "");
     }
 
     @Test
@@ -2157,18 +2160,18 @@ public class SOFATest {
     **   t _ f a s a 0 3
     **  - - - - - - - - -
     **
-    **  Test iauFasa03 function.
+    **  Test jauFasa03 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFasa03, vvd
+    **  Called:  jauFasa03, vvd
     **
     **  This revision:  2008 May 22
     */
     {
-       vvd(iauFasa03(0.80), 5.371574539440827046, 1e-12,
-           "iauFasa03", "");
+       vvd(jauFasa03(0.80), 5.371574539440827046, 1e-12,
+           "jauFasa03", "");
     }
 
     @Test
@@ -2178,18 +2181,18 @@ public class SOFATest {
     **   t _ f a u r 0 3
     **  - - - - - - - - -
     **
-    **  Test iauFaur03 function.
+    **  Test jauFaur03 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFaur03, vvd
+    **  Called:  jauFaur03, vvd
     **
     **  This revision:  2008 May 22
     */
     {
-       vvd(iauFaur03(0.80), 5.180636450180413523, 1e-12,
-           "iauFaur03", "");
+       vvd(jauFaur03(0.80), 5.180636450180413523, 1e-12,
+           "jauFaur03", "");
     }
 
     @Test
@@ -2199,18 +2202,18 @@ public class SOFATest {
     **   t _ f a v e 0 3
     **  - - - - - - - - -
     **
-    **  Test iauFave03 function.
+    **  Test jauFave03 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFave03, vvd
+    **  Called:  jauFave03, vvd
     **
     **  This revision:  2008 May 22
     */
     {
-       vvd(iauFave03(0.80), 3.424900460533758000, 1e-12,
-           "iauFave03", "");
+       vvd(jauFave03(0.80), 3.424900460533758000, 1e-12,
+           "jauFave03", "");
     }
 
     @Test
@@ -2220,12 +2223,12 @@ public class SOFATest {
     **   t _ f k 5 2 h
     **  - - - - - - - -
     **
-    **  Test iauFk52h function.
+    **  Test jauFk52h function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFk52h, vvd
+    **  Called:  jauFk52h, vvd
     **
     **  This revision:  2009 November 6
     */
@@ -2240,20 +2243,20 @@ public class SOFATest {
        px5 =  0.379210;
        rv5 = -7.6;
 
-      CatalogCoords cat = iauFk52h(r5, d5, dr5, dd5, px5, rv5);
+      CatalogCoords cat = jauFk52h(r5, d5, dr5, dd5, px5, rv5);
 
        vvd(cat.pos.alpha, 1.767794226299947632, 1e-14,
-           "iauFk52h", "ra");
+           "jauFk52h", "ra");
        vvd(cat.pos.delta,  -0.2917516070530391757, 1e-14,
-           "iauFk52h", "dec");
+           "jauFk52h", "dec");
        vvd(cat.pm.alpha, -0.19618741256057224e-6,1e-19,
-           "iauFk52h", "dr5");
+           "jauFk52h", "dr5");
        vvd(cat.pm.delta, -0.58459905176693911e-5, 1e-19,
-           "iauFk52h", "dd5");
+           "jauFk52h", "dd5");
        vvd(cat.px,  0.37921, 1e-14,
-           "iauFk52h", "px");
+           "jauFk52h", "px");
        vvd(cat.rv, -7.6000000940000254, 1e-11,
-           "iauFk52h", "rv");
+           "jauFk52h", "rv");
 
     }
 
@@ -2264,12 +2267,12 @@ public class SOFATest {
     **   t _ f k 5 h i p
     **  - - - - - - - - -
     **
-    **  Test iauFk5hip function.
+    **  Test jauFk5hip function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFk5hip, vvd
+    **  Called:  jauFk5hip, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -2277,32 +2280,32 @@ public class SOFATest {
        double r5h[][] = new double[3][3], s5h[] = new double[3];
 
 
-       iauFk5hip(r5h, s5h);
+       jauFk5hip(r5h, s5h);
 
        vvd(r5h[0][0], 0.9999999999999928638, 1e-14,
-           "iauFk5hip", "11");
+           "jauFk5hip", "11");
        vvd(r5h[0][1], 0.1110223351022919694e-6, 1e-17,
-           "iauFk5hip", "12");
+           "jauFk5hip", "12");
        vvd(r5h[0][2], 0.4411803962536558154e-7, 1e-17,
-           "iauFk5hip", "13");
+           "jauFk5hip", "13");
        vvd(r5h[1][0], -0.1110223308458746430e-6, 1e-17,
-           "iauFk5hip", "21");
+           "jauFk5hip", "21");
        vvd(r5h[1][1], 0.9999999999999891830, 1e-14,
-           "iauFk5hip", "22");
+           "jauFk5hip", "22");
        vvd(r5h[1][2], -0.9647792498984142358e-7, 1e-17,
-           "iauFk5hip", "23");
+           "jauFk5hip", "23");
        vvd(r5h[2][0], -0.4411805033656962252e-7, 1e-17,
-           "iauFk5hip", "31");
+           "jauFk5hip", "31");
        vvd(r5h[2][1], 0.9647792009175314354e-7, 1e-17,
-           "iauFk5hip", "32");
+           "jauFk5hip", "32");
        vvd(r5h[2][2], 0.9999999999999943728, 1e-14,
-           "iauFk5hip", "33");
+           "jauFk5hip", "33");
        vvd(s5h[0], -0.1454441043328607981e-8, 1e-17,
-           "iauFk5hip", "s1");
+           "jauFk5hip", "s1");
        vvd(s5h[1], 0.2908882086657215962e-8, 1e-17,
-           "iauFk5hip", "s2");
+           "jauFk5hip", "s2");
        vvd(s5h[2], 0.3393695767766751955e-8, 1e-17,
-           "iauFk5hip", "s3");
+           "jauFk5hip", "s3");
 
     }
 
@@ -2313,12 +2316,12 @@ public class SOFATest {
     **   t _ f k 5 h z
     **  - - - - - - - -
     **
-    **  Test iauFk5hz function.
+    **  Test jauFk5hz function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFk5hz, vvd
+    **  Called:  jauFk5hz, vvd
     **
     **  This revision:  2008 May 26
     */
@@ -2329,10 +2332,10 @@ public class SOFATest {
        r5 =  1.76779433;
        d5 = -0.2917517103;
 
-       SphericalPosition pos = iauFk5hz(r5, d5, 2400000.5, 54479.0);
+       SphericalPosition pos = jauFk5hz(r5, d5, 2400000.5, 54479.0);
 
-       vvd(pos.alpha,  1.767794191464423978, 1e-12, "iauFk5hz", "ra");
-       vvd(pos.delta, -0.2917516001679884419, 1e-12, "iauFk5hz", "dec");
+       vvd(pos.alpha,  1.767794191464423978, 1e-12, "jauFk5hz", "ra");
+       vvd(pos.delta, -0.2917516001679884419, 1e-12, "jauFk5hz", "dec");
 
     }
 
@@ -2343,12 +2346,12 @@ public class SOFATest {
     **   t _ f w 2 m
     **  - - - - - - -
     **
-    **  Test iauFw2m function.
+    **  Test jauFw2m function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFw2m, vvd
+    **  Called:  jauFw2m, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -2361,28 +2364,28 @@ public class SOFATest {
        psi  = -0.9501954178013015092e-3;
        eps  =  0.4091014316587367472;
 
-       iauFw2m(gamb, phib, psi, eps, r);
+       jauFw2m(gamb, phib, psi, eps, r);
 
        vvd(r[0][0], 0.9999995505176007047, 1e-12,
-           "iauFw2m", "11");
+           "jauFw2m", "11");
        vvd(r[0][1], 0.8695404617348192957e-3, 1e-12,
-           "iauFw2m", "12");
+           "jauFw2m", "12");
        vvd(r[0][2], 0.3779735201865582571e-3, 1e-12,
-           "iauFw2m", "13");
+           "jauFw2m", "13");
 
        vvd(r[1][0], -0.8695404723772016038e-3, 1e-12,
-           "iauFw2m", "21");
+           "jauFw2m", "21");
        vvd(r[1][1], 0.9999996219496027161, 1e-12,
-           "iauFw2m", "22");
+           "jauFw2m", "22");
        vvd(r[1][2], -0.1361752496887100026e-6, 1e-12,
-           "iauFw2m", "23");
+           "jauFw2m", "23");
 
        vvd(r[2][0], -0.3779734957034082790e-3, 1e-12,
-           "iauFw2m", "31");
+           "jauFw2m", "31");
        vvd(r[2][1], -0.1924880848087615651e-6, 1e-12,
-           "iauFw2m", "32");
+           "jauFw2m", "32");
        vvd(r[2][2], 0.9999999285679971958, 1e-12,
-           "iauFw2m", "33");
+           "jauFw2m", "33");
 
     }
 
@@ -2393,12 +2396,12 @@ public class SOFATest {
     **   t _ f w 2 x y
     **  - - - - - - - -
     **
-    **  Test iauFw2xy function.
+    **  Test jauFw2xy function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauFw2xy, vvd
+    **  Called:  jauFw2xy, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -2411,10 +2414,10 @@ public class SOFATest {
        psi  = -0.9501954178013015092e-3;
        eps  =  0.4091014316587367472;
 
-       CelestialIntermediatePole cip = iauFw2xy(gamb, phib, psi, eps);
+       CelestialIntermediatePole cip = jauFw2xy(gamb, phib, psi, eps);
 
-       vvd(cip.x, -0.3779734957034082790e-3, 1e-14, "iauFw2xy", "x");
-       vvd(cip.y, -0.1924880848087615651e-6, 1e-14, "iauFw2xy", "y");
+       vvd(cip.x, -0.3779734957034082790e-3, 1e-14, "jauFw2xy", "x");
+       vvd(cip.y, -0.1924880848087615651e-6, 1e-14, "jauFw2xy", "y");
 
     }
 
@@ -2425,12 +2428,12 @@ public class SOFATest {
     **   t _ g c 2 g d
     **  - - - - - - - -
     **
-    **  Test iauGc2gd function.
+    **  Test jauGc2gd function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauGc2gd, viv, vvd
+    **  Called:  jauGc2gd, viv, vvd
     **
     **  This revision:  2009 November 8
     */
@@ -2438,29 +2441,29 @@ public class SOFATest {
         double xyz[] = {2e6, 3e6, 5.244e6};
         GeodeticCoord geo;
         try {
-            geo = iauGc2gd( 0, xyz);
-            fail("iauGc2gd should thow exception for illegal parameter");
+            geo = jauGc2gd( 0, xyz);
+            fail("jauGc2gd should thow exception for illegal parameter");
         } catch (SOFAIllegalParameter e1) {
 
         }
         try {
-            geo = iauGc2gd( 1, xyz );
+            geo = jauGc2gd( 1, xyz );
 
-            vvd(geo.elong, 0.98279372324732907, 1e-14, "iauGc2gd", "e1");
-            vvd(geo.phi, 0.97160184819075459, 1e-14, "iauGc2gd", "p1");
-            vvd(geo.height, 331.41724614260599, 1e-8, "iauGc2gd", "h1");
+            vvd(geo.elong, 0.98279372324732907, 1e-14, "jauGc2gd", "e1");
+            vvd(geo.phi, 0.97160184819075459, 1e-14, "jauGc2gd", "p1");
+            vvd(geo.height, 331.41724614260599, 1e-8, "jauGc2gd", "h1");
 
-            geo = iauGc2gd( 2, xyz );
-            vvd(geo.elong, 0.98279372324732907, 1e-14, "iauGc2gd", "e2");
-            vvd(geo.phi, 0.97160184820607853, 1e-14, "iauGc2gd", "p2");
-            vvd(geo.height, 331.41731754844348, 1e-8, "iauGc2gd", "h2");
+            geo = jauGc2gd( 2, xyz );
+            vvd(geo.elong, 0.98279372324732907, 1e-14, "jauGc2gd", "e2");
+            vvd(geo.phi, 0.97160184820607853, 1e-14, "jauGc2gd", "p2");
+            vvd(geo.height, 331.41731754844348, 1e-8, "jauGc2gd", "h2");
         } catch (SOFAIllegalParameter e1) {
-            fail("iauGc2gd should not thow exception for legal parameter");
+            fail("jauGc2gd should not thow exception for legal parameter");
         }
 
         try {
-            geo = iauGc2gd( 4, xyz );
-            fail("iauGc2gd should thow exception for illegal parameter");
+            geo = jauGc2gd( 4, xyz );
+            fail("jauGc2gd should thow exception for illegal parameter");
         } catch (SOFAIllegalParameter e1) {
         }
 
@@ -2473,12 +2476,12 @@ public class SOFATest {
     **   t _ g c 2 g d e
     **  - - - - - - - - -
     **
-    **  Test iauGc2gde function.
+    **  Test jauGc2gde function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauGc2gde, viv, vvd
+    **  Called:  jauGc2gde, viv, vvd
     **
     **  This revision:  2009 November 8
     */
@@ -2487,13 +2490,13 @@ public class SOFATest {
         double xyz[] = {2e6, 3e6, 5.244e6};
 
         try {
-            GeodeticCoord geo = iauGc2gde( a, f, xyz);
+            GeodeticCoord geo = jauGc2gde( a, f, xyz);
 
-            vvd(geo.elong, 0.98279372324732907, 1e-14, "iauGc2gde", "e");
-            vvd(geo.phi, 0.97160183775704115, 1e-14, "iauGc2gde", "p");
-            vvd(geo.height, 332.36862495764397, 1e-8, "iauGc2gde", "h");
+            vvd(geo.elong, 0.98279372324732907, 1e-14, "jauGc2gde", "e");
+            vvd(geo.phi, 0.97160183775704115, 1e-14, "jauGc2gde", "p");
+            vvd(geo.height, 332.36862495764397, 1e-8, "jauGc2gde", "h");
         } catch (SOFAIllegalParameter e1) {
-            fail("iauGc2gde should not thow exception for legal parameter");
+            fail("jauGc2gde should not thow exception for legal parameter");
 
         }
     }
@@ -2505,12 +2508,12 @@ public class SOFATest {
     **   t _ g d 2 g c
     **  - - - - - - - -
     **
-    **  Test iauGd2gc function.
+    **  Test jauGd2gc function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauGd2gc, viv, vvd
+    **  Called:  jauGd2gc, viv, vvd
     **
     **  This revision:  2009 November 6
     */
@@ -2519,40 +2522,40 @@ public class SOFATest {
         double xyz[] = new double[3];
 
         try {
-            xyz = iauGd2gc( 0, e, p, h );
+            xyz = jauGd2gc( 0, e, p, h );
 
-            fail("iauGd2gc should thow exception for illegal parameter");
+            fail("jauGd2gc should thow exception for illegal parameter");
         } catch (SOFAIllegalParameter e1) {
             // expected behaviour
 
         } catch (SOFAInternalError e1) {
-            fail("iauGd2gc should thow exception for illegal parameter");
+            fail("jauGd2gc should thow exception for illegal parameter");
         }
 
         try {
-            xyz = iauGd2gc( 1, e, p, h );
+            xyz = jauGd2gc( 1, e, p, h );
 
 
-            vvd(xyz[0], -5599000.5577049947, 1e-7, "iauGd2gc", "0/1");
-            vvd(xyz[1], 233011.67223479203, 1e-7, "iauGd2gc", "1/1");
-            vvd(xyz[2], -3040909.4706983363, 1e-7, "iauGd2gc", "2/1");
+            vvd(xyz[0], -5599000.5577049947, 1e-7, "jauGd2gc", "0/1");
+            vvd(xyz[1], 233011.67223479203, 1e-7, "jauGd2gc", "1/1");
+            vvd(xyz[2], -3040909.4706983363, 1e-7, "jauGd2gc", "2/1");
 
-            xyz = iauGd2gc( 2, e, p, h);
+            xyz = jauGd2gc( 2, e, p, h);
 
-            vvd(xyz[0], -5599000.5577260984, 1e-7, "iauGd2gc", "0/2");
-            vvd(xyz[1], 233011.6722356703, 1e-7, "iauGd2gc", "1/2");
-            vvd(xyz[2], -3040909.4706095476, 1e-7, "iauGd2gc", "2/2");
+            vvd(xyz[0], -5599000.5577260984, 1e-7, "jauGd2gc", "0/2");
+            vvd(xyz[1], 233011.6722356703, 1e-7, "jauGd2gc", "1/2");
+            vvd(xyz[2], -3040909.4706095476, 1e-7, "jauGd2gc", "2/2");
         } catch (SOFAException e1) {
-            fail("iauGd2gc should not thow exception ");
+            fail("jauGd2gc should not thow exception ");
         }
 
         try {
-            xyz = iauGd2gc( 4, e, p, h );
-            fail("iauGd2gc should thow exception for illegal parameter");
+            xyz = jauGd2gc( 4, e, p, h );
+            fail("jauGd2gc should thow exception for illegal parameter");
         } catch (SOFAIllegalParameter e1) {
             //expected behaviour
         } catch (SOFAInternalError e1) {
-            fail("iauGd2gc should thow exception for illegal parameter");
+            fail("jauGd2gc should thow exception for illegal parameter");
         }
     }
 
@@ -2563,12 +2566,12 @@ public class SOFATest {
     **   t _ g d 2 g c e
     **  - - - - - - - - -
     **
-    **  Test iauGd2gce function.
+    **  Test jauGd2gce function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauGd2gce, viv, vvd
+    **  Called:  jauGd2gce, viv, vvd
     **
     **  This revision:  2009 November 6
     */
@@ -2577,11 +2580,11 @@ public class SOFATest {
        double e = 3.1, p = -0.5, h = 2500.0;
        double xyz[] = new double[3];
 
-       xyz = iauGd2gce( a, f, e, p, h );
+       xyz = jauGd2gce( a, f, e, p, h );
 
-       vvd(xyz[0], -5598999.6665116328, 1e-7, "iauGd2gce", "0");
-       vvd(xyz[1], 233011.63514630572, 1e-7, "iauGd2gce", "1");
-       vvd(xyz[2], -3040909.0517314132, 1e-7, "iauGd2gce", "2");
+       vvd(xyz[0], -5598999.6665116328, 1e-7, "jauGd2gce", "0");
+       vvd(xyz[1], 233011.63514630572, 1e-7, "jauGd2gce", "1");
+       vvd(xyz[2], -3040909.0517314132, 1e-7, "jauGd2gce", "2");
     }
 
     @Test
@@ -2591,12 +2594,12 @@ public class SOFATest {
     **   t _ g m s t 0 0
     **  - - - - - - - - -
     **
-    **  Test iauGmst00 function.
+    **  Test jauGmst00 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauGmst00, vvd
+    **  Called:  jauGmst00, vvd
     **
     **  This revision:  2008 May 26
     */
@@ -2604,9 +2607,9 @@ public class SOFATest {
        double theta;
 
 
-       theta = iauGmst00(2400000.5, 53736.0, 2400000.5, 53736.0);
+       theta = jauGmst00(2400000.5, 53736.0, 2400000.5, 53736.0);
 
-       vvd(theta, 1.754174972210740592, 1e-12, "iauGmst00", "");
+       vvd(theta, 1.754174972210740592, 1e-12, "jauGmst00", "");
 
     }
 
@@ -2617,12 +2620,12 @@ public class SOFATest {
     **   t _ g m s t 0 6
     **  - - - - - - - - -
     **
-    **  Test iauGmst06 function.
+    **  Test jauGmst06 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauGmst06, vvd
+    **  Called:  jauGmst06, vvd
     **
     **  This revision:  2008 May 26
     */
@@ -2630,9 +2633,9 @@ public class SOFATest {
        double theta;
 
 
-       theta = iauGmst06(2400000.5, 53736.0, 2400000.5, 53736.0);
+       theta = jauGmst06(2400000.5, 53736.0, 2400000.5, 53736.0);
 
-       vvd(theta, 1.754174971870091203, 1e-12, "iauGmst06", "");
+       vvd(theta, 1.754174971870091203, 1e-12, "jauGmst06", "");
 
     }
 
@@ -2643,12 +2646,12 @@ public class SOFATest {
     **   t _ g m s t 8 2
     **  - - - - - - - - -
     **
-    **  Test iauGmst82 function.
+    **  Test jauGmst82 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauGmst82, vvd
+    **  Called:  jauGmst82, vvd
     **
     **  This revision:  2008 May 26
     */
@@ -2656,9 +2659,9 @@ public class SOFATest {
        double theta;
 
 
-       theta = iauGmst82(2400000.5, 53736.0);
+       theta = jauGmst82(2400000.5, 53736.0);
 
-       vvd(theta, 1.754174981860675096, 1e-12, "iauGmst82", "");
+       vvd(theta, 1.754174981860675096, 1e-12, "jauGmst82", "");
 
     }
 
@@ -2669,12 +2672,12 @@ public class SOFATest {
     **   t _ g s t 0 0 a
     **  - - - - - - - - -
     **
-    **  Test iauGst00a function.
+    **  Test jauGst00a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauGst00a, vvd
+    **  Called:  jauGst00a, vvd
     **
     **  This revision:  2008 May 26
     */
@@ -2682,9 +2685,9 @@ public class SOFATest {
        double theta;
 
 
-       theta = iauGst00a(2400000.5, 53736.0, 2400000.5, 53736.0);
+       theta = jauGst00a(2400000.5, 53736.0, 2400000.5, 53736.0);
 
-       vvd(theta, 1.754166138018281369, 1e-12, "iauGst00a", "");
+       vvd(theta, 1.754166138018281369, 1e-12, "jauGst00a", "");
 
     }
 
@@ -2695,12 +2698,12 @@ public class SOFATest {
     **   t _ g s t 0 0 b
     **  - - - - - - - - -
     **
-    **  Test iauGst00b function.
+    **  Test jauGst00b function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauGst00b, vvd
+    **  Called:  jauGst00b, vvd
     **
     **  This revision:  2008 May 26
     */
@@ -2708,9 +2711,9 @@ public class SOFATest {
        double theta;
 
 
-       theta = iauGst00b(2400000.5, 53736.0);
+       theta = jauGst00b(2400000.5, 53736.0);
 
-       vvd(theta, 1.754166136510680589, 1e-12, "iauGst00b", "");
+       vvd(theta, 1.754166136510680589, 1e-12, "jauGst00b", "");
 
     }
 
@@ -2721,12 +2724,12 @@ public class SOFATest {
     **   t _ g s t 0 6
     **  - - - - - - - -
     **
-    **  Test iauGst06 function.
+    **  Test jauGst06 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauGst06, vvd
+    **  Called:  jauGst06, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -2746,9 +2749,9 @@ public class SOFATest {
        rnpb[2][1] =  0.4020595661593994396e-4;
        rnpb[2][2] =  0.9999998314954572365;
 
-       theta = iauGst06(2400000.5, 53736.0, 2400000.5, 53736.0, rnpb);
+       theta = jauGst06(2400000.5, 53736.0, 2400000.5, 53736.0, rnpb);
 
-       vvd(theta, 1.754166138018167568, 1e-12, "iauGst06", "");
+       vvd(theta, 1.754166138018167568, 1e-12, "jauGst06", "");
 
     }
 
@@ -2759,12 +2762,12 @@ public class SOFATest {
     **   t _ g s t 0 6 a
     **  - - - - - - - - -
     **
-    **  Test iauGst06a function.
+    **  Test jauGst06a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauGst06a, vvd
+    **  Called:  jauGst06a, vvd
     **
     **  This revision:  2008 May 26
     */
@@ -2772,9 +2775,9 @@ public class SOFATest {
        double theta;
 
 
-       theta = iauGst06a(2400000.5, 53736.0, 2400000.5, 53736.0);
+       theta = jauGst06a(2400000.5, 53736.0, 2400000.5, 53736.0);
 
-       vvd(theta, 1.754166137675019159, 1e-12, "iauGst06a", "");
+       vvd(theta, 1.754166137675019159, 1e-12, "jauGst06a", "");
 
     }
 
@@ -2785,12 +2788,12 @@ public class SOFATest {
     **   t _ g s t 9 4
     **  - - - - - - - -
     **
-    **  Test iauGst94 function.
+    **  Test jauGst94 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauGst94, vvd
+    **  Called:  jauGst94, vvd
     **
     **  This revision:  2008 May 26
     */
@@ -2798,9 +2801,9 @@ public class SOFATest {
        double theta;
 
 
-       theta = iauGst94(2400000.5, 53736.0);
+       theta = jauGst94(2400000.5, 53736.0);
 
-       vvd(theta, 1.754166136020645203, 1e-12, "iauGst94", "");
+       vvd(theta, 1.754166136020645203, 1e-12, "jauGst94", "");
 
     }
 
@@ -2811,12 +2814,12 @@ public class SOFATest {
     **   t _ h 2 f k 5
     **  - - - - - - - -
     **
-    **  Test iauH2fk5 function.
+    **  Test jauH2fk5 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauH2fk5, vvd
+    **  Called:  jauH2fk5, vvd
     **
     **  This revision:  2009 November 6
     */
@@ -2831,20 +2834,20 @@ public class SOFATest {
        pxh =  0.379210;
        rvh = -7.6;
 
-       CatalogCoords cat = iauH2fk5(rh, dh, drh, ddh, pxh, rvh);
+       CatalogCoords cat = jauH2fk5(rh, dh, drh, ddh, pxh, rvh);
 
        vvd(cat.pos.alpha, 1.767794455700065506, 1e-13,
-           "iauH2fk5", "ra");
+           "jauH2fk5", "ra");
        vvd(cat.pos.delta, -0.2917513626469638890, 1e-13,
-           "iauH2fk5", "dec");
+           "jauH2fk5", "dec");
        vvd(cat.pm.alpha, -0.27597945024511204e-5, 1e-18,
-           "iauH2fk5", "dr5");
+           "jauH2fk5", "dr5");
        vvd(cat.pm.delta, -0.59308014093262838e-5, 1e-18,
-           "iauH2fk5", "dd5");
+           "jauH2fk5", "dd5");
        vvd(cat.px, 0.37921, 1e-13,
-           "iauH2fk5", "px");
+           "jauH2fk5", "px");
        vvd(cat.rv, -7.6000001309071126, 1e-10,
-           "iauH2fk5", "rv");
+           "jauH2fk5", "rv");
 
     }
 
@@ -2855,12 +2858,12 @@ public class SOFATest {
     **   t _ h f k 5 z
     **  - - - - - - - -
     **
-    **  Test iauHfk5z function.
+    **  Test jauHfk5z function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauHfk5z, vvd
+    **  Called:  jauHfk5z, vvd
     **
     **  This revision:  2008 November 29
     */
@@ -2872,16 +2875,16 @@ public class SOFATest {
        rh =  1.767794352;
        dh = -0.2917512594;
 
-       CatalogCoords cat = iauHfk5z(rh, dh, 2400000.5, 54479.0);
+       CatalogCoords cat = jauHfk5z(rh, dh, 2400000.5, 54479.0);
 
        vvd(cat.pos.alpha, 1.767794490535581026, 1e-13,
-           "iauHfk5z", "ra");
+           "jauHfk5z", "ra");
        vvd(cat.pos.delta, -0.2917513695320114258, 1e-14,
-           "iauHfk5z", "dec");
+           "jauHfk5z", "dec");
        vvd(cat.pm.alpha, 0.4335890983539243029e-8, 1e-22,
-           "iauHfk5z", "dr5");
+           "jauHfk5z", "dr5");
        vvd(cat.pm.delta, -0.8569648841237745902e-9, 1e-23,
-           "iauHfk5z", "dd5");
+           "jauHfk5z", "dd5");
 
     }
 
@@ -2892,12 +2895,12 @@ public class SOFATest {
     **   t _ i r
     **  - - - - -
     **
-    **  Test iauIr function.
+    **  Test jauIr function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauIr, vvd
+    **  Called:  jauIr, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -2917,19 +2920,19 @@ public class SOFATest {
        r[2][1] = 4.0;
        r[2][2] = 5.0;
 
-       iauIr(r);
+       jauIr(r);
 
-       vvd(r[0][0], 1.0, 0.0, "iauIr", "11");
-       vvd(r[0][1], 0.0, 0.0, "iauIr", "12");
-       vvd(r[0][2], 0.0, 0.0, "iauIr", "13");
+       vvd(r[0][0], 1.0, 0.0, "jauIr", "11");
+       vvd(r[0][1], 0.0, 0.0, "jauIr", "12");
+       vvd(r[0][2], 0.0, 0.0, "jauIr", "13");
 
-       vvd(r[1][0], 0.0, 0.0, "iauIr", "21");
-       vvd(r[1][1], 1.0, 0.0, "iauIr", "22");
-       vvd(r[1][2], 0.0, 0.0, "iauIr", "23");
+       vvd(r[1][0], 0.0, 0.0, "jauIr", "21");
+       vvd(r[1][1], 1.0, 0.0, "jauIr", "22");
+       vvd(r[1][2], 0.0, 0.0, "jauIr", "23");
 
-       vvd(r[2][0], 0.0, 0.0, "iauIr", "31");
-       vvd(r[2][1], 0.0, 0.0, "iauIr", "32");
-       vvd(r[2][2], 1.0, 0.0, "iauIr", "33");
+       vvd(r[2][0], 0.0, 0.0, "jauIr", "31");
+       vvd(r[2][1], 0.0, 0.0, "jauIr", "32");
+       vvd(r[2][2], 1.0, 0.0, "jauIr", "33");
 
     }
 
@@ -2940,12 +2943,12 @@ public class SOFATest {
     **   t _ j d 2 c a l
     **  - - - - - - - - -
     **
-    **  Test iauJd2cal function.
+    **  Test jauJd2cal function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauJd2cal, viv, vvd
+    **  Called:  jauJd2cal, viv, vvd
     **
     **  This revision:  2008 November 29
     */
@@ -2956,13 +2959,13 @@ public class SOFATest {
        dj1 = 2400000.5;
        dj2 = 50123.9999;
 
-       Calendar cal = iauJd2cal(dj1, dj2);
+       Calendar cal = jauJd2cal(dj1, dj2);
 
-       viv(cal.iy, 1996, "iauJd2cal", "y");
-       viv(cal.im, 2, "iauJd2cal", "m");
-       viv(cal.id, 10, "iauJd2cal", "d");
-       vvd(cal.fd, 0.9999, 1e-7, "iauJd2cal", "fd");
-//FIXME should test j when   iauJd2cal returns status     viv(j, 0, "iauJd2cal", "j");
+       viv(cal.iy, 1996, "jauJd2cal", "y");
+       viv(cal.im, 2, "jauJd2cal", "m");
+       viv(cal.id, 10, "jauJd2cal", "d");
+       vvd(cal.fd, 0.9999, 1e-7, "jauJd2cal", "fd");
+//FIXME should test j when   jauJd2cal returns status     viv(j, 0, "jauJd2cal", "j");
 
     }
 
@@ -2973,12 +2976,12 @@ public class SOFATest {
     **   t _ j d c a l f
     **  - - - - - - - - -
     **
-    **  Test iauJdcalf function.
+    **  Test jauJdcalf function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauJdcalf, viv
+    **  Called:  jauJdcalf, viv
     **
     **  This revision:  2008 May 26
     */
@@ -2990,14 +2993,14 @@ public class SOFATest {
        dj1 = 2400000.5;
        dj2 = 50123.9999;
 
-       j = iauJdcalf(4, dj1, dj2, iydmf);
+       j = jauJdcalf(4, dj1, dj2, iydmf);
 
-       viv(iydmf[0], 1996, "iauJdcalf", "y");
-       viv(iydmf[1], 2, "iauJdcalf", "m");
-       viv(iydmf[2], 10, "iauJdcalf", "d");
-       viv(iydmf[3], 9999, "iauJdcalf", "f");
+       viv(iydmf[0], 1996, "jauJdcalf", "y");
+       viv(iydmf[1], 2, "jauJdcalf", "m");
+       viv(iydmf[2], 10, "jauJdcalf", "d");
+       viv(iydmf[3], 9999, "jauJdcalf", "f");
 
-       viv(j, 0, "iauJdcalf", "j");
+       viv(j, 0, "jauJdcalf", "j");
 
     }
 
@@ -3008,12 +3011,12 @@ public class SOFATest {
     **   t _ n u m 0 0 a
     **  - - - - - - - - -
     **
-    **  Test iauNum00a function.
+    **  Test jauNum00a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauNum00a, vvd
+    **  Called:  jauNum00a, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -3021,28 +3024,28 @@ public class SOFATest {
        double rmatn[][] = new double[3][3];
 
 
-       iauNum00a(2400000.5, 53736.0, rmatn);
+       jauNum00a(2400000.5, 53736.0, rmatn);
 
        vvd(rmatn[0][0], 0.9999999999536227949, 1e-12,
-           "iauNum00a", "11");
+           "jauNum00a", "11");
        vvd(rmatn[0][1], 0.8836238544090873336e-5, 1e-12,
-           "iauNum00a", "12");
+           "jauNum00a", "12");
        vvd(rmatn[0][2], 0.3830835237722400669e-5, 1e-12,
-           "iauNum00a", "13");
+           "jauNum00a", "13");
 
        vvd(rmatn[1][0], -0.8836082880798569274e-5, 1e-12,
-           "iauNum00a", "21");
+           "jauNum00a", "21");
        vvd(rmatn[1][1], 0.9999999991354655028, 1e-12,
-           "iauNum00a", "22");
+           "jauNum00a", "22");
        vvd(rmatn[1][2], -0.4063240865362499850e-4, 1e-12,
-           "iauNum00a", "23");
+           "jauNum00a", "23");
 
        vvd(rmatn[2][0], -0.3831194272065995866e-5, 1e-12,
-           "iauNum00a", "31");
+           "jauNum00a", "31");
        vvd(rmatn[2][1], 0.4063237480216291775e-4, 1e-12,
-           "iauNum00a", "32");
+           "jauNum00a", "32");
        vvd(rmatn[2][2], 0.9999999991671660338, 1e-12,
-           "iauNum00a", "33");
+           "jauNum00a", "33");
 
     }
 
@@ -3053,40 +3056,40 @@ public class SOFATest {
     **   t _ n u m 0 0 b
     **  - - - - - - - - -
     **
-    **  Test iauNum00b function.
+    **  Test jauNum00b function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauNum00b, vvd
+    **  Called:  jauNum00b, vvd
     **
     **  This revision:  2008 November 28
     */
     {
         double rmatn[][] = new double[3][3];
 
-        iauNum00b(2400000.5, 53736, rmatn);
+        jauNum00b(2400000.5, 53736, rmatn);
 
        vvd(rmatn[0][0], 0.9999999999536069682, 1e-12,
-           "iauNum00b", "11");
+           "jauNum00b", "11");
        vvd(rmatn[0][1], 0.8837746144871248011e-5, 1e-12,
-           "iauNum00b", "12");
+           "jauNum00b", "12");
        vvd(rmatn[0][2], 0.3831488838252202945e-5, 1e-12,
-           "iauNum00b", "13");
+           "jauNum00b", "13");
 
        vvd(rmatn[1][0], -0.8837590456632304720e-5, 1e-12,
-           "iauNum00b", "21");
+           "jauNum00b", "21");
        vvd(rmatn[1][1], 0.9999999991354692733, 1e-12,
-           "iauNum00b", "22");
+           "jauNum00b", "22");
        vvd(rmatn[1][2], -0.4063198798559591654e-4, 1e-12,
-           "iauNum00b", "23");
+           "jauNum00b", "23");
 
        vvd(rmatn[2][0], -0.3831847930134941271e-5, 1e-12,
-           "iauNum00b", "31");
+           "jauNum00b", "31");
        vvd(rmatn[2][1], 0.4063195412258168380e-4, 1e-12,
-           "iauNum00b", "32");
+           "jauNum00b", "32");
        vvd(rmatn[2][2], 0.9999999991671806225, 1e-12,
-           "iauNum00b", "33");
+           "jauNum00b", "33");
 
     }
 
@@ -3097,40 +3100,40 @@ public class SOFATest {
     **   t _ n u m 0 6 a
     **  - - - - - - - - -
     **
-    **  Test iauNum06a function.
+    **  Test jauNum06a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauNum06a, vvd
+    **  Called:  jauNum06a, vvd
     **
     **  This revision:  2008 November 28
     */
     {
         double rmatn[][] = new double[3][3];
 
-        iauNum06a(2400000.5, 53736, rmatn);
+        jauNum06a(2400000.5, 53736, rmatn);
 
        vvd(rmatn[0][0], 0.9999999999536227668, 1e-12,
-           "iauNum06a", "11");
+           "jauNum06a", "11");
        vvd(rmatn[0][1], 0.8836241998111535233e-5, 1e-12,
-           "iauNum06a", "12");
+           "jauNum06a", "12");
        vvd(rmatn[0][2], 0.3830834608415287707e-5, 1e-12,
-           "iauNum06a", "13");
+           "jauNum06a", "13");
 
        vvd(rmatn[1][0], -0.8836086334870740138e-5, 1e-12,
-           "iauNum06a", "21");
+           "jauNum06a", "21");
        vvd(rmatn[1][1], 0.9999999991354657474, 1e-12,
-           "iauNum06a", "22");
+           "jauNum06a", "22");
        vvd(rmatn[1][2], -0.4063240188248455065e-4, 1e-12,
-           "iauNum06a", "23");
+           "jauNum06a", "23");
 
        vvd(rmatn[2][0], -0.3831193642839398128e-5, 1e-12,
-           "iauNum06a", "31");
+           "jauNum06a", "31");
        vvd(rmatn[2][1], 0.4063236803101479770e-4, 1e-12,
-           "iauNum06a", "32");
+           "jauNum06a", "32");
        vvd(rmatn[2][2], 0.9999999991671663114, 1e-12,
-           "iauNum06a", "33");
+           "jauNum06a", "33");
 
     }
 
@@ -3141,12 +3144,12 @@ public class SOFATest {
     **   t _ n u m a t
     **  - - - - - - - -
     **
-    **  Test iauNumat function.
+    **  Test jauNumat function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauNumat, vvd
+    **  Called:  jauNumat, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -3158,28 +3161,28 @@ public class SOFATest {
        dpsi = -0.9630909107115582393e-5;
        deps =  0.4063239174001678826e-4;
 
-       iauNumat(epsa, dpsi, deps, rmatn);
+       jauNumat(epsa, dpsi, deps, rmatn);
 
        vvd(rmatn[0][0], 0.9999999999536227949, 1e-12,
-           "iauNumat", "11");
+           "jauNumat", "11");
        vvd(rmatn[0][1], 0.8836239320236250577e-5, 1e-12,
-           "iauNumat", "12");
+           "jauNumat", "12");
        vvd(rmatn[0][2], 0.3830833447458251908e-5, 1e-12,
-           "iauNumat", "13");
+           "jauNumat", "13");
 
        vvd(rmatn[1][0], -0.8836083657016688588e-5, 1e-12,
-           "iauNumat", "21");
+           "jauNumat", "21");
        vvd(rmatn[1][1], 0.9999999991354654959, 1e-12,
-           "iauNumat", "22");
+           "jauNumat", "22");
        vvd(rmatn[1][2], -0.4063240865361857698e-4, 1e-12,
-           "iauNumat", "23");
+           "jauNumat", "23");
 
        vvd(rmatn[2][0], -0.3831192481833385226e-5, 1e-12,
-           "iauNumat", "31");
+           "jauNumat", "31");
        vvd(rmatn[2][1], 0.4063237480216934159e-4, 1e-12,
-           "iauNumat", "32");
+           "jauNumat", "32");
        vvd(rmatn[2][2], 0.9999999991671660407, 1e-12,
-           "iauNumat", "33");
+           "jauNumat", "33");
 
     }
 
@@ -3190,24 +3193,24 @@ public class SOFATest {
     **   t _ n u t 0 0 a
     **  - - - - - - - - -
     **
-    **  Test iauNut00a function.
+    **  Test jauNut00a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauNut00a, vvd
+    **  Called:  jauNut00a, vvd
     **
     **  This revision:  2008 November 28
     */
     {
 
 
-       NutationTerms nut = iauNut00a(2400000.5, 53736.0);
+       NutationTerms nut = jauNut00a(2400000.5, 53736.0);
 
        vvd(nut.dpsi, -0.9630909107115518431e-5, 1e-13,
-           "iauNut00a", "dpsi");
+           "jauNut00a", "dpsi");
        vvd(nut.deps,  0.4063239174001678710e-4, 1e-13,
-           "iauNut00a", "deps");
+           "jauNut00a", "deps");
 
     }
 
@@ -3218,24 +3221,24 @@ public class SOFATest {
     **   t _ n u t 0 0 b
     **  - - - - - - - - -
     **
-    **  Test iauNut00b function.
+    **  Test jauNut00b function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauNut00b, vvd
+    **  Called:  jauNut00b, vvd
     **
     **  This revision:  2008 November 28
     */
     {
  
 
-       NutationTerms nut = iauNut00b(2400000.5, 53736.0);
+       NutationTerms nut = jauNut00b(2400000.5, 53736.0);
 
        vvd(nut.dpsi, -0.9632552291148362783e-5, 1e-13,
-           "iauNut00b", "dpsi");
+           "jauNut00b", "dpsi");
        vvd(nut.deps,  0.4063197106621159367e-4, 1e-13,
-           "iauNut00b", "deps");
+           "jauNut00b", "deps");
 
     }
 
@@ -3246,23 +3249,23 @@ public class SOFATest {
     **   t _ n u t 0 6 a
     **  - - - - - - - - -
     **
-    **  Test iauNut06a function.
+    **  Test jauNut06a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauNut06a, vvd
+    **  Called:  jauNut06a, vvd
     **
     **  This revision:  2008 November 28
     */
     {
 
-       NutationTerms nut = iauNut06a(2400000.5, 53736.0);
+       NutationTerms nut = jauNut06a(2400000.5, 53736.0);
 
        vvd(nut.dpsi, -0.9630912025820308797e-5, 1e-13,
-           "iauNut06a", "dpsi");
+           "jauNut06a", "dpsi");
        vvd(nut.deps,  0.4063238496887249798e-4, 1e-13,
-           "iauNut06a", "deps");
+           "jauNut06a", "deps");
 
     }
 
@@ -3273,23 +3276,23 @@ public class SOFATest {
     **   t _ n u t 8 0
     **  - - - - - - - -
     **
-    **  Test iauNut80 function.
+    **  Test jauNut80 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauNut80, vvd
+    **  Called:  jauNut80, vvd
     **
     **  This revision:  2008 November 28
     */
     {
 
-       NutationTerms nut = iauNut80(2400000.5, 53736.0);
+       NutationTerms nut = jauNut80(2400000.5, 53736.0);
 
        vvd(nut.dpsi, -0.9643658353226563966e-5, 1e-13,
-           "iauNut80", "dpsi");
+           "jauNut80", "dpsi");
        vvd(nut.deps,  0.4060051006879713322e-4, 1e-13,
-           "iauNut80", "deps");
+           "jauNut80", "deps");
 
     }
 
@@ -3300,12 +3303,12 @@ public class SOFATest {
     **   t _ n u t m 8 0
     **  - - - - - - - - -
     **
-    **  Test iauNutm80 function.
+    **  Test jauNutm80 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauNutm80, vvd
+    **  Called:  jauNutm80, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -3313,28 +3316,28 @@ public class SOFATest {
        double rmatn[][] = new double[3][3];
 
 
-       iauNutm80(2400000.5, 53736.0, rmatn);
+       jauNutm80(2400000.5, 53736.0, rmatn);
 
        vvd(rmatn[0][0], 0.9999999999534999268, 1e-12,
-          "iauNutm80", "11");
+          "jauNutm80", "11");
        vvd(rmatn[0][1], 0.8847935789636432161e-5, 1e-12,
-          "iauNutm80", "12");
+          "jauNutm80", "12");
        vvd(rmatn[0][2], 0.3835906502164019142e-5, 1e-12,
-          "iauNutm80", "13");
+          "jauNutm80", "13");
 
        vvd(rmatn[1][0], -0.8847780042583435924e-5, 1e-12,
-          "iauNutm80", "21");
+          "jauNutm80", "21");
        vvd(rmatn[1][1], 0.9999999991366569963, 1e-12,
-          "iauNutm80", "22");
+          "jauNutm80", "22");
        vvd(rmatn[1][2], -0.4060052702727130809e-4, 1e-12,
-          "iauNutm80", "23");
+          "jauNutm80", "23");
 
        vvd(rmatn[2][0], -0.3836265729708478796e-5, 1e-12,
-          "iauNutm80", "31");
+          "jauNutm80", "31");
        vvd(rmatn[2][1], 0.4060049308612638555e-4, 1e-12,
-          "iauNutm80", "32");
+          "jauNutm80", "32");
        vvd(rmatn[2][2], 0.9999999991684415129, 1e-12,
-          "iauNutm80", "33");
+          "jauNutm80", "33");
 
     }
 
@@ -3345,18 +3348,18 @@ public class SOFATest {
     **   t _ o b l 0 6
     **  - - - - - - - -
     **
-    **  Test iauObl06 function.
+    **  Test jauObl06 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauObl06, vvd
+    **  Called:  jauObl06, vvd
     **
     **  This revision:  2008 November 29
     */
     {
-       vvd(iauObl06(2400000.5, 54388.0), 0.4090749229387258204, 1e-14,
-           "iauObl06", "");
+       vvd(jauObl06(2400000.5, 54388.0), 0.4090749229387258204, 1e-14,
+           "jauObl06", "");
     }
 
     @Test
@@ -3366,12 +3369,12 @@ public class SOFATest {
     **   t _ o b l 8 0
     **  - - - - - - - -
     **
-    **  Test iauObl80 function.
+    **  Test jauObl80 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauObl80, vvd
+    **  Called:  jauObl80, vvd
     **
     **  This revision:  2008 November 29
     */
@@ -3379,9 +3382,9 @@ public class SOFATest {
        double eps0;
 
 
-       eps0 = iauObl80(2400000.5, 54388.0);
+       eps0 = jauObl80(2400000.5, 54388.0);
 
-       vvd(eps0, 0.4090751347643816218, 1e-14, "iauObl80", "");
+       vvd(eps0, 0.4090751347643816218, 1e-14, "jauObl80", "");
 
     }
 
@@ -3392,52 +3395,52 @@ public class SOFATest {
     **   t _ p 0 6 e
     **  - - - - - - -
     **
-    **  Test iauP06e function.
+    **  Test jauP06e function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauP06e, vvd
+    **  Called:  jauP06e, vvd
     **
     **  This revision:  2008 November 28
     */
     {
 
 
-       PrecessionAngles pa = iauP06e(2400000.5, 52541.0);
+       PrecessionAngles pa = jauP06e(2400000.5, 52541.0);
 
        vvd(pa.eps0, 0.4090926006005828715, 1e-14,
-           "iauP06e", "eps0");
+           "jauP06e", "eps0");
        vvd(pa.psia, 0.6664369630191613431e-3, 1e-14,
-           "iauP06e", "psia");
+           "jauP06e", "psia");
        vvd(pa.oma , 0.4090925973783255982, 1e-14,
-           "iauP06e", "oma");
+           "jauP06e", "oma");
        vvd(pa.bpa, 0.5561149371265209445e-6, 1e-14,
-           "iauP06e", "bpa");
+           "jauP06e", "bpa");
        vvd(pa.bqa, -0.6191517193290621270e-5, 1e-14,
-           "iauP06e", "bqa");
+           "jauP06e", "bqa");
        vvd(pa.pia, 0.6216441751884382923e-5, 1e-14,
-           "iauP06e", "pia");
+           "jauP06e", "pia");
        vvd(pa.bpia, 3.052014180023779882, 1e-14,
-           "iauP06e", "bpia");
+           "jauP06e", "bpia");
        vvd(pa.epsa, 0.4090864054922431688, 1e-14,
-           "iauP06e", "epsa");
+           "jauP06e", "epsa");
        vvd(pa.chia, 0.1387703379530915364e-5, 1e-14,
-           "iauP06e", "chia");
+           "jauP06e", "chia");
        vvd(pa.za, 0.2921789846651790546e-3, 1e-14,
-           "iauP06e", "za");
+           "jauP06e", "za");
        vvd(pa.zetaa, 0.3178773290332009310e-3, 1e-14,
-           "iauP06e", "zetaa");
+           "jauP06e", "zetaa");
        vvd(pa.thetaa, 0.2650932701657497181e-3, 1e-14,
-           "iauP06e", "thetaa");
+           "jauP06e", "thetaa");
        vvd( pa.pa, 0.6651637681381016344e-3, 1e-14,
-           "iauP06e", "pa");
+           "jauP06e", "pa");
        vvd(pa.gam, 0.1398077115963754987e-5, 1e-14,
-           "iauP06e", "gam");
+           "jauP06e", "gam");
        vvd(pa.phi, 0.4090864090837462602, 1e-14,
-           "iauP06e", "phi");
+           "jauP06e", "phi");
        vvd(pa.psi, 0.6664464807480920325e-3, 1e-14,
-           "iauP06e", "psi");
+           "jauP06e", "psi");
 
     }
 
@@ -3448,12 +3451,12 @@ public class SOFATest {
     **   t _ p 2 p v
     **  - - - - - - -
     **
-    **  Test iauP2pv function.
+    **  Test jauP2pv function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauP2pv, vvd
+    **  Called:  jauP2pv, vvd
     **
     **  This revision:  2008 May 26
     */
@@ -3473,15 +3476,15 @@ public class SOFATest {
        pv[1][1] =  3.1;
        pv[1][2] =  0.9;
 
-       iauP2pv(p, pv);
+       jauP2pv(p, pv);
 
-       vvd(pv[0][0], 0.25, 0.0, "iauP2pv", "p1");
-       vvd(pv[0][1], 1.2,  0.0, "iauP2pv", "p2");
-       vvd(pv[0][2], 3.0,  0.0, "iauP2pv", "p3");
+       vvd(pv[0][0], 0.25, 0.0, "jauP2pv", "p1");
+       vvd(pv[0][1], 1.2,  0.0, "jauP2pv", "p2");
+       vvd(pv[0][2], 3.0,  0.0, "jauP2pv", "p3");
 
-       vvd(pv[1][0], 0.0,  0.0, "iauP2pv", "v1");
-       vvd(pv[1][1], 0.0,  0.0, "iauP2pv", "v2");
-       vvd(pv[1][2], 0.0,  0.0, "iauP2pv", "v3");
+       vvd(pv[1][0], 0.0,  0.0, "jauP2pv", "v1");
+       vvd(pv[1][1], 0.0,  0.0, "jauP2pv", "v2");
+       vvd(pv[1][2], 0.0,  0.0, "jauP2pv", "v3");
 
     }
 
@@ -3492,12 +3495,12 @@ public class SOFATest {
     **   t _ p 2 s
     **  - - - - - -
     **
-    **  Test iauP2s function.
+    **  Test jauP2s function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauP2s, vvd
+    **  Called:  jauP2s, vvd
     **
     **  This revision:  2008 November 29
     */
@@ -3509,11 +3512,11 @@ public class SOFATest {
        p[1] = -50.0;
        p[2] =  25.0;
 
-       PolarCoordinate co = iauP2s(p);
+       PolarCoordinate co = jauP2s(p);
 
-       vvd(co.theta, -0.4636476090008061162, 1e-12, "iauP2s", "theta");
-       vvd(co.phi, 0.2199879773954594463, 1e-12, "iauP2s", "phi");
-       vvd(co.r, 114.5643923738960002, 1e-9, "iauP2s", "r");
+       vvd(co.theta, -0.4636476090008061162, 1e-12, "jauP2s", "theta");
+       vvd(co.phi, 0.2199879773954594463, 1e-12, "jauP2s", "phi");
+       vvd(co.r, 114.5643923738960002, 1e-9, "jauP2s", "r");
 
     }
 
@@ -3524,12 +3527,12 @@ public class SOFATest {
     **   t _ p a p
     **  - - - - - -
     **
-    **  Test iauPap function.
+    **  Test jauPap function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPap, vvd
+    **  Called:  jauPap, vvd
     **
     **  This revision:  2008 May 25
     */
@@ -3545,9 +3548,9 @@ public class SOFATest {
        b[1] = 1e-3;
        b[2] =  0.2;
 
-       theta = iauPap(a, b);
+       theta = jauPap(a, b);
 
-       vvd(theta, 0.3671514267841113674, 1e-12, "iauPap", "");
+       vvd(theta, 0.3671514267841113674, 1e-12, "jauPap", "");
 
     }
 
@@ -3558,12 +3561,12 @@ public class SOFATest {
     **   t _ p a s
     **  - - - - - -
     **
-    **  Test iauPas function.
+    **  Test jauPas function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPas, vvd
+    **  Called:  jauPas, vvd
     **
     **  This revision:  2008 May 25
     */
@@ -3576,9 +3579,9 @@ public class SOFATest {
        bl =  0.2;
        bp = -1.0;
 
-       theta = iauPas(al, ap, bl, bp);
+       theta = jauPas(al, ap, bl, bp);
 
-       vvd(theta, -2.724544922932270424, 1e-12, "iauPas", "");
+       vvd(theta, -2.724544922932270424, 1e-12, "jauPas", "");
 
     }
 
@@ -3589,25 +3592,25 @@ public class SOFATest {
     **   t _ p b 0 6
     **  - - - - - - -
     **
-    **  Test iauPb06 function.
+    **  Test jauPb06 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPb06, vvd
+    **  Called:  jauPb06, vvd
     **
     **  This revision:  2008 November 28
     */
     {
 
-       EulerAngles an = iauPb06(2400000.5, 50123.9999);
+       EulerAngles an = jauPb06(2400000.5, 50123.9999);
 
        vvd(an.zeta, -0.5092634016326478238e-3, 1e-12,
-           "iauPb06", "bzeta");
+           "jauPb06", "bzeta");
        vvd(an.z, -0.3602772060566044413e-3, 1e-12,
-           "iauPb06", "bz");
+           "jauPb06", "bz");
        vvd(an.theta, -0.3779735537167811177e-3, 1e-12,
-           "iauPb06", "btheta");
+           "jauPb06", "btheta");
 
     }
 
@@ -3618,12 +3621,12 @@ public class SOFATest {
     **   t _ p d p
     **  - - - - - -
     **
-    **  Test iauPdp function.
+    **  Test jauPdp function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPdp, vvd
+    **  Called:  jauPdp, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -3639,9 +3642,9 @@ public class SOFATest {
        b[1] = 3.0;
        b[2] = 4.0;
 
-       adb = iauPdp(a, b);
+       adb = jauPdp(a, b);
 
-       vvd(adb, 20, 1e-12, "iauPdp", "");
+       vvd(adb, 20, 1e-12, "jauPdp", "");
 
     }
 
@@ -3652,28 +3655,28 @@ public class SOFATest {
     **   t _ p f w 0 6
     **  - - - - - - - -
     **
-    **  Test iauPfw06 function.
+    **  Test jauPfw06 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPfw06, vvd
+    **  Called:  jauPfw06, vvd
     **
     **  This revision:  2008 November 30
     */
     {
 
 
-       FWPrecessionAngles fw = iauPfw06(2400000.5, 50123.9999);
+       FWPrecessionAngles fw = jauPfw06(2400000.5, 50123.9999);
 
        vvd(fw.gamb, -0.2243387670997995690e-5, 1e-16,
-           "iauPfw06", "gamb");
+           "jauPfw06", "gamb");
        vvd(fw.phib,  0.4091014602391312808, 1e-12,
-           "iauPfw06", "phib");
+           "jauPfw06", "phib");
        vvd(fw.psib, -0.9501954178013031895e-3, 1e-14,
-           "iauPfw06", "psib");
+           "jauPfw06", "psib");
        vvd(fw.epsa,  0.4091014316587367491, 1e-12,
-           "iauPfw06", "epsa");
+           "jauPfw06", "epsa");
 
     }
 
@@ -3684,12 +3687,12 @@ public class SOFATest {
     **   t _ p l a n 9 4
     **  - - - - - - - - -
     **
-    **  Test iauPlan94 function.
+    **  Test jauPlan94 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPlan94, VVD, VIV
+    **  Called:  jauPlan94, VVD, VIV
     **
     **  This revision:  2008 November 28
     */
@@ -3698,57 +3701,57 @@ public class SOFATest {
        int j;
 
 
-       j = iauPlan94(2400000.5, 1e6, 0, pv);
+       j = jauPlan94(2400000.5, 1e6, 0, pv);
 
-       vvd(pv[0][0], 0.0, 0.0, "iauPlan94", "x 1");
-       vvd(pv[0][1], 0.0, 0.0, "iauPlan94", "y 1");
-       vvd(pv[0][2], 0.0, 0.0, "iauPlan94", "z 1");
+       vvd(pv[0][0], 0.0, 0.0, "jauPlan94", "x 1");
+       vvd(pv[0][1], 0.0, 0.0, "jauPlan94", "y 1");
+       vvd(pv[0][2], 0.0, 0.0, "jauPlan94", "z 1");
 
-       vvd(pv[1][0], 0.0, 0.0, "iauPlan94", "xd 1");
-       vvd(pv[1][1], 0.0, 0.0, "iauPlan94", "yd 1");
-       vvd(pv[1][2], 0.0, 0.0, "iauPlan94", "zd 1");
+       vvd(pv[1][0], 0.0, 0.0, "jauPlan94", "xd 1");
+       vvd(pv[1][1], 0.0, 0.0, "jauPlan94", "yd 1");
+       vvd(pv[1][2], 0.0, 0.0, "jauPlan94", "zd 1");
 
-       viv(j, -1, "iauPlan94", "j 1");
+       viv(j, -1, "jauPlan94", "j 1");
 
-       j = iauPlan94(2400000.5, 1e6, 10, pv);
+       j = jauPlan94(2400000.5, 1e6, 10, pv);
 
-       viv(j, -1, "iauPlan94", "j 2");
+       viv(j, -1, "jauPlan94", "j 2");
 
-       j = iauPlan94(2400000.5, -320000, 3, pv);
+       j = jauPlan94(2400000.5, -320000, 3, pv);
 
        vvd(pv[0][0], 0.9308038666832975759, 1e-11,
-           "iauPlan94", "x 3");
+           "jauPlan94", "x 3");
        vvd(pv[0][1], 0.3258319040261346000, 1e-11,
-           "iauPlan94", "y 3");
+           "jauPlan94", "y 3");
        vvd(pv[0][2], 0.1422794544481140560, 1e-11,
-           "iauPlan94", "z 3");
+           "jauPlan94", "z 3");
 
        vvd(pv[1][0], -0.6429458958255170006e-2, 1e-11,
-           "iauPlan94", "xd 3");
+           "jauPlan94", "xd 3");
        vvd(pv[1][1], 0.1468570657704237764e-1, 1e-11,
-           "iauPlan94", "yd 3");
+           "jauPlan94", "yd 3");
        vvd(pv[1][2], 0.6406996426270981189e-2, 1e-11,
-           "iauPlan94", "zd 3");
+           "jauPlan94", "zd 3");
 
-       viv(j, 1, "iauPlan94", "j 3");
+       viv(j, 1, "jauPlan94", "j 3");
 
-       j = iauPlan94(2400000.5, 43999.9, 1, pv);
+       j = jauPlan94(2400000.5, 43999.9, 1, pv);
 
        vvd(pv[0][0], 0.2945293959257430832, 1e-11,
-           "iauPlan94", "x 4");
+           "jauPlan94", "x 4");
        vvd(pv[0][1], -0.2452204176601049596, 1e-11,
-           "iauPlan94", "y 4");
+           "jauPlan94", "y 4");
        vvd(pv[0][2], -0.1615427700571978153, 1e-11,
-           "iauPlan94", "z 4");
+           "jauPlan94", "z 4");
 
        vvd(pv[1][0], 0.1413867871404614441e-1, 1e-11,
-           "iauPlan94", "xd 4");
+           "jauPlan94", "xd 4");
        vvd(pv[1][1], 0.1946548301104706582e-1, 1e-11,
-           "iauPlan94", "yd 4");
+           "jauPlan94", "yd 4");
        vvd(pv[1][2], 0.8929809783898904786e-2, 1e-11,
-           "iauPlan94", "zd 4");
+           "jauPlan94", "zd 4");
 
-       viv(j, 0, "iauPlan94", "j 4");
+       viv(j, 0, "jauPlan94", "j 4");
 
     }
 
@@ -3759,12 +3762,12 @@ public class SOFATest {
     **   t _ p m a t 0 0
     **  - - - - - - - - -
     **
-    **  Test iauPmat00 function.
+    **  Test jauPmat00 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPmat00, vvd
+    **  Called:  jauPmat00, vvd
     **
     **  This revision:  2008 November 29
     */
@@ -3772,28 +3775,28 @@ public class SOFATest {
        double rbp[][] = new double[3][3];
 
 
-       iauPmat00(2400000.5, 50123.9999, rbp);
+       jauPmat00(2400000.5, 50123.9999, rbp);
 
        vvd(rbp[0][0], 0.9999995505175087260, 1e-12,
-           "iauPmat00", "11");
+           "jauPmat00", "11");
        vvd(rbp[0][1], 0.8695405883617884705e-3, 1e-14,
-           "iauPmat00", "12");
+           "jauPmat00", "12");
        vvd(rbp[0][2], 0.3779734722239007105e-3, 1e-14,
-           "iauPmat00", "13");
+           "jauPmat00", "13");
 
        vvd(rbp[1][0], -0.8695405990410863719e-3, 1e-14,
-           "iauPmat00", "21");
+           "jauPmat00", "21");
        vvd(rbp[1][1], 0.9999996219494925900, 1e-12,
-           "iauPmat00", "22");
+           "jauPmat00", "22");
        vvd(rbp[1][2], -0.1360775820404982209e-6, 1e-14,
-           "iauPmat00", "23");
+           "jauPmat00", "23");
 
        vvd(rbp[2][0], -0.3779734476558184991e-3, 1e-14,
-           "iauPmat00", "31");
+           "jauPmat00", "31");
        vvd(rbp[2][1], -0.1925857585832024058e-6, 1e-14,
-           "iauPmat00", "32");
+           "jauPmat00", "32");
        vvd(rbp[2][2], 0.9999999285680153377, 1e-12,
-           "iauPmat00", "33");
+           "jauPmat00", "33");
 
     }
 
@@ -3804,12 +3807,12 @@ public class SOFATest {
     **   t _ p m a t 0 6
     **  - - - - - - - - -
     **
-    **  Test iauPmat06 function.
+    **  Test jauPmat06 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPmat06, vvd
+    **  Called:  jauPmat06, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -3817,28 +3820,28 @@ public class SOFATest {
        double rbp[][] = new double[3][3];
 
 
-       iauPmat06(2400000.5, 50123.9999, rbp);
+       jauPmat06(2400000.5, 50123.9999, rbp);
 
        vvd(rbp[0][0], 0.9999995505176007047, 1e-12,
-           "iauPmat06", "11");
+           "jauPmat06", "11");
        vvd(rbp[0][1], 0.8695404617348208406e-3, 1e-14,
-           "iauPmat06", "12");
+           "jauPmat06", "12");
        vvd(rbp[0][2], 0.3779735201865589104e-3, 1e-14,
-           "iauPmat06", "13");
+           "jauPmat06", "13");
 
        vvd(rbp[1][0], -0.8695404723772031414e-3, 1e-14,
-           "iauPmat06", "21");
+           "jauPmat06", "21");
        vvd(rbp[1][1], 0.9999996219496027161, 1e-12,
-           "iauPmat06", "22");
+           "jauPmat06", "22");
        vvd(rbp[1][2], -0.1361752497080270143e-6, 1e-14,
-           "iauPmat06", "23");
+           "jauPmat06", "23");
 
        vvd(rbp[2][0], -0.3779734957034089490e-3, 1e-14,
-           "iauPmat06", "31");
+           "jauPmat06", "31");
        vvd(rbp[2][1], -0.1924880847894457113e-6, 1e-14,
-           "iauPmat06", "32");
+           "jauPmat06", "32");
        vvd(rbp[2][2], 0.9999999285679971958, 1e-12,
-           "iauPmat06", "33");
+           "jauPmat06", "33");
 
     }
 
@@ -3849,12 +3852,12 @@ public class SOFATest {
     **   t _ p m a t 7 6
     **  - - - - - - - - -
     **
-    **  Test iauPmat76 function.
+    **  Test jauPmat76 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPmat76, vvd
+    **  Called:  jauPmat76, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -3862,28 +3865,28 @@ public class SOFATest {
        double rmatp[][] = new double[3][3];
 
 
-       iauPmat76(2400000.5, 50123.9999, rmatp);
+       jauPmat76(2400000.5, 50123.9999, rmatp);
 
        vvd(rmatp[0][0], 0.9999995504328350733, 1e-12,
-           "iauPmat76", "11");
+           "jauPmat76", "11");
        vvd(rmatp[0][1], 0.8696632209480960785e-3, 1e-14,
-           "iauPmat76", "12");
+           "jauPmat76", "12");
        vvd(rmatp[0][2], 0.3779153474959888345e-3, 1e-14,
-           "iauPmat76", "13");
+           "jauPmat76", "13");
 
        vvd(rmatp[1][0], -0.8696632209485112192e-3, 1e-14,
-           "iauPmat76", "21");
+           "jauPmat76", "21");
        vvd(rmatp[1][1], 0.9999996218428560614, 1e-12,
-           "iauPmat76", "22");
+           "jauPmat76", "22");
        vvd(rmatp[1][2], -0.1643284776111886407e-6, 1e-14,
-           "iauPmat76", "23");
+           "jauPmat76", "23");
 
        vvd(rmatp[2][0], -0.3779153474950335077e-3, 1e-14,
-           "iauPmat76", "31");
+           "jauPmat76", "31");
        vvd(rmatp[2][1], -0.1643306746147366896e-6, 1e-14,
-           "iauPmat76", "32");
+           "jauPmat76", "32");
        vvd(rmatp[2][2], 0.9999999285899790119, 1e-12,
-           "iauPmat76", "33");
+           "jauPmat76", "33");
 
     }
 
@@ -3894,12 +3897,12 @@ public class SOFATest {
     **   t _ p m
     **  - - - - -
     **
-    **  Test iauPm function.
+    **  Test jauPm function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPm, vvd
+    **  Called:  jauPm, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -3911,9 +3914,9 @@ public class SOFATest {
        p[1] =  1.2;
        p[2] = -2.5;
 
-       r = iauPm(p);
+       r = jauPm(p);
 
-       vvd(r, 2.789265136196270604, 1e-12, "iauPm", "");
+       vvd(r, 2.789265136196270604, 1e-12, "jauPm", "");
 
     }
 
@@ -3924,12 +3927,12 @@ public class SOFATest {
     **   t _ p m p
     **  - - - - - -
     **
-    **  Test iauPmp function.
+    **  Test jauPmp function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPmp, vvd
+    **  Called:  jauPmp, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -3945,11 +3948,11 @@ public class SOFATest {
        b[1] = 3.0;
        b[2] = 4.0;
 
-       iauPmp(a, b, amb);
+       jauPmp(a, b, amb);
 
-       vvd(amb[0],  1.0, 1e-12, "iauPmp", "0");
-       vvd(amb[1], -1.0, 1e-12, "iauPmp", "1");
-       vvd(amb[2], -1.0, 1e-12, "iauPmp", "2");
+       vvd(amb[0],  1.0, 1e-12, "jauPmp", "0");
+       vvd(amb[1], -1.0, 1e-12, "jauPmp", "1");
+       vvd(amb[2], -1.0, 1e-12, "jauPmp", "2");
 
     }
 
@@ -3960,12 +3963,12 @@ public class SOFATest {
     **   t _ p n
     **  - - - - -
     **
-    **  Test iauPn function.
+    **  Test jauPn function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPn, vvd
+    **  Called:  jauPn, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -3977,13 +3980,13 @@ public class SOFATest {
        p[1] =  1.2;
        p[2] = -2.5;
 
-       NormalizedVector mv = iauPn(p);
+       NormalizedVector mv = jauPn(p);
 
-       vvd(mv.r, 2.789265136196270604, 1e-12, "iauPn", "r");
+       vvd(mv.r, 2.789265136196270604, 1e-12, "jauPn", "r");
 
-       vvd(mv.u[0], 0.1075552109073112058, 1e-12, "iauPn", "u1");
-       vvd(mv.u[1], 0.4302208436292448232, 1e-12, "iauPn", "u2");
-       vvd(mv.u[2], -0.8962934242275933816, 1e-12, "iauPn", "u3");
+       vvd(mv.u[0], 0.1075552109073112058, 1e-12, "jauPn", "u1");
+       vvd(mv.u[1], 0.4302208436292448232, 1e-12, "jauPn", "u2");
+       vvd(mv.u[2], -0.8962934242275933816, 1e-12, "jauPn", "u3");
 
     }
 
@@ -3994,12 +3997,12 @@ public class SOFATest {
     **   t _ p n 0 0
     **  - - - - - - -
     **
-    **  Test iauPn00 function.
+    **  Test jauPn00 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPn00, vvd
+    **  Called:  jauPn00, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -4009,114 +4012,114 @@ public class SOFATest {
        dpsi = -0.9632552291149335877e-5;
        deps =  0.4063197106621141414e-4;
 
-       PrecessionNutation pn = iauPn00(2400000.5, 53736.0, dpsi, deps);
+       PrecessionNutation pn = jauPn00(2400000.5, 53736.0, dpsi, deps);
 
-       vvd(pn.epsa, 0.4090791789404229916, 1e-12, "iauPn00", "epsa");
+       vvd(pn.epsa, 0.4090791789404229916, 1e-12, "jauPn00", "epsa");
 
        vvd(pn.rb[0][0], 0.9999999999999942498, 1e-12,
-           "iauPn00", "rb11");
+           "jauPn00", "rb11");
        vvd(pn.rb[0][1], -0.7078279744199196626e-7, 1e-18,
-           "iauPn00", "rb12");
+           "jauPn00", "rb12");
        vvd(pn.rb[0][2], 0.8056217146976134152e-7, 1e-18,
-           "iauPn00", "rb13");
+           "jauPn00", "rb13");
 
        vvd(pn.rb[1][0], 0.7078279477857337206e-7, 1e-18,
-           "iauPn00", "rb21");
+           "jauPn00", "rb21");
        vvd(pn.rb[1][1], 0.9999999999999969484, 1e-12,
-           "iauPn00", "rb22");
+           "jauPn00", "rb22");
        vvd(pn.rb[1][2], 0.3306041454222136517e-7, 1e-18,
-           "iauPn00", "rb23");
+           "jauPn00", "rb23");
 
        vvd(pn.rb[2][0], -0.8056217380986972157e-7, 1e-18,
-           "iauPn00", "rb31");
+           "jauPn00", "rb31");
        vvd(pn.rb[2][1], -0.3306040883980552500e-7, 1e-18,
-           "iauPn00", "rb32");
+           "jauPn00", "rb32");
        vvd(pn.rb[2][2], 0.9999999999999962084, 1e-12,
-           "iauPn00", "rb33");
+           "jauPn00", "rb33");
 
        vvd(pn.rp[0][0], 0.9999989300532289018, 1e-12,
-           "iauPn00", "rp11");
+           "jauPn00", "rp11");
        vvd(pn.rp[0][1], -0.1341647226791824349e-2, 1e-14,
-           "iauPn00", "rp12");
+           "jauPn00", "rp12");
        vvd(pn.rp[0][2], -0.5829880927190296547e-3, 1e-14,
-           "iauPn00", "rp13");
+           "jauPn00", "rp13");
 
        vvd(pn.rp[1][0], 0.1341647231069759008e-2, 1e-14,
-           "iauPn00", "rp21");
+           "jauPn00", "rp21");
        vvd(pn.rp[1][1], 0.9999990999908750433, 1e-12,
-           "iauPn00", "rp22");
+           "jauPn00", "rp22");
        vvd(pn.rp[1][2], -0.3837444441583715468e-6, 1e-14,
-           "iauPn00", "rp23");
+           "jauPn00", "rp23");
 
        vvd(pn.rp[2][0], 0.5829880828740957684e-3, 1e-14,
-           "iauPn00", "rp31");
+           "jauPn00", "rp31");
        vvd(pn.rp[2][1], -0.3984203267708834759e-6, 1e-14,
-           "iauPn00", "rp32");
+           "jauPn00", "rp32");
        vvd(pn.rp[2][2], 0.9999998300623538046, 1e-12,
-           "iauPn00", "rp33");
+           "jauPn00", "rp33");
 
        vvd(pn.rbp[0][0], 0.9999989300052243993, 1e-12,
-           "iauPn00", "rbp11");
+           "jauPn00", "rbp11");
        vvd(pn.rbp[0][1], -0.1341717990239703727e-2, 1e-14,
-           "iauPn00", "rbp12");
+           "jauPn00", "rbp12");
        vvd(pn.rbp[0][2], -0.5829075749891684053e-3, 1e-14,
-           "iauPn00", "rbp13");
+           "jauPn00", "rbp13");
 
        vvd(pn.rbp[1][0], 0.1341718013831739992e-2, 1e-14,
-           "iauPn00", "rbp21");
+           "jauPn00", "rbp21");
        vvd(pn.rbp[1][1], 0.9999990998959191343, 1e-12,
-           "iauPn00", "rbp22");
+           "jauPn00", "rbp22");
        vvd(pn.rbp[1][2], -0.3505759733565421170e-6, 1e-14,
-           "iauPn00", "rbp23");
+           "jauPn00", "rbp23");
 
        vvd(pn.rbp[2][0], 0.5829075206857717883e-3, 1e-14,
-           "iauPn00", "rbp31");
+           "jauPn00", "rbp31");
        vvd(pn.rbp[2][1], -0.4315219955198608970e-6, 1e-14,
-           "iauPn00", "rbp32");
+           "jauPn00", "rbp32");
        vvd(pn.rbp[2][2], 0.9999998301093036269, 1e-12,
-           "iauPn00", "rbp33");
+           "jauPn00", "rbp33");
 
        vvd(pn.rn[0][0], 0.9999999999536069682, 1e-12,
-           "iauPn00", "rn11");
+           "jauPn00", "rn11");
        vvd(pn.rn[0][1], 0.8837746144872140812e-5, 1e-16,
-           "iauPn00", "rn12");
+           "jauPn00", "rn12");
        vvd(pn.rn[0][2], 0.3831488838252590008e-5, 1e-16,
-           "iauPn00", "rn13");
+           "jauPn00", "rn13");
 
        vvd(pn.rn[1][0], -0.8837590456633197506e-5, 1e-16,
-           "iauPn00", "rn21");
+           "jauPn00", "rn21");
        vvd(pn.rn[1][1], 0.9999999991354692733, 1e-12,
-           "iauPn00", "rn22");
+           "jauPn00", "rn22");
        vvd(pn.rn[1][2], -0.4063198798559573702e-4, 1e-16,
-           "iauPn00", "rn23");
+           "jauPn00", "rn23");
 
        vvd(pn.rn[2][0], -0.3831847930135328368e-5, 1e-16,
-           "iauPn00", "rn31");
+           "jauPn00", "rn31");
        vvd(pn.rn[2][1], 0.4063195412258150427e-4, 1e-16,
-           "iauPn00", "rn32");
+           "jauPn00", "rn32");
        vvd(pn.rn[2][2], 0.9999999991671806225, 1e-12,
-           "iauPn00", "rn33");
+           "jauPn00", "rn33");
 
        vvd(pn.rbpn[0][0], 0.9999989440499982806, 1e-12,
-           "iauPn00", "rbpn11");
+           "jauPn00", "rbpn11");
        vvd(pn.rbpn[0][1], -0.1332880253640848301e-2, 1e-14,
-           "iauPn00", "rbpn12");
+           "jauPn00", "rbpn12");
        vvd(pn.rbpn[0][2], -0.5790760898731087295e-3, 1e-14,
-           "iauPn00", "rbpn13");
+           "jauPn00", "rbpn13");
 
        vvd(pn.rbpn[1][0], 0.1332856746979948745e-2, 1e-14,
-           "iauPn00", "rbpn21");
+           "jauPn00", "rbpn21");
        vvd(pn.rbpn[1][1], 0.9999991109064768883, 1e-12,
-           "iauPn00", "rbpn22");
+           "jauPn00", "rbpn22");
        vvd(pn.rbpn[1][2], -0.4097740555723063806e-4, 1e-14,
-           "iauPn00", "rbpn23");
+           "jauPn00", "rbpn23");
 
        vvd(pn.rbpn[2][0], 0.5791301929950205000e-3, 1e-14,
-           "iauPn00", "rbpn31");
+           "jauPn00", "rbpn31");
        vvd(pn.rbpn[2][1], 0.4020553681373702931e-4, 1e-14,
-           "iauPn00", "rbpn32");
+           "jauPn00", "rbpn32");
        vvd(pn.rbpn[2][2], 0.9999998314958529887, 1e-12,
-           "iauPn00", "rbpn33");
+           "jauPn00", "rbpn33");
 
     }
 
@@ -4127,131 +4130,131 @@ public class SOFATest {
     **   t _ p n 0 0 a
     **  - - - - - - - -
     **
-    **  Test iauPn00a function.
+    **  Test jauPn00a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPn00a, vvd
+    **  Called:  jauPn00a, vvd
     **
     **  This revision:  2008 November 28
     */
     {
 
 
-       PrecessionNutation pn = iauPn00a(2400000.5, 53736.0);
+       PrecessionNutation pn = jauPn00a(2400000.5, 53736.0);
                
 
-       vvd(pn.nut.deps, -0.9630909107115518431e-5, 1e-12,
-           "iauPn00a", "dpsi");
+       vvd(pn.nut.dpsi, -0.9630909107115518431e-5, 1e-12,
+           "jauPn00a", "dpsi");
        vvd(pn.nut.deps,  0.4063239174001678710e-4, 1e-12,
-           "iauPn00a", "deps");
-       vvd(pn.epsa,  0.4090791789404229916, 1e-12, "iauPn00a", "epsa");
+           "jauPn00a", "deps");
+       vvd(pn.epsa,  0.4090791789404229916, 1e-12, "jauPn00a", "epsa");
 
        vvd(pn.rb[0][0], 0.9999999999999942498, 1e-12,
-           "iauPn00a", "rb11");
+           "jauPn00a", "rb11");
        vvd(pn.rb[0][1], -0.7078279744199196626e-7, 1e-16,
-           "iauPn00a", "rb12");
+           "jauPn00a", "rb12");
        vvd(pn.rb[0][2], 0.8056217146976134152e-7, 1e-16,
-           "iauPn00a", "rb13");
+           "jauPn00a", "rb13");
 
        vvd(pn.rb[1][0], 0.7078279477857337206e-7, 1e-16,
-           "iauPn00a", "rb21");
+           "jauPn00a", "rb21");
        vvd(pn.rb[1][1], 0.9999999999999969484, 1e-12,
-           "iauPn00a", "rb22");
+           "jauPn00a", "rb22");
        vvd(pn.rb[1][2], 0.3306041454222136517e-7, 1e-16,
-           "iauPn00a", "rb23");
+           "jauPn00a", "rb23");
 
        vvd(pn.rb[2][0], -0.8056217380986972157e-7, 1e-16,
-           "iauPn00a", "rb31");
+           "jauPn00a", "rb31");
        vvd(pn.rb[2][1], -0.3306040883980552500e-7, 1e-16,
-           "iauPn00a", "rb32");
+           "jauPn00a", "rb32");
        vvd(pn.rb[2][2], 0.9999999999999962084, 1e-12,
-           "iauPn00a", "rb33");
+           "jauPn00a", "rb33");
 
        vvd(pn.rp[0][0], 0.9999989300532289018, 1e-12,
-           "iauPn00a", "rp11");
+           "jauPn00a", "rp11");
        vvd(pn.rp[0][1], -0.1341647226791824349e-2, 1e-14,
-           "iauPn00a", "rp12");
+           "jauPn00a", "rp12");
        vvd(pn.rp[0][2], -0.5829880927190296547e-3, 1e-14,
-           "iauPn00a", "rp13");
+           "jauPn00a", "rp13");
 
        vvd(pn.rp[1][0], 0.1341647231069759008e-2, 1e-14,
-           "iauPn00a", "rp21");
+           "jauPn00a", "rp21");
        vvd(pn.rp[1][1], 0.9999990999908750433, 1e-12,
-           "iauPn00a", "rp22");
+           "jauPn00a", "rp22");
        vvd(pn.rp[1][2], -0.3837444441583715468e-6, 1e-14,
-           "iauPn00a", "rp23");
+           "jauPn00a", "rp23");
 
        vvd(pn.rp[2][0], 0.5829880828740957684e-3, 1e-14,
-           "iauPn00a", "rp31");
+           "jauPn00a", "rp31");
        vvd(pn.rp[2][1], -0.3984203267708834759e-6, 1e-14,
-           "iauPn00a", "rp32");
+           "jauPn00a", "rp32");
        vvd(pn.rp[2][2], 0.9999998300623538046, 1e-12,
-           "iauPn00a", "rp33");
+           "jauPn00a", "rp33");
 
        vvd(pn.rbp[0][0], 0.9999989300052243993, 1e-12,
-           "iauPn00a", "rbp11");
+           "jauPn00a", "rbp11");
        vvd(pn.rbp[0][1], -0.1341717990239703727e-2, 1e-14,
-           "iauPn00a", "rbp12");
+           "jauPn00a", "rbp12");
        vvd(pn.rbp[0][2], -0.5829075749891684053e-3, 1e-14,
-           "iauPn00a", "rbp13");
+           "jauPn00a", "rbp13");
 
        vvd(pn.rbp[1][0], 0.1341718013831739992e-2, 1e-14,
-           "iauPn00a", "rbp21");
+           "jauPn00a", "rbp21");
        vvd(pn.rbp[1][1], 0.9999990998959191343, 1e-12,
-           "iauPn00a", "rbp22");
+           "jauPn00a", "rbp22");
        vvd(pn.rbp[1][2], -0.3505759733565421170e-6, 1e-14,
-           "iauPn00a", "rbp23");
+           "jauPn00a", "rbp23");
 
        vvd(pn.rbp[2][0], 0.5829075206857717883e-3, 1e-14,
-           "iauPn00a", "rbp31");
+           "jauPn00a", "rbp31");
        vvd(pn.rbp[2][1], -0.4315219955198608970e-6, 1e-14,
-           "iauPn00a", "rbp32");
+           "jauPn00a", "rbp32");
        vvd(pn.rbp[2][2], 0.9999998301093036269, 1e-12,
-           "iauPn00a", "rbp33");
+           "jauPn00a", "rbp33");
 
        vvd(pn.rn[0][0], 0.9999999999536227949, 1e-12,
-           "iauPn00a", "rn11");
+           "jauPn00a", "rn11");
        vvd(pn.rn[0][1], 0.8836238544090873336e-5, 1e-14,
-           "iauPn00a", "rn12");
+           "jauPn00a", "rn12");
        vvd(pn.rn[0][2], 0.3830835237722400669e-5, 1e-14,
-           "iauPn00a", "rn13");
+           "jauPn00a", "rn13");
 
        vvd(pn.rn[1][0], -0.8836082880798569274e-5, 1e-14,
-           "iauPn00a", "rn21");
+           "jauPn00a", "rn21");
        vvd(pn.rn[1][1], 0.9999999991354655028, 1e-12,
-           "iauPn00a", "rn22");
+           "jauPn00a", "rn22");
        vvd(pn.rn[1][2], -0.4063240865362499850e-4, 1e-14,
-           "iauPn00a", "rn23");
+           "jauPn00a", "rn23");
 
        vvd(pn.rn[2][0], -0.3831194272065995866e-5, 1e-14,
-           "iauPn00a", "rn31");
+           "jauPn00a", "rn31");
        vvd(pn.rn[2][1], 0.4063237480216291775e-4, 1e-14,
-           "iauPn00a", "rn32");
+           "jauPn00a", "rn32");
        vvd(pn.rn[2][2], 0.9999999991671660338, 1e-12,
-           "iauPn00a", "rn33");
+           "jauPn00a", "rn33");
 
        vvd(pn.rbpn[0][0], 0.9999989440476103435, 1e-12,
-           "iauPn00a", "rbpn11");
+           "jauPn00a", "rbpn11");
        vvd(pn.rbpn[0][1], -0.1332881761240011763e-2, 1e-14,
-           "iauPn00a", "rbpn12");
+           "jauPn00a", "rbpn12");
        vvd(pn.rbpn[0][2], -0.5790767434730085751e-3, 1e-14,
-           "iauPn00a", "rbpn13");
+           "jauPn00a", "rbpn13");
 
        vvd(pn.rbpn[1][0], 0.1332858254308954658e-2, 1e-14,
-           "iauPn00a", "rbpn21");
+           "jauPn00a", "rbpn21");
        vvd(pn.rbpn[1][1], 0.9999991109044505577, 1e-12,
-           "iauPn00a", "rbpn22");
+           "jauPn00a", "rbpn22");
        vvd(pn.rbpn[1][2], -0.4097782710396580452e-4, 1e-14,
-           "iauPn00a", "rbpn23");
+           "jauPn00a", "rbpn23");
 
        vvd(pn.rbpn[2][0], 0.5791308472168152904e-3, 1e-14,
-           "iauPn00a", "rbpn31");
+           "jauPn00a", "rbpn31");
        vvd(pn.rbpn[2][1], 0.4020595661591500259e-4, 1e-14,
-           "iauPn00a", "rbpn32");
+           "jauPn00a", "rbpn32");
        vvd(pn.rbpn[2][2], 0.9999998314954572304, 1e-12,
-           "iauPn00a", "rbpn33");
+           "jauPn00a", "rbpn33");
 
     }
 
@@ -4262,129 +4265,129 @@ public class SOFATest {
     **   t _ p n 0 0 b
     **  - - - - - - - -
     **
-    **  Test iauPn00b function.
+    **  Test jauPn00b function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPn00b, vvd
+    **  Called:  jauPn00b, vvd
     **
     **  This revision:  2008 November 28
     */
     {
 
-       PrecessionNutation pn = iauPn00b(2400000.5, 53736.0);
+       PrecessionNutation pn = jauPn00b(2400000.5, 53736.0);
 
        vvd(pn.nut.dpsi, -0.9632552291148362783e-5, 1e-12,
-           "iauPn00b", "dpsi");
+           "jauPn00b", "dpsi");
        vvd(pn.nut.deps,  0.4063197106621159367e-4, 1e-12,
-           "iauPn00b", "deps");
-       vvd(pn.epsa,  0.4090791789404229916, 1e-12, "iauPn00b", "epsa");
+           "jauPn00b", "deps");
+       vvd(pn.epsa,  0.4090791789404229916, 1e-12, "jauPn00b", "epsa");
 
        vvd(pn.rb[0][0], 0.9999999999999942498, 1e-12,
-          "iauPn00b", "rb11");
+          "jauPn00b", "rb11");
        vvd(pn.rb[0][1], -0.7078279744199196626e-7, 1e-16,
-          "iauPn00b", "rb12");
+          "jauPn00b", "rb12");
        vvd(pn.rb[0][2], 0.8056217146976134152e-7, 1e-16,
-          "iauPn00b", "rb13");
+          "jauPn00b", "rb13");
 
        vvd(pn.rb[1][0], 0.7078279477857337206e-7, 1e-16,
-          "iauPn00b", "rb21");
+          "jauPn00b", "rb21");
        vvd(pn.rb[1][1], 0.9999999999999969484, 1e-12,
-          "iauPn00b", "rb22");
+          "jauPn00b", "rb22");
        vvd(pn.rb[1][2], 0.3306041454222136517e-7, 1e-16,
-          "iauPn00b", "rb23");
+          "jauPn00b", "rb23");
 
        vvd(pn.rb[2][0], -0.8056217380986972157e-7, 1e-16,
-          "iauPn00b", "rb31");
+          "jauPn00b", "rb31");
        vvd(pn.rb[2][1], -0.3306040883980552500e-7, 1e-16,
-          "iauPn00b", "rb32");
+          "jauPn00b", "rb32");
        vvd(pn.rb[2][2], 0.9999999999999962084, 1e-12,
-          "iauPn00b", "rb33");
+          "jauPn00b", "rb33");
 
        vvd(pn.rp[0][0], 0.9999989300532289018, 1e-12,
-          "iauPn00b", "rp11");
+          "jauPn00b", "rp11");
        vvd(pn.rp[0][1], -0.1341647226791824349e-2, 1e-14,
-          "iauPn00b", "rp12");
+          "jauPn00b", "rp12");
        vvd(pn.rp[0][2], -0.5829880927190296547e-3, 1e-14,
-          "iauPn00b", "rp13");
+          "jauPn00b", "rp13");
 
        vvd(pn.rp[1][0], 0.1341647231069759008e-2, 1e-14,
-          "iauPn00b", "rp21");
+          "jauPn00b", "rp21");
        vvd(pn.rp[1][1], 0.9999990999908750433, 1e-12,
-          "iauPn00b", "rp22");
+          "jauPn00b", "rp22");
        vvd(pn.rp[1][2], -0.3837444441583715468e-6, 1e-14,
-          "iauPn00b", "rp23");
+          "jauPn00b", "rp23");
 
        vvd(pn.rp[2][0], 0.5829880828740957684e-3, 1e-14,
-          "iauPn00b", "rp31");
+          "jauPn00b", "rp31");
        vvd(pn.rp[2][1], -0.3984203267708834759e-6, 1e-14,
-          "iauPn00b", "rp32");
+          "jauPn00b", "rp32");
        vvd(pn.rp[2][2], 0.9999998300623538046, 1e-12,
-          "iauPn00b", "rp33");
+          "jauPn00b", "rp33");
 
        vvd(pn.rbp[0][0], 0.9999989300052243993, 1e-12,
-          "iauPn00b", "rbp11");
+          "jauPn00b", "rbp11");
        vvd(pn.rbp[0][1], -0.1341717990239703727e-2, 1e-14,
-          "iauPn00b", "rbp12");
+          "jauPn00b", "rbp12");
        vvd(pn.rbp[0][2], -0.5829075749891684053e-3, 1e-14,
-          "iauPn00b", "rbp13");
+          "jauPn00b", "rbp13");
 
        vvd(pn.rbp[1][0], 0.1341718013831739992e-2, 1e-14,
-          "iauPn00b", "rbp21");
+          "jauPn00b", "rbp21");
        vvd(pn.rbp[1][1], 0.9999990998959191343, 1e-12,
-          "iauPn00b", "rbp22");
+          "jauPn00b", "rbp22");
        vvd(pn.rbp[1][2], -0.3505759733565421170e-6, 1e-14,
-          "iauPn00b", "rbp23");
+          "jauPn00b", "rbp23");
 
        vvd(pn.rbp[2][0], 0.5829075206857717883e-3, 1e-14,
-          "iauPn00b", "rbp31");
+          "jauPn00b", "rbp31");
        vvd(pn.rbp[2][1], -0.4315219955198608970e-6, 1e-14,
-          "iauPn00b", "rbp32");
+          "jauPn00b", "rbp32");
        vvd(pn.rbp[2][2], 0.9999998301093036269, 1e-12,
-          "iauPn00b", "rbp33");
+          "jauPn00b", "rbp33");
 
        vvd(pn.rn[0][0], 0.9999999999536069682, 1e-12,
-          "iauPn00b", "rn11");
+          "jauPn00b", "rn11");
        vvd(pn.rn[0][1], 0.8837746144871248011e-5, 1e-14,
-          "iauPn00b", "rn12");
+          "jauPn00b", "rn12");
        vvd(pn.rn[0][2], 0.3831488838252202945e-5, 1e-14,
-          "iauPn00b", "rn13");
+          "jauPn00b", "rn13");
 
        vvd(pn.rn[1][0], -0.8837590456632304720e-5, 1e-14,
-          "iauPn00b", "rn21");
+          "jauPn00b", "rn21");
        vvd(pn.rn[1][1], 0.9999999991354692733, 1e-12,
-          "iauPn00b", "rn22");
+          "jauPn00b", "rn22");
        vvd(pn.rn[1][2], -0.4063198798559591654e-4, 1e-14,
-          "iauPn00b", "rn23");
+          "jauPn00b", "rn23");
 
        vvd(pn.rn[2][0], -0.3831847930134941271e-5, 1e-14,
-          "iauPn00b", "rn31");
+          "jauPn00b", "rn31");
        vvd(pn.rn[2][1], 0.4063195412258168380e-4, 1e-14,
-          "iauPn00b", "rn32");
+          "jauPn00b", "rn32");
        vvd(pn.rn[2][2], 0.9999999991671806225, 1e-12,
-          "iauPn00b", "rn33");
+          "jauPn00b", "rn33");
 
        vvd(pn.rbpn[0][0], 0.9999989440499982806, 1e-12,
-          "iauPn00b", "rbpn11");
+          "jauPn00b", "rbpn11");
        vvd(pn.rbpn[0][1], -0.1332880253640849194e-2, 1e-14,
-          "iauPn00b", "rbpn12");
+          "jauPn00b", "rbpn12");
        vvd(pn.rbpn[0][2], -0.5790760898731091166e-3, 1e-14,
-          "iauPn00b", "rbpn13");
+          "jauPn00b", "rbpn13");
 
        vvd(pn.rbpn[1][0], 0.1332856746979949638e-2, 1e-14,
-          "iauPn00b", "rbpn21");
+          "jauPn00b", "rbpn21");
        vvd(pn.rbpn[1][1], 0.9999991109064768883, 1e-12,
-          "iauPn00b", "rbpn22");
+          "jauPn00b", "rbpn22");
        vvd(pn.rbpn[1][2], -0.4097740555723081811e-4, 1e-14,
-          "iauPn00b", "rbpn23");
+          "jauPn00b", "rbpn23");
 
        vvd(pn.rbpn[2][0], 0.5791301929950208873e-3, 1e-14,
-          "iauPn00b", "rbpn31");
+          "jauPn00b", "rbpn31");
        vvd(pn.rbpn[2][1], 0.4020553681373720832e-4, 1e-14,
-          "iauPn00b", "rbpn32");
+          "jauPn00b", "rbpn32");
        vvd(pn.rbpn[2][2], 0.9999998314958529887, 1e-12,
-          "iauPn00b", "rbpn33");
+          "jauPn00b", "rbpn33");
 
     }
 
@@ -4395,130 +4398,130 @@ public class SOFATest {
     **   t _ p n 0 6 a
     **  - - - - - - - -
     **
-    **  Test iauPn06a function.
+    **  Test jauPn06a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPn06a, vvd
+    **  Called:  jauPn06a, vvd
     **
     **  This revision:  2008 November 28
     */
     {
  
 
-       PrecessionNutation pn = iauPn06a(2400000.5, 53736.0);
+       PrecessionNutation pn = jauPn06a(2400000.5, 53736.0);
 
        vvd(pn.nut.dpsi, -0.9630912025820308797e-5, 1e-12,
-           "iauPn06a", "dpsi");
+           "jauPn06a", "dpsi");
        vvd(pn.nut.deps,  0.4063238496887249798e-4, 1e-12,
-           "iauPn06a", "deps");
-       vvd(pn.epsa,  0.4090789763356509926, 1e-12, "iauPn06a", "epsa");
+           "jauPn06a", "deps");
+       vvd(pn.epsa,  0.4090789763356509926, 1e-12, "jauPn06a", "epsa");
 
        vvd(pn.rb[0][0], 0.9999999999999942497, 1e-12,
-           "iauPn06a", "rb11");
+           "jauPn06a", "rb11");
        vvd(pn.rb[0][1], -0.7078368960971557145e-7, 1e-14,
-           "iauPn06a", "rb12");
+           "jauPn06a", "rb12");
        vvd(pn.rb[0][2], 0.8056213977613185606e-7, 1e-14,
-           "iauPn06a", "rb13");
+           "jauPn06a", "rb13");
 
        vvd(pn.rb[1][0], 0.7078368694637674333e-7, 1e-14,
-           "iauPn06a", "rb21");
+           "jauPn06a", "rb21");
        vvd(pn.rb[1][1], 0.9999999999999969484, 1e-12,
-           "iauPn06a", "rb22");
+           "jauPn06a", "rb22");
        vvd(pn.rb[1][2], 0.3305943742989134124e-7, 1e-14,
-           "iauPn06a", "rb23");
+           "jauPn06a", "rb23");
 
        vvd(pn.rb[2][0], -0.8056214211620056792e-7, 1e-14,
-           "iauPn06a", "rb31");
+           "jauPn06a", "rb31");
        vvd(pn.rb[2][1], -0.3305943172740586950e-7, 1e-14,
-           "iauPn06a", "rb32");
+           "jauPn06a", "rb32");
        vvd(pn.rb[2][2], 0.9999999999999962084, 1e-12,
-           "iauPn06a", "rb33");
+           "jauPn06a", "rb33");
 
        vvd(pn.rp[0][0], 0.9999989300536854831, 1e-12,
-           "iauPn06a", "rp11");
+           "jauPn06a", "rp11");
        vvd(pn.rp[0][1], -0.1341646886204443795e-2, 1e-14,
-           "iauPn06a", "rp12");
+           "jauPn06a", "rp12");
        vvd(pn.rp[0][2], -0.5829880933488627759e-3, 1e-14,
-           "iauPn06a", "rp13");
+           "jauPn06a", "rp13");
 
        vvd(pn.rp[1][0], 0.1341646890569782183e-2, 1e-14,
-           "iauPn06a", "rp21");
+           "jauPn06a", "rp21");
        vvd(pn.rp[1][1], 0.9999990999913319321, 1e-12,
-           "iauPn06a", "rp22");
+           "jauPn06a", "rp22");
        vvd(pn.rp[1][2], -0.3835944216374477457e-6, 1e-14,
-           "iauPn06a", "rp23");
+           "jauPn06a", "rp23");
 
        vvd(pn.rp[2][0], 0.5829880833027867368e-3, 1e-14,
-           "iauPn06a", "rp31");
+           "jauPn06a", "rp31");
        vvd(pn.rp[2][1], -0.3985701514686976112e-6, 1e-14,
-           "iauPn06a", "rp32");
+           "jauPn06a", "rp32");
        vvd(pn.rp[2][2], 0.9999998300623534950, 1e-12,
-           "iauPn06a", "rp33");
+           "jauPn06a", "rp33");
 
        vvd(pn.rbp[0][0], 0.9999989300056797893, 1e-12,
-           "iauPn06a", "rbp11");
+           "jauPn06a", "rbp11");
        vvd(pn.rbp[0][1], -0.1341717650545059598e-2, 1e-14,
-           "iauPn06a", "rbp12");
+           "jauPn06a", "rbp12");
        vvd(pn.rbp[0][2], -0.5829075756493728856e-3, 1e-14,
-           "iauPn06a", "rbp13");
+           "jauPn06a", "rbp13");
 
        vvd(pn.rbp[1][0], 0.1341717674223918101e-2, 1e-14,
-           "iauPn06a", "rbp21");
+           "jauPn06a", "rbp21");
        vvd(pn.rbp[1][1], 0.9999990998963748448, 1e-12,
-           "iauPn06a", "rbp22");
+           "jauPn06a", "rbp22");
        vvd(pn.rbp[1][2], -0.3504269280170069029e-6, 1e-14,
-           "iauPn06a", "rbp23");
+           "jauPn06a", "rbp23");
 
        vvd(pn.rbp[2][0], 0.5829075211461454599e-3, 1e-14,
-           "iauPn06a", "rbp31");
+           "jauPn06a", "rbp31");
        vvd(pn.rbp[2][1], -0.4316708436255949093e-6, 1e-14,
-           "iauPn06a", "rbp32");
+           "jauPn06a", "rbp32");
        vvd(pn.rbp[2][2], 0.9999998301093032943, 1e-12,
-           "iauPn06a", "rbp33");
+           "jauPn06a", "rbp33");
 
        vvd(pn.rn[0][0], 0.9999999999536227668, 1e-12,
-           "iauPn06a", "rn11");
+           "jauPn06a", "rn11");
        vvd(pn.rn[0][1], 0.8836241998111535233e-5, 1e-14,
-           "iauPn06a", "rn12");
+           "jauPn06a", "rn12");
        vvd(pn.rn[0][2], 0.3830834608415287707e-5, 1e-14,
-           "iauPn06a", "rn13");
+           "jauPn06a", "rn13");
 
        vvd(pn.rn[1][0], -0.8836086334870740138e-5, 1e-14,
-           "iauPn06a", "rn21");
+           "jauPn06a", "rn21");
        vvd(pn.rn[1][1], 0.9999999991354657474, 1e-12,
-           "iauPn06a", "rn22");
+           "jauPn06a", "rn22");
        vvd(pn.rn[1][2], -0.4063240188248455065e-4, 1e-14,
-           "iauPn06a", "rn23");
+           "jauPn06a", "rn23");
 
        vvd(pn.rn[2][0], -0.3831193642839398128e-5, 1e-14,
-           "iauPn06a", "rn31");
+           "jauPn06a", "rn31");
        vvd(pn.rn[2][1], 0.4063236803101479770e-4, 1e-14,
-           "iauPn06a", "rn32");
+           "jauPn06a", "rn32");
        vvd(pn.rn[2][2], 0.9999999991671663114, 1e-12,
-           "iauPn06a", "rn33");
+           "jauPn06a", "rn33");
 
        vvd(pn.rbpn[0][0], 0.9999989440480669738, 1e-12,
-           "iauPn06a", "rbpn11");
+           "jauPn06a", "rbpn11");
        vvd(pn.rbpn[0][1], -0.1332881418091915973e-2, 1e-14,
-           "iauPn06a", "rbpn12");
+           "jauPn06a", "rbpn12");
        vvd(pn.rbpn[0][2], -0.5790767447612042565e-3, 1e-14,
-           "iauPn06a", "rbpn13");
+           "jauPn06a", "rbpn13");
 
        vvd(pn.rbpn[1][0], 0.1332857911250989133e-2, 1e-14,
-           "iauPn06a", "rbpn21");
+           "jauPn06a", "rbpn21");
        vvd(pn.rbpn[1][1], 0.9999991109049141908, 1e-12,
-           "iauPn06a", "rbpn22");
+           "jauPn06a", "rbpn22");
        vvd(pn.rbpn[1][2], -0.4097767128546784878e-4, 1e-14,
-           "iauPn06a", "rbpn23");
+           "jauPn06a", "rbpn23");
 
        vvd(pn.rbpn[2][0], 0.5791308482835292617e-3, 1e-14,
-           "iauPn06a", "rbpn31");
+           "jauPn06a", "rbpn31");
        vvd(pn.rbpn[2][1], 0.4020580099454020310e-4, 1e-14,
-           "iauPn06a", "rbpn32");
+           "jauPn06a", "rbpn32");
        vvd(pn.rbpn[2][2], 0.9999998314954628695, 1e-12,
-           "iauPn06a", "rbpn33");
+           "jauPn06a", "rbpn33");
 
     }
 
@@ -4529,12 +4532,12 @@ public class SOFATest {
     **   t _ p n 0 6
     **  - - - - - - -
     **
-    **  Test iauPn06 function.
+    **  Test jauPn06 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPn06, vvd
+    **  Called:  jauPn06, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -4544,114 +4547,114 @@ public class SOFATest {
        dpsi = -0.9632552291149335877e-5;
        deps =  0.4063197106621141414e-4;
 
-       PrecessionNutation pn = iauPn06(2400000.5, 53736.0, dpsi, deps);
+       PrecessionNutation pn = jauPn06(2400000.5, 53736.0, dpsi, deps);
 
-       vvd(pn.epsa, 0.4090789763356509926, 1e-12, "iauPn06", "epsa");
+       vvd(pn.epsa, 0.4090789763356509926, 1e-12, "jauPn06", "epsa");
 
        vvd(pn.rb[0][0], 0.9999999999999942497, 1e-12,
-           "iauPn06", "rb11");
+           "jauPn06", "rb11");
        vvd(pn.rb[0][1], -0.7078368960971557145e-7, 1e-14,
-           "iauPn06", "rb12");
+           "jauPn06", "rb12");
        vvd(pn.rb[0][2], 0.8056213977613185606e-7, 1e-14,
-           "iauPn06", "rb13");
+           "jauPn06", "rb13");
 
        vvd(pn.rb[1][0], 0.7078368694637674333e-7, 1e-14,
-           "iauPn06", "rb21");
+           "jauPn06", "rb21");
        vvd(pn.rb[1][1], 0.9999999999999969484, 1e-12,
-           "iauPn06", "rb22");
+           "jauPn06", "rb22");
        vvd(pn.rb[1][2], 0.3305943742989134124e-7, 1e-14,
-           "iauPn06", "rb23");
+           "jauPn06", "rb23");
 
        vvd(pn.rb[2][0], -0.8056214211620056792e-7, 1e-14,
-           "iauPn06", "rb31");
+           "jauPn06", "rb31");
        vvd(pn.rb[2][1], -0.3305943172740586950e-7, 1e-14,
-           "iauPn06", "rb32");
+           "jauPn06", "rb32");
        vvd(pn.rb[2][2], 0.9999999999999962084, 1e-12,
-           "iauPn06", "rb33");
+           "jauPn06", "rb33");
 
        vvd(pn.rp[0][0], 0.9999989300536854831, 1e-12,
-           "iauPn06", "rp11");
+           "jauPn06", "rp11");
        vvd(pn.rp[0][1], -0.1341646886204443795e-2, 1e-14,
-           "iauPn06", "rp12");
+           "jauPn06", "rp12");
        vvd(pn.rp[0][2], -0.5829880933488627759e-3, 1e-14,
-           "iauPn06", "rp13");
+           "jauPn06", "rp13");
 
        vvd(pn.rp[1][0], 0.1341646890569782183e-2, 1e-14,
-           "iauPn06", "rp21");
+           "jauPn06", "rp21");
        vvd(pn.rp[1][1], 0.9999990999913319321, 1e-12,
-           "iauPn06", "rp22");
+           "jauPn06", "rp22");
        vvd(pn.rp[1][2], -0.3835944216374477457e-6, 1e-14,
-           "iauPn06", "rp23");
+           "jauPn06", "rp23");
 
        vvd(pn.rp[2][0], 0.5829880833027867368e-3, 1e-14,
-           "iauPn06", "rp31");
+           "jauPn06", "rp31");
        vvd(pn.rp[2][1], -0.3985701514686976112e-6, 1e-14,
-           "iauPn06", "rp32");
+           "jauPn06", "rp32");
        vvd(pn.rp[2][2], 0.9999998300623534950, 1e-12,
-           "iauPn06", "rp33");
+           "jauPn06", "rp33");
 
        vvd(pn.rbp[0][0], 0.9999989300056797893, 1e-12,
-           "iauPn06", "rbp11");
+           "jauPn06", "rbp11");
        vvd(pn.rbp[0][1], -0.1341717650545059598e-2, 1e-14,
-           "iauPn06", "rbp12");
+           "jauPn06", "rbp12");
        vvd(pn.rbp[0][2], -0.5829075756493728856e-3, 1e-14,
-           "iauPn06", "rbp13");
+           "jauPn06", "rbp13");
 
        vvd(pn.rbp[1][0], 0.1341717674223918101e-2, 1e-14,
-           "iauPn06", "rbp21");
+           "jauPn06", "rbp21");
        vvd(pn.rbp[1][1], 0.9999990998963748448, 1e-12,
-           "iauPn06", "rbp22");
+           "jauPn06", "rbp22");
        vvd(pn.rbp[1][2], -0.3504269280170069029e-6, 1e-14,
-           "iauPn06", "rbp23");
+           "jauPn06", "rbp23");
 
        vvd(pn.rbp[2][0], 0.5829075211461454599e-3, 1e-14,
-           "iauPn06", "rbp31");
+           "jauPn06", "rbp31");
        vvd(pn.rbp[2][1], -0.4316708436255949093e-6, 1e-14,
-           "iauPn06", "rbp32");
+           "jauPn06", "rbp32");
        vvd(pn.rbp[2][2], 0.9999998301093032943, 1e-12,
-           "iauPn06", "rbp33");
+           "jauPn06", "rbp33");
 
        vvd(pn.rn[0][0], 0.9999999999536069682, 1e-12,
-           "iauPn06", "rn11");
+           "jauPn06", "rn11");
        vvd(pn.rn[0][1], 0.8837746921149881914e-5, 1e-14,
-           "iauPn06", "rn12");
+           "jauPn06", "rn12");
        vvd(pn.rn[0][2], 0.3831487047682968703e-5, 1e-14,
-           "iauPn06", "rn13");
+           "jauPn06", "rn13");
 
        vvd(pn.rn[1][0], -0.8837591232983692340e-5, 1e-14,
-           "iauPn06", "rn21");
+           "jauPn06", "rn21");
        vvd(pn.rn[1][1], 0.9999999991354692664, 1e-12,
-           "iauPn06", "rn22");
+           "jauPn06", "rn22");
        vvd(pn.rn[1][2], -0.4063198798558931215e-4, 1e-14,
-           "iauPn06", "rn23");
+           "jauPn06", "rn23");
 
        vvd(pn.rn[2][0], -0.3831846139597250235e-5, 1e-14,
-           "iauPn06", "rn31");
+           "jauPn06", "rn31");
        vvd(pn.rn[2][1], 0.4063195412258792914e-4, 1e-14,
-           "iauPn06", "rn32");
+           "jauPn06", "rn32");
        vvd(pn.rn[2][2], 0.9999999991671806293, 1e-12,
-           "iauPn06", "rn33");
+           "jauPn06", "rn33");
 
        vvd(pn.rbpn[0][0], 0.9999989440504506688, 1e-12,
-           "iauPn06", "rbpn11");
+           "jauPn06", "rbpn11");
        vvd(pn.rbpn[0][1], -0.1332879913170492655e-2, 1e-14,
-           "iauPn06", "rbpn12");
+           "jauPn06", "rbpn12");
        vvd(pn.rbpn[0][2], -0.5790760923225655753e-3, 1e-14,
-           "iauPn06", "rbpn13");
+           "jauPn06", "rbpn13");
 
        vvd(pn.rbpn[1][0], 0.1332856406595754748e-2, 1e-14,
-           "iauPn06", "rbpn21");
+           "jauPn06", "rbpn21");
        vvd(pn.rbpn[1][1], 0.9999991109069366795, 1e-12,
-           "iauPn06", "rbpn22");
+           "jauPn06", "rbpn22");
        vvd(pn.rbpn[1][2], -0.4097725651142641812e-4, 1e-14,
-           "iauPn06", "rbpn23");
+           "jauPn06", "rbpn23");
 
        vvd(pn.rbpn[2][0], 0.5791301952321296716e-3, 1e-14,
-           "iauPn06", "rbpn31");
+           "jauPn06", "rbpn31");
        vvd(pn.rbpn[2][1], 0.4020538796195230577e-4, 1e-14,
-           "iauPn06", "rbpn32");
+           "jauPn06", "rbpn32");
        vvd(pn.rbpn[2][2], 0.9999998314958576778, 1e-12,
-           "iauPn06", "rbpn33");
+           "jauPn06", "rbpn33");
 
     }
 
@@ -4662,12 +4665,12 @@ public class SOFATest {
     **   t _ p n m 0 0 a
     **  - - - - - - - - -
     **
-    **  Test iauPnm00a function.
+    **  Test jauPnm00a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPnm00a, vvd
+    **  Called:  jauPnm00a, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -4675,28 +4678,28 @@ public class SOFATest {
        double rbpn[][] = new double[3][3];
 
 
-       iauPnm00a(2400000.5, 50123.9999, rbpn);
+       jauPnm00a(2400000.5, 50123.9999, rbpn);
 
        vvd(rbpn[0][0], 0.9999995832793134257, 1e-12,
-           "iauPnm00a", "11");
+           "jauPnm00a", "11");
        vvd(rbpn[0][1], 0.8372384254137809439e-3, 1e-14,
-           "iauPnm00a", "12");
+           "jauPnm00a", "12");
        vvd(rbpn[0][2], 0.3639684306407150645e-3, 1e-14,
-           "iauPnm00a", "13");
+           "jauPnm00a", "13");
 
        vvd(rbpn[1][0], -0.8372535226570394543e-3, 1e-14,
-           "iauPnm00a", "21");
+           "jauPnm00a", "21");
        vvd(rbpn[1][1], 0.9999996486491582471, 1e-12,
-           "iauPnm00a", "22");
+           "jauPnm00a", "22");
        vvd(rbpn[1][2], 0.4132915262664072381e-4, 1e-14,
-           "iauPnm00a", "23");
+           "jauPnm00a", "23");
 
        vvd(rbpn[2][0], -0.3639337004054317729e-3, 1e-14,
-           "iauPnm00a", "31");
+           "jauPnm00a", "31");
        vvd(rbpn[2][1], -0.4163386925461775873e-4, 1e-14,
-           "iauPnm00a", "32");
+           "jauPnm00a", "32");
        vvd(rbpn[2][2], 0.9999999329094390695, 1e-12,
-           "iauPnm00a", "33");
+           "jauPnm00a", "33");
 
     }
 
@@ -4707,12 +4710,12 @@ public class SOFATest {
     **   t _ p n m 0 0 b
     **  - - - - - - - - -
     **
-    **  Test iauPnm00b function.
+    **  Test jauPnm00b function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPnm00b, vvd
+    **  Called:  jauPnm00b, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -4720,28 +4723,28 @@ public class SOFATest {
        double rbpn[][] = new double[3][3];
 
 
-       iauPnm00b(2400000.5, 50123.9999, rbpn);
+       jauPnm00b(2400000.5, 50123.9999, rbpn);
 
        vvd(rbpn[0][0], 0.9999995832776208280, 1e-12,
-           "iauPnm00b", "11");
+           "jauPnm00b", "11");
        vvd(rbpn[0][1], 0.8372401264429654837e-3, 1e-14,
-           "iauPnm00b", "12");
+           "jauPnm00b", "12");
        vvd(rbpn[0][2], 0.3639691681450271771e-3, 1e-14,
-           "iauPnm00b", "13");
+           "jauPnm00b", "13");
 
        vvd(rbpn[1][0], -0.8372552234147137424e-3, 1e-14,
-           "iauPnm00b", "21");
+           "jauPnm00b", "21");
        vvd(rbpn[1][1], 0.9999996486477686123, 1e-12,
-           "iauPnm00b", "22");
+           "jauPnm00b", "22");
        vvd(rbpn[1][2], 0.4132832190946052890e-4, 1e-14,
-           "iauPnm00b", "23");
+           "jauPnm00b", "23");
 
        vvd(rbpn[2][0], -0.3639344385341866407e-3, 1e-14,
-           "iauPnm00b", "31");
+           "jauPnm00b", "31");
        vvd(rbpn[2][1], -0.4163303977421522785e-4, 1e-14,
-           "iauPnm00b", "32");
+           "jauPnm00b", "32");
        vvd(rbpn[2][2], 0.9999999329092049734, 1e-12,
-           "iauPnm00b", "33");
+           "jauPnm00b", "33");
 
     }
 
@@ -4752,12 +4755,12 @@ public class SOFATest {
     **   t _ p n m 0 6 a
     **  - - - - - - - - -
     **
-    **  Test iauPnm06a function.
+    **  Test jauPnm06a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPnm06a, vvd
+    **  Called:  jauPnm06a, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -4765,28 +4768,28 @@ public class SOFATest {
        double rbpn[][] = new double[3][3];
 
 
-       iauPnm06a(2400000.5, 50123.9999, rbpn);
+       jauPnm06a(2400000.5, 50123.9999, rbpn);
 
        vvd(rbpn[0][0], 0.9999995832794205484, 1e-12,
-           "iauPnm06a", "11");
+           "jauPnm06a", "11");
        vvd(rbpn[0][1], 0.8372382772630962111e-3, 1e-14,
-           "iauPnm06a", "12");
+           "jauPnm06a", "12");
        vvd(rbpn[0][2], 0.3639684771140623099e-3, 1e-14,
-           "iauPnm06a", "13");
+           "jauPnm06a", "13");
 
        vvd(rbpn[1][0], -0.8372533744743683605e-3, 1e-14,
-           "iauPnm06a", "21");
+           "jauPnm06a", "21");
        vvd(rbpn[1][1], 0.9999996486492861646, 1e-12,
-           "iauPnm06a", "22");
+           "jauPnm06a", "22");
        vvd(rbpn[1][2], 0.4132905944611019498e-4, 1e-14,
-           "iauPnm06a", "23");
+           "jauPnm06a", "23");
 
        vvd(rbpn[2][0], -0.3639337469629464969e-3, 1e-14,
-           "iauPnm06a", "31");
+           "jauPnm06a", "31");
        vvd(rbpn[2][1], -0.4163377605910663999e-4, 1e-14,
-           "iauPnm06a", "32");
+           "jauPnm06a", "32");
        vvd(rbpn[2][2], 0.9999999329094260057, 1e-12,
-           "iauPnm06a", "33");
+           "jauPnm06a", "33");
 
     }
 
@@ -4797,12 +4800,12 @@ public class SOFATest {
     **   t _ p n m 8 0
     **  - - - - - - - -
     **
-    **  Test iauPnm80 function.
+    **  Test jauPnm80 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPnm80, vvd
+    **  Called:  jauPnm80, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -4810,28 +4813,28 @@ public class SOFATest {
        double rmatpn[][] = new double[3][3];
 
 
-       iauPnm80(2400000.5, 50123.9999, rmatpn);
+       jauPnm80(2400000.5, 50123.9999, rmatpn);
 
        vvd(rmatpn[0][0], 0.9999995831934611169, 1e-12,
-           "iauPnm80", "11");
+           "jauPnm80", "11");
        vvd(rmatpn[0][1], 0.8373654045728124011e-3, 1e-14,
-           "iauPnm80", "12");
+           "jauPnm80", "12");
        vvd(rmatpn[0][2], 0.3639121916933106191e-3, 1e-14,
-           "iauPnm80", "13");
+           "jauPnm80", "13");
 
        vvd(rmatpn[1][0], -0.8373804896118301316e-3, 1e-14,
-           "iauPnm80", "21");
+           "jauPnm80", "21");
        vvd(rmatpn[1][1], 0.9999996485439674092, 1e-12,
-           "iauPnm80", "22");
+           "jauPnm80", "22");
        vvd(rmatpn[1][2], 0.4130202510421549752e-4, 1e-14,
-           "iauPnm80", "23");
+           "jauPnm80", "23");
 
        vvd(rmatpn[2][0], -0.3638774789072144473e-3, 1e-14,
-           "iauPnm80", "31");
+           "jauPnm80", "31");
        vvd(rmatpn[2][1], -0.4160674085851722359e-4, 1e-14,
-           "iauPnm80", "32");
+           "jauPnm80", "32");
        vvd(rmatpn[2][2], 0.9999999329310274805, 1e-12,
-           "iauPnm80", "33");
+           "jauPnm80", "33");
 
     }
 
@@ -4842,12 +4845,12 @@ public class SOFATest {
     **   t _ p o m 0 0
     **  - - - - - - - -
     **
-    **  Test iauPom00 function.
+    **  Test jauPom00 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPom00, vvd
+    **  Called:  jauPom00, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -4859,28 +4862,28 @@ public class SOFATest {
        yp =  1.860359247e-6;
        sp = -0.1367174580728891460e-10;
 
-       iauPom00(xp, yp, sp, rpom);
+       jauPom00(xp, yp, sp, rpom);
 
        vvd(rpom[0][0], 0.9999999999999674721, 1e-12,
-           "iauPom00", "11");
+           "jauPom00", "11");
        vvd(rpom[0][1], -0.1367174580728846989e-10, 1e-16,
-           "iauPom00", "12");
+           "jauPom00", "12");
        vvd(rpom[0][2], 0.2550602379999972345e-6, 1e-16,
-           "iauPom00", "13");
+           "jauPom00", "13");
 
        vvd(rpom[1][0], 0.1414624947957029801e-10, 1e-16,
-           "iauPom00", "21");
+           "jauPom00", "21");
        vvd(rpom[1][1], 0.9999999999982695317, 1e-12,
-           "iauPom00", "22");
+           "jauPom00", "22");
        vvd(rpom[1][2], -0.1860359246998866389e-5, 1e-16,
-           "iauPom00", "23");
+           "jauPom00", "23");
 
        vvd(rpom[2][0], -0.2550602379741215021e-6, 1e-16,
-           "iauPom00", "31");
+           "jauPom00", "31");
        vvd(rpom[2][1], 0.1860359247002414021e-5, 1e-16,
-           "iauPom00", "32");
+           "jauPom00", "32");
        vvd(rpom[2][2], 0.9999999999982370039, 1e-12,
-           "iauPom00", "33");
+           "jauPom00", "33");
 
     }
 
@@ -4891,12 +4894,12 @@ public class SOFATest {
     **   t _ p p p
     **  - - - - - -
     **
-    **  Test iauPpp function.
+    **  Test jauPpp function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPpp, vvd
+    **  Called:  jauPpp, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -4912,11 +4915,11 @@ public class SOFATest {
        b[1] = 3.0;
        b[2] = 4.0;
 
-       iauPpp(a, b, apb);
+       jauPpp(a, b, apb);
 
-       vvd(apb[0], 3.0, 1e-12, "iauPpp", "0");
-       vvd(apb[1], 5.0, 1e-12, "iauPpp", "1");
-       vvd(apb[2], 7.0, 1e-12, "iauPpp", "2");
+       vvd(apb[0], 3.0, 1e-12, "jauPpp", "0");
+       vvd(apb[1], 5.0, 1e-12, "jauPpp", "1");
+       vvd(apb[2], 7.0, 1e-12, "jauPpp", "2");
 
     }
 
@@ -4927,12 +4930,12 @@ public class SOFATest {
     **   t _ p p s p
     **  - - - - - - -
     **
-    **  Test iauPpsp function.
+    **  Test jauPpsp function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPpsp, vvd
+    **  Called:  jauPpsp, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -4950,11 +4953,11 @@ public class SOFATest {
        b[1] = 3.0;
        b[2] = 4.0;
 
-       iauPpsp(a, s, b, apsb);
+       jauPpsp(a, s, b, apsb);
 
-       vvd(apsb[0], 7.0, 1e-12, "iauPpsp", "0");
-       vvd(apsb[1], 17.0, 1e-12, "iauPpsp", "1");
-       vvd(apsb[2], 23.0, 1e-12, "iauPpsp", "2");
+       vvd(apsb[0], 7.0, 1e-12, "jauPpsp", "0");
+       vvd(apsb[1], 17.0, 1e-12, "jauPpsp", "1");
+       vvd(apsb[2], 23.0, 1e-12, "jauPpsp", "2");
 
     }
 
@@ -4965,22 +4968,22 @@ public class SOFATest {
     **   t _ p r 0 0
     **  - - - - - - -
     **
-    **  Test iauPr00 function.
+    **  Test jauPr00 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPr00, vvd
+    **  Called:  jauPr00, vvd
     **
     **  This revision:  2008 November 28
     */
     {
-       NutationDeltaTerms nut = iauPr00(2400000.5, 53736);
+       NutationDeltaTerms nut = jauPr00(2400000.5, 53736);
 
        vvd(nut.dpsipr, -0.8716465172668347629e-7, 1e-22,
-          "iauPr00", "dpsipr");
+          "jauPr00", "dpsipr");
        vvd(nut.depspr, -0.7342018386722813087e-8, 1e-22,
-          "iauPr00", "depspr");
+          "jauPr00", "depspr");
 
     }
 
@@ -4991,12 +4994,12 @@ public class SOFATest {
     **   t _ p r e c 7 6
     **  - - - - - - - - -
     **
-    **  Test iauPrec76 function.
+    **  Test jauPrec76 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPrec76, vvd
+    **  Called:  jauPrec76, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -5009,14 +5012,14 @@ public class SOFATest {
        ep11 = 2400000.5;
        ep12 = 51544.0;
 
-       EulerAngles an = iauPrec76(ep01, ep02, ep11, ep12);
+       EulerAngles an = jauPrec76(ep01, ep02, ep11, ep12);
 
        vvd(an.zeta,  0.5588961642000161243e-2, 1e-12,
-           "iauPrec76", "zeta");
+           "jauPrec76", "zeta");
        vvd(an.z,     0.5589922365870680624e-2, 1e-12,
-           "iauPrec76", "z");
+           "jauPrec76", "z");
        vvd(an.theta, 0.4858945471687296760e-2, 1e-12,
-           "iauPrec76", "theta");
+           "jauPrec76", "theta");
 
     }
 
@@ -5027,12 +5030,12 @@ public class SOFATest {
     **   t _ p v 2 p
     **  - - - - - - -
     **
-    **  Test iauPv2p function.
+    **  Test jauPv2p function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPv2p, vvd
+    **  Called:  jauPv2p, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5048,11 +5051,11 @@ public class SOFATest {
        pv[1][1] =  3.1;
        pv[1][2] =  0.9;
 
-       iauPv2p(pv, p);
+       jauPv2p(pv, p);
 
-       vvd(p[0],  0.3, 0.0, "iauPv2p", "1");
-       vvd(p[1],  1.2, 0.0, "iauPv2p", "2");
-       vvd(p[2], -2.5, 0.0, "iauPv2p", "3");
+       vvd(p[0],  0.3, 0.0, "jauPv2p", "1");
+       vvd(p[1],  1.2, 0.0, "jauPv2p", "2");
+       vvd(p[2], -2.5, 0.0, "jauPv2p", "3");
 
     }
 
@@ -5063,12 +5066,12 @@ public class SOFATest {
     **   t _ p v 2 s
     **  - - - - - - -
     **
-    **  Test iauPv2s function.
+    **  Test jauPv2s function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPv2s, vvd
+    **  Called:  jauPv2s, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -5084,14 +5087,14 @@ public class SOFATest {
        pv[1][1] =  2.652814182060692e-6;
        pv[1][2] =  2.568431853930293e-6;
 
-       SphericalPositionVelocity pvs = iauPv2s(pv);
+       SphericalPositionVelocity pvs = jauPv2s(pv);
 
-       vvd(pvs.pos.theta, 3.073185307179586515, 1e-12, "iauPv2s", "theta");
-       vvd(pvs.pos.phi, 0.1229999999999999992, 1e-12, "iauPv2s", "phi");
-       vvd(pvs.pos.r, 0.4559999999999999757, 1e-12, "iauPv2s", "r");
-       vvd(pvs.vel.theta, -0.7800000000000000364e-5, 1e-16, "iauPv2s", "td");
-       vvd(pvs.vel.phi, 0.9010000000000001639e-5, 1e-16, "iauPv2s", "pd");
-       vvd(pvs.vel.r, -0.1229999999999999832e-4, 1e-16, "iauPv2s", "rd");
+       vvd(pvs.pos.theta, 3.073185307179586515, 1e-12, "jauPv2s", "theta");
+       vvd(pvs.pos.phi, 0.1229999999999999992, 1e-12, "jauPv2s", "phi");
+       vvd(pvs.pos.r, 0.4559999999999999757, 1e-12, "jauPv2s", "r");
+       vvd(pvs.vel.theta, -0.7800000000000000364e-5, 1e-16, "jauPv2s", "td");
+       vvd(pvs.vel.phi, 0.9010000000000001639e-5, 1e-16, "jauPv2s", "pd");
+       vvd(pvs.vel.r, -0.1229999999999999832e-4, 1e-16, "jauPv2s", "rd");
 
     }
 
@@ -5102,12 +5105,12 @@ public class SOFATest {
     **   t _ p v d p v
     **  - - - - - - - -
     **
-    **  Test iauPvdpv function.
+    **  Test jauPvdpv function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPvdpv, vvd
+    **  Called:  jauPvdpv, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5131,10 +5134,10 @@ public class SOFATest {
        b[1][1] = 2.0;
        b[1][2] = 8.0;
 
-       iauPvdpv(a, b, adb);
+       jauPvdpv(a, b, adb);
 
-       vvd(adb[0], 20.0, 1e-12, "iauPvdpv", "1");
-       vvd(adb[1], 50.0, 1e-12, "iauPvdpv", "2");
+       vvd(adb[0], 20.0, 1e-12, "jauPvdpv", "1");
+       vvd(adb[1], 50.0, 1e-12, "jauPvdpv", "2");
 
     }
 
@@ -5145,12 +5148,12 @@ public class SOFATest {
     **   t _ p v m
     **  - - - - - -
     **
-    **  Test iauPvm function.
+    **  Test jauPvm function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPvm, vvd
+    **  Called:  jauPvm, vvd
     **
     **  This revision:  2008 May 25
     */
@@ -5166,10 +5169,10 @@ public class SOFATest {
        pv[1][1] = -0.25;
        pv[1][2] =  1.1;
 
-       PVModulus ret = iauPvm(pv);
+       PVModulus ret = jauPvm(pv);
 
-       vvd(ret.r, 2.789265136196270604, 1e-12, "iauPvm", "r");
-       vvd(ret.s, 1.214495780149111922, 1e-12, "iauPvm", "s");
+       vvd(ret.r, 2.789265136196270604, 1e-12, "jauPvm", "r");
+       vvd(ret.s, 1.214495780149111922, 1e-12, "jauPvm", "s");
 
     }
 
@@ -5180,12 +5183,12 @@ public class SOFATest {
     **   t _ p v m p v
     **  - - - - - - - -
     **
-    **  Test iauPvmpv function.
+    **  Test jauPvmpv function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPvmpv, vvd
+    **  Called:  jauPvmpv, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5209,15 +5212,15 @@ public class SOFATest {
        b[1][1] = 2.0;
        b[1][2] = 1.0;
 
-       iauPvmpv(a, b, amb);
+       jauPvmpv(a, b, amb);
 
-       vvd(amb[0][0],  1.0, 1e-12, "iauPvmpv", "11");
-       vvd(amb[0][1], -1.0, 1e-12, "iauPvmpv", "21");
-       vvd(amb[0][2], -1.0, 1e-12, "iauPvmpv", "31");
+       vvd(amb[0][0],  1.0, 1e-12, "jauPvmpv", "11");
+       vvd(amb[0][1], -1.0, 1e-12, "jauPvmpv", "21");
+       vvd(amb[0][2], -1.0, 1e-12, "jauPvmpv", "31");
 
-       vvd(amb[1][0],  2.0, 1e-12, "iauPvmpv", "12");
-       vvd(amb[1][1],  4.0, 1e-12, "iauPvmpv", "22");
-       vvd(amb[1][2],  2.0, 1e-12, "iauPvmpv", "32");
+       vvd(amb[1][0],  2.0, 1e-12, "jauPvmpv", "12");
+       vvd(amb[1][1],  4.0, 1e-12, "jauPvmpv", "22");
+       vvd(amb[1][2],  2.0, 1e-12, "jauPvmpv", "32");
 
     }
 
@@ -5228,12 +5231,12 @@ public class SOFATest {
     **   t _ p v p p v
     **  - - - - - - - -
     **
-    **  Test iauPvppv function.
+    **  Test jauPvppv function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPvppv, vvd
+    **  Called:  jauPvppv, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5257,15 +5260,15 @@ public class SOFATest {
        b[1][1] = 2.0;
        b[1][2] = 1.0;
 
-       iauPvppv(a, b, apb);
+       jauPvppv(a, b, apb);
 
-       vvd(apb[0][0], 3.0, 1e-12, "iauPvppv", "p1");
-       vvd(apb[0][1], 5.0, 1e-12, "iauPvppv", "p2");
-       vvd(apb[0][2], 7.0, 1e-12, "iauPvppv", "p3");
+       vvd(apb[0][0], 3.0, 1e-12, "jauPvppv", "p1");
+       vvd(apb[0][1], 5.0, 1e-12, "jauPvppv", "p2");
+       vvd(apb[0][2], 7.0, 1e-12, "jauPvppv", "p3");
 
-       vvd(apb[1][0], 8.0, 1e-12, "iauPvppv", "v1");
-       vvd(apb[1][1], 8.0, 1e-12, "iauPvppv", "v2");
-       vvd(apb[1][2], 4.0, 1e-12, "iauPvppv", "v3");
+       vvd(apb[1][0], 8.0, 1e-12, "jauPvppv", "v1");
+       vvd(apb[1][1], 8.0, 1e-12, "jauPvppv", "v2");
+       vvd(apb[1][2], 4.0, 1e-12, "jauPvppv", "v3");
 
     }
 
@@ -5276,12 +5279,12 @@ public class SOFATest {
     **   t _ p v s t a r
     **  - - - - - - - - -
     **
-    **  Test iauPvstar function.
+    **  Test jauPvstar function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPvstar, vvd, viv
+    **  Called:  jauPvstar, vvd, viv
     **
     **  This revision:  2009 November 6
     */
@@ -5298,14 +5301,14 @@ public class SOFATest {
        pv[1][2] =  0.1189353719774107189e-1;
 
        try {
-           CatalogCoords cat = iauPvstar(pv);
+           CatalogCoords cat = jauPvstar(pv);
 
-           vvd(cat.pos.alpha, 0.1686756e-1, 1e-12, "iauPvstar", "ra");
-           vvd(cat.pos.delta, -1.093989828, 1e-12, "iauPvstar", "dec");
-           vvd(cat.pm.alpha, -0.178323516e-4, 1e-16, "iauPvstar", "pmr");
-           vvd(cat.pm.delta, 0.2336024047e-5, 1e-16, "iauPvstar", "pmd");
-           vvd(cat.px, 0.74723, 1e-12, "iauPvstar", "px");
-           vvd(cat.rv, -21.6, 1e-11, "iauPvstar", "rv");
+           vvd(cat.pos.alpha, 0.1686756e-1, 1e-12, "jauPvstar", "ra");
+           vvd(cat.pos.delta, -1.093989828, 1e-12, "jauPvstar", "dec");
+           vvd(cat.pm.alpha, -0.178323516e-4, 1e-16, "jauPvstar", "pmr");
+           vvd(cat.pm.delta, 0.2336024047e-5, 1e-16, "jauPvstar", "pmd");
+           vvd(cat.px, 0.74723, 1e-12, "jauPvstar", "px");
+           vvd(cat.rv, -21.6, 1e-11, "jauPvstar", "rv");
        } catch (SOFAInternalError e) {
            fail(" internal exception");
        }
@@ -5320,12 +5323,12 @@ public class SOFATest {
     **   t _ p v u
     **  - - - - - -
     **
-    **  Test iauPvu function.
+    **  Test jauPvu function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPvu, vvd
+    **  Called:  jauPvu, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5341,21 +5344,21 @@ public class SOFATest {
        pv[1][1] = -0.6253919754866175788e-2;
        pv[1][2] =  0.1189353719774107615e-1;
 
-       iauPvu(2920.0, pv, upv);
+       jauPvu(2920.0, pv, upv);
 
        vvd(upv[0][0], 126656.7598605317105, 1e-12,
-           "iauPvu", "p1");
+           "jauPvu", "p1");
        vvd(upv[0][1], 2118.531271155726332, 1e-12,
-           "iauPvu", "p2");
+           "jauPvu", "p2");
        vvd(upv[0][2], -245216.5048590656190, 1e-12,
-           "iauPvu", "p3");
+           "jauPvu", "p3");
 
        vvd(upv[1][0], -0.4051854035740713039e-2, 1e-12,
-           "iauPvu", "v1");
+           "jauPvu", "v1");
        vvd(upv[1][1], -0.6253919754866175788e-2, 1e-12,
-           "iauPvu", "v2");
+           "jauPvu", "v2");
        vvd(upv[1][2], 0.1189353719774107615e-1, 1e-12,
-           "iauPvu", "v3");
+           "jauPvu", "v3");
 
     }
 
@@ -5366,12 +5369,12 @@ public class SOFATest {
     **   t _ p v u p
     **  - - - - - - -
     **
-    **  Test iauPvup function.
+    **  Test jauPvup function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPvup, vvd
+    **  Called:  jauPvup, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5387,11 +5390,11 @@ public class SOFATest {
        pv[1][1] = -0.6253919754866175788e-2;
        pv[1][2] =  0.1189353719774107615e-1;
 
-       iauPvup(2920.0, pv, p);
+       jauPvup(2920.0, pv, p);
 
-       vvd(p[0],  126656.7598605317105,   1e-12, "iauPvup", "1");
-       vvd(p[1],    2118.531271155726332, 1e-12, "iauPvup", "2");
-       vvd(p[2], -245216.5048590656190,   1e-12, "iauPvup", "3");
+       vvd(p[0],  126656.7598605317105,   1e-12, "jauPvup", "1");
+       vvd(p[1],    2118.531271155726332, 1e-12, "jauPvup", "2");
+       vvd(p[2], -245216.5048590656190,   1e-12, "jauPvup", "3");
 
     }
 
@@ -5402,12 +5405,12 @@ public class SOFATest {
     **   t _ p v x p v
     **  - - - - - - - -
     **
-    **  Test iauPvxpv function.
+    **  Test jauPvxpv function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPvxpv, vvd
+    **  Called:  jauPvxpv, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5431,15 +5434,15 @@ public class SOFATest {
        b[1][1] = 2.0;
        b[1][2] = 8.0;
 
-       iauPvxpv(a, b, axb);
+       jauPvxpv(a, b, axb);
 
-       vvd(axb[0][0],  -1.0, 1e-12, "iauPvxpv", "p1");
-       vvd(axb[0][1],  -5.0, 1e-12, "iauPvxpv", "p2");
-       vvd(axb[0][2],   4.0, 1e-12, "iauPvxpv", "p3");
+       vvd(axb[0][0],  -1.0, 1e-12, "jauPvxpv", "p1");
+       vvd(axb[0][1],  -5.0, 1e-12, "jauPvxpv", "p2");
+       vvd(axb[0][2],   4.0, 1e-12, "jauPvxpv", "p3");
 
-       vvd(axb[1][0],  -2.0, 1e-12, "iauPvxpv", "v1");
-       vvd(axb[1][1], -36.0, 1e-12, "iauPvxpv", "v2");
-       vvd(axb[1][2],  22.0, 1e-12, "iauPvxpv", "v3");
+       vvd(axb[1][0],  -2.0, 1e-12, "jauPvxpv", "v1");
+       vvd(axb[1][1], -36.0, 1e-12, "jauPvxpv", "v2");
+       vvd(axb[1][2],  22.0, 1e-12, "jauPvxpv", "v3");
 
     }
 
@@ -5450,12 +5453,12 @@ public class SOFATest {
     **   t _ p x p
     **  - - - - - -
     **
-    **  Test iauPxp function.
+    **  Test jauPxp function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauPxp, vvd
+    **  Called:  jauPxp, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5471,11 +5474,11 @@ public class SOFATest {
        b[1] = 3.0;
        b[2] = 4.0;
 
-       iauPxp(a, b, axb);
+       jauPxp(a, b, axb);
 
-       vvd(axb[0], -1.0, 1e-12, "iauPxp", "1");
-       vvd(axb[1], -5.0, 1e-12, "iauPxp", "2");
-       vvd(axb[2],  4.0, 1e-12, "iauPxp", "3");
+       vvd(axb[0], -1.0, 1e-12, "jauPxp", "1");
+       vvd(axb[1], -5.0, 1e-12, "jauPxp", "2");
+       vvd(axb[2],  4.0, 1e-12, "jauPxp", "3");
 
     }
 
@@ -5486,12 +5489,12 @@ public class SOFATest {
     **   t _ r m 2 v
     **  - - - - - - -
     **
-    **  Test iauRm2v function.
+    **  Test jauRm2v function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauRm2v, vvd
+    **  Called:  jauRm2v, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5511,11 +5514,11 @@ public class SOFATest {
        r[2][1] =  0.48;
        r[2][2] = -0.64;
 
-       iauRm2v(r, w);
+       jauRm2v(r, w);
 
-       vvd(w[0],  0.0,                  1e-12, "iauRm2v", "1");
-       vvd(w[1],  1.413716694115406957, 1e-12, "iauRm2v", "2");
-       vvd(w[2], -1.884955592153875943, 1e-12, "iauRm2v", "3");
+       vvd(w[0],  0.0,                  1e-12, "jauRm2v", "1");
+       vvd(w[1],  1.413716694115406957, 1e-12, "jauRm2v", "2");
+       vvd(w[2], -1.884955592153875943, 1e-12, "jauRm2v", "3");
 
     }
 
@@ -5526,12 +5529,12 @@ public class SOFATest {
     **   t _ r v 2 m
     **  - - - - - - -
     **
-    **  Test iauRv2m function.
+    **  Test jauRv2m function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauRv2m, vvd
+    **  Called:  jauRv2m, vvd
     **
     **  This revision:  2008 May 27
     */
@@ -5543,19 +5546,19 @@ public class SOFATest {
        w[1] =  1.41371669;
        w[2] = -1.88495559;
 
-       iauRv2m(w, r);
+       jauRv2m(w, r);
 
-       vvd(r[0][0], -0.7071067782221119905, 1e-14, "iauRv2m", "11");
-       vvd(r[0][1], -0.5656854276809129651, 1e-14, "iauRv2m", "12");
-       vvd(r[0][2], -0.4242640700104211225, 1e-14, "iauRv2m", "13");
+       vvd(r[0][0], -0.7071067782221119905, 1e-14, "jauRv2m", "11");
+       vvd(r[0][1], -0.5656854276809129651, 1e-14, "jauRv2m", "12");
+       vvd(r[0][2], -0.4242640700104211225, 1e-14, "jauRv2m", "13");
 
-       vvd(r[1][0],  0.5656854276809129651, 1e-14, "iauRv2m", "21");
-       vvd(r[1][1], -0.0925483394532274246, 1e-14, "iauRv2m", "22");
-       vvd(r[1][2], -0.8194112531408833269, 1e-14, "iauRv2m", "23");
+       vvd(r[1][0],  0.5656854276809129651, 1e-14, "jauRv2m", "21");
+       vvd(r[1][1], -0.0925483394532274246, 1e-14, "jauRv2m", "22");
+       vvd(r[1][2], -0.8194112531408833269, 1e-14, "jauRv2m", "23");
 
-       vvd(r[2][0],  0.4242640700104211225, 1e-14, "iauRv2m", "31");
-       vvd(r[2][1], -0.8194112531408833269, 1e-14, "iauRv2m", "32");
-       vvd(r[2][2],  0.3854415612311154341, 1e-14, "iauRv2m", "33");
+       vvd(r[2][0],  0.4242640700104211225, 1e-14, "jauRv2m", "31");
+       vvd(r[2][1], -0.8194112531408833269, 1e-14, "jauRv2m", "32");
+       vvd(r[2][2],  0.3854415612311154341, 1e-14, "jauRv2m", "33");
 
     }
 
@@ -5566,12 +5569,12 @@ public class SOFATest {
     **   t _ r x
     **  - - - - -
     **
-    **  Test iauRx function.
+    **  Test jauRx function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauRx, vvd
+    **  Called:  jauRx, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5593,19 +5596,19 @@ public class SOFATest {
        r[2][1] = 4.0;
        r[2][2] = 5.0;
 
-       iauRx(phi, r);
+       jauRx(phi, r);
 
-       vvd(r[0][0], 2.0, 0.0, "iauRx", "11");
-       vvd(r[0][1], 3.0, 0.0, "iauRx", "12");
-       vvd(r[0][2], 2.0, 0.0, "iauRx", "13");
+       vvd(r[0][0], 2.0, 0.0, "jauRx", "11");
+       vvd(r[0][1], 3.0, 0.0, "jauRx", "12");
+       vvd(r[0][2], 2.0, 0.0, "jauRx", "13");
 
-       vvd(r[1][0], 3.839043388235612460, 1e-12, "iauRx", "21");
-       vvd(r[1][1], 3.237033249594111899, 1e-12, "iauRx", "22");
-       vvd(r[1][2], 4.516714379005982719, 1e-12, "iauRx", "23");
+       vvd(r[1][0], 3.839043388235612460, 1e-12, "jauRx", "21");
+       vvd(r[1][1], 3.237033249594111899, 1e-12, "jauRx", "22");
+       vvd(r[1][2], 4.516714379005982719, 1e-12, "jauRx", "23");
 
-       vvd(r[2][0], 1.806030415924501684, 1e-12, "iauRx", "31");
-       vvd(r[2][1], 3.085711545336372503, 1e-12, "iauRx", "32");
-       vvd(r[2][2], 3.687721683977873065, 1e-12, "iauRx", "33");
+       vvd(r[2][0], 1.806030415924501684, 1e-12, "jauRx", "31");
+       vvd(r[2][1], 3.085711545336372503, 1e-12, "jauRx", "32");
+       vvd(r[2][2], 3.687721683977873065, 1e-12, "jauRx", "33");
 
     }
 
@@ -5616,12 +5619,12 @@ public class SOFATest {
     **   t _ r x p
     **  - - - - - -
     **
-    **  Test iauRxp function.
+    **  Test jauRxp function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauRxp, vvd
+    **  Called:  jauRxp, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5645,11 +5648,11 @@ public class SOFATest {
        p[1] = 1.5;
        p[2] = 0.1;
 
-       iauRxp(r, p, rp);
+       jauRxp(r, p, rp);
 
-       vvd(rp[0], 5.1, 1e-12, "iauRxp", "1");
-       vvd(rp[1], 3.9, 1e-12, "iauRxp", "2");
-       vvd(rp[2], 7.1, 1e-12, "iauRxp", "3");
+       vvd(rp[0], 5.1, 1e-12, "jauRxp", "1");
+       vvd(rp[1], 3.9, 1e-12, "jauRxp", "2");
+       vvd(rp[2], 7.1, 1e-12, "jauRxp", "3");
 
     }
 
@@ -5660,12 +5663,12 @@ public class SOFATest {
     **   t _ r x p v
     **  - - - - - - -
     **
-    **  Test iauRxpv function.
+    **  Test jauRxpv function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauRxpv, vvd
+    **  Called:  jauRxpv, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5693,16 +5696,16 @@ public class SOFATest {
        pv[1][1] = 0.2;
        pv[1][2] = 0.1;
 
-       iauRxpv(r, pv, rpv);
+       jauRxpv(r, pv, rpv);
 
-       vvd(rpv[0][0], 5.1, 1e-12, "iauRxpv", "11");
-       vvd(rpv[1][0], 3.8, 1e-12, "iauRxpv", "12");
+       vvd(rpv[0][0], 5.1, 1e-12, "jauRxpv", "11");
+       vvd(rpv[1][0], 3.8, 1e-12, "jauRxpv", "12");
 
-       vvd(rpv[0][1], 3.9, 1e-12, "iauRxpv", "21");
-       vvd(rpv[1][1], 5.2, 1e-12, "iauRxpv", "22");
+       vvd(rpv[0][1], 3.9, 1e-12, "jauRxpv", "21");
+       vvd(rpv[1][1], 5.2, 1e-12, "jauRxpv", "22");
 
-       vvd(rpv[0][2], 7.1, 1e-12, "iauRxpv", "31");
-       vvd(rpv[1][2], 5.8, 1e-12, "iauRxpv", "32");
+       vvd(rpv[0][2], 7.1, 1e-12, "jauRxpv", "31");
+       vvd(rpv[1][2], 5.8, 1e-12, "jauRxpv", "32");
 
     }
 
@@ -5713,12 +5716,12 @@ public class SOFATest {
     **   t _ r x r
     **  - - - - - -
     **
-    **  Test iauRxr function.
+    **  Test jauRxr function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauRxr, vvd
+    **  Called:  jauRxr, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5750,19 +5753,19 @@ public class SOFATest {
        b[2][1] = 0.0;
        b[2][2] = 1.0;
 
-       iauRxr(a, b, atb);
+       jauRxr(a, b, atb);
 
-       vvd(atb[0][0], 20.0, 1e-12, "iauRxr", "11");
-       vvd(atb[0][1],  7.0, 1e-12, "iauRxr", "12");
-       vvd(atb[0][2],  9.0, 1e-12, "iauRxr", "13");
+       vvd(atb[0][0], 20.0, 1e-12, "jauRxr", "11");
+       vvd(atb[0][1],  7.0, 1e-12, "jauRxr", "12");
+       vvd(atb[0][2],  9.0, 1e-12, "jauRxr", "13");
 
-       vvd(atb[1][0], 20.0, 1e-12, "iauRxr", "21");
-       vvd(atb[1][1],  8.0, 1e-12, "iauRxr", "22");
-       vvd(atb[1][2], 11.0, 1e-12, "iauRxr", "23");
+       vvd(atb[1][0], 20.0, 1e-12, "jauRxr", "21");
+       vvd(atb[1][1],  8.0, 1e-12, "jauRxr", "22");
+       vvd(atb[1][2], 11.0, 1e-12, "jauRxr", "23");
 
-       vvd(atb[2][0], 34.0, 1e-12, "iauRxr", "31");
-       vvd(atb[2][1], 10.0, 1e-12, "iauRxr", "32");
-       vvd(atb[2][2], 15.0, 1e-12, "iauRxr", "33");
+       vvd(atb[2][0], 34.0, 1e-12, "jauRxr", "31");
+       vvd(atb[2][1], 10.0, 1e-12, "jauRxr", "32");
+       vvd(atb[2][2], 15.0, 1e-12, "jauRxr", "33");
 
     }
 
@@ -5773,12 +5776,12 @@ public class SOFATest {
     **   t _ r y
     **  - - - - -
     **
-    **  Test iauRy function.
+    **  Test jauRy function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauRy, vvd
+    **  Called:  jauRy, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5800,19 +5803,19 @@ public class SOFATest {
        r[2][1] = 4.0;
        r[2][2] = 5.0;
 
-       iauRy(theta, r);
+       jauRy(theta, r);
 
-       vvd(r[0][0], 0.8651847818978159930, 1e-12, "iauRy", "11");
-       vvd(r[0][1], 1.467194920539316554, 1e-12, "iauRy", "12");
-       vvd(r[0][2], 0.1875137911274457342, 1e-12, "iauRy", "13");
+       vvd(r[0][0], 0.8651847818978159930, 1e-12, "jauRy", "11");
+       vvd(r[0][1], 1.467194920539316554, 1e-12, "jauRy", "12");
+       vvd(r[0][2], 0.1875137911274457342, 1e-12, "jauRy", "13");
 
-       vvd(r[1][0], 3, 1e-12, "iauRy", "21");
-       vvd(r[1][1], 2, 1e-12, "iauRy", "22");
-       vvd(r[1][2], 3, 1e-12, "iauRy", "23");
+       vvd(r[1][0], 3, 1e-12, "jauRy", "21");
+       vvd(r[1][1], 2, 1e-12, "jauRy", "22");
+       vvd(r[1][2], 3, 1e-12, "jauRy", "23");
 
-       vvd(r[2][0], 3.500207892850427330, 1e-12, "iauRy", "31");
-       vvd(r[2][1], 4.779889022262298150, 1e-12, "iauRy", "32");
-       vvd(r[2][2], 5.381899160903798712, 1e-12, "iauRy", "33");
+       vvd(r[2][0], 3.500207892850427330, 1e-12, "jauRy", "31");
+       vvd(r[2][1], 4.779889022262298150, 1e-12, "jauRy", "32");
+       vvd(r[2][2], 5.381899160903798712, 1e-12, "jauRy", "33");
 
     }
 
@@ -5823,12 +5826,12 @@ public class SOFATest {
     **   t _ r z
     **  - - - - -
     **
-    **  Test iauRz function.
+    **  Test jauRz function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauRz, vvd
+    **  Called:  jauRz, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -5850,19 +5853,19 @@ public class SOFATest {
        r[2][1] = 4.0;
        r[2][2] = 5.0;
 
-       iauRz(psi, r);
+       jauRz(psi, r);
 
-       vvd(r[0][0], 2.898197754208926769, 1e-12, "iauRz", "11");
-       vvd(r[0][1], 3.500207892850427330, 1e-12, "iauRz", "12");
-       vvd(r[0][2], 2.898197754208926769, 1e-12, "iauRz", "13");
+       vvd(r[0][0], 2.898197754208926769, 1e-12, "jauRz", "11");
+       vvd(r[0][1], 3.500207892850427330, 1e-12, "jauRz", "12");
+       vvd(r[0][2], 2.898197754208926769, 1e-12, "jauRz", "13");
 
-       vvd(r[1][0], 2.144865911309686813, 1e-12, "iauRz", "21");
-       vvd(r[1][1], 0.865184781897815993, 1e-12, "iauRz", "22");
-       vvd(r[1][2], 2.144865911309686813, 1e-12, "iauRz", "23");
+       vvd(r[1][0], 2.144865911309686813, 1e-12, "jauRz", "21");
+       vvd(r[1][1], 0.865184781897815993, 1e-12, "jauRz", "22");
+       vvd(r[1][2], 2.144865911309686813, 1e-12, "jauRz", "23");
 
-       vvd(r[2][0], 3.0, 1e-12, "iauRz", "31");
-       vvd(r[2][1], 4.0, 1e-12, "iauRz", "32");
-       vvd(r[2][2], 5.0, 1e-12, "iauRz", "33");
+       vvd(r[2][0], 3.0, 1e-12, "jauRz", "31");
+       vvd(r[2][1], 4.0, 1e-12, "jauRz", "32");
+       vvd(r[2][2], 5.0, 1e-12, "jauRz", "33");
 
     }
 
@@ -5873,12 +5876,12 @@ public class SOFATest {
     **   t _ s 0 0 a
     **  - - - - - - -
     **
-    **  Test iauS00a function.
+    **  Test jauS00a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauS00a, vvd
+    **  Called:  jauS00a, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -5886,9 +5889,9 @@ public class SOFATest {
        double s;
 
 
-       s = iauS00a(2400000.5, 52541.0);
+       s = jauS00a(2400000.5, 52541.0);
 
-       vvd(s, -0.1340684448919163584e-7, 1e-18, "iauS00a", "");
+       vvd(s, -0.1340684448919163584e-7, 1e-18, "jauS00a", "");
 
     }
 
@@ -5899,12 +5902,12 @@ public class SOFATest {
     **   t _ s 0 0 b
     **  - - - - - - -
     **
-    **  Test iauS00b function.
+    **  Test jauS00b function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauS00b, vvd
+    **  Called:  jauS00b, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -5912,9 +5915,9 @@ public class SOFATest {
        double s;
 
 
-       s = iauS00b(2400000.5, 52541.0);
+       s = jauS00b(2400000.5, 52541.0);
 
-       vvd(s, -0.1340695782951026584e-7, 1e-18, "iauS00b", "");
+       vvd(s, -0.1340695782951026584e-7, 1e-18, "jauS00b", "");
 
     }
 
@@ -5925,12 +5928,12 @@ public class SOFATest {
     **   t _ s 0 0
     **  - - - - - -
     **
-    **  Test iauS00 function.
+    **  Test jauS00 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauS00, vvd
+    **  Called:  jauS00, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -5941,9 +5944,9 @@ public class SOFATest {
        x = 0.5791308486706011000e-3;
        y = 0.4020579816732961219e-4;
 
-       s = iauS00(2400000.5, 53736.0, x, y);
+       s = jauS00(2400000.5, 53736.0, x, y);
 
-       vvd(s, -0.1220036263270905693e-7, 1e-18, "iauS00", "");
+       vvd(s, -0.1220036263270905693e-7, 1e-18, "jauS00", "");
 
     }
 
@@ -5954,12 +5957,12 @@ public class SOFATest {
     **   t _ s 0 6 a
     **  - - - - - - -
     **
-    **  Test iauS06a function.
+    **  Test jauS06a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauS06a, vvd
+    **  Called:  jauS06a, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -5967,9 +5970,9 @@ public class SOFATest {
        double s;
 
 
-       s = iauS06a(2400000.5, 52541.0);
+       s = jauS06a(2400000.5, 52541.0);
 
-       vvd(s, -0.1340680437291812383e-7, 1e-18, "iauS06a", "");
+       vvd(s, -0.1340680437291812383e-7, 1e-18, "jauS06a", "");
 
     }
 
@@ -5980,12 +5983,12 @@ public class SOFATest {
     **   t _ s 0 6
     **  - - - - - -
     **
-    **  Test iauS06 function.
+    **  Test jauS06 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauS06, vvd
+    **  Called:  jauS06, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -5996,9 +5999,9 @@ public class SOFATest {
        x = 0.5791308486706011000e-3;
        y = 0.4020579816732961219e-4;
 
-       s = iauS06(2400000.5, 53736.0, x, y);
+       s = jauS06(2400000.5, 53736.0, x, y);
 
-       vvd(s, -0.1220032213076463117e-7, 1e-18, "iauS06", "");
+       vvd(s, -0.1220032213076463117e-7, 1e-18, "jauS06", "");
 
     }
 
@@ -6009,12 +6012,12 @@ public class SOFATest {
     **   t _ s 2 c
     **  - - - - - -
     **
-    **  Test iauS2c function.
+    **  Test jauS2c function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauS2c, vvd
+    **  Called:  jauS2c, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -6022,11 +6025,11 @@ public class SOFATest {
        double c[] = new double[3];
 
 
-       iauS2c(3.0123, -0.999, c);
+       jauS2c(3.0123, -0.999, c);
 
-       vvd(c[0], -0.5366267667260523906, 1e-12, "iauS2c", "1");
-       vvd(c[1],  0.0697711109765145365, 1e-12, "iauS2c", "2");
-       vvd(c[2], -0.8409302618566214041, 1e-12, "iauS2c", "3");
+       vvd(c[0], -0.5366267667260523906, 1e-12, "jauS2c", "1");
+       vvd(c[1],  0.0697711109765145365, 1e-12, "jauS2c", "2");
+       vvd(c[2], -0.8409302618566214041, 1e-12, "jauS2c", "3");
 
     }
 
@@ -6037,12 +6040,12 @@ public class SOFATest {
     **   t _ s 2 p
     **  - - - - - -
     **
-    **  Test iauS2p function.
+    **  Test jauS2p function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauS2p, vvd
+    **  Called:  jauS2p, vvd
     **
     **  This revision:  2008 May 25
     */
@@ -6050,11 +6053,11 @@ public class SOFATest {
        double p[] = new double[3];
 
 
-       iauS2p(-3.21, 0.123, 0.456, p);
+       jauS2p(-3.21, 0.123, 0.456, p);
 
-       vvd(p[0], -0.4514964673880165228, 1e-12, "iauS2p", "x");
-       vvd(p[1],  0.0309339427734258688, 1e-12, "iauS2p", "y");
-       vvd(p[2],  0.0559466810510877933, 1e-12, "iauS2p", "z");
+       vvd(p[0], -0.4514964673880165228, 1e-12, "jauS2p", "x");
+       vvd(p[1],  0.0309339427734258688, 1e-12, "jauS2p", "y");
+       vvd(p[2],  0.0559466810510877933, 1e-12, "jauS2p", "z");
 
     }
 
@@ -6065,12 +6068,12 @@ public class SOFATest {
     **   t _ s 2 p v
     **  - - - - - - -
     **
-    **  Test iauS2pv function.
+    **  Test jauS2pv function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauS2pv, vvd
+    **  Called:  jauS2pv, vvd
     **
     **  This revision:  2008 November 28
     */
@@ -6078,18 +6081,18 @@ public class SOFATest {
        double pv[][] = new double[2][3];
 
 
-       iauS2pv(-3.21, 0.123, 0.456, -7.8e-6, 9.01e-6, -1.23e-5, pv);
+       jauS2pv(-3.21, 0.123, 0.456, -7.8e-6, 9.01e-6, -1.23e-5, pv);
 
-       vvd(pv[0][0], -0.4514964673880165228, 1e-12, "iauS2pv", "x");
-       vvd(pv[0][1],  0.0309339427734258688, 1e-12, "iauS2pv", "y");
-       vvd(pv[0][2],  0.0559466810510877933, 1e-12, "iauS2pv", "z");
+       vvd(pv[0][0], -0.4514964673880165228, 1e-12, "jauS2pv", "x");
+       vvd(pv[0][1],  0.0309339427734258688, 1e-12, "jauS2pv", "y");
+       vvd(pv[0][2],  0.0559466810510877933, 1e-12, "jauS2pv", "z");
 
        vvd(pv[1][0],  0.1292270850663260170e-4, 1e-16,
-           "iauS2pv", "vx");
+           "jauS2pv", "vx");
        vvd(pv[1][1],  0.2652814182060691422e-5, 1e-16,
-           "iauS2pv", "vy");
+           "jauS2pv", "vy");
        vvd(pv[1][2],  0.2568431853930292259e-5, 1e-16,
-           "iauS2pv", "vz");
+           "jauS2pv", "vz");
 
     }
 
@@ -6100,12 +6103,12 @@ public class SOFATest {
     **   t _ s 2 x p v
     **  - - - - - - - -
     **
-    **  Test iauS2xpv function.
+    **  Test jauS2xpv function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauS2xpv, vvd
+    **  Called:  jauS2xpv, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -6124,15 +6127,15 @@ public class SOFATest {
        pv[1][1] =  2.3;
        pv[1][2] = -0.4;
 
-       iauS2xpv(s1, s2, pv, spv);
+       jauS2xpv(s1, s2, pv, spv);
 
-       vvd(spv[0][0],  0.6, 1e-12, "iauS2xpv", "p1");
-       vvd(spv[0][1],  2.4, 1e-12, "iauS2xpv", "p2");
-       vvd(spv[0][2], -5.0, 1e-12, "iauS2xpv", "p3");
+       vvd(spv[0][0],  0.6, 1e-12, "jauS2xpv", "p1");
+       vvd(spv[0][1],  2.4, 1e-12, "jauS2xpv", "p2");
+       vvd(spv[0][2], -5.0, 1e-12, "jauS2xpv", "p3");
 
-       vvd(spv[1][0],  1.5, 1e-12, "iauS2xpv", "v1");
-       vvd(spv[1][1],  6.9, 1e-12, "iauS2xpv", "v2");
-       vvd(spv[1][2], -1.2, 1e-12, "iauS2xpv", "v3");
+       vvd(spv[1][0],  1.5, 1e-12, "jauS2xpv", "v1");
+       vvd(spv[1][1],  6.9, 1e-12, "jauS2xpv", "v2");
+       vvd(spv[1][2], -1.2, 1e-12, "jauS2xpv", "v3");
 
     }
 
@@ -6143,12 +6146,12 @@ public class SOFATest {
     **   t _ s e p p
     **  - - - - - - -
     **
-    **  Test iauSepp function.
+    **  Test jauSepp function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauSepp, vvd
+    **  Called:  jauSepp, vvd
     **
     **  This revision:  2008 November 29
     */
@@ -6164,9 +6167,9 @@ public class SOFATest {
        b[1] =  1e-3;
        b[2] =  0.2;
 
-       s = iauSepp(a, b);
+       s = jauSepp(a, b);
 
-       vvd(s, 2.860391919024660768, 1e-12, "iauSepp", "");
+       vvd(s, 2.860391919024660768, 1e-12, "jauSepp", "");
 
     }
 
@@ -6177,12 +6180,12 @@ public class SOFATest {
     **   t _ s e p s
     **  - - - - - - -
     **
-    **  Test iauSeps function.
+    **  Test jauSeps function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauSeps, vvd
+    **  Called:  jauSeps, vvd
     **
     **  This revision:  2008 May 22
     */
@@ -6196,9 +6199,9 @@ public class SOFATest {
        bl =  0.2;
        bp = -3.0;
 
-       s = iauSeps(al, ap, bl, bp);
+       s = jauSeps(al, ap, bl, bp);
 
-       vvd(s, 2.346722016996998842, 1e-14, "iauSeps", "");
+       vvd(s, 2.346722016996998842, 1e-14, "jauSeps", "");
 
     }
 
@@ -6209,18 +6212,18 @@ public class SOFATest {
     **   t _ s p 0 0
     **  - - - - - - -
     **
-    **  Test iauSp00 function.
+    **  Test jauSp00 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauSp00, vvd
+    **  Called:  jauSp00, vvd
     **
     **  This revision:  2008 May 25
     */
     {
-       vvd(iauSp00(2400000.5, 52541.0),
-           -0.6216698469981019309e-11, 1e-12, "iauSp00", "");
+       vvd(jauSp00(2400000.5, 52541.0),
+           -0.6216698469981019309e-11, 1e-12, "jauSp00", "");
 
     }
 
@@ -6231,12 +6234,12 @@ public class SOFATest {
     **   t _ s t a r p m
     **  - - - - - - - - -
     **
-    **  Test iauStarpm function.
+    **  Test jauStarpm function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauStarpm, vvd, viv
+    **  Called:  jauStarpm, vvd, viv
     **
     **  This revision:  2008 November 30
     */
@@ -6251,25 +6254,25 @@ public class SOFATest {
        rv1 = -21.6;
 
        try {
-           CatalogCoords cat = iauStarpm(ra1, dec1, pmr1, pmd1, px1, rv1,
+           CatalogCoords cat = jauStarpm(ra1, dec1, pmr1, pmd1, px1, rv1,
                    2400000.5, 50083.0, 2400000.5, 53736.0 );
 
            vvd(cat.pos.alpha, 0.01668919069414242368, 1e-13,
-                   "iauStarpm", "ra");
+                   "jauStarpm", "ra");
            vvd(cat.pos.delta, -1.093966454217127879, 1e-13,
-                   "iauStarpm", "dec");
+                   "jauStarpm", "dec");
            vvd(cat.pm.alpha, -0.1783662682155932702e-4, 1e-17,
-                   "iauStarpm", "pmr");
+                   "jauStarpm", "pmr");
            vvd(cat.pm.delta, 0.2338092915987603664e-5, 1e-17,
-                   "iauStarpm", "pmd");
+                   "jauStarpm", "pmd");
            vvd(cat.px, 0.7473533835323493644, 1e-13,
-                   "iauStarpm", "px");
+                   "jauStarpm", "px");
            vvd(cat.rv, -21.59905170476860786, 1e-11,
-                   "iauStarpm", "rv");
+                   "jauStarpm", "rv");
        } catch (SOFAInternalError e) {
 
            e.printStackTrace();
-           fail("iauStarpm threw exception");
+           fail("jauStarpm threw exception");
        }
 
  
@@ -6283,12 +6286,12 @@ public class SOFATest {
     **   t _ s t a r p v
     **  - - - - - - - - -
     **
-    **  Test iauStarpv function.
+    **  Test jauStarpv function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauStarpv, vvd, viv
+    **  Called:  jauStarpv, vvd, viv
     **
     **  This revision:  2008 November 30
     */
@@ -6304,23 +6307,23 @@ public class SOFATest {
        px =   0.74723;
        rv = -21.6;
 
-       j = iauStarpv(ra, dec, pmr, pmd, px, rv, pv);
+       j = jauStarpv(ra, dec, pmr, pmd, px, rv, pv);
 
        vvd(pv[0][0], 126668.5912743160601, 1e-10,
-           "iauStarpv", "11");
+           "jauStarpv", "11");
        vvd(pv[0][1], 2136.792716839935195, 1e-12,
-           "iauStarpv", "12");
+           "jauStarpv", "12");
        vvd(pv[0][2], -245251.2339876830091, 1e-10,
-           "iauStarpv", "13");
+           "jauStarpv", "13");
 
        vvd(pv[1][0], -0.4051854035740712739e-2, 1e-13,
-           "iauStarpv", "21");
+           "jauStarpv", "21");
        vvd(pv[1][1], -0.6253919754866173866e-2, 1e-15,
-           "iauStarpv", "22");
+           "jauStarpv", "22");
        vvd(pv[1][2], 0.1189353719774107189e-1, 1e-13,
-           "iauStarpv", "23");
+           "jauStarpv", "23");
 
-       viv(j, 0, "iauStarpv", "j");
+       viv(j, 0, "jauStarpv", "j");
 
     }
 
@@ -6331,12 +6334,12 @@ public class SOFATest {
     **   t _ s x p
     **  - - - - - -
     **
-    **  Test iauSxp function.
+    **  Test jauSxp function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauSxp, vvd
+    **  Called:  jauSxp, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -6350,11 +6353,11 @@ public class SOFATest {
        p[1] =  1.2;
        p[2] = -2.5;
 
-       iauSxp(s, p, sp);
+       jauSxp(s, p, sp);
 
-       vvd(sp[0],  0.6, 0.0, "iauSxp", "1");
-       vvd(sp[1],  2.4, 0.0, "iauSxp", "2");
-       vvd(sp[2], -5.0, 0.0, "iauSxp", "3");
+       vvd(sp[0],  0.6, 0.0, "jauSxp", "1");
+       vvd(sp[1],  2.4, 0.0, "jauSxp", "2");
+       vvd(sp[2], -5.0, 0.0, "jauSxp", "3");
 
     }
 
@@ -6366,12 +6369,12 @@ public class SOFATest {
     **   t _ s x p v
     **  - - - - - - -
     **
-    **  Test iauSxpv function.
+    **  Test jauSxpv function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauSxpv, vvd
+    **  Called:  jauSxpv, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -6389,15 +6392,15 @@ public class SOFATest {
        pv[1][1] =  3.2;
        pv[1][2] = -0.7;
 
-       iauSxpv(s, pv, spv);
+       jauSxpv(s, pv, spv);
 
-       vvd(spv[0][0],  0.6, 0.0, "iauSxpv", "p1");
-       vvd(spv[0][1],  2.4, 0.0, "iauSxpv", "p2");
-       vvd(spv[0][2], -5.0, 0.0, "iauSxpv", "p3");
+       vvd(spv[0][0],  0.6, 0.0, "jauSxpv", "p1");
+       vvd(spv[0][1],  2.4, 0.0, "jauSxpv", "p2");
+       vvd(spv[0][2], -5.0, 0.0, "jauSxpv", "p3");
 
-       vvd(spv[1][0],  1.0, 0.0, "iauSxpv", "v1");
-       vvd(spv[1][1],  6.4, 0.0, "iauSxpv", "v2");
-       vvd(spv[1][2], -1.4, 0.0, "iauSxpv", "v3");
+       vvd(spv[1][0],  1.0, 0.0, "jauSxpv", "v1");
+       vvd(spv[1][1],  6.4, 0.0, "jauSxpv", "v2");
+       vvd(spv[1][2], -1.4, 0.0, "jauSxpv", "v3");
 
     }
 
@@ -6408,12 +6411,12 @@ public class SOFATest {
     **   t _ t r
     **  - - - - -
     **
-    **  Test iauTr function.
+    **  Test jauTr function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauTr, vvd
+    **  Called:  jauTr, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -6433,19 +6436,19 @@ public class SOFATest {
        r[2][1] = 4.0;
        r[2][2] = 5.0;
 
-       iauTr(r, rt);
+       jauTr(r, rt);
 
-       vvd(rt[0][0], 2.0, 0.0, "iauTr", "11");
-       vvd(rt[0][1], 3.0, 0.0, "iauTr", "12");
-       vvd(rt[0][2], 3.0, 0.0, "iauTr", "13");
+       vvd(rt[0][0], 2.0, 0.0, "jauTr", "11");
+       vvd(rt[0][1], 3.0, 0.0, "jauTr", "12");
+       vvd(rt[0][2], 3.0, 0.0, "jauTr", "13");
 
-       vvd(rt[1][0], 3.0, 0.0, "iauTr", "21");
-       vvd(rt[1][1], 2.0, 0.0, "iauTr", "22");
-       vvd(rt[1][2], 4.0, 0.0, "iauTr", "23");
+       vvd(rt[1][0], 3.0, 0.0, "jauTr", "21");
+       vvd(rt[1][1], 2.0, 0.0, "jauTr", "22");
+       vvd(rt[1][2], 4.0, 0.0, "jauTr", "23");
 
-       vvd(rt[2][0], 2.0, 0.0, "iauTr", "31");
-       vvd(rt[2][1], 3.0, 0.0, "iauTr", "32");
-       vvd(rt[2][2], 5.0, 0.0, "iauTr", "33");
+       vvd(rt[2][0], 2.0, 0.0, "jauTr", "31");
+       vvd(rt[2][1], 3.0, 0.0, "jauTr", "32");
+       vvd(rt[2][2], 5.0, 0.0, "jauTr", "33");
 
     }
 
@@ -6456,12 +6459,12 @@ public class SOFATest {
     **   t _ t r x p
     **  - - - - - - -
     **
-    **  Test iauTrxp function.
+    **  Test jauTrxp function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauTrxp, vvd
+    **  Called:  jauTrxp, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -6485,11 +6488,11 @@ public class SOFATest {
        p[1] = 1.5;
        p[2] = 0.1;
 
-       iauTrxp(r, p, trp);
+       jauTrxp(r, p, trp);
 
-       vvd(trp[0], 5.2, 1e-12, "iauTrxp", "1");
-       vvd(trp[1], 4.0, 1e-12, "iauTrxp", "2");
-       vvd(trp[2], 5.4, 1e-12, "iauTrxp", "3");
+       vvd(trp[0], 5.2, 1e-12, "jauTrxp", "1");
+       vvd(trp[1], 4.0, 1e-12, "jauTrxp", "2");
+       vvd(trp[2], 5.4, 1e-12, "jauTrxp", "3");
 
     }
 
@@ -6500,12 +6503,12 @@ public class SOFATest {
     **   t _ t r x p v
     **  - - - - - - - -
     **
-    **  Test iauTrxpv function.
+    **  Test jauTrxpv function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauTrxpv, vvd
+    **  Called:  jauTrxpv, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -6533,15 +6536,15 @@ public class SOFATest {
        pv[1][1] = 0.2;
        pv[1][2] = 0.1;
 
-       iauTrxpv(r, pv, trpv);
+       jauTrxpv(r, pv, trpv);
 
-       vvd(trpv[0][0], 5.2, 1e-12, "iauTrxpv", "p1");
-       vvd(trpv[0][1], 4.0, 1e-12, "iauTrxpv", "p1");
-       vvd(trpv[0][2], 5.4, 1e-12, "iauTrxpv", "p1");
+       vvd(trpv[0][0], 5.2, 1e-12, "jauTrxpv", "p1");
+       vvd(trpv[0][1], 4.0, 1e-12, "jauTrxpv", "p1");
+       vvd(trpv[0][2], 5.4, 1e-12, "jauTrxpv", "p1");
 
-       vvd(trpv[1][0], 3.9, 1e-12, "iauTrxpv", "v1");
-       vvd(trpv[1][1], 5.3, 1e-12, "iauTrxpv", "v2");
-       vvd(trpv[1][2], 4.1, 1e-12, "iauTrxpv", "v3");
+       vvd(trpv[1][0], 3.9, 1e-12, "jauTrxpv", "v1");
+       vvd(trpv[1][1], 5.3, 1e-12, "jauTrxpv", "v2");
+       vvd(trpv[1][2], 4.1, 1e-12, "jauTrxpv", "v3");
 
     }
 
@@ -6552,21 +6555,21 @@ public class SOFATest {
     **   t _ x y 0 6
     **  - - - - - - -
     **
-    **  Test iauXy06 function.
+    **  Test jauXy06 function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauXy06, vvd
+    **  Called:  jauXy06, vvd
     **
     **  This revision:  2008 November 28
     */
     {
 
-       CelestialIntermediatePole cip = iauXy06(2400000.5, 53736.0);
+       CelestialIntermediatePole cip = jauXy06(2400000.5, 53736.0);
 
-       vvd(cip.x, 0.5791308486706010975e-3, 1e-15, "iauXy06", "x");
-       vvd(cip.y, 0.4020579816732958141e-4, 1e-16, "iauXy06", "y");
+       vvd(cip.x, 0.5791308486706010975e-3, 1e-15, "jauXy06", "x");
+       vvd(cip.y, 0.4020579816732958141e-4, 1e-16, "jauXy06", "y");
 
     }
 
@@ -6577,22 +6580,22 @@ public class SOFATest {
     **   t _ x y s 0 0 a
     **  - - - - - - - - -
     **
-    **  Test iauXys00a function.
+    **  Test jauXys00a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauXys00a, vvd
+    **  Called:  jauXys00a, vvd
     **
     **  This revision:  2008 November 28
     */
     {
 
-       ICRFrame fr = iauXys00a(2400000.5, 53736.0);
+       ICRFrame fr = jauXys00a(2400000.5, 53736.0);
 
-       vvd(fr.cip.x,  0.5791308472168152904e-3, 1e-14, "iauXys00a", "x");
-       vvd(fr.cip.y,  0.4020595661591500259e-4, 1e-15, "iauXys00a", "y");
-       vvd(fr.s, -0.1220040848471549623e-7, 1e-18, "iauXys00a", "s");
+       vvd(fr.cip.x,  0.5791308472168152904e-3, 1e-14, "jauXys00a", "x");
+       vvd(fr.cip.y,  0.4020595661591500259e-4, 1e-15, "jauXys00a", "y");
+       vvd(fr.s, -0.1220040848471549623e-7, 1e-18, "jauXys00a", "s");
 
     }
 
@@ -6603,23 +6606,23 @@ public class SOFATest {
     **   t _ x y s 0 0 b
     **  - - - - - - - - -
     **
-    **  Test iauXys00b function.
+    **  Test jauXys00b function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauXys00b, vvd
+    **  Called:  jauXys00b, vvd
     **
     **  This revision:  2008 November 28
     */
     {
 
 
-       ICRFrame fr = iauXys00b(2400000.5, 53736.0);
+       ICRFrame fr = jauXys00b(2400000.5, 53736.0);
 
-       vvd(fr.cip.x,  0.5791301929950208873e-3, 1e-14, "iauXys00b", "x");
-       vvd(fr.cip.y,  0.4020553681373720832e-4, 1e-15, "iauXys00b", "y");
-       vvd(fr.s, -0.1220027377285083189e-7, 1e-18, "iauXys00b", "s");
+       vvd(fr.cip.x,  0.5791301929950208873e-3, 1e-14, "jauXys00b", "x");
+       vvd(fr.cip.y,  0.4020553681373720832e-4, 1e-15, "jauXys00b", "y");
+       vvd(fr.s, -0.1220027377285083189e-7, 1e-18, "jauXys00b", "s");
 
     }
 
@@ -6630,22 +6633,22 @@ public class SOFATest {
     **   t _ x y s 0 6 a
     **  - - - - - - - - -
     **
-    **  Test iauXys06a function.
+    **  Test jauXys06a function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauXys06a, vvd
+    **  Called:  jauXys06a, vvd
     **
     **  This revision:  2008 November 28
     */
     {
       
-       ICRFrame fr = iauXys06a(2400000.5, 53736.0);
+       ICRFrame fr = jauXys06a(2400000.5, 53736.0);
 
-       vvd(fr.cip.x,  0.5791308482835292617e-3, 1e-14, "iauXys06a", "x");
-       vvd(fr.cip.y,  0.4020580099454020310e-4, 1e-15, "iauXys06a", "y");
-       vvd(fr.s, -0.1220032294164579896e-7, 1e-18, "iauXys06a", "s");
+       vvd(fr.cip.x,  0.5791308482835292617e-3, 1e-14, "jauXys06a", "x");
+       vvd(fr.cip.y,  0.4020580099454020310e-4, 1e-15, "jauXys06a", "y");
+       vvd(fr.s, -0.1220032294164579896e-7, 1e-18, "jauXys06a", "s");
 
     }
 
@@ -6656,12 +6659,12 @@ public class SOFATest {
     **   t _ z p
     **  - - - - -
     **
-    **  Test iauZp function.
+    **  Test jauZp function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauZp, vvd
+    **  Called:  jauZp, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -6673,11 +6676,11 @@ public class SOFATest {
        p[1] =  1.2;
        p[2] = -2.5;
 
-       iauZp(p);
+       jauZp(p);
 
-       vvd(p[0], 0.0, 0.0, "iauZp", "1");
-       vvd(p[1], 0.0, 0.0, "iauZp", "2");
-       vvd(p[2], 0.0, 0.0, "iauZp", "3");
+       vvd(p[0], 0.0, 0.0, "jauZp", "1");
+       vvd(p[1], 0.0, 0.0, "jauZp", "2");
+       vvd(p[2], 0.0, 0.0, "jauZp", "3");
 
     }
 
@@ -6688,12 +6691,12 @@ public class SOFATest {
     **   t _ z p v
     **  - - - - - -
     **
-    **  Test iauZpv function.
+    **  Test jauZpv function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauZpv, vvd
+    **  Called:  jauZpv, vvd
     **
     **  This revision:  2008 May 25
     */
@@ -6709,15 +6712,15 @@ public class SOFATest {
        pv[1][1] =  3.1;
        pv[1][2] =  0.9;
 
-       iauZpv(pv);
+       jauZpv(pv);
 
-       vvd(pv[0][0], 0.0, 0.0, "iauZpv", "p1");
-       vvd(pv[0][1], 0.0, 0.0, "iauZpv", "p2");
-       vvd(pv[0][2], 0.0, 0.0, "iauZpv", "p3");
+       vvd(pv[0][0], 0.0, 0.0, "jauZpv", "p1");
+       vvd(pv[0][1], 0.0, 0.0, "jauZpv", "p2");
+       vvd(pv[0][2], 0.0, 0.0, "jauZpv", "p3");
 
-       vvd(pv[1][0], 0.0, 0.0, "iauZpv", "v1");
-       vvd(pv[1][1], 0.0, 0.0, "iauZpv", "v2");
-       vvd(pv[1][2], 0.0, 0.0, "iauZpv", "v3");
+       vvd(pv[1][0], 0.0, 0.0, "jauZpv", "v1");
+       vvd(pv[1][1], 0.0, 0.0, "jauZpv", "v2");
+       vvd(pv[1][2], 0.0, 0.0, "jauZpv", "v3");
 
     }
 
@@ -6728,12 +6731,12 @@ public class SOFATest {
     **   t _ z r
     **  - - - - -
     **
-    **  Test iauZr function.
+    **  Test jauZr function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauZr, vvd
+    **  Called:  jauZr, vvd
     **
     **  This revision:  2008 November 30
     */
@@ -6753,25 +6756,121 @@ public class SOFATest {
        r[1][2] = 4.0;
        r[2][2] = 5.0;
 
-       iauZr(r);
+       jauZr(r);
 
-       vvd(r[0][0], 0.0, 0.0, "iauZr", "00");
-       vvd(r[1][0], 0.0, 0.0, "iauZr", "01");
-       vvd(r[2][0], 0.0, 0.0, "iauZr", "02");
+       vvd(r[0][0], 0.0, 0.0, "jauZr", "00");
+       vvd(r[1][0], 0.0, 0.0, "jauZr", "01");
+       vvd(r[2][0], 0.0, 0.0, "jauZr", "02");
 
-       vvd(r[0][1], 0.0, 0.0, "iauZr", "10");
-       vvd(r[1][1], 0.0, 0.0, "iauZr", "11");
-       vvd(r[2][1], 0.0, 0.0, "iauZr", "12");
+       vvd(r[0][1], 0.0, 0.0, "jauZr", "10");
+       vvd(r[1][1], 0.0, 0.0, "jauZr", "11");
+       vvd(r[2][1], 0.0, 0.0, "jauZr", "12");
 
-       vvd(r[0][2], 0.0, 0.0, "iauZr", "20");
-       vvd(r[1][2], 0.0, 0.0, "iauZr", "21");
-       vvd(r[2][2], 0.0, 0.0, "iauZr", "22");
+       vvd(r[0][2], 0.0, 0.0, "jauZr", "20");
+       vvd(r[1][2], 0.0, 0.0, "jauZr", "21");
+       vvd(r[2][2], 0.0, 0.0, "jauZr", "22");
 
     }
 
      
     
 }
+
+/*----------------------------------------------------------------------
+ **
+ **  Copyright (C) 2009
+ **  Standards Of Fundamental Astronomy Review Board
+ **  of the International Astronomical Union.
+ **
+ **  =====================
+ **  SOFA Software License
+ **  =====================
+ **
+ **  NOTICE TO USER:
+ **
+ **  BY USING THIS SOFTWARE YOU ACCEPT THE FOLLOWING TERMS AND CONDITIONS
+ **  WHICH APPLY TO ITS USE.
+ **
+ **  1. The Software is owned by the IAU SOFA Review Board ("SOFA").
+ **
+ **  2. Permission is granted to anyone to use the SOFA software for any
+ **     purpose, including commercial applications, free of charge and
+ **     without payment of royalties, subject to the conditions and
+ **     restrictions listed below.
+ **
+ **  3. You (the user) may copy and distribute SOFA source code to others,
+ **     and use and adapt its code and algorithms in your own software,
+ **     on a world-wide, royalty-free basis.  That portion of your
+ **     distribution that does not consist of intact and unchanged copies
+ **     of SOFA source code files is a "derived work" that must comply
+ **     with the following requirements:
+ **
+ **     a) Your work shall be marked or carry a statement that it
+ **        (i) uses routines and computations derived by you from
+ **        software provided by SOFA under license to you; and
+ **        (ii) does not itself constitute software provided by and/or
+ **        endorsed by SOFA.
+ **
+ **     b) The source code of your derived work must contain descriptions
+ **        of how the derived work is based upon, contains and/or differs
+ **        from the original SOFA software.
+ **
+ **     c) The name(s) of all routine(s) in your derived work shall not
+ **        include the prefix "iau_".
+ **
+ **     d) The origin of the SOFA components of your derived work must
+ **        not be misrepresented;  you must not claim that you wrote the
+ **        original software, nor file a patent application for SOFA
+ **        software or algorithms embedded in the SOFA software.
+ **
+ **     e) These requirements must be reproduced intact in any source
+ **        distribution and shall apply to anyone to whom you have
+ **        granted a further right to modify the source code of your
+ **        derived work.
+ **
+ **     Note that, as originally distributed, the SOFA software is
+ **     intended to be a definitive implementation of the IAU standards,
+ **     and consequently third-party modifications are discouraged.  All
+ **     variations, no matter how minor, must be explicitly marked as
+ **     such, as explained above.
+ **
+ **  4. In any published work or commercial products which includes
+ **     results achieved by using the SOFA software, you shall
+ **     acknowledge that the SOFA software was used in obtaining those
+ **     results.
+ **
+ **  5. You shall not cause the SOFA software to be brought into
+ **     disrepute, either by misuse, or use for inappropriate tasks, or
+ **     by inappropriate modification.
+ **
+ **  6. The SOFA software is provided "as is" and SOFA makes no warranty
+ **     as to its use or performance.   SOFA does not and cannot warrant
+ **     the performance or results which the user may obtain by using the
+ **     SOFA software.  SOFA makes no warranties, express or implied, as
+ **     to non-infringement of third party rights, merchantability, or
+ **     fitness for any particular purpose.  In no event will SOFA be
+ **     liable to the user for any consequential, incidental, or special
+ **     damages, including any lost profits or lost savings, even if a
+ **     SOFA representative has been advised of such damages, or for any
+ **     claim by any third party.
+ **
+ **  7. The provision of any version of the SOFA software under the terms
+ **     and conditions specified herein does not imply that future
+ **     versions will also be made available under the same terms and
+ **     conditions.
+ **
+ **  Correspondence concerning SOFA software should be addressed as
+ **  follows:
+ **
+ **      By email:  sofa@rl.ac.uk
+ **      By post:   IAU SOFA Center
+ **                 STFC Rutherford Appleton Laboratory
+ **                 Harwell Science and Innovation Campus
+ **                 Didcot, Oxfordshire, OX11 0QX
+ **                 United Kingdom
+ **
+ **--------------------------------------------------------------------*/
+
 
 
 /*

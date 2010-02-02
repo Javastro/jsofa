@@ -10,7 +10,7 @@
  *
  */ 
 
-package org.iau;
+package org.jastronomy.sofa;
 
 public class SOFAInternalError extends SOFAException {
 
