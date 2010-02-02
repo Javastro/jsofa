@@ -13,7 +13,28 @@
 package org.iau;
 
 
+import org.iau.SOFA.Calendar;
+import org.iau.SOFA.CatalogCoords;
+import org.iau.SOFA.CelestialIntermediatePole;
+import org.iau.SOFA.EulerAngles;
+import org.iau.SOFA.FWPrecessionAngles;
+import org.iau.SOFA.FrameBias;
+import org.iau.SOFA.GeodeticCoord;
+import org.iau.SOFA.ICRFrame;
 import org.iau.SOFA.JulianDate;
+import org.iau.SOFA.NormalizedVector;
+import org.iau.SOFA.NutationDeltaTerms;
+import org.iau.SOFA.NutationTerms;
+import org.iau.SOFA.PVModulus;
+import org.iau.SOFA.PolarCoordinate;
+import org.iau.SOFA.PrecessionAngles;
+import org.iau.SOFA.PrecessionNutation;
+import org.iau.SOFA.ReferenceEllipsoid;
+import org.iau.SOFA.SphericalPosition;
+import org.iau.SOFA.SphericalPositionVelocity;
+
+
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -247,15 +268,14 @@ public class SOFATest {
     **  This revision:  2009 November 4
     */
     {
-       double dpsibi, depsbi, dra;
 
-       iauBi00(dpsibi, depsbi, dra);
+       FrameBias ret = iauBi00();
 
-       vvd(dpsibi, -0.2025309152835086613e-6, 1e-12,
+       vvd(ret.dpsibi, -0.2025309152835086613e-6, 1e-12,
           "iauBi00", "dpsibi");
-       vvd(depsbi, -0.3306041454222147847e-7, 1e-12,
+       vvd(ret.depsbi, -0.3306041454222147847e-7, 1e-12,
           "iauBi00", "depsbi");
-       vvd(dra, -0.7078279744199225506e-7, 1e-12,
+       vvd(ret.dra, -0.7078279744199225506e-7, 1e-12,
           "iauBi00", "dra");
     }
 
@@ -436,7 +456,7 @@ public class SOFATest {
     **  This revision:  2008 May 26
     */
     {
-       double rbpn[][] = new double[3][3], x, y;
+       double rbpn[][] = new double[3][3];
 
 
        rbpn[0][0] =  9.999962358680738e-1;
@@ -451,10 +471,10 @@ public class SOFATest {
        rbpn[2][1] = -4.281337229063151e-5;
        rbpn[2][2] =  9.999994012499173e-1;
 
-       iauBpn2xy(rbpn, x, y);
+       CelestialIntermediatePole ret = iauBpn2xy(rbpn);
 
-       vvd(x,  1.093465510215479e-3, 1e-12, "iauBpn2xy", "x");
-       vvd(y, -4.281337229063151e-5, 1e-12, "iauBpn2xy", "y");
+       vvd(ret.x,  1.093465510215479e-3, 1e-12, "iauBpn2xy", "x");
+       vvd(ret.y, -4.281337229063151e-5, 1e-12, "iauBpn2xy", "y");
 
     }
 
@@ -764,17 +784,17 @@ public class SOFATest {
     **  This revision:  2008 May 27
     */
     {
-       double p[] = new double[3], theta, phi;
+       double p[] = new double[3];
 
 
        p[0] = 100.0;
        p[1] = -50.0;
        p[2] =  25.0;
 
-       iauC2s(p, theta, phi);
+       SphericalPosition ret = iauC2s(p);
 
-       vvd(theta, -0.4636476090008061162, 1e-14, "iauC2s", "theta");
-       vvd(phi, 0.2199879773954594463, 1e-14, "iauC2s", "phi");
+       vvd(ret.alpha, -0.4636476090008061162, 1e-14, "iauC2s", "theta");
+       vvd(ret.delta, 0.2199879773954594463, 1e-14, "iauC2s", "phi");
 
     }
 
@@ -1202,16 +1222,18 @@ public class SOFATest {
     **  This revision:  2008 May 27
     */
     {
-       int j;
-       double djm0, djm;
 
 
-       j = iauCal2jd(2003, 06, 01, djm0, djm);
+       try {
+        JulianDate jd = iauCal2jd(2003, 06, 01);
 
-       vvd(djm0, 2400000.5, 0.0, "iauCal2jd", "djm0");
-       vvd(djm,    52791.0, 0.0, "iauCal2jd", "djm");
+           vvd(jd.djm0, 2400000.5, 0.0, "iauCal2jd", "djm0");
+           vvd(jd.djm1,    52791.0, 0.0, "iauCal2jd", "djm");
+    } catch (SOFAIllegalParameter e) {
+        fail("iauCal2jd should not throw execption");
+    }
 
-       viv(j, 0, "iauCal2jd", "j");
+     //  viv(j, 0, "iauCal2jd", "j");
 
     }
 
@@ -1382,19 +1404,24 @@ public class SOFATest {
     **  This revision:  2008 November 29
     */
     {
-       int j;
        double deltat;
 
 
-       j = iauDat(2003, 6, 1, 0.0, deltat);
+       try {
+           deltat = iauDat(2003, 6, 1, 0.0);
 
-       vvd(deltat, 32.0, 0.0, "iauDat", "d1");
-       viv(j, 0, "iauDat", "j1");
+           vvd(deltat, 32.0, 0.0, "iauDat", "d1");
+       } catch (Exception e) {
+           fail("iauDat j1");
+       }
 
-       j = iauDat(2008, 1, 17, 0.0, deltat);
+       try {
+           deltat = iauDat(2008, 1, 17, 0.0);
 
-       vvd(deltat, 33.0, 0.0, "iauDat", "d2");
-       viv(j, 0, "iauDat", "j2");
+           vvd(deltat, 33.0, 0.0, "iauDat", "d2");
+       } catch (Exception e) {
+           fail("iauDat j2");
+       }
 
     }
 
@@ -1573,33 +1600,40 @@ public class SOFATest {
     **  This revision:  2010 January 18
     */
     {
-       int j;
-       double a, f;
+        ReferenceEllipsoid ef;
 
-       j = iauEform( 0, a, f );
+        try {
+            ef = iauEform( 0 );
+            fail("iauEform should throw exception for illegal identifier");
+        } catch (SOFAIllegalParameter e) {
+        }
 
-       viv(j, -1, "iauEform", "j0");
 
-       j = iauEform( 1, a, f );
+        try {
+            ef = iauEform( 1 );
 
-       viv(j, 0, "iauEform", "j1");
-       vvd(a, 6378137.0, 1e-10, "iauEform", "a");
-       vvd(f, 0.0033528106647474807, 1e-18, "iauEform", "f");
+            vvd(ef.a, 6378137.0, 1e-10, "iauEform", "a");
+            vvd(ef.f, 0.0033528106647474807, 1e-18, "iauEform", "f");
 
-       j = iauEform( 2, a, f );
+            ef = iauEform( 2 );
 
-       viv(j, 0, "iauEform", "j2");
-       vvd(a, 6378137.0, 1e-10, "iauEform", "a");
-       vvd(f, 0.0033528106811823189, 1e-18, "iauEform", "f");
+            vvd(ef.a, 6378137.0, 1e-10, "iauEform", "a");
+            vvd(ef.f, 0.0033528106811823189, 1e-18, "iauEform", "f");
 
-       j = iauEform( 3, a, f );
+            ef = iauEform( 3 );
 
-       viv(j, 0, "iauEform", "j2");
-       vvd(a, 6378135.0, 1e-10, "iauEform", "a");
-       vvd(f, 0.0033527794541675049, 1e-18, "iauEform", "f");
+            vvd(ef.a, 6378135.0, 1e-10, "iauEform", "a");
+            vvd(ef.f, 0.0033527794541675049, 1e-18, "iauEform", "f");
+        } catch (SOFAIllegalParameter e) {
+            fail("iauEform should not throw exception for legal identifier");
+        }
 
-       j = iauEform( 4, a, f );
-       viv(j, -1, "iauEform", "j3");
+        try {
+            ef = iauEform( 4 );
+            fail("iauEform should throw exception for illegal identifier");
+        } catch (SOFAIllegalParameter e) {
+
+        }
     }
 
     @Test
@@ -1711,15 +1745,15 @@ public class SOFATest {
     **  This revision:  2008 November 29
     */
     {
-       double epb, djm0, djm;
+       double epb;
 
 
        epb = 1957.3;
 
-       iauEpb2jd(epb, djm0, djm);
+       JulianDate jd = iauEpb2jd(epb);
 
-       vvd(djm0, 2400000.5, 1e-9, "iauEpb2jd", "djm0");
-       vvd(djm, 35948.1915101513, 1e-9, "iauEpb2jd", "mjd");
+       vvd(jd.djm0, 2400000.5, 1e-9, "iauEpb2jd", "djm0");
+       vvd(jd.djm1, 35948.1915101513, 1e-9, "iauEpb2jd", "mjd");
 
     }
 
@@ -1766,7 +1800,7 @@ public class SOFATest {
     **  This revision:  2008 November 29
     */
     {
-       double epj, djm0, djm;
+       double epj;
 
 
        epj = 1996.8;
@@ -2196,7 +2230,7 @@ public class SOFATest {
     **  This revision:  2009 November 6
     */
     {
-       double r5, d5, dr5, dd5, px5, rv5, rh, dh, drh, ddh, pxh, rvh;
+       double r5, d5, dr5, dd5, px5, rv5;
 
 
        r5  =  1.76779433;
@@ -2206,20 +2240,19 @@ public class SOFATest {
        px5 =  0.379210;
        rv5 = -7.6;
 
-       iauFk52h(r5, d5, dr5, dd5, px5, rv5,
-                rh, dh, drh, ddh, pxh, rvh);
+      CatalogCoords cat = iauFk52h(r5, d5, dr5, dd5, px5, rv5);
 
-       vvd(rh, 1.767794226299947632, 1e-14,
+       vvd(cat.pos.alpha, 1.767794226299947632, 1e-14,
            "iauFk52h", "ra");
-       vvd(dh,  -0.2917516070530391757, 1e-14,
+       vvd(cat.pos.delta,  -0.2917516070530391757, 1e-14,
            "iauFk52h", "dec");
-       vvd(drh, -0.19618741256057224e-6,1e-19,
+       vvd(cat.pm.alpha, -0.19618741256057224e-6,1e-19,
            "iauFk52h", "dr5");
-       vvd(ddh, -0.58459905176693911e-5, 1e-19,
+       vvd(cat.pm.delta, -0.58459905176693911e-5, 1e-19,
            "iauFk52h", "dd5");
-       vvd(pxh,  0.37921, 1e-14,
+       vvd(cat.px,  0.37921, 1e-14,
            "iauFk52h", "px");
-       vvd(rvh, -7.6000000940000254, 1e-11,
+       vvd(cat.rv, -7.6000000940000254, 1e-11,
            "iauFk52h", "rv");
 
     }
@@ -2290,16 +2323,16 @@ public class SOFATest {
     **  This revision:  2008 May 26
     */
     {
-       double r5, d5, rh, dh;
+       double r5, d5;
 
 
        r5 =  1.76779433;
        d5 = -0.2917517103;
 
-       iauFk5hz(r5, d5, 2400000.5, 54479.0, rh, dh);
+       SphericalPosition pos = iauFk5hz(r5, d5, 2400000.5, 54479.0);
 
-       vvd(rh,  1.767794191464423978, 1e-12, "iauFk5hz", "ra");
-       vvd(dh, -0.2917516001679884419, 1e-12, "iauFk5hz", "dec");
+       vvd(pos.alpha,  1.767794191464423978, 1e-12, "iauFk5hz", "ra");
+       vvd(pos.delta, -0.2917516001679884419, 1e-12, "iauFk5hz", "dec");
 
     }
 
@@ -2370,7 +2403,7 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double gamb, phib, psi, eps, x, y;
+       double gamb, phib, psi, eps;
 
 
        gamb = -0.2243387670997992368e-5;
@@ -2378,10 +2411,10 @@ public class SOFATest {
        psi  = -0.9501954178013015092e-3;
        eps  =  0.4091014316587367472;
 
-       iauFw2xy(gamb, phib, psi, eps, x, y);
+       CelestialIntermediatePole cip = iauFw2xy(gamb, phib, psi, eps);
 
-       vvd(x, -0.3779734957034082790e-3, 1e-14, "iauFw2xy", "x");
-       vvd(y, -0.1924880848087615651e-6, 1e-14, "iauFw2xy", "y");
+       vvd(cip.x, -0.3779734957034082790e-3, 1e-14, "iauFw2xy", "x");
+       vvd(cip.y, -0.1924880848087615651e-6, 1e-14, "iauFw2xy", "y");
 
     }
 
@@ -2402,32 +2435,36 @@ public class SOFATest {
     **  This revision:  2009 November 8
     */
     {
-       int j;
-       double xyz[] = {2e6, 3e6, 5.244e6};
-       double e, p, h;
+        double xyz[] = {2e6, 3e6, 5.244e6};
+        GeodeticCoord geo;
+        try {
+            geo = iauGc2gd( 0, xyz);
+            fail("iauGc2gd should thow exception for illegal parameter");
+        } catch (SOFAIllegalParameter e1) {
 
-       j = iauGc2gd( 0, xyz, e, p, h );
+        }
+        try {
+            geo = iauGc2gd( 1, xyz );
 
-       viv(j, -1, "iauGc2gd", "j0");
+            vvd(geo.elong, 0.98279372324732907, 1e-14, "iauGc2gd", "e1");
+            vvd(geo.phi, 0.97160184819075459, 1e-14, "iauGc2gd", "p1");
+            vvd(geo.height, 331.41724614260599, 1e-8, "iauGc2gd", "h1");
 
-       j = iauGc2gd( 1, xyz, e, p, h );
+            geo = iauGc2gd( 2, xyz );
+            vvd(geo.elong, 0.98279372324732907, 1e-14, "iauGc2gd", "e2");
+            vvd(geo.phi, 0.97160184820607853, 1e-14, "iauGc2gd", "p2");
+            vvd(geo.height, 331.41731754844348, 1e-8, "iauGc2gd", "h2");
+        } catch (SOFAIllegalParameter e1) {
+            fail("iauGc2gd should not thow exception for legal parameter");
+        }
 
-       viv(j, 0, "iauGc2gd", "j1");
-       vvd(e, 0.98279372324732907, 1e-14, "iauGc2gd", "e1");
-       vvd(p, 0.97160184819075459, 1e-14, "iauGc2gd", "p1");
-       vvd(h, 331.41724614260599, 1e-8, "iauGc2gd", "h1");
+        try {
+            geo = iauGc2gd( 4, xyz );
+            fail("iauGc2gd should thow exception for illegal parameter");
+        } catch (SOFAIllegalParameter e1) {
+        }
 
-       j = iauGc2gd( 2, xyz, e, p, h );
-
-       viv(j, 0, "iauGc2gd", "j2");
-       vvd(e, 0.98279372324732907, 1e-14, "iauGc2gd", "e2");
-       vvd(p, 0.97160184820607853, 1e-14, "iauGc2gd", "p2");
-       vvd(h, 331.41731754844348, 1e-8, "iauGc2gd", "h2");
-
-       j = iauGc2gd( 3, xyz, e, p, h );
-
-       viv(j, -1, "iauGc2gd", "j3");
-    }
+     }
 
     @Test
     public void t_gc2gde()
@@ -2446,17 +2483,19 @@ public class SOFATest {
     **  This revision:  2009 November 8
     */
     {
-       int j;
-       double a = 6378136.0, f = 0.0033528;
-       double xyz[] = {2e6, 3e6, 5.244e6};
-       double e, p, h;
+        double a = 6378136.0, f = 0.0033528;
+        double xyz[] = {2e6, 3e6, 5.244e6};
 
-       j = iauGc2gde( a, f, xyz, e, p, h );
+        try {
+            GeodeticCoord geo = iauGc2gde( a, f, xyz);
 
-       viv(j, 0, "iauGc2gde", "j");
-       vvd(e, 0.98279372324732907, 1e-14, "iauGc2gde", "e");
-       vvd(p, 0.97160183775704115, 1e-14, "iauGc2gde", "p");
-       vvd(h, 332.36862495764397, 1e-8, "iauGc2gde", "h");
+            vvd(geo.elong, 0.98279372324732907, 1e-14, "iauGc2gde", "e");
+            vvd(geo.phi, 0.97160183775704115, 1e-14, "iauGc2gde", "p");
+            vvd(geo.height, 332.36862495764397, 1e-8, "iauGc2gde", "h");
+        } catch (SOFAIllegalParameter e1) {
+            fail("iauGc2gde should not thow exception for legal parameter");
+
+        }
     }
 
     @Test
@@ -2476,35 +2515,49 @@ public class SOFATest {
     **  This revision:  2009 November 6
     */
     {
-       int j;
-       double e = 3.1, p = -0.5, h = 2500.0;
-       double xyz[] = new double[3];
+        double e = 3.1, p = -0.5, h = 2500.0;
+        double xyz[] = new double[3];
 
-       j = iauGd2gc( 0, e, p, h, xyz );
+        try {
+            xyz = iauGd2gc( 0, e, p, h );
 
-       viv(j, -1, "iauGd2gc", "j0");
+            fail("iauGd2gc should thow exception for illegal parameter");
+        } catch (SOFAIllegalParameter e1) {
+            // expected behaviour
 
-       j = iauGd2gc( 1, e, p, h, xyz );
+        } catch (SOFAInternalError e1) {
+            fail("iauGd2gc should thow exception for illegal parameter");
+        }
 
-       viv(j, 0, "iauGd2gc", "j1");
-       vvd(xyz[0], -5599000.5577049947, 1e-7, "iauGd2gc", "0/1");
-       vvd(xyz[1], 233011.67223479203, 1e-7, "iauGd2gc", "1/1");
-       vvd(xyz[2], -3040909.4706983363, 1e-7, "iauGd2gc", "2/1");
+        try {
+            xyz = iauGd2gc( 1, e, p, h );
 
-       j = iauGd2gc( 2, e, p, h, xyz );
 
-       viv(j, 0, "iauGd2gc", "j2");
-       vvd(xyz[0], -5599000.5577260984, 1e-7, "iauGd2gc", "0/2");
-       vvd(xyz[1], 233011.6722356703, 1e-7, "iauGd2gc", "1/2");
-       vvd(xyz[2], -3040909.4706095476, 1e-7, "iauGd2gc", "2/2");
+            vvd(xyz[0], -5599000.5577049947, 1e-7, "iauGd2gc", "0/1");
+            vvd(xyz[1], 233011.67223479203, 1e-7, "iauGd2gc", "1/1");
+            vvd(xyz[2], -3040909.4706983363, 1e-7, "iauGd2gc", "2/1");
 
-       j = iauGd2gc( 3, e, p, h, xyz );
+            xyz = iauGd2gc( 2, e, p, h);
 
-       viv(j, -1, "iauGd2gc", "j3");
+            vvd(xyz[0], -5599000.5577260984, 1e-7, "iauGd2gc", "0/2");
+            vvd(xyz[1], 233011.6722356703, 1e-7, "iauGd2gc", "1/2");
+            vvd(xyz[2], -3040909.4706095476, 1e-7, "iauGd2gc", "2/2");
+        } catch (SOFAException e1) {
+            fail("iauGd2gc should not thow exception ");
+        }
+
+        try {
+            xyz = iauGd2gc( 4, e, p, h );
+            fail("iauGd2gc should thow exception for illegal parameter");
+        } catch (SOFAIllegalParameter e1) {
+            //expected behaviour
+        } catch (SOFAInternalError e1) {
+            fail("iauGd2gc should thow exception for illegal parameter");
+        }
     }
 
     @Test
-    public void t_gd2gce()
+    public void t_gd2gce() throws SOFAInternalError
     /*
     **  - - - - - - - - -
     **   t _ g d 2 g c e
@@ -2520,14 +2573,12 @@ public class SOFATest {
     **  This revision:  2009 November 6
     */
     {
-       int j;
        double a = 6378136.0, f = 0.0033528;
        double e = 3.1, p = -0.5, h = 2500.0;
        double xyz[] = new double[3];
 
-       j = iauGd2gce( a, f, e, p, h, xyz );
+       xyz = iauGd2gce( a, f, e, p, h );
 
-       viv(j, 0, "iauGd2gce", "j");
        vvd(xyz[0], -5598999.6665116328, 1e-7, "iauGd2gce", "0");
        vvd(xyz[1], 233011.63514630572, 1e-7, "iauGd2gce", "1");
        vvd(xyz[2], -3040909.0517314132, 1e-7, "iauGd2gce", "2");
@@ -2770,7 +2821,7 @@ public class SOFATest {
     **  This revision:  2009 November 6
     */
     {
-       double rh, dh, drh, ddh, pxh, rvh, r5, d5, dr5, dd5, px5, rv5;
+       double rh, dh, drh, ddh, pxh, rvh;
 
 
        rh  =  1.767794352;
@@ -2780,20 +2831,19 @@ public class SOFATest {
        pxh =  0.379210;
        rvh = -7.6;
 
-       iauH2fk5(rh, dh, drh, ddh, pxh, rvh,
-                r5, d5, dr5, dd5, px5, rv5);
+       CatalogCoords cat = iauH2fk5(rh, dh, drh, ddh, pxh, rvh);
 
-       vvd(r5, 1.767794455700065506, 1e-13,
+       vvd(cat.pos.alpha, 1.767794455700065506, 1e-13,
            "iauH2fk5", "ra");
-       vvd(d5, -0.2917513626469638890, 1e-13,
+       vvd(cat.pos.delta, -0.2917513626469638890, 1e-13,
            "iauH2fk5", "dec");
-       vvd(dr5, -0.27597945024511204e-5, 1e-18,
+       vvd(cat.pm.alpha, -0.27597945024511204e-5, 1e-18,
            "iauH2fk5", "dr5");
-       vvd(dd5, -0.59308014093262838e-5, 1e-18,
+       vvd(cat.pm.delta, -0.59308014093262838e-5, 1e-18,
            "iauH2fk5", "dd5");
-       vvd(px5, 0.37921, 1e-13,
+       vvd(cat.px, 0.37921, 1e-13,
            "iauH2fk5", "px");
-       vvd(rv5, -7.6000001309071126, 1e-10,
+       vvd(cat.rv, -7.6000001309071126, 1e-10,
            "iauH2fk5", "rv");
 
     }
@@ -2815,22 +2865,22 @@ public class SOFATest {
     **  This revision:  2008 November 29
     */
     {
-       double rh, dh, r5, d5, dr5, dd5;
+       double rh, dh;
 
 
 
        rh =  1.767794352;
        dh = -0.2917512594;
 
-       iauHfk5z(rh, dh, 2400000.5, 54479.0, r5, d5, dr5, dd5);
+       CatalogCoords cat = iauHfk5z(rh, dh, 2400000.5, 54479.0);
 
-       vvd(r5, 1.767794490535581026, 1e-13,
+       vvd(cat.pos.alpha, 1.767794490535581026, 1e-13,
            "iauHfk5z", "ra");
-       vvd(d5, -0.2917513695320114258, 1e-14,
+       vvd(cat.pos.delta, -0.2917513695320114258, 1e-14,
            "iauHfk5z", "dec");
-       vvd(dr5, 0.4335890983539243029e-8, 1e-22,
+       vvd(cat.pm.alpha, 0.4335890983539243029e-8, 1e-22,
            "iauHfk5z", "dr5");
-       vvd(dd5, -0.8569648841237745902e-9, 1e-23,
+       vvd(cat.pm.delta, -0.8569648841237745902e-9, 1e-23,
            "iauHfk5z", "dd5");
 
     }
@@ -2884,7 +2934,7 @@ public class SOFATest {
     }
 
     @Test
-    public void t_jd2cal()
+    public void t_jd2cal() throws SOFAIllegalParameter
     /*
     **  - - - - - - - - -
     **   t _ j d 2 c a l
@@ -2900,20 +2950,19 @@ public class SOFATest {
     **  This revision:  2008 November 29
     */
     {
-       double dj1, dj2, fd;
-       int iy, im, id, j;
+       double dj1, dj2;
 
 
        dj1 = 2400000.5;
        dj2 = 50123.9999;
 
-       j = iauJd2cal(dj1, dj2, iy, im, id, fd);
+       Calendar cal = iauJd2cal(dj1, dj2);
 
-       viv(iy, 1996, "iauJd2cal", "y");
-       viv(im, 2, "iauJd2cal", "m");
-       viv(id, 10, "iauJd2cal", "d");
-       vvd(fd, 0.9999, 1e-7, "iauJd2cal", "fd");
-       viv(j, 0, "iauJd2cal", "j");
+       viv(cal.iy, 1996, "iauJd2cal", "y");
+       viv(cal.im, 2, "iauJd2cal", "m");
+       viv(cal.id, 10, "iauJd2cal", "d");
+       vvd(cal.fd, 0.9999, 1e-7, "iauJd2cal", "fd");
+//FIXME should test j when   iauJd2cal returns status     viv(j, 0, "iauJd2cal", "j");
 
     }
 
@@ -3151,14 +3200,13 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double dpsi, deps;
 
 
-       iauNut00a(2400000.5, 53736.0, dpsi, deps);
+       NutationTerms nut = iauNut00a(2400000.5, 53736.0);
 
-       vvd(dpsi, -0.9630909107115518431e-5, 1e-13,
+       vvd(nut.dpsi, -0.9630909107115518431e-5, 1e-13,
            "iauNut00a", "dpsi");
-       vvd(deps,  0.4063239174001678710e-4, 1e-13,
+       vvd(nut.deps,  0.4063239174001678710e-4, 1e-13,
            "iauNut00a", "deps");
 
     }
@@ -3180,14 +3228,13 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double dpsi, deps;
+ 
 
+       NutationTerms nut = iauNut00b(2400000.5, 53736.0);
 
-       iauNut00b(2400000.5, 53736.0, dpsi, deps);
-
-       vvd(dpsi, -0.9632552291148362783e-5, 1e-13,
+       vvd(nut.dpsi, -0.9632552291148362783e-5, 1e-13,
            "iauNut00b", "dpsi");
-       vvd(deps,  0.4063197106621159367e-4, 1e-13,
+       vvd(nut.deps,  0.4063197106621159367e-4, 1e-13,
            "iauNut00b", "deps");
 
     }
@@ -3209,14 +3256,12 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double dpsi, deps;
 
+       NutationTerms nut = iauNut06a(2400000.5, 53736.0);
 
-       iauNut06a(2400000.5, 53736.0, dpsi, deps);
-
-       vvd(dpsi, -0.9630912025820308797e-5, 1e-13,
+       vvd(nut.dpsi, -0.9630912025820308797e-5, 1e-13,
            "iauNut06a", "dpsi");
-       vvd(deps,  0.4063238496887249798e-4, 1e-13,
+       vvd(nut.deps,  0.4063238496887249798e-4, 1e-13,
            "iauNut06a", "deps");
 
     }
@@ -3238,14 +3283,12 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double dpsi, deps;
 
+       NutationTerms nut = iauNut80(2400000.5, 53736.0);
 
-       iauNut80(2400000.5, 53736.0, dpsi, deps);
-
-       vvd(dpsi, -0.9643658353226563966e-5, 1e-13,
+       vvd(nut.dpsi, -0.9643658353226563966e-5, 1e-13,
            "iauNut80", "dpsi");
-       vvd(deps,  0.4060051006879713322e-4, 1e-13,
+       vvd(nut.deps,  0.4060051006879713322e-4, 1e-13,
            "iauNut80", "deps");
 
     }
@@ -3359,45 +3402,41 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-        double eps0, psia, oma, bpa, bqa, pia, bpia,
-               epsa, chia, za, zetaa, thetaa, pa, gam, phi, psi;
 
 
-       iauP06e(2400000.5, 52541.0, eps0, psia, oma, bpa,
-               bqa, pia, bpia, epsa, chia, za,
-               zetaa, thetaa, pa, gam, phi, psi);
+       PrecessionAngles pa = iauP06e(2400000.5, 52541.0);
 
-       vvd(eps0, 0.4090926006005828715, 1e-14,
+       vvd(pa.eps0, 0.4090926006005828715, 1e-14,
            "iauP06e", "eps0");
-       vvd(psia, 0.6664369630191613431e-3, 1e-14,
+       vvd(pa.psia, 0.6664369630191613431e-3, 1e-14,
            "iauP06e", "psia");
-       vvd(oma , 0.4090925973783255982, 1e-14,
+       vvd(pa.oma , 0.4090925973783255982, 1e-14,
            "iauP06e", "oma");
-       vvd(bpa, 0.5561149371265209445e-6, 1e-14,
+       vvd(pa.bpa, 0.5561149371265209445e-6, 1e-14,
            "iauP06e", "bpa");
-       vvd(bqa, -0.6191517193290621270e-5, 1e-14,
+       vvd(pa.bqa, -0.6191517193290621270e-5, 1e-14,
            "iauP06e", "bqa");
-       vvd(pia, 0.6216441751884382923e-5, 1e-14,
+       vvd(pa.pia, 0.6216441751884382923e-5, 1e-14,
            "iauP06e", "pia");
-       vvd(bpia, 3.052014180023779882, 1e-14,
+       vvd(pa.bpia, 3.052014180023779882, 1e-14,
            "iauP06e", "bpia");
-       vvd(epsa, 0.4090864054922431688, 1e-14,
+       vvd(pa.epsa, 0.4090864054922431688, 1e-14,
            "iauP06e", "epsa");
-       vvd(chia, 0.1387703379530915364e-5, 1e-14,
+       vvd(pa.chia, 0.1387703379530915364e-5, 1e-14,
            "iauP06e", "chia");
-       vvd(za, 0.2921789846651790546e-3, 1e-14,
+       vvd(pa.za, 0.2921789846651790546e-3, 1e-14,
            "iauP06e", "za");
-       vvd(zetaa, 0.3178773290332009310e-3, 1e-14,
+       vvd(pa.zetaa, 0.3178773290332009310e-3, 1e-14,
            "iauP06e", "zetaa");
-       vvd(thetaa, 0.2650932701657497181e-3, 1e-14,
+       vvd(pa.thetaa, 0.2650932701657497181e-3, 1e-14,
            "iauP06e", "thetaa");
-       vvd(pa, 0.6651637681381016344e-3, 1e-14,
+       vvd( pa.pa, 0.6651637681381016344e-3, 1e-14,
            "iauP06e", "pa");
-       vvd(gam, 0.1398077115963754987e-5, 1e-14,
+       vvd(pa.gam, 0.1398077115963754987e-5, 1e-14,
            "iauP06e", "gam");
-       vvd(phi, 0.4090864090837462602, 1e-14,
+       vvd(pa.phi, 0.4090864090837462602, 1e-14,
            "iauP06e", "phi");
-       vvd(psi, 0.6664464807480920325e-3, 1e-14,
+       vvd(pa.psi, 0.6664464807480920325e-3, 1e-14,
            "iauP06e", "psi");
 
     }
@@ -3463,18 +3502,18 @@ public class SOFATest {
     **  This revision:  2008 November 29
     */
     {
-       double p[] = new double[3], theta, phi, r;
+       double p[] = new double[3];
 
 
        p[0] = 100.0;
        p[1] = -50.0;
        p[2] =  25.0;
 
-       iauP2s(p, theta, phi, r);
+       PolarCoordinate co = iauP2s(p);
 
-       vvd(theta, -0.4636476090008061162, 1e-12, "iauP2s", "theta");
-       vvd(phi, 0.2199879773954594463, 1e-12, "iauP2s", "phi");
-       vvd(r, 114.5643923738960002, 1e-9, "iauP2s", "r");
+       vvd(co.theta, -0.4636476090008061162, 1e-12, "iauP2s", "theta");
+       vvd(co.phi, 0.2199879773954594463, 1e-12, "iauP2s", "phi");
+       vvd(co.r, 114.5643923738960002, 1e-9, "iauP2s", "r");
 
     }
 
@@ -3560,16 +3599,14 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double bzeta, bz, btheta;
 
+       EulerAngles an = iauPb06(2400000.5, 50123.9999);
 
-       iauPb06(2400000.5, 50123.9999, bzeta, bz, btheta);
-
-       vvd(bzeta, -0.5092634016326478238e-3, 1e-12,
+       vvd(an.zeta, -0.5092634016326478238e-3, 1e-12,
            "iauPb06", "bzeta");
-       vvd(bz, -0.3602772060566044413e-3, 1e-12,
+       vvd(an.z, -0.3602772060566044413e-3, 1e-12,
            "iauPb06", "bz");
-       vvd(btheta, -0.3779735537167811177e-3, 1e-12,
+       vvd(an.theta, -0.3779735537167811177e-3, 1e-12,
            "iauPb06", "btheta");
 
     }
@@ -3625,18 +3662,17 @@ public class SOFATest {
     **  This revision:  2008 November 30
     */
     {
-       double gamb, phib, psib, epsa;
 
 
-       iauPfw06(2400000.5, 50123.9999, gamb, phib, psib, epsa);
+       FWPrecessionAngles fw = iauPfw06(2400000.5, 50123.9999);
 
-       vvd(gamb, -0.2243387670997995690e-5, 1e-16,
+       vvd(fw.gamb, -0.2243387670997995690e-5, 1e-16,
            "iauPfw06", "gamb");
-       vvd(phib,  0.4091014602391312808, 1e-12,
+       vvd(fw.phib,  0.4091014602391312808, 1e-12,
            "iauPfw06", "phib");
-       vvd(psib, -0.9501954178013031895e-3, 1e-14,
+       vvd(fw.psib, -0.9501954178013031895e-3, 1e-14,
            "iauPfw06", "psib");
-       vvd(epsa,  0.4091014316587367491, 1e-12,
+       vvd(fw.epsa,  0.4091014316587367491, 1e-12,
            "iauPfw06", "epsa");
 
     }
@@ -3934,20 +3970,20 @@ public class SOFATest {
     **  This revision:  2008 November 30
     */
     {
-       double p[] = new double[3], r, u[] = new double[3];
+       double p[] = new double[3];
 
 
        p[0] =  0.3;
        p[1] =  1.2;
        p[2] = -2.5;
 
-       iauPn(p, r, u);
+       NormalizedVector mv = iauPn(p);
 
-       vvd(r, 2.789265136196270604, 1e-12, "iauPn", "r");
+       vvd(mv.r, 2.789265136196270604, 1e-12, "iauPn", "r");
 
-       vvd(u[0], 0.1075552109073112058, 1e-12, "iauPn", "u1");
-       vvd(u[1], 0.4302208436292448232, 1e-12, "iauPn", "u2");
-       vvd(u[2], -0.8962934242275933816, 1e-12, "iauPn", "u3");
+       vvd(mv.u[0], 0.1075552109073112058, 1e-12, "iauPn", "u1");
+       vvd(mv.u[1], 0.4302208436292448232, 1e-12, "iauPn", "u2");
+       vvd(mv.u[2], -0.8962934242275933816, 1e-12, "iauPn", "u3");
 
     }
 
@@ -3968,121 +4004,118 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double dpsi, deps, epsa,
-              rb[][] = new double[3][3], rp[][] = new double[3][3], rbp[][] = new double[3][3], rn[][] = new double[3][3], rbpn[][] = new double[3][3];
-
+       double dpsi, deps;
 
        dpsi = -0.9632552291149335877e-5;
        deps =  0.4063197106621141414e-4;
 
-       iauPn00(2400000.5, 53736.0, dpsi, deps,
-               epsa, rb, rp, rbp, rn, rbpn);
+       PrecessionNutation pn = iauPn00(2400000.5, 53736.0, dpsi, deps);
 
-       vvd(epsa, 0.4090791789404229916, 1e-12, "iauPn00", "epsa");
+       vvd(pn.epsa, 0.4090791789404229916, 1e-12, "iauPn00", "epsa");
 
-       vvd(rb[0][0], 0.9999999999999942498, 1e-12,
+       vvd(pn.rb[0][0], 0.9999999999999942498, 1e-12,
            "iauPn00", "rb11");
-       vvd(rb[0][1], -0.7078279744199196626e-7, 1e-18,
+       vvd(pn.rb[0][1], -0.7078279744199196626e-7, 1e-18,
            "iauPn00", "rb12");
-       vvd(rb[0][2], 0.8056217146976134152e-7, 1e-18,
+       vvd(pn.rb[0][2], 0.8056217146976134152e-7, 1e-18,
            "iauPn00", "rb13");
 
-       vvd(rb[1][0], 0.7078279477857337206e-7, 1e-18,
+       vvd(pn.rb[1][0], 0.7078279477857337206e-7, 1e-18,
            "iauPn00", "rb21");
-       vvd(rb[1][1], 0.9999999999999969484, 1e-12,
+       vvd(pn.rb[1][1], 0.9999999999999969484, 1e-12,
            "iauPn00", "rb22");
-       vvd(rb[1][2], 0.3306041454222136517e-7, 1e-18,
+       vvd(pn.rb[1][2], 0.3306041454222136517e-7, 1e-18,
            "iauPn00", "rb23");
 
-       vvd(rb[2][0], -0.8056217380986972157e-7, 1e-18,
+       vvd(pn.rb[2][0], -0.8056217380986972157e-7, 1e-18,
            "iauPn00", "rb31");
-       vvd(rb[2][1], -0.3306040883980552500e-7, 1e-18,
+       vvd(pn.rb[2][1], -0.3306040883980552500e-7, 1e-18,
            "iauPn00", "rb32");
-       vvd(rb[2][2], 0.9999999999999962084, 1e-12,
+       vvd(pn.rb[2][2], 0.9999999999999962084, 1e-12,
            "iauPn00", "rb33");
 
-       vvd(rp[0][0], 0.9999989300532289018, 1e-12,
+       vvd(pn.rp[0][0], 0.9999989300532289018, 1e-12,
            "iauPn00", "rp11");
-       vvd(rp[0][1], -0.1341647226791824349e-2, 1e-14,
+       vvd(pn.rp[0][1], -0.1341647226791824349e-2, 1e-14,
            "iauPn00", "rp12");
-       vvd(rp[0][2], -0.5829880927190296547e-3, 1e-14,
+       vvd(pn.rp[0][2], -0.5829880927190296547e-3, 1e-14,
            "iauPn00", "rp13");
 
-       vvd(rp[1][0], 0.1341647231069759008e-2, 1e-14,
+       vvd(pn.rp[1][0], 0.1341647231069759008e-2, 1e-14,
            "iauPn00", "rp21");
-       vvd(rp[1][1], 0.9999990999908750433, 1e-12,
+       vvd(pn.rp[1][1], 0.9999990999908750433, 1e-12,
            "iauPn00", "rp22");
-       vvd(rp[1][2], -0.3837444441583715468e-6, 1e-14,
+       vvd(pn.rp[1][2], -0.3837444441583715468e-6, 1e-14,
            "iauPn00", "rp23");
 
-       vvd(rp[2][0], 0.5829880828740957684e-3, 1e-14,
+       vvd(pn.rp[2][0], 0.5829880828740957684e-3, 1e-14,
            "iauPn00", "rp31");
-       vvd(rp[2][1], -0.3984203267708834759e-6, 1e-14,
+       vvd(pn.rp[2][1], -0.3984203267708834759e-6, 1e-14,
            "iauPn00", "rp32");
-       vvd(rp[2][2], 0.9999998300623538046, 1e-12,
+       vvd(pn.rp[2][2], 0.9999998300623538046, 1e-12,
            "iauPn00", "rp33");
 
-       vvd(rbp[0][0], 0.9999989300052243993, 1e-12,
+       vvd(pn.rbp[0][0], 0.9999989300052243993, 1e-12,
            "iauPn00", "rbp11");
-       vvd(rbp[0][1], -0.1341717990239703727e-2, 1e-14,
+       vvd(pn.rbp[0][1], -0.1341717990239703727e-2, 1e-14,
            "iauPn00", "rbp12");
-       vvd(rbp[0][2], -0.5829075749891684053e-3, 1e-14,
+       vvd(pn.rbp[0][2], -0.5829075749891684053e-3, 1e-14,
            "iauPn00", "rbp13");
 
-       vvd(rbp[1][0], 0.1341718013831739992e-2, 1e-14,
+       vvd(pn.rbp[1][0], 0.1341718013831739992e-2, 1e-14,
            "iauPn00", "rbp21");
-       vvd(rbp[1][1], 0.9999990998959191343, 1e-12,
+       vvd(pn.rbp[1][1], 0.9999990998959191343, 1e-12,
            "iauPn00", "rbp22");
-       vvd(rbp[1][2], -0.3505759733565421170e-6, 1e-14,
+       vvd(pn.rbp[1][2], -0.3505759733565421170e-6, 1e-14,
            "iauPn00", "rbp23");
 
-       vvd(rbp[2][0], 0.5829075206857717883e-3, 1e-14,
+       vvd(pn.rbp[2][0], 0.5829075206857717883e-3, 1e-14,
            "iauPn00", "rbp31");
-       vvd(rbp[2][1], -0.4315219955198608970e-6, 1e-14,
+       vvd(pn.rbp[2][1], -0.4315219955198608970e-6, 1e-14,
            "iauPn00", "rbp32");
-       vvd(rbp[2][2], 0.9999998301093036269, 1e-12,
+       vvd(pn.rbp[2][2], 0.9999998301093036269, 1e-12,
            "iauPn00", "rbp33");
 
-       vvd(rn[0][0], 0.9999999999536069682, 1e-12,
+       vvd(pn.rn[0][0], 0.9999999999536069682, 1e-12,
            "iauPn00", "rn11");
-       vvd(rn[0][1], 0.8837746144872140812e-5, 1e-16,
+       vvd(pn.rn[0][1], 0.8837746144872140812e-5, 1e-16,
            "iauPn00", "rn12");
-       vvd(rn[0][2], 0.3831488838252590008e-5, 1e-16,
+       vvd(pn.rn[0][2], 0.3831488838252590008e-5, 1e-16,
            "iauPn00", "rn13");
 
-       vvd(rn[1][0], -0.8837590456633197506e-5, 1e-16,
+       vvd(pn.rn[1][0], -0.8837590456633197506e-5, 1e-16,
            "iauPn00", "rn21");
-       vvd(rn[1][1], 0.9999999991354692733, 1e-12,
+       vvd(pn.rn[1][1], 0.9999999991354692733, 1e-12,
            "iauPn00", "rn22");
-       vvd(rn[1][2], -0.4063198798559573702e-4, 1e-16,
+       vvd(pn.rn[1][2], -0.4063198798559573702e-4, 1e-16,
            "iauPn00", "rn23");
 
-       vvd(rn[2][0], -0.3831847930135328368e-5, 1e-16,
+       vvd(pn.rn[2][0], -0.3831847930135328368e-5, 1e-16,
            "iauPn00", "rn31");
-       vvd(rn[2][1], 0.4063195412258150427e-4, 1e-16,
+       vvd(pn.rn[2][1], 0.4063195412258150427e-4, 1e-16,
            "iauPn00", "rn32");
-       vvd(rn[2][2], 0.9999999991671806225, 1e-12,
+       vvd(pn.rn[2][2], 0.9999999991671806225, 1e-12,
            "iauPn00", "rn33");
 
-       vvd(rbpn[0][0], 0.9999989440499982806, 1e-12,
+       vvd(pn.rbpn[0][0], 0.9999989440499982806, 1e-12,
            "iauPn00", "rbpn11");
-       vvd(rbpn[0][1], -0.1332880253640848301e-2, 1e-14,
+       vvd(pn.rbpn[0][1], -0.1332880253640848301e-2, 1e-14,
            "iauPn00", "rbpn12");
-       vvd(rbpn[0][2], -0.5790760898731087295e-3, 1e-14,
+       vvd(pn.rbpn[0][2], -0.5790760898731087295e-3, 1e-14,
            "iauPn00", "rbpn13");
 
-       vvd(rbpn[1][0], 0.1332856746979948745e-2, 1e-14,
+       vvd(pn.rbpn[1][0], 0.1332856746979948745e-2, 1e-14,
            "iauPn00", "rbpn21");
-       vvd(rbpn[1][1], 0.9999991109064768883, 1e-12,
+       vvd(pn.rbpn[1][1], 0.9999991109064768883, 1e-12,
            "iauPn00", "rbpn22");
-       vvd(rbpn[1][2], -0.4097740555723063806e-4, 1e-14,
+       vvd(pn.rbpn[1][2], -0.4097740555723063806e-4, 1e-14,
            "iauPn00", "rbpn23");
 
-       vvd(rbpn[2][0], 0.5791301929950205000e-3, 1e-14,
+       vvd(pn.rbpn[2][0], 0.5791301929950205000e-3, 1e-14,
            "iauPn00", "rbpn31");
-       vvd(rbpn[2][1], 0.4020553681373702931e-4, 1e-14,
+       vvd(pn.rbpn[2][1], 0.4020553681373702931e-4, 1e-14,
            "iauPn00", "rbpn32");
-       vvd(rbpn[2][2], 0.9999998314958529887, 1e-12,
+       vvd(pn.rbpn[2][2], 0.9999998314958529887, 1e-12,
            "iauPn00", "rbpn33");
 
     }
@@ -4104,122 +4137,120 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double dpsi, deps, epsa,
-              rb[][] = new double[3][3], rp[][] = new double[3][3], rbp[][] = new double[3][3], rn[][] = new double[3][3], rbpn[][] = new double[3][3];
 
 
-       iauPn00a(2400000.5, 53736.0,
-                dpsi, deps, epsa, rb, rp, rbp, rn, rbpn);
+       PrecessionNutation pn = iauPn00a(2400000.5, 53736.0);
+               
 
-       vvd(dpsi, -0.9630909107115518431e-5, 1e-12,
+       vvd(pn.nut.deps, -0.9630909107115518431e-5, 1e-12,
            "iauPn00a", "dpsi");
-       vvd(deps,  0.4063239174001678710e-4, 1e-12,
+       vvd(pn.nut.deps,  0.4063239174001678710e-4, 1e-12,
            "iauPn00a", "deps");
-       vvd(epsa,  0.4090791789404229916, 1e-12, "iauPn00a", "epsa");
+       vvd(pn.epsa,  0.4090791789404229916, 1e-12, "iauPn00a", "epsa");
 
-       vvd(rb[0][0], 0.9999999999999942498, 1e-12,
+       vvd(pn.rb[0][0], 0.9999999999999942498, 1e-12,
            "iauPn00a", "rb11");
-       vvd(rb[0][1], -0.7078279744199196626e-7, 1e-16,
+       vvd(pn.rb[0][1], -0.7078279744199196626e-7, 1e-16,
            "iauPn00a", "rb12");
-       vvd(rb[0][2], 0.8056217146976134152e-7, 1e-16,
+       vvd(pn.rb[0][2], 0.8056217146976134152e-7, 1e-16,
            "iauPn00a", "rb13");
 
-       vvd(rb[1][0], 0.7078279477857337206e-7, 1e-16,
+       vvd(pn.rb[1][0], 0.7078279477857337206e-7, 1e-16,
            "iauPn00a", "rb21");
-       vvd(rb[1][1], 0.9999999999999969484, 1e-12,
+       vvd(pn.rb[1][1], 0.9999999999999969484, 1e-12,
            "iauPn00a", "rb22");
-       vvd(rb[1][2], 0.3306041454222136517e-7, 1e-16,
+       vvd(pn.rb[1][2], 0.3306041454222136517e-7, 1e-16,
            "iauPn00a", "rb23");
 
-       vvd(rb[2][0], -0.8056217380986972157e-7, 1e-16,
+       vvd(pn.rb[2][0], -0.8056217380986972157e-7, 1e-16,
            "iauPn00a", "rb31");
-       vvd(rb[2][1], -0.3306040883980552500e-7, 1e-16,
+       vvd(pn.rb[2][1], -0.3306040883980552500e-7, 1e-16,
            "iauPn00a", "rb32");
-       vvd(rb[2][2], 0.9999999999999962084, 1e-12,
+       vvd(pn.rb[2][2], 0.9999999999999962084, 1e-12,
            "iauPn00a", "rb33");
 
-       vvd(rp[0][0], 0.9999989300532289018, 1e-12,
+       vvd(pn.rp[0][0], 0.9999989300532289018, 1e-12,
            "iauPn00a", "rp11");
-       vvd(rp[0][1], -0.1341647226791824349e-2, 1e-14,
+       vvd(pn.rp[0][1], -0.1341647226791824349e-2, 1e-14,
            "iauPn00a", "rp12");
-       vvd(rp[0][2], -0.5829880927190296547e-3, 1e-14,
+       vvd(pn.rp[0][2], -0.5829880927190296547e-3, 1e-14,
            "iauPn00a", "rp13");
 
-       vvd(rp[1][0], 0.1341647231069759008e-2, 1e-14,
+       vvd(pn.rp[1][0], 0.1341647231069759008e-2, 1e-14,
            "iauPn00a", "rp21");
-       vvd(rp[1][1], 0.9999990999908750433, 1e-12,
+       vvd(pn.rp[1][1], 0.9999990999908750433, 1e-12,
            "iauPn00a", "rp22");
-       vvd(rp[1][2], -0.3837444441583715468e-6, 1e-14,
+       vvd(pn.rp[1][2], -0.3837444441583715468e-6, 1e-14,
            "iauPn00a", "rp23");
 
-       vvd(rp[2][0], 0.5829880828740957684e-3, 1e-14,
+       vvd(pn.rp[2][0], 0.5829880828740957684e-3, 1e-14,
            "iauPn00a", "rp31");
-       vvd(rp[2][1], -0.3984203267708834759e-6, 1e-14,
+       vvd(pn.rp[2][1], -0.3984203267708834759e-6, 1e-14,
            "iauPn00a", "rp32");
-       vvd(rp[2][2], 0.9999998300623538046, 1e-12,
+       vvd(pn.rp[2][2], 0.9999998300623538046, 1e-12,
            "iauPn00a", "rp33");
 
-       vvd(rbp[0][0], 0.9999989300052243993, 1e-12,
+       vvd(pn.rbp[0][0], 0.9999989300052243993, 1e-12,
            "iauPn00a", "rbp11");
-       vvd(rbp[0][1], -0.1341717990239703727e-2, 1e-14,
+       vvd(pn.rbp[0][1], -0.1341717990239703727e-2, 1e-14,
            "iauPn00a", "rbp12");
-       vvd(rbp[0][2], -0.5829075749891684053e-3, 1e-14,
+       vvd(pn.rbp[0][2], -0.5829075749891684053e-3, 1e-14,
            "iauPn00a", "rbp13");
 
-       vvd(rbp[1][0], 0.1341718013831739992e-2, 1e-14,
+       vvd(pn.rbp[1][0], 0.1341718013831739992e-2, 1e-14,
            "iauPn00a", "rbp21");
-       vvd(rbp[1][1], 0.9999990998959191343, 1e-12,
+       vvd(pn.rbp[1][1], 0.9999990998959191343, 1e-12,
            "iauPn00a", "rbp22");
-       vvd(rbp[1][2], -0.3505759733565421170e-6, 1e-14,
+       vvd(pn.rbp[1][2], -0.3505759733565421170e-6, 1e-14,
            "iauPn00a", "rbp23");
 
-       vvd(rbp[2][0], 0.5829075206857717883e-3, 1e-14,
+       vvd(pn.rbp[2][0], 0.5829075206857717883e-3, 1e-14,
            "iauPn00a", "rbp31");
-       vvd(rbp[2][1], -0.4315219955198608970e-6, 1e-14,
+       vvd(pn.rbp[2][1], -0.4315219955198608970e-6, 1e-14,
            "iauPn00a", "rbp32");
-       vvd(rbp[2][2], 0.9999998301093036269, 1e-12,
+       vvd(pn.rbp[2][2], 0.9999998301093036269, 1e-12,
            "iauPn00a", "rbp33");
 
-       vvd(rn[0][0], 0.9999999999536227949, 1e-12,
+       vvd(pn.rn[0][0], 0.9999999999536227949, 1e-12,
            "iauPn00a", "rn11");
-       vvd(rn[0][1], 0.8836238544090873336e-5, 1e-14,
+       vvd(pn.rn[0][1], 0.8836238544090873336e-5, 1e-14,
            "iauPn00a", "rn12");
-       vvd(rn[0][2], 0.3830835237722400669e-5, 1e-14,
+       vvd(pn.rn[0][2], 0.3830835237722400669e-5, 1e-14,
            "iauPn00a", "rn13");
 
-       vvd(rn[1][0], -0.8836082880798569274e-5, 1e-14,
+       vvd(pn.rn[1][0], -0.8836082880798569274e-5, 1e-14,
            "iauPn00a", "rn21");
-       vvd(rn[1][1], 0.9999999991354655028, 1e-12,
+       vvd(pn.rn[1][1], 0.9999999991354655028, 1e-12,
            "iauPn00a", "rn22");
-       vvd(rn[1][2], -0.4063240865362499850e-4, 1e-14,
+       vvd(pn.rn[1][2], -0.4063240865362499850e-4, 1e-14,
            "iauPn00a", "rn23");
 
-       vvd(rn[2][0], -0.3831194272065995866e-5, 1e-14,
+       vvd(pn.rn[2][0], -0.3831194272065995866e-5, 1e-14,
            "iauPn00a", "rn31");
-       vvd(rn[2][1], 0.4063237480216291775e-4, 1e-14,
+       vvd(pn.rn[2][1], 0.4063237480216291775e-4, 1e-14,
            "iauPn00a", "rn32");
-       vvd(rn[2][2], 0.9999999991671660338, 1e-12,
+       vvd(pn.rn[2][2], 0.9999999991671660338, 1e-12,
            "iauPn00a", "rn33");
 
-       vvd(rbpn[0][0], 0.9999989440476103435, 1e-12,
+       vvd(pn.rbpn[0][0], 0.9999989440476103435, 1e-12,
            "iauPn00a", "rbpn11");
-       vvd(rbpn[0][1], -0.1332881761240011763e-2, 1e-14,
+       vvd(pn.rbpn[0][1], -0.1332881761240011763e-2, 1e-14,
            "iauPn00a", "rbpn12");
-       vvd(rbpn[0][2], -0.5790767434730085751e-3, 1e-14,
+       vvd(pn.rbpn[0][2], -0.5790767434730085751e-3, 1e-14,
            "iauPn00a", "rbpn13");
 
-       vvd(rbpn[1][0], 0.1332858254308954658e-2, 1e-14,
+       vvd(pn.rbpn[1][0], 0.1332858254308954658e-2, 1e-14,
            "iauPn00a", "rbpn21");
-       vvd(rbpn[1][1], 0.9999991109044505577, 1e-12,
+       vvd(pn.rbpn[1][1], 0.9999991109044505577, 1e-12,
            "iauPn00a", "rbpn22");
-       vvd(rbpn[1][2], -0.4097782710396580452e-4, 1e-14,
+       vvd(pn.rbpn[1][2], -0.4097782710396580452e-4, 1e-14,
            "iauPn00a", "rbpn23");
 
-       vvd(rbpn[2][0], 0.5791308472168152904e-3, 1e-14,
+       vvd(pn.rbpn[2][0], 0.5791308472168152904e-3, 1e-14,
            "iauPn00a", "rbpn31");
-       vvd(rbpn[2][1], 0.4020595661591500259e-4, 1e-14,
+       vvd(pn.rbpn[2][1], 0.4020595661591500259e-4, 1e-14,
            "iauPn00a", "rbpn32");
-       vvd(rbpn[2][2], 0.9999998314954572304, 1e-12,
+       vvd(pn.rbpn[2][2], 0.9999998314954572304, 1e-12,
            "iauPn00a", "rbpn33");
 
     }
@@ -4241,122 +4272,118 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double dpsi, deps, epsa,
-              rb[][] = new double[3][3], rp[][] = new double[3][3], rbp[][] = new double[3][3], rn[][] = new double[3][3], rbpn[][] = new double[3][3];
 
+       PrecessionNutation pn = iauPn00b(2400000.5, 53736.0);
 
-       iauPn00b(2400000.5, 53736.0, dpsi, deps, epsa,
-                rb, rp, rbp, rn, rbpn);
-
-       vvd(dpsi, -0.9632552291148362783e-5, 1e-12,
+       vvd(pn.nut.dpsi, -0.9632552291148362783e-5, 1e-12,
            "iauPn00b", "dpsi");
-       vvd(deps,  0.4063197106621159367e-4, 1e-12,
+       vvd(pn.nut.deps,  0.4063197106621159367e-4, 1e-12,
            "iauPn00b", "deps");
-       vvd(epsa,  0.4090791789404229916, 1e-12, "iauPn00b", "epsa");
+       vvd(pn.epsa,  0.4090791789404229916, 1e-12, "iauPn00b", "epsa");
 
-       vvd(rb[0][0], 0.9999999999999942498, 1e-12,
+       vvd(pn.rb[0][0], 0.9999999999999942498, 1e-12,
           "iauPn00b", "rb11");
-       vvd(rb[0][1], -0.7078279744199196626e-7, 1e-16,
+       vvd(pn.rb[0][1], -0.7078279744199196626e-7, 1e-16,
           "iauPn00b", "rb12");
-       vvd(rb[0][2], 0.8056217146976134152e-7, 1e-16,
+       vvd(pn.rb[0][2], 0.8056217146976134152e-7, 1e-16,
           "iauPn00b", "rb13");
 
-       vvd(rb[1][0], 0.7078279477857337206e-7, 1e-16,
+       vvd(pn.rb[1][0], 0.7078279477857337206e-7, 1e-16,
           "iauPn00b", "rb21");
-       vvd(rb[1][1], 0.9999999999999969484, 1e-12,
+       vvd(pn.rb[1][1], 0.9999999999999969484, 1e-12,
           "iauPn00b", "rb22");
-       vvd(rb[1][2], 0.3306041454222136517e-7, 1e-16,
+       vvd(pn.rb[1][2], 0.3306041454222136517e-7, 1e-16,
           "iauPn00b", "rb23");
 
-       vvd(rb[2][0], -0.8056217380986972157e-7, 1e-16,
+       vvd(pn.rb[2][0], -0.8056217380986972157e-7, 1e-16,
           "iauPn00b", "rb31");
-       vvd(rb[2][1], -0.3306040883980552500e-7, 1e-16,
+       vvd(pn.rb[2][1], -0.3306040883980552500e-7, 1e-16,
           "iauPn00b", "rb32");
-       vvd(rb[2][2], 0.9999999999999962084, 1e-12,
+       vvd(pn.rb[2][2], 0.9999999999999962084, 1e-12,
           "iauPn00b", "rb33");
 
-       vvd(rp[0][0], 0.9999989300532289018, 1e-12,
+       vvd(pn.rp[0][0], 0.9999989300532289018, 1e-12,
           "iauPn00b", "rp11");
-       vvd(rp[0][1], -0.1341647226791824349e-2, 1e-14,
+       vvd(pn.rp[0][1], -0.1341647226791824349e-2, 1e-14,
           "iauPn00b", "rp12");
-       vvd(rp[0][2], -0.5829880927190296547e-3, 1e-14,
+       vvd(pn.rp[0][2], -0.5829880927190296547e-3, 1e-14,
           "iauPn00b", "rp13");
 
-       vvd(rp[1][0], 0.1341647231069759008e-2, 1e-14,
+       vvd(pn.rp[1][0], 0.1341647231069759008e-2, 1e-14,
           "iauPn00b", "rp21");
-       vvd(rp[1][1], 0.9999990999908750433, 1e-12,
+       vvd(pn.rp[1][1], 0.9999990999908750433, 1e-12,
           "iauPn00b", "rp22");
-       vvd(rp[1][2], -0.3837444441583715468e-6, 1e-14,
+       vvd(pn.rp[1][2], -0.3837444441583715468e-6, 1e-14,
           "iauPn00b", "rp23");
 
-       vvd(rp[2][0], 0.5829880828740957684e-3, 1e-14,
+       vvd(pn.rp[2][0], 0.5829880828740957684e-3, 1e-14,
           "iauPn00b", "rp31");
-       vvd(rp[2][1], -0.3984203267708834759e-6, 1e-14,
+       vvd(pn.rp[2][1], -0.3984203267708834759e-6, 1e-14,
           "iauPn00b", "rp32");
-       vvd(rp[2][2], 0.9999998300623538046, 1e-12,
+       vvd(pn.rp[2][2], 0.9999998300623538046, 1e-12,
           "iauPn00b", "rp33");
 
-       vvd(rbp[0][0], 0.9999989300052243993, 1e-12,
+       vvd(pn.rbp[0][0], 0.9999989300052243993, 1e-12,
           "iauPn00b", "rbp11");
-       vvd(rbp[0][1], -0.1341717990239703727e-2, 1e-14,
+       vvd(pn.rbp[0][1], -0.1341717990239703727e-2, 1e-14,
           "iauPn00b", "rbp12");
-       vvd(rbp[0][2], -0.5829075749891684053e-3, 1e-14,
+       vvd(pn.rbp[0][2], -0.5829075749891684053e-3, 1e-14,
           "iauPn00b", "rbp13");
 
-       vvd(rbp[1][0], 0.1341718013831739992e-2, 1e-14,
+       vvd(pn.rbp[1][0], 0.1341718013831739992e-2, 1e-14,
           "iauPn00b", "rbp21");
-       vvd(rbp[1][1], 0.9999990998959191343, 1e-12,
+       vvd(pn.rbp[1][1], 0.9999990998959191343, 1e-12,
           "iauPn00b", "rbp22");
-       vvd(rbp[1][2], -0.3505759733565421170e-6, 1e-14,
+       vvd(pn.rbp[1][2], -0.3505759733565421170e-6, 1e-14,
           "iauPn00b", "rbp23");
 
-       vvd(rbp[2][0], 0.5829075206857717883e-3, 1e-14,
+       vvd(pn.rbp[2][0], 0.5829075206857717883e-3, 1e-14,
           "iauPn00b", "rbp31");
-       vvd(rbp[2][1], -0.4315219955198608970e-6, 1e-14,
+       vvd(pn.rbp[2][1], -0.4315219955198608970e-6, 1e-14,
           "iauPn00b", "rbp32");
-       vvd(rbp[2][2], 0.9999998301093036269, 1e-12,
+       vvd(pn.rbp[2][2], 0.9999998301093036269, 1e-12,
           "iauPn00b", "rbp33");
 
-       vvd(rn[0][0], 0.9999999999536069682, 1e-12,
+       vvd(pn.rn[0][0], 0.9999999999536069682, 1e-12,
           "iauPn00b", "rn11");
-       vvd(rn[0][1], 0.8837746144871248011e-5, 1e-14,
+       vvd(pn.rn[0][1], 0.8837746144871248011e-5, 1e-14,
           "iauPn00b", "rn12");
-       vvd(rn[0][2], 0.3831488838252202945e-5, 1e-14,
+       vvd(pn.rn[0][2], 0.3831488838252202945e-5, 1e-14,
           "iauPn00b", "rn13");
 
-       vvd(rn[1][0], -0.8837590456632304720e-5, 1e-14,
+       vvd(pn.rn[1][0], -0.8837590456632304720e-5, 1e-14,
           "iauPn00b", "rn21");
-       vvd(rn[1][1], 0.9999999991354692733, 1e-12,
+       vvd(pn.rn[1][1], 0.9999999991354692733, 1e-12,
           "iauPn00b", "rn22");
-       vvd(rn[1][2], -0.4063198798559591654e-4, 1e-14,
+       vvd(pn.rn[1][2], -0.4063198798559591654e-4, 1e-14,
           "iauPn00b", "rn23");
 
-       vvd(rn[2][0], -0.3831847930134941271e-5, 1e-14,
+       vvd(pn.rn[2][0], -0.3831847930134941271e-5, 1e-14,
           "iauPn00b", "rn31");
-       vvd(rn[2][1], 0.4063195412258168380e-4, 1e-14,
+       vvd(pn.rn[2][1], 0.4063195412258168380e-4, 1e-14,
           "iauPn00b", "rn32");
-       vvd(rn[2][2], 0.9999999991671806225, 1e-12,
+       vvd(pn.rn[2][2], 0.9999999991671806225, 1e-12,
           "iauPn00b", "rn33");
 
-       vvd(rbpn[0][0], 0.9999989440499982806, 1e-12,
+       vvd(pn.rbpn[0][0], 0.9999989440499982806, 1e-12,
           "iauPn00b", "rbpn11");
-       vvd(rbpn[0][1], -0.1332880253640849194e-2, 1e-14,
+       vvd(pn.rbpn[0][1], -0.1332880253640849194e-2, 1e-14,
           "iauPn00b", "rbpn12");
-       vvd(rbpn[0][2], -0.5790760898731091166e-3, 1e-14,
+       vvd(pn.rbpn[0][2], -0.5790760898731091166e-3, 1e-14,
           "iauPn00b", "rbpn13");
 
-       vvd(rbpn[1][0], 0.1332856746979949638e-2, 1e-14,
+       vvd(pn.rbpn[1][0], 0.1332856746979949638e-2, 1e-14,
           "iauPn00b", "rbpn21");
-       vvd(rbpn[1][1], 0.9999991109064768883, 1e-12,
+       vvd(pn.rbpn[1][1], 0.9999991109064768883, 1e-12,
           "iauPn00b", "rbpn22");
-       vvd(rbpn[1][2], -0.4097740555723081811e-4, 1e-14,
+       vvd(pn.rbpn[1][2], -0.4097740555723081811e-4, 1e-14,
           "iauPn00b", "rbpn23");
 
-       vvd(rbpn[2][0], 0.5791301929950208873e-3, 1e-14,
+       vvd(pn.rbpn[2][0], 0.5791301929950208873e-3, 1e-14,
           "iauPn00b", "rbpn31");
-       vvd(rbpn[2][1], 0.4020553681373720832e-4, 1e-14,
+       vvd(pn.rbpn[2][1], 0.4020553681373720832e-4, 1e-14,
           "iauPn00b", "rbpn32");
-       vvd(rbpn[2][2], 0.9999998314958529887, 1e-12,
+       vvd(pn.rbpn[2][2], 0.9999998314958529887, 1e-12,
           "iauPn00b", "rbpn33");
 
     }
@@ -4378,122 +4405,119 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double dpsi, deps, epsa;
-       double rb[][] = new double[3][3], rp[][] = new double[3][3], rbp[][] = new double[3][3], rn[][] = new double[3][3], rbpn[][]=new double[3][3];
+ 
 
+       PrecessionNutation pn = iauPn06a(2400000.5, 53736.0);
 
-       iauPn06a(2400000.5, 53736.0, dpsi, deps, epsa,
-                rb, rp, rbp, rn, rbpn);
-
-       vvd(dpsi, -0.9630912025820308797e-5, 1e-12,
+       vvd(pn.nut.dpsi, -0.9630912025820308797e-5, 1e-12,
            "iauPn06a", "dpsi");
-       vvd(deps,  0.4063238496887249798e-4, 1e-12,
+       vvd(pn.nut.deps,  0.4063238496887249798e-4, 1e-12,
            "iauPn06a", "deps");
-       vvd(epsa,  0.4090789763356509926, 1e-12, "iauPn06a", "epsa");
+       vvd(pn.epsa,  0.4090789763356509926, 1e-12, "iauPn06a", "epsa");
 
-       vvd(rb[0][0], 0.9999999999999942497, 1e-12,
+       vvd(pn.rb[0][0], 0.9999999999999942497, 1e-12,
            "iauPn06a", "rb11");
-       vvd(rb[0][1], -0.7078368960971557145e-7, 1e-14,
+       vvd(pn.rb[0][1], -0.7078368960971557145e-7, 1e-14,
            "iauPn06a", "rb12");
-       vvd(rb[0][2], 0.8056213977613185606e-7, 1e-14,
+       vvd(pn.rb[0][2], 0.8056213977613185606e-7, 1e-14,
            "iauPn06a", "rb13");
 
-       vvd(rb[1][0], 0.7078368694637674333e-7, 1e-14,
+       vvd(pn.rb[1][0], 0.7078368694637674333e-7, 1e-14,
            "iauPn06a", "rb21");
-       vvd(rb[1][1], 0.9999999999999969484, 1e-12,
+       vvd(pn.rb[1][1], 0.9999999999999969484, 1e-12,
            "iauPn06a", "rb22");
-       vvd(rb[1][2], 0.3305943742989134124e-7, 1e-14,
+       vvd(pn.rb[1][2], 0.3305943742989134124e-7, 1e-14,
            "iauPn06a", "rb23");
 
-       vvd(rb[2][0], -0.8056214211620056792e-7, 1e-14,
+       vvd(pn.rb[2][0], -0.8056214211620056792e-7, 1e-14,
            "iauPn06a", "rb31");
-       vvd(rb[2][1], -0.3305943172740586950e-7, 1e-14,
+       vvd(pn.rb[2][1], -0.3305943172740586950e-7, 1e-14,
            "iauPn06a", "rb32");
-       vvd(rb[2][2], 0.9999999999999962084, 1e-12,
+       vvd(pn.rb[2][2], 0.9999999999999962084, 1e-12,
            "iauPn06a", "rb33");
 
-       vvd(rp[0][0], 0.9999989300536854831, 1e-12,
+       vvd(pn.rp[0][0], 0.9999989300536854831, 1e-12,
            "iauPn06a", "rp11");
-       vvd(rp[0][1], -0.1341646886204443795e-2, 1e-14,
+       vvd(pn.rp[0][1], -0.1341646886204443795e-2, 1e-14,
            "iauPn06a", "rp12");
-       vvd(rp[0][2], -0.5829880933488627759e-3, 1e-14,
+       vvd(pn.rp[0][2], -0.5829880933488627759e-3, 1e-14,
            "iauPn06a", "rp13");
 
-       vvd(rp[1][0], 0.1341646890569782183e-2, 1e-14,
+       vvd(pn.rp[1][0], 0.1341646890569782183e-2, 1e-14,
            "iauPn06a", "rp21");
-       vvd(rp[1][1], 0.9999990999913319321, 1e-12,
+       vvd(pn.rp[1][1], 0.9999990999913319321, 1e-12,
            "iauPn06a", "rp22");
-       vvd(rp[1][2], -0.3835944216374477457e-6, 1e-14,
+       vvd(pn.rp[1][2], -0.3835944216374477457e-6, 1e-14,
            "iauPn06a", "rp23");
 
-       vvd(rp[2][0], 0.5829880833027867368e-3, 1e-14,
+       vvd(pn.rp[2][0], 0.5829880833027867368e-3, 1e-14,
            "iauPn06a", "rp31");
-       vvd(rp[2][1], -0.3985701514686976112e-6, 1e-14,
+       vvd(pn.rp[2][1], -0.3985701514686976112e-6, 1e-14,
            "iauPn06a", "rp32");
-       vvd(rp[2][2], 0.9999998300623534950, 1e-12,
+       vvd(pn.rp[2][2], 0.9999998300623534950, 1e-12,
            "iauPn06a", "rp33");
 
-       vvd(rbp[0][0], 0.9999989300056797893, 1e-12,
+       vvd(pn.rbp[0][0], 0.9999989300056797893, 1e-12,
            "iauPn06a", "rbp11");
-       vvd(rbp[0][1], -0.1341717650545059598e-2, 1e-14,
+       vvd(pn.rbp[0][1], -0.1341717650545059598e-2, 1e-14,
            "iauPn06a", "rbp12");
-       vvd(rbp[0][2], -0.5829075756493728856e-3, 1e-14,
+       vvd(pn.rbp[0][2], -0.5829075756493728856e-3, 1e-14,
            "iauPn06a", "rbp13");
 
-       vvd(rbp[1][0], 0.1341717674223918101e-2, 1e-14,
+       vvd(pn.rbp[1][0], 0.1341717674223918101e-2, 1e-14,
            "iauPn06a", "rbp21");
-       vvd(rbp[1][1], 0.9999990998963748448, 1e-12,
+       vvd(pn.rbp[1][1], 0.9999990998963748448, 1e-12,
            "iauPn06a", "rbp22");
-       vvd(rbp[1][2], -0.3504269280170069029e-6, 1e-14,
+       vvd(pn.rbp[1][2], -0.3504269280170069029e-6, 1e-14,
            "iauPn06a", "rbp23");
 
-       vvd(rbp[2][0], 0.5829075211461454599e-3, 1e-14,
+       vvd(pn.rbp[2][0], 0.5829075211461454599e-3, 1e-14,
            "iauPn06a", "rbp31");
-       vvd(rbp[2][1], -0.4316708436255949093e-6, 1e-14,
+       vvd(pn.rbp[2][1], -0.4316708436255949093e-6, 1e-14,
            "iauPn06a", "rbp32");
-       vvd(rbp[2][2], 0.9999998301093032943, 1e-12,
+       vvd(pn.rbp[2][2], 0.9999998301093032943, 1e-12,
            "iauPn06a", "rbp33");
 
-       vvd(rn[0][0], 0.9999999999536227668, 1e-12,
+       vvd(pn.rn[0][0], 0.9999999999536227668, 1e-12,
            "iauPn06a", "rn11");
-       vvd(rn[0][1], 0.8836241998111535233e-5, 1e-14,
+       vvd(pn.rn[0][1], 0.8836241998111535233e-5, 1e-14,
            "iauPn06a", "rn12");
-       vvd(rn[0][2], 0.3830834608415287707e-5, 1e-14,
+       vvd(pn.rn[0][2], 0.3830834608415287707e-5, 1e-14,
            "iauPn06a", "rn13");
 
-       vvd(rn[1][0], -0.8836086334870740138e-5, 1e-14,
+       vvd(pn.rn[1][0], -0.8836086334870740138e-5, 1e-14,
            "iauPn06a", "rn21");
-       vvd(rn[1][1], 0.9999999991354657474, 1e-12,
+       vvd(pn.rn[1][1], 0.9999999991354657474, 1e-12,
            "iauPn06a", "rn22");
-       vvd(rn[1][2], -0.4063240188248455065e-4, 1e-14,
+       vvd(pn.rn[1][2], -0.4063240188248455065e-4, 1e-14,
            "iauPn06a", "rn23");
 
-       vvd(rn[2][0], -0.3831193642839398128e-5, 1e-14,
+       vvd(pn.rn[2][0], -0.3831193642839398128e-5, 1e-14,
            "iauPn06a", "rn31");
-       vvd(rn[2][1], 0.4063236803101479770e-4, 1e-14,
+       vvd(pn.rn[2][1], 0.4063236803101479770e-4, 1e-14,
            "iauPn06a", "rn32");
-       vvd(rn[2][2], 0.9999999991671663114, 1e-12,
+       vvd(pn.rn[2][2], 0.9999999991671663114, 1e-12,
            "iauPn06a", "rn33");
 
-       vvd(rbpn[0][0], 0.9999989440480669738, 1e-12,
+       vvd(pn.rbpn[0][0], 0.9999989440480669738, 1e-12,
            "iauPn06a", "rbpn11");
-       vvd(rbpn[0][1], -0.1332881418091915973e-2, 1e-14,
+       vvd(pn.rbpn[0][1], -0.1332881418091915973e-2, 1e-14,
            "iauPn06a", "rbpn12");
-       vvd(rbpn[0][2], -0.5790767447612042565e-3, 1e-14,
+       vvd(pn.rbpn[0][2], -0.5790767447612042565e-3, 1e-14,
            "iauPn06a", "rbpn13");
 
-       vvd(rbpn[1][0], 0.1332857911250989133e-2, 1e-14,
+       vvd(pn.rbpn[1][0], 0.1332857911250989133e-2, 1e-14,
            "iauPn06a", "rbpn21");
-       vvd(rbpn[1][1], 0.9999991109049141908, 1e-12,
+       vvd(pn.rbpn[1][1], 0.9999991109049141908, 1e-12,
            "iauPn06a", "rbpn22");
-       vvd(rbpn[1][2], -0.4097767128546784878e-4, 1e-14,
+       vvd(pn.rbpn[1][2], -0.4097767128546784878e-4, 1e-14,
            "iauPn06a", "rbpn23");
 
-       vvd(rbpn[2][0], 0.5791308482835292617e-3, 1e-14,
+       vvd(pn.rbpn[2][0], 0.5791308482835292617e-3, 1e-14,
            "iauPn06a", "rbpn31");
-       vvd(rbpn[2][1], 0.4020580099454020310e-4, 1e-14,
+       vvd(pn.rbpn[2][1], 0.4020580099454020310e-4, 1e-14,
            "iauPn06a", "rbpn32");
-       vvd(rbpn[2][2], 0.9999998314954628695, 1e-12,
+       vvd(pn.rbpn[2][2], 0.9999998314954628695, 1e-12,
            "iauPn06a", "rbpn33");
 
     }
@@ -4515,121 +4539,118 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double dpsi, deps, epsa,
-              rb[][] = new double[3][3], rp[][] = new double[3][3], rbp[][] = new double[3][3], rn[][] = new double[3][3], rbpn[][] = new double[3][3];
-
+       double dpsi, deps;
 
        dpsi = -0.9632552291149335877e-5;
        deps =  0.4063197106621141414e-4;
 
-       iauPn06(2400000.5, 53736.0, dpsi, deps,
-               epsa, rb, rp, rbp, rn, rbpn);
+       PrecessionNutation pn = iauPn06(2400000.5, 53736.0, dpsi, deps);
 
-       vvd(epsa, 0.4090789763356509926, 1e-12, "iauPn06", "epsa");
+       vvd(pn.epsa, 0.4090789763356509926, 1e-12, "iauPn06", "epsa");
 
-       vvd(rb[0][0], 0.9999999999999942497, 1e-12,
+       vvd(pn.rb[0][0], 0.9999999999999942497, 1e-12,
            "iauPn06", "rb11");
-       vvd(rb[0][1], -0.7078368960971557145e-7, 1e-14,
+       vvd(pn.rb[0][1], -0.7078368960971557145e-7, 1e-14,
            "iauPn06", "rb12");
-       vvd(rb[0][2], 0.8056213977613185606e-7, 1e-14,
+       vvd(pn.rb[0][2], 0.8056213977613185606e-7, 1e-14,
            "iauPn06", "rb13");
 
-       vvd(rb[1][0], 0.7078368694637674333e-7, 1e-14,
+       vvd(pn.rb[1][0], 0.7078368694637674333e-7, 1e-14,
            "iauPn06", "rb21");
-       vvd(rb[1][1], 0.9999999999999969484, 1e-12,
+       vvd(pn.rb[1][1], 0.9999999999999969484, 1e-12,
            "iauPn06", "rb22");
-       vvd(rb[1][2], 0.3305943742989134124e-7, 1e-14,
+       vvd(pn.rb[1][2], 0.3305943742989134124e-7, 1e-14,
            "iauPn06", "rb23");
 
-       vvd(rb[2][0], -0.8056214211620056792e-7, 1e-14,
+       vvd(pn.rb[2][0], -0.8056214211620056792e-7, 1e-14,
            "iauPn06", "rb31");
-       vvd(rb[2][1], -0.3305943172740586950e-7, 1e-14,
+       vvd(pn.rb[2][1], -0.3305943172740586950e-7, 1e-14,
            "iauPn06", "rb32");
-       vvd(rb[2][2], 0.9999999999999962084, 1e-12,
+       vvd(pn.rb[2][2], 0.9999999999999962084, 1e-12,
            "iauPn06", "rb33");
 
-       vvd(rp[0][0], 0.9999989300536854831, 1e-12,
+       vvd(pn.rp[0][0], 0.9999989300536854831, 1e-12,
            "iauPn06", "rp11");
-       vvd(rp[0][1], -0.1341646886204443795e-2, 1e-14,
+       vvd(pn.rp[0][1], -0.1341646886204443795e-2, 1e-14,
            "iauPn06", "rp12");
-       vvd(rp[0][2], -0.5829880933488627759e-3, 1e-14,
+       vvd(pn.rp[0][2], -0.5829880933488627759e-3, 1e-14,
            "iauPn06", "rp13");
 
-       vvd(rp[1][0], 0.1341646890569782183e-2, 1e-14,
+       vvd(pn.rp[1][0], 0.1341646890569782183e-2, 1e-14,
            "iauPn06", "rp21");
-       vvd(rp[1][1], 0.9999990999913319321, 1e-12,
+       vvd(pn.rp[1][1], 0.9999990999913319321, 1e-12,
            "iauPn06", "rp22");
-       vvd(rp[1][2], -0.3835944216374477457e-6, 1e-14,
+       vvd(pn.rp[1][2], -0.3835944216374477457e-6, 1e-14,
            "iauPn06", "rp23");
 
-       vvd(rp[2][0], 0.5829880833027867368e-3, 1e-14,
+       vvd(pn.rp[2][0], 0.5829880833027867368e-3, 1e-14,
            "iauPn06", "rp31");
-       vvd(rp[2][1], -0.3985701514686976112e-6, 1e-14,
+       vvd(pn.rp[2][1], -0.3985701514686976112e-6, 1e-14,
            "iauPn06", "rp32");
-       vvd(rp[2][2], 0.9999998300623534950, 1e-12,
+       vvd(pn.rp[2][2], 0.9999998300623534950, 1e-12,
            "iauPn06", "rp33");
 
-       vvd(rbp[0][0], 0.9999989300056797893, 1e-12,
+       vvd(pn.rbp[0][0], 0.9999989300056797893, 1e-12,
            "iauPn06", "rbp11");
-       vvd(rbp[0][1], -0.1341717650545059598e-2, 1e-14,
+       vvd(pn.rbp[0][1], -0.1341717650545059598e-2, 1e-14,
            "iauPn06", "rbp12");
-       vvd(rbp[0][2], -0.5829075756493728856e-3, 1e-14,
+       vvd(pn.rbp[0][2], -0.5829075756493728856e-3, 1e-14,
            "iauPn06", "rbp13");
 
-       vvd(rbp[1][0], 0.1341717674223918101e-2, 1e-14,
+       vvd(pn.rbp[1][0], 0.1341717674223918101e-2, 1e-14,
            "iauPn06", "rbp21");
-       vvd(rbp[1][1], 0.9999990998963748448, 1e-12,
+       vvd(pn.rbp[1][1], 0.9999990998963748448, 1e-12,
            "iauPn06", "rbp22");
-       vvd(rbp[1][2], -0.3504269280170069029e-6, 1e-14,
+       vvd(pn.rbp[1][2], -0.3504269280170069029e-6, 1e-14,
            "iauPn06", "rbp23");
 
-       vvd(rbp[2][0], 0.5829075211461454599e-3, 1e-14,
+       vvd(pn.rbp[2][0], 0.5829075211461454599e-3, 1e-14,
            "iauPn06", "rbp31");
-       vvd(rbp[2][1], -0.4316708436255949093e-6, 1e-14,
+       vvd(pn.rbp[2][1], -0.4316708436255949093e-6, 1e-14,
            "iauPn06", "rbp32");
-       vvd(rbp[2][2], 0.9999998301093032943, 1e-12,
+       vvd(pn.rbp[2][2], 0.9999998301093032943, 1e-12,
            "iauPn06", "rbp33");
 
-       vvd(rn[0][0], 0.9999999999536069682, 1e-12,
+       vvd(pn.rn[0][0], 0.9999999999536069682, 1e-12,
            "iauPn06", "rn11");
-       vvd(rn[0][1], 0.8837746921149881914e-5, 1e-14,
+       vvd(pn.rn[0][1], 0.8837746921149881914e-5, 1e-14,
            "iauPn06", "rn12");
-       vvd(rn[0][2], 0.3831487047682968703e-5, 1e-14,
+       vvd(pn.rn[0][2], 0.3831487047682968703e-5, 1e-14,
            "iauPn06", "rn13");
 
-       vvd(rn[1][0], -0.8837591232983692340e-5, 1e-14,
+       vvd(pn.rn[1][0], -0.8837591232983692340e-5, 1e-14,
            "iauPn06", "rn21");
-       vvd(rn[1][1], 0.9999999991354692664, 1e-12,
+       vvd(pn.rn[1][1], 0.9999999991354692664, 1e-12,
            "iauPn06", "rn22");
-       vvd(rn[1][2], -0.4063198798558931215e-4, 1e-14,
+       vvd(pn.rn[1][2], -0.4063198798558931215e-4, 1e-14,
            "iauPn06", "rn23");
 
-       vvd(rn[2][0], -0.3831846139597250235e-5, 1e-14,
+       vvd(pn.rn[2][0], -0.3831846139597250235e-5, 1e-14,
            "iauPn06", "rn31");
-       vvd(rn[2][1], 0.4063195412258792914e-4, 1e-14,
+       vvd(pn.rn[2][1], 0.4063195412258792914e-4, 1e-14,
            "iauPn06", "rn32");
-       vvd(rn[2][2], 0.9999999991671806293, 1e-12,
+       vvd(pn.rn[2][2], 0.9999999991671806293, 1e-12,
            "iauPn06", "rn33");
 
-       vvd(rbpn[0][0], 0.9999989440504506688, 1e-12,
+       vvd(pn.rbpn[0][0], 0.9999989440504506688, 1e-12,
            "iauPn06", "rbpn11");
-       vvd(rbpn[0][1], -0.1332879913170492655e-2, 1e-14,
+       vvd(pn.rbpn[0][1], -0.1332879913170492655e-2, 1e-14,
            "iauPn06", "rbpn12");
-       vvd(rbpn[0][2], -0.5790760923225655753e-3, 1e-14,
+       vvd(pn.rbpn[0][2], -0.5790760923225655753e-3, 1e-14,
            "iauPn06", "rbpn13");
 
-       vvd(rbpn[1][0], 0.1332856406595754748e-2, 1e-14,
+       vvd(pn.rbpn[1][0], 0.1332856406595754748e-2, 1e-14,
            "iauPn06", "rbpn21");
-       vvd(rbpn[1][1], 0.9999991109069366795, 1e-12,
+       vvd(pn.rbpn[1][1], 0.9999991109069366795, 1e-12,
            "iauPn06", "rbpn22");
-       vvd(rbpn[1][2], -0.4097725651142641812e-4, 1e-14,
+       vvd(pn.rbpn[1][2], -0.4097725651142641812e-4, 1e-14,
            "iauPn06", "rbpn23");
 
-       vvd(rbpn[2][0], 0.5791301952321296716e-3, 1e-14,
+       vvd(pn.rbpn[2][0], 0.5791301952321296716e-3, 1e-14,
            "iauPn06", "rbpn31");
-       vvd(rbpn[2][1], 0.4020538796195230577e-4, 1e-14,
+       vvd(pn.rbpn[2][1], 0.4020538796195230577e-4, 1e-14,
            "iauPn06", "rbpn32");
-       vvd(rbpn[2][2], 0.9999998314958576778, 1e-12,
+       vvd(pn.rbpn[2][2], 0.9999998314958576778, 1e-12,
            "iauPn06", "rbpn33");
 
     }
@@ -4954,13 +4975,11 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double dpsipr, depspr;
+       NutationDeltaTerms nut = iauPr00(2400000.5, 53736);
 
-       iauPr00(2400000.5, 53736, dpsipr, depspr);
-
-       vvd(dpsipr, -0.8716465172668347629e-7, 1e-22,
+       vvd(nut.dpsipr, -0.8716465172668347629e-7, 1e-22,
           "iauPr00", "dpsipr");
-       vvd(depspr, -0.7342018386722813087e-8, 1e-22,
+       vvd(nut.depspr, -0.7342018386722813087e-8, 1e-22,
           "iauPr00", "depspr");
 
     }
@@ -4982,7 +5001,7 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double ep01, ep02, ep11, ep12, zeta, z, theta;
+       double ep01, ep02, ep11, ep12;
 
 
        ep01 = 2400000.5;
@@ -4990,13 +5009,13 @@ public class SOFATest {
        ep11 = 2400000.5;
        ep12 = 51544.0;
 
-       iauPrec76(ep01, ep02, ep11, ep12, zeta, z, theta);
+       EulerAngles an = iauPrec76(ep01, ep02, ep11, ep12);
 
-       vvd(zeta,  0.5588961642000161243e-2, 1e-12,
+       vvd(an.zeta,  0.5588961642000161243e-2, 1e-12,
            "iauPrec76", "zeta");
-       vvd(z,     0.5589922365870680624e-2, 1e-12,
+       vvd(an.z,     0.5589922365870680624e-2, 1e-12,
            "iauPrec76", "z");
-       vvd(theta, 0.4858945471687296760e-2, 1e-12,
+       vvd(an.theta, 0.4858945471687296760e-2, 1e-12,
            "iauPrec76", "theta");
 
     }
@@ -5054,7 +5073,7 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double pv[][] = new double[2][3], theta, phi, r, td, pd, rd;
+       double pv[][] = new double[2][3];
 
 
        pv[0][0] = -0.4514964673880165;
@@ -5065,14 +5084,14 @@ public class SOFATest {
        pv[1][1] =  2.652814182060692e-6;
        pv[1][2] =  2.568431853930293e-6;
 
-       iauPv2s(pv, theta, phi, r, td, pd, rd);
+       SphericalPositionVelocity pvs = iauPv2s(pv);
 
-       vvd(theta, 3.073185307179586515, 1e-12, "iauPv2s", "theta");
-       vvd(phi, 0.1229999999999999992, 1e-12, "iauPv2s", "phi");
-       vvd(r, 0.4559999999999999757, 1e-12, "iauPv2s", "r");
-       vvd(td, -0.7800000000000000364e-5, 1e-16, "iauPv2s", "td");
-       vvd(pd, 0.9010000000000001639e-5, 1e-16, "iauPv2s", "pd");
-       vvd(rd, -0.1229999999999999832e-4, 1e-16, "iauPv2s", "rd");
+       vvd(pvs.pos.theta, 3.073185307179586515, 1e-12, "iauPv2s", "theta");
+       vvd(pvs.pos.phi, 0.1229999999999999992, 1e-12, "iauPv2s", "phi");
+       vvd(pvs.pos.r, 0.4559999999999999757, 1e-12, "iauPv2s", "r");
+       vvd(pvs.vel.theta, -0.7800000000000000364e-5, 1e-16, "iauPv2s", "td");
+       vvd(pvs.vel.phi, 0.9010000000000001639e-5, 1e-16, "iauPv2s", "pd");
+       vvd(pvs.vel.r, -0.1229999999999999832e-4, 1e-16, "iauPv2s", "rd");
 
     }
 
@@ -5136,7 +5155,7 @@ public class SOFATest {
     **  This revision:  2008 May 25
     */
     {
-       double pv[][] = new double[2][3], r, s;
+       double pv[][] = new double[2][3];
 
 
        pv[0][0] =  0.3;
@@ -5147,10 +5166,10 @@ public class SOFATest {
        pv[1][1] = -0.25;
        pv[1][2] =  1.1;
 
-       iauPvm(pv, r, s);
+       PVModulus ret = iauPvm(pv);
 
-       vvd(r, 2.789265136196270604, 1e-12, "iauPvm", "r");
-       vvd(s, 1.214495780149111922, 1e-12, "iauPvm", "s");
+       vvd(ret.r, 2.789265136196270604, 1e-12, "iauPvm", "r");
+       vvd(ret.s, 1.214495780149111922, 1e-12, "iauPvm", "s");
 
     }
 
@@ -5267,8 +5286,7 @@ public class SOFATest {
     **  This revision:  2009 November 6
     */
     {
-       double pv[][] = new double[2][3], ra, dec, pmr, pmd, px, rv;
-       int j;
+       double pv[][] = new double[2][3];
 
 
        pv[0][0] =  126668.5912743160601;
@@ -5279,16 +5297,19 @@ public class SOFATest {
        pv[1][1] = -0.6253919754866173866e-2;
        pv[1][2] =  0.1189353719774107189e-1;
 
-       j = iauPvstar(pv, ra, dec, pmr, pmd, px, rv);
+       try {
+           CatalogCoords cat = iauPvstar(pv);
 
-       vvd(ra, 0.1686756e-1, 1e-12, "iauPvstar", "ra");
-       vvd(dec, -1.093989828, 1e-12, "iauPvstar", "dec");
-       vvd(pmr, -0.178323516e-4, 1e-16, "iauPvstar", "pmr");
-       vvd(pmd, 0.2336024047e-5, 1e-16, "iauPvstar", "pmd");
-       vvd(px, 0.74723, 1e-12, "iauPvstar", "px");
-       vvd(rv, -21.6, 1e-11, "iauPvstar", "rv");
+           vvd(cat.pos.alpha, 0.1686756e-1, 1e-12, "iauPvstar", "ra");
+           vvd(cat.pos.delta, -1.093989828, 1e-12, "iauPvstar", "dec");
+           vvd(cat.pm.alpha, -0.178323516e-4, 1e-16, "iauPvstar", "pmr");
+           vvd(cat.pm.delta, 0.2336024047e-5, 1e-16, "iauPvstar", "pmd");
+           vvd(cat.px, 0.74723, 1e-12, "iauPvstar", "px");
+           vvd(cat.rv, -21.6, 1e-11, "iauPvstar", "rv");
+       } catch (SOFAInternalError e) {
+           fail(" internal exception");
+       }
 
-       viv(j, 0, "iauPvstar", "j");
 
     }
 
@@ -6221,9 +6242,6 @@ public class SOFATest {
     */
     {
        double ra1, dec1, pmr1, pmd1, px1, rv1;
-       double ra2, dec2, pmr2, pmd2, px2, rv2;
-       int j;
-
 
        ra1 =   0.01686756;
        dec1 = -1.093989828;
@@ -6232,24 +6250,29 @@ public class SOFATest {
        px1 =   0.74723;
        rv1 = -21.6;
 
-       j = iauStarpm(ra1, dec1, pmr1, pmd1, px1, rv1,
-                     2400000.5, 50083.0, 2400000.5, 53736.0,
-                     ra2, dec2, pmr2, pmd2, px2, rv2);
+       try {
+           CatalogCoords cat = iauStarpm(ra1, dec1, pmr1, pmd1, px1, rv1,
+                   2400000.5, 50083.0, 2400000.5, 53736.0 );
 
-       vvd(ra2, 0.01668919069414242368, 1e-13,
-           "iauStarpm", "ra");
-       vvd(dec2, -1.093966454217127879, 1e-13,
-           "iauStarpm", "dec");
-       vvd(pmr2, -0.1783662682155932702e-4, 1e-17,
-           "iauStarpm", "pmr");
-       vvd(pmd2, 0.2338092915987603664e-5, 1e-17,
-           "iauStarpm", "pmd");
-       vvd(px2, 0.7473533835323493644, 1e-13,
-           "iauStarpm", "px");
-       vvd(rv2, -21.59905170476860786, 1e-11,
-           "iauStarpm", "rv");
+           vvd(cat.pos.alpha, 0.01668919069414242368, 1e-13,
+                   "iauStarpm", "ra");
+           vvd(cat.pos.delta, -1.093966454217127879, 1e-13,
+                   "iauStarpm", "dec");
+           vvd(cat.pm.alpha, -0.1783662682155932702e-4, 1e-17,
+                   "iauStarpm", "pmr");
+           vvd(cat.pm.delta, 0.2338092915987603664e-5, 1e-17,
+                   "iauStarpm", "pmd");
+           vvd(cat.px, 0.7473533835323493644, 1e-13,
+                   "iauStarpm", "px");
+           vvd(cat.rv, -21.59905170476860786, 1e-11,
+                   "iauStarpm", "rv");
+       } catch (SOFAInternalError e) {
 
-       viv(j, 0, "iauStarpm", "j");
+           e.printStackTrace();
+           fail("iauStarpm threw exception");
+       }
+
+ 
 
     }
 
@@ -6539,13 +6562,11 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double x, y;
 
+       CelestialIntermediatePole cip = iauXy06(2400000.5, 53736.0);
 
-       iauXy06(2400000.5, 53736.0, x, y);
-
-       vvd(x, 0.5791308486706010975e-3, 1e-15, "iauXy06", "x");
-       vvd(y, 0.4020579816732958141e-4, 1e-16, "iauXy06", "y");
+       vvd(cip.x, 0.5791308486706010975e-3, 1e-15, "iauXy06", "x");
+       vvd(cip.y, 0.4020579816732958141e-4, 1e-16, "iauXy06", "y");
 
     }
 
@@ -6566,14 +6587,12 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double x, y, s;
 
+       ICRFrame fr = iauXys00a(2400000.5, 53736.0);
 
-       iauXys00a(2400000.5, 53736.0, x, y, s);
-
-       vvd(x,  0.5791308472168152904e-3, 1e-14, "iauXys00a", "x");
-       vvd(y,  0.4020595661591500259e-4, 1e-15, "iauXys00a", "y");
-       vvd(s, -0.1220040848471549623e-7, 1e-18, "iauXys00a", "s");
+       vvd(fr.cip.x,  0.5791308472168152904e-3, 1e-14, "iauXys00a", "x");
+       vvd(fr.cip.y,  0.4020595661591500259e-4, 1e-15, "iauXys00a", "y");
+       vvd(fr.s, -0.1220040848471549623e-7, 1e-18, "iauXys00a", "s");
 
     }
 
@@ -6594,14 +6613,13 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double x, y, s;
 
 
-       iauXys00b(2400000.5, 53736.0, x, y, s);
+       ICRFrame fr = iauXys00b(2400000.5, 53736.0);
 
-       vvd(x,  0.5791301929950208873e-3, 1e-14, "iauXys00b", "x");
-       vvd(y,  0.4020553681373720832e-4, 1e-15, "iauXys00b", "y");
-       vvd(s, -0.1220027377285083189e-7, 1e-18, "iauXys00b", "s");
+       vvd(fr.cip.x,  0.5791301929950208873e-3, 1e-14, "iauXys00b", "x");
+       vvd(fr.cip.y,  0.4020553681373720832e-4, 1e-15, "iauXys00b", "y");
+       vvd(fr.s, -0.1220027377285083189e-7, 1e-18, "iauXys00b", "s");
 
     }
 
@@ -6622,14 +6640,12 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double x, y, s;
+      
+       ICRFrame fr = iauXys06a(2400000.5, 53736.0);
 
-
-       iauXys06a(2400000.5, 53736.0, x, y, s);
-
-       vvd(x,  0.5791308482835292617e-3, 1e-14, "iauXys06a", "x");
-       vvd(y,  0.4020580099454020310e-4, 1e-15, "iauXys06a", "y");
-       vvd(s, -0.1220032294164579896e-7, 1e-18, "iauXys06a", "s");
+       vvd(fr.cip.x,  0.5791308482835292617e-3, 1e-14, "iauXys06a", "x");
+       vvd(fr.cip.y,  0.4020580099454020310e-4, 1e-15, "iauXys06a", "y");
+       vvd(fr.s, -0.1220032294164579896e-7, 1e-18, "iauXys06a", "s");
 
     }
 
