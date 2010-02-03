@@ -11,74 +11,74 @@ package org.jastronomy.sofa;
 import static java.lang.Math.*; //IMPL strictmath better?
 
 /**
- * Java implementation of Standards of Fundamental Astronomy. @link http://www.jausofa.org/.
+ * Java implementation of Standards of Fundamental Astronomy. <a href="http://www.jausofa.org/">http://www.jausofa.org/</a>
  * 
  * This code has been created by hand translating the official C version.
  * 
  * @author Paul Harrison (paul.harrison@manchester.ac.uk) 26 Jan 2010
- * @version $Name$
+ * @version SOFA Release 2009-12-31
  * @since 26 Jan 2010
  */
 public class SOFA {
 
-    /** Seconds of time per radian */
+    /** Seconds of time per radian {@value} */
     public final static double DS2R = (7.272205216643039903848712e-5);
 
-    /** Pi */
+    /** Pi {@value}*/
     public final static double DPI = (3.141592653589793238462643);
 
-    /** 2Pi */
+    /** 2Pi {@value}*/
     public final static double D2PI = (6.283185307179586476925287);
 
-    /** Degrees to radians */
+    /** Degrees to radians {@value}*/
     public final static double DD2R = (1.745329251994329576923691e-2);
 
-    /** Radians to arcseconds */
+    /** Radians to arcseconds {@value}*/
     public final static double DR2AS = (206264.8062470963551564734);
 
-    /** Arcseconds to radians */
+    /** Arcseconds to radians {@value}*/
     public final static double DAS2R = (4.848136811095359935899141e-6);
 
-    /** Arcseconds in a full circle */
+    /** Arcseconds in a full circle {@value}*/
     public final static double TURNAS = (1296000.0);
 
-    /** Milliarcseconds to radians */
+    /** Milliarcseconds to radians {@value}*/
     public final static double DMAS2R = (DAS2R / 1e3);
 
-    /** Length of tropical year B1900 (days) */
+    /** Length of tropical year B1900 (days) {@value}*/
     public final static double DTY = (365.242198781);
 
-    /** Reference epoch (J2000.0), Julian Date */
+    /** Reference epoch (J2000.0), Julian Date {@value}*/
     public final static double DJ00 = (2451545.0);
 
-    /** Julian Date of Modified Julian Date zero */
+    /** Julian Date of Modified Julian Date zero {@value}*/
     public final static double DJM0 = (2400000.5);
 
-    /** Reference epoch (J2000.0), Modified Julian Date */
+    /** Reference epoch (J2000.0), Modified Julian Date {@value} */
     public final static double DJM00 = (51544.5);
 
-    /** Seconds per day. */
+    /** Seconds per day. {@value}*/
     public final static double DAYSEC = (86400.0);
 
     /** Days per Julian year */
     public final static double DJY = (365.25);
 
-    /** Days per Julian century */
+    /** Days per Julian century {@value} */
     public final static double DJC = (36525.0);
 
-    /** Days per Julian millennium */
+    /** Days per Julian millennium {@value} */
     public final static double DJM = (365250.0);
 
-    /** AU (m) */
+    /** AU (m) {@value} */
     public final static double DAU = (149597870e3);
 
-    /** Speed of light (AU per day) */
+    /** Speed of light (AU per day) {@value} */
     public final static double DC = (DAYSEC / 499.004782);
 
-    /** dint(A) - truncate to nearest whole number towards zero (double) */
+    /** dint(A) - truncate to nearest whole number towards zero (double)  */
     private static double dint(final double A){ return ((A)<0.0?ceil(A):floor(A));}
 
-    /** dnint(A) - round to nearest whole number (double) */
+    /** dnint(A) - round to nearest whole number (double)  */
     private static double dnint(final double A){return ((A)<0.0?ceil((A)-0.5):floor((A)+0.5));}
 
     /** dsign(A,B) - magnitude of A with sign of B (double) */
@@ -87,18 +87,18 @@ public class SOFA {
 
     
     /**
-     * Julian Date. The actual date is djm0+djm1,pportioned in any
+     * Julian Date. The actual date is djm0+djm1, apportioned in any
      *     convenient way between the two arguments.  For example,
      *     JD(TT)=2450123.7 could be expressed in any of these ways,
      *     among others:
-     *
+     *<code>
      *            djm0          djm1
      *
      *         2450123.7           0.0       (JD method)
      *         2451545.0       -1421.3       (J2000 method)
      *         2400000.5       50123.2       (MJD method)
      *         2450123.5           0.2       (date & time method)
-     *
+     *</code>
      * 
      * The JD method is the most natural and convenient to use in
      *     cases where the loss of several decimal digits of resolution
@@ -123,33 +123,30 @@ public class SOFA {
     }
  
     /**
-     * Decompose radians into degrees, arcminutes, arcseconds, fraction.
-    **  - - - - - - - -
-    **   i a u A 2 a f
-    **  - - - - - - - -
-    **
+    ** Decompose radians into degrees, arcminutes, arcseconds, fraction.
     **  
     **
     **  <p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  <p>Status:  vector/matrix support function.
+    **  
+    ** <!-- Given: -->
+    **    @param ndp     int     resolution (Note 1)
+    **    @param angle   double  angle in radians
     **
-    **  Given:
-    **     ndp     int     resolution (Note 1)
-    **     angle   double  angle in radians
+    ** <!-- Returned: -->
+    **    @return sign    char    '+' or '-'
+    **    @param idmsf   int[4] <u>returned</u> degrees, arcminutes, arcseconds, fraction
     **
-    **  Returned:
-    **     sign    char    '+' or '-'
-    **     idmsf   int[4]  degrees, arcminutes, arcseconds, fraction
-    **
-    **  Called:
-    **     jauD2tf      decompose days to hms
-    **
-    **  Notes:
+    **<p>Called:<ul>
+    **     <li>{@link #jauD2tf}      decompose days to hms
+    **</ul>
+    ** <p>Notes:
     **<ol>
     **  <li> The argument ndp is interpreted as follows:
     **
+    ** <pre>
     **     ndp         resolution
     **      :      ...0000 00 00
     **     -7         1000 00 00
@@ -164,7 +161,7 @@ public class SOFA {
     **      2            0 00 00.01
     **      3            0 00 00.001
     **      :            0 00 00.000...
-    **
+    **</pre>
     **  <li> The largest positive useful value for ndp is determined by the
     **     size of angle, the format of doubles on the target platform, and
     **     the risk of overflowing idmsf[3].  On a typical platform, for
@@ -178,9 +175,9 @@ public class SOFA {
     **     case where angle is very nearly 2pi and rounds up to 360 degrees,
     **     by testing for idmsf[0]=360 and setting idmsf[0-3] to zero.
     **</ol>
-    **  This revision:  2008 May 27
+    **<p>This revision:  2008 May 27
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
@@ -200,10 +197,6 @@ public class SOFA {
 
     
     /**
-    **  - - - - - - - -
-    **   i a u A 2 t f
-    **  - - - - - - - -
-    **
     **  Decompose radians into hours, minutes, seconds, fraction.
     **
     **  This function is derived from the International Astronomical Union's
@@ -211,21 +204,22 @@ public class SOFA {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     ndp     int     resolution (Note 1)
-    **     angle   double  angle in radians
+    **<!-- Given: -->
+    **     @param ndp      int      resolution (Note 1)
+    **     @param angle    double   angle in radians
     **
-    **  Returned:
-    **     sign    char    '+' or '-'
-    **     ihmsf   int[4]  hours, minutes, seconds, fraction
+    **<!-- Returned: -->
+    **     @param sign     char      <u>returned</u> '+' or '-'
+    **     @param ihmsf    int[4]    <u>returned</u> hours, minutes, seconds, fraction
     **
-    **  Called:
-    **     jauD2tf      decompose days to hms
+    **<p>Called:<ul>
+    **     <li>{@link #jauD2tf} decompose days to hms
+    ** </ul>
+    ** <p>Notes:
+    ** <ol>
     **
-    **  Notes:
-    **
-    **  1) The argument ndp is interpreted as follows:
-    **
+    ** <li> The argument ndp is interpreted as follows:
+    ** <pre>
     **     ndp         resolution
     **      :      ...0000 00 00
     **     -7         1000 00 00
@@ -240,8 +234,8 @@ public class SOFA {
     **      2            0 00 00.01
     **      3            0 00 00.001
     **      :            0 00 00.000...
-    **
-    **  2) The largest positive useful value for ndp is determined by the
+    **</pre>
+    ** <li> The largest positive useful value for ndp is determined by the
     **     size of angle, the format of doubles on the target platform, and
     **     the risk of overflowing ihmsf[3].  On a typical platform, for
     **     angle up to 2pi, the available floating-point precision might
@@ -249,14 +243,14 @@ public class SOFA {
     **     ndp=9, set by the capacity of a 32-bit int, or ndp=4 if int is
     **     only 16 bits.
     **
-    **  3) The absolute value of angle may exceed 2pi.  In cases where it
+    ** <li> The absolute value of angle may exceed 2pi.  In cases where it
     **     does not, it is up to the caller to test for and handle the
     **     case where angle is very nearly 2pi and rounds up to 24 hours,
     **     by testing for ihmsf[0]=24 and setting ihmsf(0-3) to zero.
     **
-    **  This revision:  2008 May 11
+    **  <p>This revision:  2008 May 11
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
@@ -269,10 +263,6 @@ public class SOFA {
     
 
     /**
-    **  - - - - - - -
-    **   i a u A n p
-    **  - - - - - - -
-    **
     **  Normalize angle into the range 0 <= a < 2pi.
     **
     **  This function is derived from the International Astronomical Union's
@@ -280,15 +270,15 @@ public class SOFA {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     a        double     angle (radians)
+    **<!-- Given: -->
+    **     @param a         double      angle (radians)
     **
-    **  Returned (function value):
-    **              double     angle in range 0-2pi
+    ** <!-- Returned (function value): -->
+    **  @return double     angle in range 0-2pi
     **
-    **  This revision:  2008 May 16
+    **<p>This revision:  2008 May 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
@@ -305,12 +295,7 @@ public class SOFA {
     }
     
 
-    public static double jauAnpm(final double a)
     /**
-    **  - - - - - - - -
-    **   i a u A n p m
-    **  - - - - - - - -
-    **
     **  Normalize angle into the range -pi <= a < +pi.
     **
     **  This function is derived from the International Astronomical Union's
@@ -318,18 +303,19 @@ public class SOFA {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     a        double     angle (radians)
+    **<!-- Given: -->
+    **     @param a         double      angle (radians)
     **
-    **  Returned (function value):
-    **              double     angle in range +/-pi
+    ** <!-- Returned (function value): -->
+    **  @return double     angle in range +/-pi
     **
-    **  This revision:  2008 May 16
+    **<p>This revision:  2008 May 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauAnpm(final double a)
     {
        double w;
 
@@ -340,6 +326,12 @@ public class SOFA {
        return w;
 
         }
+    /**
+     * Frame bias components of IAU 2000 precession-nutation models.
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 2 Feb 2010
+     * @version $Name$
+     * @since AIDA Stage 1
+     */
     public static class FrameBias {
         /** longitude  corrections */
         public double dpsibi;
@@ -349,12 +341,7 @@ public class SOFA {
         public double dra;
     };
 
-    public static FrameBias jauBi00()
     /**
-    **  - - - - - - - -
-    **   i a u B i 0 0
-    **  - - - - - - - -
-    **
     **  Frame bias components of IAU 2000 precession-nutation models (part
     **  of MHB2000 with additions).
     **
@@ -363,45 +350,47 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Returned:
-    **     dpsibi,depsbi  double  longitude and obliquity corrections
-    **     dra            double  the ICRS RA of the J2000.0 mean equinox
+    **<!-- Returned: -->
+    **     @param dpsibi,depsbi   double    <u>returned</u> longitude and obliquity corrections
+    **     @param dra             double    <u>returned</u> the ICRS RA of the J2000.0 mean equinox
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The frame bias corrections in longitude and obliquity (radians)
+    ** <li> The frame bias corrections in longitude and obliquity (radians)
     **     are required in order to correct for the offset between the GCRS
     **     pole and the mean J2000.0 pole.  They define, with respect to the
     **     GCRS frame, a J2000.0 mean pole that is consistent with the rest
     **     of the IAU 2000A precession-nutation model.
     **
-    **  2) In addition to the displacement of the pole, the complete
+    ** <li> In addition to the displacement of the pole, the complete
     **     description of the frame bias requires also an offset in right
     **     ascension.  This is not part of the IAU 2000A model, and is from
     **     Chapront et al. (2002).  It is returned in radians.
     **
-    **  3) This is a supplemented implementation of one aspect of the IAU
+    ** <li> This is a supplemented implementation of one aspect of the IAU
     **     2000A nutation model, formally adopted by the IAU General
     **     Assembly in 2000, namely MHB2000 (Mathews et al. 2002).
     **
-    **  References:
+    **<p>References:
     **
     **     Chapront, J., Chapront-Touze, M. & Francou, G., Astron.
     **     Astrophys., 387, 700, 2002.
     **
-    **     Mathews, P.M., Herring, T.A., Buffet, B.A., "Modeling of nutation
+    **     <br/>Mathews, P.M., Herring, T.A., Buffet, B.A., "Modeling of nutation
     **     and precession   New nutation series for nonrigid Earth and
     **     insights into the Earth's interior", J.Geophys.Res., 107, B4,
     **     2002.  The MHB2000 code itself was obtained on 9th September 2002
     **     from ftp://maia.usno.navy.mil/conv2000/chapter5/IAU2000A.
     **
-    **  This revision:  2009 December 17
+    **<p>This revision:  2009 December 17
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
-    {
+    public static FrameBias jauBi00()
+   {
     /* The frame bias corrections in longitude and obliquity */
        final double DPBIAS = -0.041775  * DAS2R,
                     DEBIAS = -0.0068192 * DAS2R;
@@ -421,13 +410,7 @@ public class SOFA {
         }
     
 
-    public static void jauBp00(final double  date1, final double date2,
-                 double rb[][], double rp[][], double rbp[][])
     /**
-    **  - - - - - - - -
-    **   i a u B p 0 0
-    **  - - - - - - - -
-    **
     **  Frame bias and precession, IAU 2000.
     **
     **  This function is derived from the International Astronomical Union's
@@ -435,28 +418,29 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2  double         TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double          TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     rb           double[3][3]   frame bias matrix (Note 2)
-    **     rp           double[3][3]   precession matrix (Note 3)
-    **     rbp          double[3][3]   bias-precession matrix (Note 4)
+    **<!-- Returned: -->
+    **     @param rb            double[3][3]     <u>returned</u> frame bias matrix (Note 2)
+    **     @param rp            double[3][3]     <u>returned</u> precession matrix (Note 3)
+    **     @param rbp           double[3][3]     <u>returned</u> bias-precession matrix (Note 4)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **             date1         date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -464,31 +448,31 @@ public class SOFA {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix rb transforms vectors from GCRS to mean J2000.0 by
+    ** <li> The matrix rb transforms vectors from GCRS to mean J2000.0 by
     **     applying frame bias.
     **
-    **  3) The matrix rp transforms vectors from J2000.0 mean equator and
+    ** <li> The matrix rp transforms vectors from J2000.0 mean equator and
     **     equinox to mean equator and equinox of date by applying
     **     precession.
     **
-    **  4) The matrix rbp transforms vectors from GCRS to mean equator and
+    ** <li> The matrix rbp transforms vectors from GCRS to mean equator and
     **     equinox of date by applying frame bias then precession.  It is
     **     the product rp x rb.
     **
-    **  5) It is permissible to re-use the same array in the returned
+    ** <li> It is permissible to re-use the same array in the returned
     **     arguments.  The arrays are filled in the order given.
-    **
-    **  Called:
-    **     jauBi00      frame bias components, IAU 2000
-    **     jauPr00      IAU 2000 precession adjustments
-    **     jauIr        initialize r-matrix to identity
-    **     jauRx        rotate around X-axis
-    **     jauRy        rotate around Y-axis
-    **     jauRz        rotate around Z-axis
-    **     jauCr        copy r-matrix
-    **     jauRxr       product of two r-matrices
-    **
-    **  Reference:
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauBi00} frame bias components, IAU 2000
+    **     <li>{@link #jauPr00} IAU 2000 precession adjustments
+    **     <li>{@link #jauIr} initialize r-matrix to identity
+    **     <li>{@link #jauRx} rotate around X-axis
+    **     <li>{@link #jauRy} rotate around Y-axis
+    **     <li>{@link #jauRz} rotate around Z-axis
+    **     <li>{@link #jauCr} copy r-matrix
+    **     <li>{@link #jauRxr} product of two r-matrices
+    ** </ul>
+    **<p>Reference:
     **     "Expressions for the Celestial Intermediate Pole and Celestial
     **     Ephemeris Origin consistent with the IAU 2000A precession-
     **     nutation model", Astron.Astrophys. 400, 1145-1154 (2003)
@@ -496,12 +480,14 @@ public class SOFA {
     **     n.b. The celestial ephemeris origin (CEO) was renamed "celestial
     **          intermediate origin" (CIO) by IAU 2006 Resolution 2.
     **
-    **  This revision:  2010 January 18
+    **<p>This revision:  2010 January 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauBp00(final double  date1, final double date2,
+            double rb[][], double rp[][], double rbp[][])
     {
     /* J2000.0 obliquity (Lieske et al. 1977) */
        final double EPS0 = 84381.448 * DAS2R;
@@ -552,13 +538,7 @@ public class SOFA {
         }
     
 
-    public static void jauBp06(final double date1, final double date2,
-                 double rb[][], double rp[][], double rbp[][])
     /**
-    **  - - - - - - - -
-    **   i a u B p 0 6
-    **  - - - - - - - -
-    **
     **  Frame bias and precession, IAU 2006.
     **
     **  This function is derived from the International Astronomical Union's
@@ -566,28 +546,29 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double         TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double          TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     rb           double[3][3]   frame bias matrix (Note 2)
-    **     rp           double[3][3]   precession matrix (Note 3)
-    **     rbp          double[3][3]   bias-precession matrix (Note 4)
+    **<!-- Returned: -->
+    **     @param rb            double[3][3]     <u>returned</u> frame bias matrix (Note 2)
+    **     @param rp            double[3][3]     <u>returned</u> precession matrix (Note 3)
+    **     @param rbp           double[3][3]     <u>returned</u> bias-precession matrix (Note 4)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **             date1         date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -595,34 +576,36 @@ public class SOFA {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix rb transforms vectors from GCRS to mean J2000.0 by
+    ** <li> The matrix rb transforms vectors from GCRS to mean J2000.0 by
     **     applying frame bias.
     **
-    **  3) The matrix rp transforms vectors from mean J2000.0 to mean of
+    ** <li> The matrix rp transforms vectors from mean J2000.0 to mean of
     **     date by applying precession.
     **
-    **  4) The matrix rbp transforms vectors from GCRS to mean of date by
+    ** <li> The matrix rbp transforms vectors from GCRS to mean of date by
     **     applying frame bias then precession.  It is the product rp x rb.
+    **<ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPfw06} bias-precession F-W angles, IAU 2006
+    **     <li>{@link #jauFw2m} F-W angles to r-matrix
+    **     <li>{@link #jauPmat06} PB matrix, IAU 2006
+    **     <li>{@link #jauTr} transpose r-matrix
+    **     <li>{@link #jauRxr} product of two r-matrices
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauPfw06     bias-precession F-W angles, IAU 2006
-    **     jauFw2m      F-W angles to r-matrix
-    **     jauPmat06    PB matrix, IAU 2006
-    **     jauTr        transpose r-matrix
-    **     jauRxr       product of two r-matrices
+    **     <br/>Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
     **
-    **  References:
+    **     <br/>Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
     **
-    **     Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
+    **<p>This revision:  2009 December 17
     **
-    **     Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
-    **
-    **  This revision:  2009 December 17
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+        public static void jauBp06(final double date1, final double date2,
+                 double rb[][], double rp[][], double rbp[][])
     {
        double rbt[][] = new double[3][3];
 
@@ -658,12 +641,7 @@ public class SOFA {
             this.y = y;
         }
      }
-    public static CelestialIntermediatePole  jauBpn2xy(double rbpn[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u B p n 2 x y
-    **  - - - - - - - - - -
-    **
     **  Extract from the bias-precession-nutation matrix the X,Y coordinates
     **  of the Celestial Intermediate Pole.
     **
@@ -672,22 +650,23 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     rbpn      double[3][3]  celestial-to-true matrix (Note 1)
+    **<!-- Given: -->
+    **     @param rbpn       double[3][3]   celestial-to-true matrix (Note 1)
     **
-    **  Returned:
-    **     x,y       double        Celestial Intermediate Pole (Note 2)
+    **<!-- Returned: -->
+    **     @param x,y        double          <u>returned</u> Celestial Intermediate Pole (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The matrix rbpn transforms vectors from GCRS to true equator (and
+    ** <li> The matrix rbpn transforms vectors from GCRS to true equator (and
     **     CIO or equinox) of date, and therefore the Celestial Intermediate
     **     Pole unit vector is the bottom row of the matrix.
     **
-    **  2) The arguments x,y are components of the Celestial Intermediate
+    ** <li> The arguments x,y are components of the Celestial Intermediate
     **     Pole unit vector in the Geocentric Celestial Reference System.
     **
-    **  Reference:
+    **<p>Reference:
     **
     **     "Expressions for the Celestial Intermediate Pole and Celestial
     **     Ephemeris Origin consistent with the IAU 2000A precession-
@@ -697,12 +676,13 @@ public class SOFA {
     **     n.b. The celestial ephemeris origin (CEO) was renamed "celestial
     **          intermediate origin" (CIO) by IAU 2006 Resolution 2.
     **
-    **  This revision:  2010 January 18
+    **<p>This revision:  2010 January 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+        public static CelestialIntermediatePole  jauBpn2xy(double rbpn[][])
     {
     /* Extract the X,Y coordinates. */
 
@@ -711,12 +691,7 @@ public class SOFA {
         }
     
 
-    public static void jauC2i00a(double date1, double date2, double rc2i[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u C 2 i 0 0 a
-    **  - - - - - - - - - -
-    **
     **  Form the celestial-to-intermediate matrix for a given date using the
     **  IAU 2000A precession-nutation model.
     **
@@ -725,26 +700,27 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2 double       TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2  double        TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     rc2i        double[3][3] celestial-to-intermediate matrix (Note 2)
+    **<!-- Returned: -->
+    **     @param rc2i         double[3][3]   <u>returned</u> celestial-to-intermediate matrix (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -752,7 +728,7 @@ public class SOFA {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix rc2i is the first stage in the transformation from
+    ** <li> The matrix rc2i is the first stage in the transformation from
     **     celestial to terrestrial coordinates:
     **
     **        [TRS]  =  RPOM * R_3(ERA) * rc2i * [CRS]
@@ -764,16 +740,16 @@ public class SOFA {
     **     Reference System (see IERS Conventions 2003), ERA is the Earth
     **     Rotation Angle and RPOM is the polar motion matrix.
     **
-    **  3) A faster, but slightly less accurate result (about 1 mas), can be
+    ** <li> A faster, but slightly less accurate result (about 1 mas), can be
     **     obtained by using instead the jauC2i00b function.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPnm00a} classical NPB matrix, IAU 2000A
+    **     <li>{@link #jauC2ibpn} celestial-to-intermediate matrix, given NPB matrix
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauPnm00a    classical NPB matrix, IAU 2000A
-    **     jauC2ibpn    celestial-to-intermediate matrix, given NPB matrix
-    **
-    **  References:
-    **
-    **     "Expressions for the Celestial Intermediate Pole and Celestial
+    **     <br/>"Expressions for the Celestial Intermediate Pole and Celestial
     **     Ephemeris Origin consistent with the IAU 2000A precession-
     **     nutation model", Astron.Astrophys. 400, 1145-1154
     **     (2003)
@@ -781,15 +757,16 @@ public class SOFA {
     **     n.b. The celestial ephemeris origin (CEO) was renamed "celestial
     **          intermediate origin" (CIO) by IAU 2006 Resolution 2.
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **    <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2010 January 18
+    **<p>This revision:  2010 January 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauC2i00a(double date1, double date2, double rc2i[][])
     {
        double rbpn[][] = new double[3][3];
 
@@ -805,12 +782,7 @@ public class SOFA {
         }
     
 
-    public static void jauC2i00b(double date1, double date2, double rc2i[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u C 2 i 0 0 b
-    **  - - - - - - - - - -
-    **
     **  Form the celestial-to-intermediate matrix for a given date using the
     **  IAU 2000B precession-nutation model.
     **
@@ -819,26 +791,27 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2 double       TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2  double        TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     rc2i        double[3][3] celestial-to-intermediate matrix (Note 2)
+    **<!-- Returned: -->
+    **     @param rc2i         double[3][3]   <u>returned</u> celestial-to-intermediate matrix (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -846,7 +819,7 @@ public class SOFA {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix rc2i is the first stage in the transformation from
+    ** <li> The matrix rc2i is the first stage in the transformation from
     **     celestial to terrestrial coordinates:
     **
     **        [TRS]  =  RPOM * R_3(ERA) * rc2i * [CRS]
@@ -858,16 +831,16 @@ public class SOFA {
     **     Reference System (see IERS Conventions 2003), ERA is the Earth
     **     Rotation Angle and RPOM is the polar motion matrix.
     **
-    **  3) The present function is faster, but slightly less accurate (about
+    ** <li> The present function is faster, but slightly less accurate (about
     **     1 mas), than the jauC2i00a function.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPnm00b} classical NPB matrix, IAU 2000B
+    **     <li>{@link #jauC2ibpn} celestial-to-intermediate matrix, given NPB matrix
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauPnm00b    classical NPB matrix, IAU 2000B
-    **     jauC2ibpn    celestial-to-intermediate matrix, given NPB matrix
-    **
-    **  References:
-    **
-    **     "Expressions for the Celestial Intermediate Pole and Celestial
+    **    <br/> "Expressions for the Celestial Intermediate Pole and Celestial
     **     Ephemeris Origin consistent with the IAU 2000A precession-
     **     nutation model", Astron.Astrophys. 400, 1145-1154
     **     (2003)
@@ -875,15 +848,16 @@ public class SOFA {
     **     n.b. The celestial ephemeris origin (CEO) was renamed "celestial
     **          intermediate origin" (CIO) by IAU 2006 Resolution 2.
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **    <br/> McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2010 January 18
+    **<p>This revision:  2010 January 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauC2i00b(double date1, double date2, double rc2i[][])
     {
        double rbpn[][] = new double[3][3];
 
@@ -899,12 +873,7 @@ public class SOFA {
         }
     
 
-    public static void jauC2i06a(double date1, double date2, double rc2i[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u _ c 2 i 0 6 a
-    **  - - - - - - - - - -
-    **
     **  Form the celestial-to-intermediate matrix for a given date using the
     **  IAU 2006 precession and IAU 2000A nutation models.
     **
@@ -913,26 +882,27 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2 double       TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2  double        TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     rc2i        double[3][3] celestial-to-intermediate matrix (Note 2)
+    **<!-- Returned: -->
+    **     @param rc2i         double[3][3]   <u>returned</u> celestial-to-intermediate matrix (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -940,7 +910,7 @@ public class SOFA {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix rc2i is the first stage in the transformation from
+    ** <li> The matrix rc2i is the first stage in the transformation from
     **     celestial to terrestrial coordinates:
     **
     **        [TRS]  =  RPOM * R_3(ERA) * rc2i * [CRS]
@@ -951,24 +921,25 @@ public class SOFA {
     **     System and [TRS] is a vector in the International Terrestrial
     **     Reference System (see IERS Conventions 2003), ERA is the Earth
     **     Rotation Angle and RPOM is the polar motion matrix.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPnm06a} classical NPB matrix, IAU 2006/2000A
+    **     <li>{@link #jauBpn2xy} extract CIP X,Y coordinates from NPB matrix
+    **     <li>{@link #jauS06} the CIO locator s, Given X,Y, IAU 2006
+    **     <li>{@link #jauC2ixys} celestial-to-intermediate matrix, Given X,Y and s
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauPnm06a    classical NPB matrix, IAU 2006/2000A
-    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     jauS06       the CIO locator s, Given X,Y, IAU 2006
-    **     jauC2ixys    celestial-to-intermediate matrix, Given X,Y and s
-    **
-    **  References:
-    **
-    **     McCarthy, D. D., Petit, G. (eds.), 2004, IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), 2004, IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG
     **
-    **  This revision:  2008 May 13
+    **<p>This revision:  2008 May 13
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauC2i06a(double date1, double date2, double rc2i[][])
     {
        double rbpn[][] =new double[3][3], s;
 
@@ -990,13 +961,7 @@ public class SOFA {
         }
     
 
-    public static void jauC2ibpn(double date1, double date2, double rbpn[][],
-                   double rc2i[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u C 2 i b p n
-    **  - - - - - - - - - -
-    **
     **  Form the celestial-to-intermediate matrix for a given date given
     **  the bias-precession-nutation matrix.  IAU 2000.
     **
@@ -1005,27 +970,28 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2 double       TT as a 2-part Julian Date (Note 1)
-    **     rbpn        double[3][3] celestial-to-true matrix (Note 2)
+    **<!-- Given: -->
+    **     @param date1,date2  double        TT as a 2-part Julian Date (Note 1)
+    **     @param rbpn         double[3][3]  celestial-to-true matrix (Note 2)
     **
-    **  Returned:
-    **     rc2i        double[3][3] celestial-to-intermediate matrix (Note 3)
+    **<!-- Returned: -->
+    **     @param rc2i         double[3][3]   <u>returned</u> celestial-to-intermediate matrix (Note 3)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -1033,10 +999,10 @@ public class SOFA {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix rbpn transforms vectors from GCRS to true equator (and
+    ** <li> The matrix rbpn transforms vectors from GCRS to true equator (and
     **     CIO or equinox) of date.  Only the CIP (bottom row) is used.
     **
-    **  3) The matrix rc2i is the first stage in the transformation from
+    ** <li> The matrix rc2i is the first stage in the transformation from
     **     celestial to terrestrial coordinates:
     **
     **        [TRS] = RPOM * R_3(ERA) * rc2i * [CRS]
@@ -1048,30 +1014,32 @@ public class SOFA {
     **     Reference System (see IERS Conventions 2003), ERA is the Earth
     **     Rotation Angle and RPOM is the polar motion matrix.
     **
-    **  4) Although its name does not include "00", This function is in fact
+    ** <li> Although its name does not include "00", This function is in fact
     **     specific to the IAU 2000 models.
-    **
-    **  Called:
-    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     jauC2ixy     celestial-to-intermediate matrix, given X,Y
-    **
-    **  References:
-    **     "Expressions for the Celestial Intermediate Pole and Celestial
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauBpn2xy} extract CIP X,Y coordinates from NPB matrix
+    **     <li>{@link #jauC2ixy} celestial-to-intermediate matrix, given X,Y
+    ** </ul>
+    **<p>References:
+    **    <br/> "Expressions for the Celestial Intermediate Pole and Celestial
     **     Ephemeris Origin consistent with the IAU 2000A precession-
     **     nutation model", Astron.Astrophys. 400, 1145-1154 (2003)
     **
-    **     n.b. The celestial ephemeris origin (CEO) was renamed "celestial
+    **     <br/>n.b. The celestial ephemeris origin (CEO) was renamed "celestial
     **          intermediate origin" (CIO) by IAU 2006 Resolution 2.
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2010 January 18
+    **<p>This revision:  2010 January 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauC2ibpn(double date1, double date2, double rbpn[][],
+                   double rc2i[][])
     {
 
     /* Extract the X,Y coordinates. */
@@ -1085,13 +1053,7 @@ public class SOFA {
         }
     
 
-    public static  void jauC2ixy(double date1, double date2, double x, double y,
-                  double rc2i[][])
     /**
-    **  - - - - - - - - -
-    **   i a u C 2 i x y
-    **  - - - - - - - - -
-    **
     **  Form the celestial to intermediate-frame-of-date matrix for a given
     **  date when the CIP X,Y coordinates are known.  IAU 2000.
     **
@@ -1100,27 +1062,28 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2 double       TT as a 2-part Julian Date (Note 1)
-    **     x,y         double       Celestial Intermediate Pole (Note 2)
+    **<!-- Given: -->
+    **     @param date1,date2  double        TT as a 2-part Julian Date (Note 1)
+    **     @param x,y          double        Celestial Intermediate Pole (Note 2)
     **
-    **  Returned:
-    **     rc2i        double[3][3] celestial-to-intermediate matrix (Note 3)
+    **<!-- Returned: -->
+    **     @param rc2i         double[3][3]   <u>returned</u> celestial-to-intermediate matrix (Note 3)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -1128,10 +1091,10 @@ public class SOFA {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The Celestial Intermediate Pole coordinates are the x,y components
+    ** <li> The Celestial Intermediate Pole coordinates are the x,y components
     **     of the unit vector in the Geocentric Celestial Reference System.
     **
-    **  3) The matrix rc2i is the first stage in the transformation from
+    ** <li> The matrix rc2i is the first stage in the transformation from
     **     celestial to terrestrial coordinates:
     **
     **        [TRS] = RPOM * R_3(ERA) * rc2i * [CRS]
@@ -1143,25 +1106,27 @@ public class SOFA {
     **     Reference System (see IERS Conventions 2003), ERA is the Earth
     **     Rotation Angle and RPOM is the polar motion matrix.
     **
-    **  4) Although its name does not include "00", This function is in fact
+    ** <li> Although its name does not include "00", This function is in fact
     **     specific to the IAU 2000 models.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauC2ixys} celestial-to-intermediate matrix, given X,Y and s
+    **     <li>{@link #jauS00} the CIO locator s, given X,Y, IAU 2000A
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauC2ixys    celestial-to-intermediate matrix, given X,Y and s
-    **     jauS00       the CIO locator s, given X,Y, IAU 2000A
-    **
-    **  Reference:
-    **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2008 May 11
+    **<p>This revision:  2008 May 11
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
 
+    public static  void jauC2ixy(double date1, double date2, double x, double y,
+                  double rc2i[][])
     {
     /* Compute s and then the matrix. */
        jauC2ixys(x, y, jauS00(date1, date2, x, y), rc2i);
@@ -1171,12 +1136,7 @@ public class SOFA {
         }
     
 
-    public static void jauC2ixys(double x, double y, double s, double rc2i[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u C 2 i x y s
-    **  - - - - - - - - - -
-    **
     **  Form the celestial to intermediate-frame-of-date matrix given the CIP
     **  X,Y and the CIO locator s.
     **
@@ -1185,23 +1145,24 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     x,y      double         Celestial Intermediate Pole (Note 1)
-    **     s        double         the CIO locator s (Note 2)
+    **<!-- Given: -->
+    **     @param x,y       double          Celestial Intermediate Pole (Note 1)
+    **     @param s         double          the CIO locator s (Note 2)
     **
-    **  Returned:
-    **     rc2i     double[3][3]   celestial-to-intermediate matrix (Note 3)
+    **<!-- Returned: -->
+    **     @param rc2i      double[3][3]     <u>returned</u> celestial-to-intermediate matrix (Note 3)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The Celestial Intermediate Pole coordinates are the x,y
+    ** <li> The Celestial Intermediate Pole coordinates are the x,y
     **     components of the unit vector in the Geocentric Celestial
     **     Reference System.
     **
-    **  2) The CIO locator s (in radians) positions the Celestial
+    ** <li> The CIO locator s (in radians) positions the Celestial
     **     Intermediate Origin on the equator of the CIP.
     **
-    **  3) The matrix rc2i is the first stage in the transformation from
+    ** <li> The matrix rc2i is the first stage in the transformation from
     **     celestial to terrestrial coordinates:
     **
     **        [TRS] = RPOM * R_3(ERA) * rc2i * [CRS]
@@ -1212,23 +1173,24 @@ public class SOFA {
     **     System and [TRS] is a vector in the International Terrestrial
     **     Reference System (see IERS Conventions 2003), ERA is the Earth
     **     Rotation Angle and RPOM is the polar motion matrix.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauIr} initialize r-matrix to identity
+    **     <li>{@link #jauRz} rotate around Z-axis
+    **     <li>{@link #jauRy} rotate around Y-axis
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauIr        initialize r-matrix to identity
-    **     jauRz        rotate around Z-axis
-    **     jauRy        rotate around Y-axis
-    **
-    **  Reference:
-    **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2008 May 11
+    **<p>This revision:  2008 May 11
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauC2ixys(double x, double y, double s, double rc2i[][])
     {
        double r2, e, d;
 
@@ -1248,12 +1210,7 @@ public class SOFA {
 
         }
     
-    public static SphericalPosition jauC2s(double p[])
     /**
-    **  - - - - - - -
-    **   i a u C 2 s
-    **  - - - - - - -
-    **
     **  P-vector to spherical coordinates.
     **
     **  This function is derived from the International Astronomical Union's
@@ -1261,27 +1218,29 @@ public class SOFA {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     p      double[3]    p-vector
+    **<!-- Given: -->
+    **     @param p       double[3]     p-vector
     **
-    **  Returned:
-    **     theta  double       longitude angle (radians)
-    **     phi    double       latitude angle (radians)
+    **<!-- Returned: -->
+    **     @param theta   double         <u>returned</u> longitude angle (radians)
+    **     @param phi     double         <u>returned</u> latitude angle (radians)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The vector p can have any magnitude; only its direction is used.
+    ** <li> The vector p can have any magnitude; only its direction is used.
     **
-    **  2) If p is null, zero theta and phi are returned.
+    ** <li> If p is null, zero theta and phi are returned.
     **
-    **  3) At either pole, zero theta is returned.
+    ** <li> At either pole, zero theta is returned.
+    **</ol>
+    **<p>This revision:  2008 May 11
     **
-    **  This revision:  2008 May 11
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static SphericalPosition jauC2s(double p[])
     {
        double x, y, z, d2;
 
@@ -1299,13 +1258,7 @@ public class SOFA {
         }
     
 
-    public static  void jauC2t00a(final double tta, final double ttb, final double uta, final double utb,
-                   final double xp, final double yp, double rc2t[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u C 2 t 0 0 a
-    **  - - - - - - - - - -
-    **
     **  Form the celestial to terrestrial matrix given the date, the UT1 and
     **  the polar motion, using the IAU 2000A nutation model.
     **
@@ -1314,28 +1267,29 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     tta,ttb  double         TT as a 2-part Julian Date (Note 1)
-    **     uta,utb  double         UT1 as a 2-part Julian Date (Note 1)
-    **     xp,yp    double         coordinates of the pole (radians, Note 2)
+    **<!-- Given: -->
+    **     @param tta,ttb   double          TT as a 2-part Julian Date (Note 1)
+    **     @param uta,utb   double          UT1 as a 2-part Julian Date (Note 1)
+    **     @param xp,yp     double          coordinates of the pole (radians, Note 2)
     **
-    **  Returned:
-    **     rc2t     double[3][3]   celestial-to-terrestrial matrix (Note 3)
+    **<!-- Returned: -->
+    **     @param rc2t      double[3][3]     <u>returned</u> celestial-to-terrestrial matrix (Note 3)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT and UT1 dates tta+ttb and uta+utb are Julian Dates,
+    **   <li> The TT and UT1 dates tta+ttb and uta+utb are Julian Dates,
     **     apportioned in any convenient way between the arguments uta and
     **     utb.  For example, JD(UT1)=2450123.7 could be expressed in any of
     **     these ways, among others:
-    **
+    **<pre>
     **             uta            utb
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution is
     **     acceptable.  The J2000 and MJD methods are good compromises
@@ -1345,12 +1299,12 @@ public class SOFA {
     **     argument is for 0hrs UT1 on the day in question and the utb
     **     argument lies in the range 0 to 1, or vice versa.
     **
-    **  2) The arguments xp and yp are the coordinates (in radians) of the
+    **  <li> The arguments xp and yp are the coordinates (in radians) of the
     **     Celestial Intermediate Pole with respect to the International
     **     Terrestrial Reference System (see IERS Conventions 2003),
     **     measured along the meridians to 0 and 90 deg west respectively.
     **
-    **  3) The matrix rc2t transforms from celestial to terrestrial
+    ** <li> The matrix rc2t transforms from celestial to terrestrial
     **     coordinates:
     **
     **        [TRS] = RPOM * R_3(ERA) * RC2I * [CRS]
@@ -1363,27 +1317,29 @@ public class SOFA {
     **     celestial-to-intermediate matrix, ERA is the Earth rotation
     **     angle and RPOM is the polar motion matrix.
     **
-    **  4) A faster, but slightly less accurate result (about 1 mas), can
+    ** <li> A faster, but slightly less accurate result (about 1 mas), can
     **     be obtained by using instead the jauC2t00b function.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauC2i00a} celestial-to-intermediate matrix, IAU 2000A
+    **     <li>{@link #jauEra00} Earth rotation angle, IAU 2000
+    **     <li>{@link #jauSp00} the TIO locator s', IERS 2000
+    **     <li>{@link #jauPom00} polar motion matrix
+    **     <li>{@link #jauC2tcio} form CIO-based celestial-to-terrestrial matrix
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauC2i00a    celestial-to-intermediate matrix, IAU 2000A
-    **     jauEra00     Earth rotation angle, IAU 2000
-    **     jauSp00      the TIO locator s', IERS 2000
-    **     jauPom00     polar motion matrix
-    **     jauC2tcio    form CIO-based celestial-to-terrestrial matrix
-    **
-    **  Reference:
-    **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2009 April 1
+    **<p>This revision:  2009 April 1
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static  void jauC2t00a(final double tta, final double ttb, final double uta, final double utb,
+                   final double xp, final double yp, double rc2t[][])
     {
        double rc2i[][]= new double[3][3], era, sp, rpom[][]=new double[3][3];
 
@@ -1408,13 +1364,7 @@ public class SOFA {
         }
     
 
-    public static void jauC2t00b(final double tta, final double ttb, final double uta, final double utb,
-                   final double xp, final double yp, double rc2t[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u C 2 t 0 0 b
-    **  - - - - - - - - - -
-    **
     **  Form the celestial to terrestrial matrix given the date, the UT1 and
     **  the polar motion, using the IAU 2000B nutation model.
     **
@@ -1423,28 +1373,29 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     tta,ttb  double         TT as a 2-part Julian Date (Note 1)
-    **     uta,utb  double         UT1 as a 2-part Julian Date (Note 1)
-    **     xp,yp    double         coordinates of the pole (radians, Note 2)
+    **<!-- Given: -->
+    **     @param tta,ttb   double          TT as a 2-part Julian Date (Note 1)
+    **     @param uta,utb   double          UT1 as a 2-part Julian Date (Note 1)
+    **     @param xp,yp     double          coordinates of the pole (radians, Note 2)
     **
-    **  Returned:
-    **     rc2t     double[3][3]   celestial-to-terrestrial matrix (Note 3)
+    **<!-- Returned: -->
+    **     @param rc2t      double[3][3]     <u>returned</u> celestial-to-terrestrial matrix (Note 3)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT and UT1 dates tta+ttb and uta+utb are Julian Dates,
+    ** <li> The TT and UT1 dates tta+ttb and uta+utb are Julian Dates,
     **     apportioned in any convenient way between the arguments uta and
     **     utb.  For example, JD(UT1)=2450123.7 could be expressed in any of
     **     these ways, among others:
-    **
+    **<pre>
     **             uta            utb
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution is
     **     acceptable.  The J2000 and MJD methods are good compromises
@@ -1454,12 +1405,12 @@ public class SOFA {
     **     argument is for 0hrs UT1 on the day in question and the utb
     **     argument lies in the range 0 to 1, or vice versa.
     **
-    **  2) The arguments xp and yp are the coordinates (in radians) of the
+    ** <li> The arguments xp and yp are the coordinates (in radians) of the
     **     Celestial Intermediate Pole with respect to the International
     **     Terrestrial Reference System (see IERS Conventions 2003),
     **     measured along the meridians to 0 and 90 deg west respectively.
     **
-    **  3) The matrix rc2t transforms from celestial to terrestrial
+    ** <li> The matrix rc2t transforms from celestial to terrestrial
     **     coordinates:
     **
     **        [TRS] = RPOM * R_3(ERA) * RC2I * [CRS]
@@ -1472,26 +1423,28 @@ public class SOFA {
     **     celestial-to-intermediate matrix, ERA is the Earth rotation
     **     angle and RPOM is the polar motion matrix.
     **
-    **  4) The present function is faster, but slightly less accurate (about
+    ** <li> The present function is faster, but slightly less accurate (about
     **     1 mas), than the jauC2t00a function.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauC2i00b} celestial-to-intermediate matrix, IAU 2000B
+    **     <li>{@link #jauEra00} Earth rotation angle, IAU 2000
+    **     <li>{@link #jauPom00} polar motion matrix
+    **     <li>{@link #jauC2tcio} form CIO-based celestial-to-terrestrial matrix
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauC2i00b    celestial-to-intermediate matrix, IAU 2000B
-    **     jauEra00     Earth rotation angle, IAU 2000
-    **     jauPom00     polar motion matrix
-    **     jauC2tcio    form CIO-based celestial-to-terrestrial matrix
-    **
-    **  Reference:
-    **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2009 April 1
+    **<p>This revision:  2009 April 1
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauC2t00b(final double tta, final double ttb, final double uta, final double utb,
+                   final double xp, final double yp, double rc2t[][])
     {
        double rc2i[][]= new double[3][3], era, rpom[][]=new double[3][3];
 
@@ -1513,13 +1466,7 @@ public class SOFA {
         }
     
 
-    public static void jauC2t06a(final double tta, final double ttb, final double uta, final double utb,
-                  final double xp, final double yp, double rc2t[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u C 2 t 0 6 a
-    **  - - - - - - - - - -
-    **
     **  Form the celestial to terrestrial matrix given the date, the UT1 and
     **  the polar motion, using the IAU 2006 precession and IAU 2000A
     **  nutation models.
@@ -1529,28 +1476,29 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     tta,ttb  double         TT as a 2-part Julian Date (Note 1)
-    **     uta,utb  double         UT1 as a 2-part Julian Date (Note 1)
-    **     xp,yp    double         coordinates of the pole (radians, Note 2)
+    **<!-- Given: -->
+    **     @param tta,ttb   double          TT as a 2-part Julian Date (Note 1)
+    **     @param uta,utb   double          UT1 as a 2-part Julian Date (Note 1)
+    **     @param xp,yp     double          coordinates of the pole (radians, Note 2)
     **
-    **  Returned:
-    **     rc2t     double[3][3]   celestial-to-terrestrial matrix (Note 3)
+    **<!-- Returned: -->
+    **     @param rc2t      double[3][3]     <u>returned</u> celestial-to-terrestrial matrix (Note 3)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT and UT1 dates tta+ttb and uta+utb are Julian Dates,
+    ** <li> The TT and UT1 dates tta+ttb and uta+utb are Julian Dates,
     **     apportioned in any convenient way between the arguments uta and
     **     utb.  For example, JD(UT1)=2450123.7 could be expressed in any of
     **     these ways, among others:
-    **
+    **<pre>
     **             uta            utb
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution is
     **     acceptable.  The J2000 and MJD methods are good compromises
@@ -1560,12 +1508,12 @@ public class SOFA {
     **     argument is for 0hrs UT1 on the day in question and the utb
     **     argument lies in the range 0 to 1, or vice versa.
     **
-    **  2) The arguments xp and yp are the coordinates (in radians) of the
+    ** <li> The arguments xp and yp are the coordinates (in radians) of the
     **     Celestial Intermediate Pole with respect to the International
     **     Terrestrial Reference System (see IERS Conventions 2003),
     **     measured along the meridians to 0 and 90 deg west respectively.
     **
-    **  3) The matrix rc2t transforms from celestial to terrestrial
+    ** <li> The matrix rc2t transforms from celestial to terrestrial
     **     coordinates:
     **
     **        [TRS] = RPOM * R_3(ERA) * RC2I * [CRS]
@@ -1577,25 +1525,27 @@ public class SOFA {
     **     Reference System (see IERS Conventions 2003), RC2I is the
     **     celestial-to-intermediate matrix, ERA is the Earth rotation
     **     angle and RPOM is the polar motion matrix.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauC2i06a} celestial-to-intermediate matrix, IAU 2006/2000A
+    **     <li>{@link #jauEra00} Earth rotation angle, IAU 2000
+    **     <li>{@link #jauSp00} the TIO locator s', IERS 2000
+    **     <li>{@link #jauPom00} polar motion matrix
+    **     <li>{@link #jauC2tcio} form CIO-based celestial-to-terrestrial matrix
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauC2i06a    celestial-to-intermediate matrix, IAU 2006/2000A
-    **     jauEra00     Earth rotation angle, IAU 2000
-    **     jauSp00      the TIO locator s', IERS 2000
-    **     jauPom00     polar motion matrix
-    **     jauC2tcio    form CIO-based celestial-to-terrestrial matrix
-    **
-    **  Reference:
-    **
-    **     McCarthy, D. D., Petit, G. (eds.), 2004, IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), 2004, IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG
     **
-    **  This revision:  2009 April 1
+    **<p>This revision:  2009 April 1
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauC2t06a(final double tta, final double ttb, final double uta, final double utb,
+                  final double xp, final double yp, double rc2t[][])
     {
        double rc2i[][] = new double[3][3], era, sp, rpom[][] = new double[3][3];
 
@@ -1620,13 +1570,7 @@ public class SOFA {
         }
     
 
-    public static void jauC2tcio(final double rc2i[][], final double era, final double rpom[][],
-                   double rc2t[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u C 2 t c i o
-    **  - - - - - - - - - -
-    **
     **  Assemble the celestial to terrestrial matrix from CIO-based
     **  components (the celestial-to-intermediate matrix, the Earth Rotation
     **  Angle and the polar motion matrix).
@@ -1636,17 +1580,18 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     rc2i     double[3][3]    celestial-to-intermediate matrix
-    **     era      double          Earth rotation angle
-    **     rpom     double[3][3]    polar-motion matrix
+    **<!-- Given: -->
+    **     @param rc2i      double[3][3]     celestial-to-intermediate matrix
+    **     @param era       double           Earth rotation angle
+    **     @param rpom      double[3][3]     polar-motion matrix
     **
-    **  Returned:
-    **     rc2t     double[3][3]    celestial-to-terrestrial matrix
+    **<!-- Returned: -->
+    **     @param rc2t      double[3][3]      <u>returned</u> celestial-to-terrestrial matrix
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) This function constructs the rotation matrix that transforms
+    ** <li> This function constructs the rotation matrix that transforms
     **     vectors in the celestial system into vectors in the terrestrial
     **     system.  It does so starting from precomputed components, namely
     **     the matrix which rotates from celestial coordinates to the
@@ -1657,7 +1602,7 @@ public class SOFA {
     **     recomputing the precession-nutation more often than necessary to
     **     achieve given accuracy objectives.
     **
-    **  2) The relationship between the arguments is as follows:
+    ** <li> The relationship between the arguments is as follows:
     **
     **        [TRS] = RPOM * R_3(ERA) * rc2i * [CRS]
     **
@@ -1666,23 +1611,25 @@ public class SOFA {
     **     where [CRS] is a vector in the Geocentric Celestial Reference
     **     System and [TRS] is a vector in the International Terrestrial
     **     Reference System (see IERS Conventions 2003).
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauCr} copy r-matrix
+    **     <li>{@link #jauRz} rotate around Z-axis
+    **     <li>{@link #jauRxr} product of two r-matrices
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauCr        copy r-matrix
-    **     jauRz        rotate around Z-axis
-    **     jauRxr       product of two r-matrices
-    **
-    **  Reference:
-    **
-    **     McCarthy, D. D., Petit, G. (eds.), 2004, IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), 2004, IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG
     **
-    **  This revision:  2008 May 11
+    **<p>This revision:  2008 May 11
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauC2tcio(final double rc2i[][], final double era, final double rpom[][],
+                   double rc2t[][])
     {
        double r[][]=new double[3][3];
 
@@ -1697,13 +1644,7 @@ public class SOFA {
         }
     
 
-    public static void jauC2teqx(final double rbpn[][], final double gst, final double rpom[][],
-                   double rc2t[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u C 2 t e q x
-    **  - - - - - - - - - -
-    **
     **  Assemble the celestial to terrestrial matrix from equinox-based
     **  components (the celestial-to-true matrix, the Greenwich Apparent
     **  Sidereal Time and the polar motion matrix).
@@ -1713,17 +1654,18 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     rbpn     double[3][3]    celestial-to-true matrix
-    **     gst      double          Greenwich (apparent) Sidereal Time
-    **     rpom     double[3][3]    polar-motion matrix
+    **<!-- Given: -->
+    **     @param rbpn      double[3][3]     celestial-to-true matrix
+    **     @param gst       double           Greenwich (apparent) Sidereal Time
+    **     @param rpom      double[3][3]     polar-motion matrix
     **
-    **  Returned:
-    **     rc2t     double[3][3]    celestial-to-terrestrial matrix (Note 2)
+    **<!-- Returned: -->
+    **     @param rc2t      double[3][3]      <u>returned</u> celestial-to-terrestrial matrix (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) This function constructs the rotation matrix that transforms
+    ** <li> This function constructs the rotation matrix that transforms
     **     vectors in the celestial system into vectors in the terrestrial
     **     system.  It does so starting from precomputed components, namely
     **     the matrix which rotates from celestial coordinates to the
@@ -1734,7 +1676,7 @@ public class SOFA {
     **     overhead of recomputing the precession-nutation more often than
     **     necessary to achieve given accuracy objectives.
     **
-    **  2) The relationship between the arguments is as follows:
+    ** <li> The relationship between the arguments is as follows:
     **
     **        [TRS] = rpom * R_3(gst) * rbpn * [CRS]
     **
@@ -1743,23 +1685,25 @@ public class SOFA {
     **     where [CRS] is a vector in the Geocentric Celestial Reference
     **     System and [TRS] is a vector in the International Terrestrial
     **     Reference System (see IERS Conventions 2003).
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauCr} copy r-matrix
+    **     <li>{@link #jauRz} rotate around Z-axis
+    **     <li>{@link #jauRxr} product of two r-matrices
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauCr        copy r-matrix
-    **     jauRz        rotate around Z-axis
-    **     jauRxr       product of two r-matrices
-    **
-    **  Reference:
-    **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2008 May 11
+    **<p>This revision:  2008 May 11
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauC2teqx(final double rbpn[][], final double gst, final double rpom[][],
+                   double rc2t[][])
     {
        double r[][] = new double[3][3];
 
@@ -1774,14 +1718,7 @@ public class SOFA {
         }
     
 
-    public static void jauC2tpe(final double tta, final double ttb, final double uta, final double utb,
-            final double dpsi, final double deps, final double xp, final double yp,
-            double rc2t[][])
     /**
-    **  - - - - - - - - -
-    **   i a u C 2 t p e
-    **  - - - - - - - - -
-    **
     **  Form the celestial to terrestrial matrix given the date, the UT1,
     **  the nutation and the polar motion.  IAU 2000.
     **
@@ -1790,29 +1727,30 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     tta,ttb    double        TT as a 2-part Julian Date (Note 1)
-    **     uta,utb    double        UT1 as a 2-part Julian Date (Note 1)
-    **     dpsi,deps  double        nutation (Note 2)
-    **     xp,yp      double        coordinates of the pole (radians, Note 3)
+    **<!-- Given: -->
+    **     @param tta,ttb     double         TT as a 2-part Julian Date (Note 1)
+    **     @param uta,utb     double         UT1 as a 2-part Julian Date (Note 1)
+    **     @param dpsi,deps   double         nutation (Note 2)
+    **     @param xp,yp       double         coordinates of the pole (radians, Note 3)
     **
-    **  Returned:
-    **     rc2t       double[3][3]  celestial-to-terrestrial matrix (Note 4)
+    **<!-- Returned: -->
+    **     @param rc2t        double[3][3]    <u>returned</u> celestial-to-terrestrial matrix (Note 4)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT and UT1 dates tta+ttb and uta+utb are Julian Dates,
+    ** <li> The TT and UT1 dates tta+ttb and uta+utb are Julian Dates,
     **     apportioned in any convenient way between the arguments uta and
     **     utb.  For example, JD(UT1)=2450123.7 could be expressed in any of
     **     these ways, among others:
-    **
+    **<pre>
     **             uta            utb
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution is
     **     acceptable.  The J2000 and MJD methods are good compromises
@@ -1822,18 +1760,18 @@ public class SOFA {
     **     argument is for 0hrs UT1 on the day in question and the utb
     **     argument lies in the range 0 to 1, or vice versa.
     **
-    **  2) The caller is responsible for providing the nutation components;
+    ** <li> The caller is responsible for providing the nutation components;
     **     they are in longitude and obliquity, in radians and are with
     **     respect to the equinox and ecliptic of date.  For high-accuracy
     **     applications, free core nutation should be included as well as
     **     any other relevant corrections to the position of the CIP.
     **
-    **  3) The arguments xp and yp are the coordinates (in radians) of the
+    ** <li> The arguments xp and yp are the coordinates (in radians) of the
     **     Celestial Intermediate Pole with respect to the International
     **     Terrestrial Reference System (see IERS Conventions 2003),
     **     measured along the meridians to 0 and 90 deg west respectively.
     **
-    **  4) The matrix rc2t transforms from celestial to terrestrial
+    ** <li> The matrix rc2t transforms from celestial to terrestrial
     **     coordinates:
     **
     **        [TRS] = RPOM * R_3(GST) * RBPN * [CRS]
@@ -1846,28 +1784,31 @@ public class SOFA {
     **     bias-precession-nutation matrix, GST is the Greenwich (apparent)
     **     Sidereal Time and RPOM is the polar motion matrix.
     **
-    **  5) Although its name does not include "00", This function is in fact
+    ** <li> Although its name does not include "00", This function is in fact
     **     specific to the IAU 2000 models.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPn00} bias/precession/nutation results, IAU 2000
+    **     <li>{@link #jauGmst00} Greenwich mean sidereal time, IAU 2000
+    **     <li>{@link #jauSp00} the TIO locator s', IERS 2000
+    **     <li>{@link #jauEe00} equation of the equinoxes, IAU 2000
+    **     <li>{@link #jauPom00} polar motion matrix
+    **     <li>{@link #jauC2teqx} form equinox-based celestial-to-terrestrial matrix
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauPn00      bias/precession/nutation results, IAU 2000
-    **     jauGmst00    Greenwich mean sidereal time, IAU 2000
-    **     jauSp00      the TIO locator s', IERS 2000
-    **     jauEe00      equation of the equinoxes, IAU 2000
-    **     jauPom00     polar motion matrix
-    **     jauC2teqx    form equinox-based celestial-to-terrestrial matrix
-    **
-    **  Reference:
-    **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2009 April 1
+    **<p>This revision:  2009 April 1
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauC2tpe(final double tta, final double ttb, final double uta, final double utb,
+            final double dpsi, final double deps, final double xp, final double yp,
+            double rc2t[][])
     {
        double rpom[][] = new double[3][3]; 
 
@@ -1894,14 +1835,7 @@ public class SOFA {
         }
     
 
-    public static void jauC2txy(double tta, double ttb, double uta, double utb,
-                  double x, double y, double xp, double yp,
-                  double rc2t[][])
     /**
-    **  - - - - - - - - -
-    **   i a u C 2 t x y
-    **  - - - - - - - - -
-    **
     **  Form the celestial to terrestrial matrix given the date, the UT1,
     **  the CIP coordinates and the polar motion.  IAU 2000.
     **
@@ -1910,29 +1844,30 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     tta,ttb  double         TT as a 2-part Julian Date (Note 1)
-    **     uta,utb  double         UT1 as a 2-part Julian Date (Note 1)
-    **     x,y      double         Celestial Intermediate Pole (Note 2)
-    **     xp,yp    double         coordinates of the pole (radians, Note 3)
+    **<!-- Given: -->
+    **     @param tta,ttb   double          TT as a 2-part Julian Date (Note 1)
+    **     @param uta,utb   double          UT1 as a 2-part Julian Date (Note 1)
+    **     @param x,y       double          Celestial Intermediate Pole (Note 2)
+    **     @param xp,yp     double          coordinates of the pole (radians, Note 3)
     **
-    **  Returned:
-    **     rc2t     double[3][3]   celestial-to-terrestrial matrix (Note 4)
+    **<!-- Returned: -->
+    **     @param rc2t      double[3][3]     <u>returned</u> celestial-to-terrestrial matrix (Note 4)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT and UT1 dates tta+ttb and uta+utb are Julian Dates,
+    ** <li> The TT and UT1 dates tta+ttb and uta+utb are Julian Dates,
     **     apportioned in any convenient way between the arguments uta and
     **     utb.  For example, JD(UT1)=2450123.7 could be expressed in any o
     **     these ways, among others:
-    **
+    **<pre>
     **             uta            utb
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution is
     **     acceptable.  The J2000 and MJD methods are good compromises
@@ -1942,16 +1877,16 @@ public class SOFA {
     **     argument is for 0hrs UT1 on the day in question and the utb
     **     argument lies in the range 0 to 1, or vice versa.
     **
-    **  2) The Celestial Intermediate Pole coordinates are the x,y
+    ** <li> The Celestial Intermediate Pole coordinates are the x,y
     **     components of the unit vector in the Geocentric Celestial
     **     Reference System.
     **
-    **  3) The arguments xp and yp are the coordinates (in radians) of the
+    ** <li> The arguments xp and yp are the coordinates (in radians) of the
     **     Celestial Intermediate Pole with respect to the International
     **     Terrestrial Reference System (see IERS Conventions 2003),
     **     measured along the meridians to 0 and 90 deg west respectively.
     **
-    **  4) The matrix rc2t transforms from celestial to terrestrial
+    ** <li> The matrix rc2t transforms from celestial to terrestrial
     **     coordinates:
     **
     **        [TRS] = RPOM * R_3(ERA) * RC2I * [CRS]
@@ -1963,27 +1898,30 @@ public class SOFA {
     **     Reference System (see IERS Conventions 2003), ERA is the Earth
     **     Rotation Angle and RPOM is the polar motion matrix.
     **
-    **  5) Although its name does not include "00", This function is in fact
+    ** <li> Although its name does not include "00", This function is in fact
     **     specific to the IAU 2000 models.
-    **
-    **  Called:
-    **     jauC2ixy     celestial-to-intermediate matrix, given X,Y
-    **     jauEra00     Earth rotation angle, IAU 2000
-    **     jauSp00      the TIO locator s', IERS 2000
-    **     jauPom00     polar motion matrix
-    **     jauC2tcio    form CIO-based celestial-to-terrestrial matrix
-    **
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauC2ixy} celestial-to-intermediate matrix, given X,Y
+    **     <li>{@link #jauEra00} Earth rotation angle, IAU 2000
+    **     <li>{@link #jauSp00} the TIO locator s', IERS 2000
+    **     <li>{@link #jauPom00} polar motion matrix
+    **     <li>{@link #jauC2tcio} form CIO-based celestial-to-terrestrial matrix
+    ** </ul>
     ** Reference:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2009 April 1
+    **<p>This revision:  2009 April 1
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauC2txy(double tta, double ttb, double uta, double utb,
+                  double x, double y, double xp, double yp,
+                  double rc2t[][])
     {
        double rc2i[][] = new double[3][3], era, sp, rpom[][] = new double[3][3];
 
@@ -2007,12 +1945,7 @@ public class SOFA {
 
         }
     
-    public static JulianDate jauCal2jd(int iy, int im, int id) throws SOFAIllegalParameter
     /**
-    **  - - - - - - - - - -
-    **   i a u C a l 2 j d
-    **  - - - - - - - - - -
-    **
     **  Gregorian Calendar to Julian Date.
     **
     **  This function is derived from the International Astronomical Union's
@@ -2020,47 +1953,49 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     iy,im,id  int     year, month, day in Gregorian calendar (Note 1)
+    **<!-- Given: -->
+    **     @param iy,im,id   int      year, month, day in Gregorian calendar (Note 1)
     **
-    **  Returned:
-    **     djm0      double  MJD zero-point: always 2400000.5
-    **     djm       double  Modified Julian Date for 0 hrs
+    **<!-- Returned: -->
+    **     @param djm0       double    <u>returned</u> MJD zero-point: always 2400000.5
+    **     @param djm        double    <u>returned</u> Modified Julian Date for 0 hrs
     **
-    **  Returned (function value):
-    **               int     status:
+    ** <!-- Returned (function value): -->
+    **  @return int     status:
     **                           0 = OK
     **                          -1 = bad year   (Note 3: JD not computed)
     **                          -2 = bad month  (JD not computed)
     **                          -3 = bad day    (JD computed)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The algorithm used is valid from -4800 March 1, but this
+    ** <li> The algorithm used is valid from -4800 March 1, but this
     **     implementation rejects dates before -4799 January 1.
     **
-    **  2) The Julian Date is returned in two pieces, in the usual SOFA
+    ** <li> The Julian Date is returned in two pieces, in the usual SOFA
     **     manner, which is designed to preserve time resolution.  The
     **     Julian Date is available as a single number by adding djm0 and
     **     djm.
     **
-    **  3) In early eras the conversion is from the "Proleptic Gregorian
+    ** <li> In early eras the conversion is from the "Proleptic Gregorian
     **     Calendar";  no account is taken of the date(s) of adoption of
     **     the Gregorian Calendar, nor is the AD/BC numbering convention
     **     observed.
     **
-    **  Reference:
+    **<p>Reference:
     **
-    **     Explanatory Supplement to the Astronomical Almanac,
+    **     <br/>Explanatory Supplement to the Astronomical Almanac,
     **     P. Kenneth Seidelmann (ed), University Science Books (1992),
     **     Section 12.92 (p604).
     **
-    **  This revision:  2009 October 19
+    **<p>This revision:  2009 October 19
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static JulianDate jauCal2jd(int iy, int im, int id) throws SOFAIllegalParameter
     {
        int j, ly, my;
        long iypmy;
@@ -2102,12 +2037,7 @@ public class SOFA {
         }
     
 
-    public static void jauCp(double p[], double c[])
     /**
-    **  - - - - - -
-    **   i a u C p
-    **  - - - - - -
-    **
     **  Copy a p-vector.
     **
     **  This function is derived from the International Astronomical Union's
@@ -2115,18 +2045,19 @@ public class SOFA {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     p        double[3]     p-vector to be copied
+    **<!-- Given: -->
+    **     @param p         double[3]      p-vector to be copied
     **
-    **  Returned:
-    **     c        double[3]     copy
+    **<!-- Returned: -->
+    **     @param c         double[3]       <u>returned</u> copy
     **
-    **  This revision:  2008 May 11
+    **<p>This revision:  2008 May 11
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauCp(double p[], double c[])
     {
        c[0] = p[0];
        c[1] = p[1];
@@ -2137,12 +2068,7 @@ public class SOFA {
         }
     
 
-    public static void jauCpv(double pv[][], double c[][])
     /**
-    **  - - - - - - -
-    **   i a u C p v
-    **  - - - - - - -
-    **
     **  Copy a position/velocity vector.
     **
     **  This function is derived from the International Astronomical Union's
@@ -2150,21 +2076,22 @@ public class SOFA {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     pv     double[2][3]    position/velocity vector to be copied
+    **<!-- Given: -->
+    **     @param pv      double[2][3]     position/velocity vector to be copied
     **
-    **  Returned:
-    **     c      double[2][3]    copy
+    **<!-- Returned: -->
+    **     @param c       double[2][3]      <u>returned</u> copy
     **
-    **  Called:
-    **     jauCp        copy p-vector
+    **<p>Called:<ul>
+    **     <li>{@link #jauCp} copy p-vector
+    ** </ul>
+    **<p>This revision:  2008 May 11
     **
-    **  This revision:  2008 May 11
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauCpv(double pv[][], double c[][])
     {
        jauCp(pv[0], c[0]);
        jauCp(pv[1], c[1]);
@@ -2174,12 +2101,7 @@ public class SOFA {
         }
     
 
-    public static void jauCr(double r[][], double c[][])
     /**
-    **  - - - - - -
-    **   i a u C r
-    **  - - - - - -
-    **
     **  Copy an r-matrix.
     **
     **  This function is derived from the International Astronomical Union's
@@ -2187,21 +2109,22 @@ public class SOFA {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     r        double[3][3]    r-matrix to be copied
+    **<!-- Given: -->
+    **     @param r         double[3][3]     r-matrix to be copied
     **
-    **  Returned:
-    **   char[]     double[3][3]    copy
+    **<!-- Returned: -->
+    **   @param char[]      double[3][3]      <u>returned</u> copy
     **
-    **  Called:
-    **     jauCp        copy p-vector
+    **<p>Called:<ul>
+    **     <li>{@link #jauCp} copy p-vector
+    ** </ul>
+    **<p>This revision:  2008 May 11
     **
-    **  This revision:  2008 May 11
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauCr(double r[][], double c[][])
     {
        jauCp(r[0], c[0]);
        jauCp(r[1], c[1]);
@@ -2212,12 +2135,7 @@ public class SOFA {
         }
     
 
-   public static char jauD2tf(final int ndp, final double days, int ihmsf[])
     /**
-    **  - - - - - - - -
-    **   i a u D 2 t f
-    **  - - - - - - - -
-    **
     **  Decompose days to hours, minutes, seconds, fraction.
     **
     **  This function is derived from the International Astronomical Union's
@@ -2225,17 +2143,18 @@ public class SOFA {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     ndp     int     resolution (Note 1)
-    **     days    double  interval in days
+    **<!-- Given: -->
+    **     @param ndp      int      resolution (Note 1)
+    **     @param days     double   interval in days
     **
-    **  Returned:
-    **     sign    char    '+' or '-'
-    **     ihmsf   int[4]  hours, minutes, seconds, fraction
+    **<!-- Returned: -->
+    **     @param sign     char      <u>returned</u> '+' or '-'
+    **     @param ihmsf    int[4]    <u>returned</u> hours, minutes, seconds, fraction
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The argument ndp is interpreted as follows:
+    ** <li> The argument ndp is interpreted as follows:
     **
     **     ndp         resolution
     **      :      ...0000 00 00
@@ -2252,7 +2171,7 @@ public class SOFA {
     **      3            0 00 00.001
     **      :            0 00 00.000...
     **
-    **  2) The largest positive useful value for ndp is determined by the
+    ** <li> The largest positive useful value for ndp is determined by the
     **     size of days, the format of double on the target platform, and
     **     the risk of overflowing ihmsf[3].  On a typical platform, for
     **     days up to 1.0, the available floating-point precision might
@@ -2260,17 +2179,18 @@ public class SOFA {
     **     ndp=9, set by the capacity of a 32-bit int, or ndp=4 if int is
     **     only 16 bits.
     **
-    **  3) The absolute value of days may exceed 1.0.  In cases where it
+    ** <li> The absolute value of days may exceed 1.0.  In cases where it
     **     does not, it is up to the caller to test for and handle the
     **     case where days is very nearly 1.0 and rounds up to 24 hours,
     **     by testing for ihms[0]=24 and setting ihmsf[0-3] to zero.
     **
-    **  This revision:  2008 May 11
+    **<p>This revision:  2008 May 11
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+   public static char jauD2tf(final int ndp, final double days, int ihmsf[])
     {
        int nrs, n;
        double rs, rm, rh, a, w, ah, am, as, af;
@@ -2328,14 +2248,9 @@ public class SOFA {
     
     
  
-    public static double jauDat(int iy, int im, int id, double fd ) throws SOFAIllegalParameter, SOFAInternalError
     /**
-    **  - - - - - - -
-    **   i a u D a t
-    **  - - - - - - -
-    **
     **  For a given UTC date, calculate delta(AT) = TAI-UTC.
-    **
+    **<pre>
     **     :------------------------------------------:
     **     :                                          :
     **     :                 IMPORTANT                :
@@ -2367,23 +2282,23 @@ public class SOFA {
     **     :  Latest leap second:  2008 December 31   :
     **     :                                          :
     **     :__________________________________________:
-    **
+    **</pre>
     **  This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     iy     int      UTC:  year (Notes 1 and 2)
-    **     im     int            month (Note 2)
-    **     id     int            day (Notes 2 and 3)
-    **     fd     double         fraction of day (Note 4)
+    **<!-- Given: -->
+    **     @param iy      int       UTC:  year (Notes 1 and 2)
+    **     @param im      int             month (Note 2)
+    **     @param id      int             day (Notes 2 and 3)
+    **     @param fd      double          fraction of day (Note 4)
     **
-    **  Returned:
-    **     deltat double   TAI minus UTC, seconds
+    **<!-- Returned: -->
+    **     @param deltat  double     <u>returned</u> TAI minus UTC, seconds
     **
-    **  Returned (function value):
-    **            int      status (Note 5):
+    ** <!-- Returned (function value): -->
+    **  @return int      status (Note 5):
     **                       1 = dubious year (Note 1)
     **                       0 = OK
     **                      -1 = bad year
@@ -2391,9 +2306,10 @@ public class SOFA {
     **                      -3 = bad day (Note 3)
     **                      -4 = bad fraction (Note 4)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) UTC began at 1960 January 1.0 (JD 2436934.5) and it is improper
+    ** <li> UTC began at 1960 January 1.0 (JD 2436934.5) and it is improper
     **     to call the function with an earlier date.  If this is attempted,
     **     zero is returned together with a warning status.
     **
@@ -2408,18 +2324,18 @@ public class SOFA {
     **     j=+1.  This is distinct from the error status j=-1, which
     **     signifies a year so early that JD could not be computed.
     **
-    **  2) If the specified date is for a day which ends with a leap second,
+    ** <li> If the specified date is for a day which ends with a leap second,
     **     the UTC-TAI value returned is for the period leading up to the
     **     leap second.  If the date is for a day which begins as a leap
     **     second ends, the UTC-TAI returned is for the period following the
     **     leap second.
     **
-    **  3) The day number must be in the normal calendar range, for example
+    ** <li> The day number must be in the normal calendar range, for example
     **     1 through 30 for April.  The "almanac" convention of allowing
     **     such dates as January 0 and December 32 is not supported in this
     **     function, in order to avoid confusion near leap seconds.
     **
-    **  4) The fraction of day is used only for dates before the
+    ** <li> The fraction of day is used only for dates before the
     **     introduction of leap seconds, the first of which occurred at the
     **     end of 1971.  It is tested for validity (zero to less than 1 is
     **     the valid range) even if not used;  if invalid, zero is used and
@@ -2427,30 +2343,31 @@ public class SOFA {
     **     zero is acceptable;  the resulting error is always less than 3 ms
     **     (and occurs only pre-1972).
     **
-    **  5) The status value returned in the case where there are multiple
+    ** <li> The status value returned in the case where there are multiple
     **     errors refers to the first error detected.  For example, if the
     **     month and day are 13 and 32 respectively, j=-2 (bad month)
     **     will be returned.
     **
-    **  6) In cases where a valid result is not available, zero is returned.
+    ** <li> In cases where a valid result is not available, zero is returned.
     **
-    **  References:
+    **<p>References:
     **
-    **  1) For dates from 1961 January 1 onwards, the expressions from the
+    ** <li> For dates from 1961 January 1 onwards, the expressions from the
     **     file ftp://maia.usno.navy.mil/ser7/tai-utc.dat are used.
     **
-    **  2) The 5ms timestep at 1961 January 1 is taken from 2.58.1 (p87) of
+    ** <li> The 5ms timestep at 1961 January 1 is taken from 2.58.1 (p87) of
     **     the 1992 Explanatory Supplement.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauCal2jd} Gregorian calendar to Julian Day number
+    ** </ul>
+    **<p>This revision:  2009 July 11
     **
-    **  Called:
-    **     jauCal2jd    Gregorian calendar to Julian Day number
-    **
-    **  This revision:  2009 July 11
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauDat(int iy, int im, int id, double fd ) throws SOFAIllegalParameter, SOFAInternalError
     {
     /* Release year for this version of jauDat */
      final int IYV = 2009;
@@ -2575,19 +2492,13 @@ public class SOFA {
         }
     
 
-    public static  double jauDtdb(double date1, double date2,
-                   double ut, double elong, double u, double v)
     /**
-    **  - - - - - - - -
-    **   i a u D t d b
-    **  - - - - - - - -
-    **
     **  An approximation to TDB-TT, the difference between barycentric
     **  dynamical time and terrestrial time, for an observer on the Earth.
     **
     **  The different time scales - proper, coordinate and realized - are
     **  related to each other:
-    **
+    **<pre>
     **            TAI             <-  physically realized
     **             :
     **          offset            <-  observed (nominally +32.184s)
@@ -2611,7 +2522,7 @@ public class SOFA {
     **      "periodic" terms      <-  -jau_DTDB is an approximation
     **             :
     **            TT              <-  terrestrial time
-    **
+    **</pre>
     **  Adopted values for the various constants can be found in the IERS
     **  Conventions (McCarthy & Petit 2003).
     **
@@ -2620,30 +2531,31 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2   double  date, TDB (Notes 1-3)
-    **     ut            double  universal time (UT1, fraction of one day)
-    **     elong         double  longitude (east positive, radians)
-    **     u             double  distance from Earth spin axis (km)
-    **     v             double  distance north of equatorial plane (km)
+    **<!-- Given: -->
+    **     @param date1,date2    double   date, TDB (Notes 1-3)
+    **     @param ut             double   universal time (UT1, fraction of one day)
+    **     @param elong          double   longitude (east positive, radians)
+    **     @param u              double   distance from Earth spin axis (km)
+    **     @param v              double   distance north of equatorial plane (km)
     **
-    **  Returned (function value):
-    **                   double  TDB-TT (seconds)
+    ** <!-- Returned (function value): -->
+    **  @return @return             double  TDB-TT (seconds)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -2655,17 +2567,17 @@ public class SOFA {
     **     the terrestrial dynamical time (TT) can be used with no practical
     **     effect on the accuracy of the prediction.
     **
-    **  2) TT can be regarded as a coordinate time that is realized as an
+    ** <li> TT can be regarded as a coordinate time that is realized as an
     **     offset of 32.184s from International Atomic Time, TAI.  TT is a
     **     specific linear transformation of geocentric coordinate time TCG,
     **     which is the time scale for the Geocentric Celestial Reference
     **     System, GCRS.
     **
-    **  3) TDB is a coordinate time, and is a specific linear transformation
+    ** <li> TDB is a coordinate time, and is a specific linear transformation
     **     of barycentric coordinate time TCB, which is the time scale for
     **     the Barycentric Celestial Reference System, BCRS.
     **
-    **  4) The difference TCG-TCB depends on the masses and positions of the
+    ** <li> The difference TCG-TCB depends on the masses and positions of the
     **     bodies of the solar system and the velocity of the Earth.  It is
     **     dominated by a rate difference, the residual being of a periodic
     **     character.  The latter, which is modeled by the present function,
@@ -2677,7 +2589,7 @@ public class SOFA {
     **     surface) experiences variations in speed (with respect to the
     **     BCRS) and gravitational potential.
     **
-    **  5) TDB can be regarded as the same as TCB but with a rate adjustment
+    ** <li> TDB can be regarded as the same as TCB but with a rate adjustment
     **     to keep it close to TT, which is convenient for many applications.
     **     The history of successive attempts to define TDB is set out in
     **     Resolution 3 adopted by the IAU General Assembly in 2006, which
@@ -2687,7 +2599,7 @@ public class SOFA {
     **     could introduce a linear drift between TDB and TT;  however, any
     **     such drift is unlikely to exceed 1 nanosecond per century.
     **
-    **  6) The geocentric TDB-TT model used in the present function is that of
+    ** <li> The geocentric TDB-TT model used in the present function is that of
     **     Fairhead & Bretagnon (1990), in its full form.  It was originally
     **     supplied by Fairhead (private communications with P.T.Wallace,
     **     1990) as a Fortran subroutine.  The present C function contains an
@@ -2707,42 +2619,44 @@ public class SOFA {
     **     model can be nullified, and the function will return the Fairhead
     **     & Bretagnon result alone.
     **
-    **  7) During the interval 1950-2050, the absolute accuracy is better
+    ** <li> During the interval 1950-2050, the absolute accuracy is better
     **     than +/- 3 nanoseconds relative to time ephemerides obtained by
     **     direct numerical integrations based on the JPL DE405 solar system
     **     ephemeris.
     **
-    **  8) It must be stressed that the present function is merely a model,
+    ** <li> It must be stressed that the present function is merely a model,
     **     and that numerical integration of solar-system ephemerides is the
     **     definitive method for predicting the relationship between TCG and
     **     TCB and hence between TT and TDB.
     **
-    **  References:
+    **<p>References:
     **
-    **     Fairhead, L., & Bretagnon, P., Astron.Astrophys., 229, 240-247
+    **     <br/>Fairhead, L., & Bretagnon, P., Astron.Astrophys., 229, 240-247
     **     (1990).
     **
-    **     IAU 2006 Resolution 3.
+    **     <br/>IAU 2006 Resolution 3.
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **     Moyer, T.D., Cel.Mech., 23, 33 (1981).
+    **     <br/>Moyer, T.D., Cel.Mech., 23, 33 (1981).
     **
-    **     Murray, C.A., Vectorial Astrometry, Adam Hilger (1983).
+    **     <br/>Murray, C.A., Vectorial Astrometry, Adam Hilger (1983).
     **
-    **     Seidelmann, P.K. et al., Explanatory Supplement to the
+    **     <br/>Seidelmann, P.K. et al., Explanatory Supplement to the
     **     Astronomical Almanac, Chapter 2, University Science Books (1992).
     **
-    **     Simon, J.L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
+    **     <br/>Simon, J.L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
     **     Francou, G. & Laskar, J., Astron.Astrophys., 282, 663-683 (1994).
     **
-    **  This revision:  2009 December 17
+    **<p>This revision:  2009 December 17
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static  double jauDtdb(double date1, double date2,
+                   double ut, double elong, double u, double v)
     {
        double t, tsol, w, elsun, emsun, d, elj, els, wt, w0, w1, w2, w3, w4,
               wf, wj;
@@ -3743,12 +3657,7 @@ public class SOFA {
         }
     
 
-    public static double jauEe00(double date1, double date2, double epsa, double dpsi)
     /**
-    **  - - - - - - - -
-    **   i a u E e 0 0
-    **  - - - - - - - -
-    **
     **  The equation of the equinoxes, compatible with IAU 2000 resolutions,
     **  given the nutation in longitude and the mean obliquity.
     **
@@ -3757,28 +3666,29 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2  double    TT as a 2-part Julian Date (Note 1)
-    **     epsa         double    mean obliquity (Note 2)
-    **     dpsi         double    nutation in longitude (Note 3)
+    **<!-- Given: -->
+    **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
+    **     @param epsa          double     mean obliquity (Note 2)
+    **     @param dpsi          double     nutation in longitude (Note 3)
     **
-    **  Returned (function value):
-    **                  double    equation of the equinoxes (Note 4)
+    ** <!-- Returned (function value): -->
+    **  @return double    equation of the equinoxes (Note 4)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -3786,34 +3696,35 @@ public class SOFA {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The obliquity, in radians, is mean of date.
+    ** <li> The obliquity, in radians, is mean of date.
     **
-    **  3) The result, which is in radians, operates in the following sense:
+    ** <li> The result, which is in radians, operates in the following sense:
     **
     **        Greenwich apparent ST = GMST + equation of the equinoxes
     **
-    **  4) The result is compatible with the IAU 2000 resolutions.  For
+    ** <li> The result is compatible with the IAU 2000 resolutions.  For
     **     further details, see IERS Conventions 2003 and Capitaine et al.
     **     (2002).
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauEect00} equation of the equinoxes complementary terms
+    ** </ul>
+    **<br/>
     **
-    **  Called:
-    **     jauEect00    equation of the equinoxes complementary terms
-    **
-    **  References:
-    **
-    **     Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
+    **    <br/>Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
     **     implement the IAU 2000 definition of UT1", Astronomy &
     **     Astrophysics, 406, 1135-1149 (2003)
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2008 May 16
+    **<p>This revision:  2008 May 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauEe00(double date1, double date2, double epsa, double dpsi)
     {
        double ee;
 
@@ -3826,12 +3737,7 @@ public class SOFA {
         }
     
 
-    public static double jauEe00a(double date1, double date2)
     /**
-    **  - - - - - - - - -
-    **   i a u E e 0 0 a
-    **  - - - - - - - - -
-    **
     **  Equation of the equinoxes, compatible with IAU 2000 resolutions.
     **
     **  This function is derived from the International Astronomical Union's
@@ -3839,26 +3745,27 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double    TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned (function value):
-    **                  double    equation of the equinoxes (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    equation of the equinoxes (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -3866,35 +3773,36 @@ public class SOFA {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The result, which is in radians, operates in the following sense:
+    ** <li> The result, which is in radians, operates in the following sense:
     **
     **        Greenwich apparent ST = GMST + equation of the equinoxes
     **
-    **  3) The result is compatible with the IAU 2000 resolutions.  For
+    ** <li> The result is compatible with the IAU 2000 resolutions.  For
     **     further details, see IERS Conventions 2003 and Capitaine et al.
     **     (2002).
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPr00} IAU 2000 precession adjustments
+    **     <li>{@link #jauObl80} mean obliquity, IAU 1980
+    **     <li>{@link #jauNut00a} nutation, IAU 2000A
+    **     <li>{@link #jauEe00} equation of the equinoxes, IAU 2000
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauPr00      IAU 2000 precession adjustments
-    **     jauObl80     mean obliquity, IAU 1980
-    **     jauNut00a    nutation, IAU 2000A
-    **     jauEe00      equation of the equinoxes, IAU 2000
-    **
-    **  References:
-    **
-    **     Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
+    **     <br/>Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
     **     implement the IAU 2000 definition of UT1", Astronomy &
     **     Astrophysics, 406, 1135-1149 (2003).
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004).
     **
-    **  This revision:  2008 May 16
+    **<p>This revision:  2008 May 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauEe00a(double date1, double date2)
     {
        double epsa,  ee;
 
@@ -3916,12 +3824,7 @@ public class SOFA {
         }
     
 
-    public static  double jauEe00b(double date1, double date2)
     /**
-    **  - - - - - - - - -
-    **   i a u E e 0 0 b
-    **  - - - - - - - - -
-    **
     **  Equation of the equinoxes, compatible with IAU 2000 resolutions but
     **  using the truncated nutation model IAU 2000B.
     **
@@ -3930,26 +3833,27 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double    TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned (function value):
-    **                  double    equation of the equinoxes (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    equation of the equinoxes (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -3957,40 +3861,41 @@ public class SOFA {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The result, which is in radians, operates in the following sense:
+    ** <li> The result, which is in radians, operates in the following sense:
     **
     **        Greenwich apparent ST = GMST + equation of the equinoxes
     **
-    **  3) The result is compatible with the IAU 2000 resolutions except
+    ** <li> The result is compatible with the IAU 2000 resolutions except
     **     that accuracy has been compromised for the sake of speed.  For
     **     further details, see McCarthy & Luzum (2001), IERS Conventions
     **     2003 and Capitaine et al. (2003).
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPr00} IAU 2000 precession adjustments
+    **     <li>{@link #jauObl80} mean obliquity, IAU 1980
+    **     <li>{@link #jauNut00b} nutation, IAU 2000B
+    **     <li>{@link #jauEe00} equation of the equinoxes, IAU 2000
+    ** </ul>
+    **<br/>
     **
-    **  Called:
-    **     jauPr00      IAU 2000 precession adjustments
-    **     jauObl80     mean obliquity, IAU 1980
-    **     jauNut00b    nutation, IAU 2000B
-    **     jauEe00      equation of the equinoxes, IAU 2000
-    **
-    **  References:
-    **
-    **     Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
+    **    <br/>Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
     **     implement the IAU 2000 definition of UT1", Astronomy &
     **     Astrophysics, 406, 1135-1149 (2003)
     **
-    **     McCarthy, D.D. & Luzum, B.J., "An abridged model of the
+    **     <br/>McCarthy, D.D. & Luzum, B.J., "An abridged model of the
     **     precession-nutation of the celestial pole", Celestial Mechanics &
     **     Dynamical Astronomy, 85, 37-49 (2003)
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2008 May 18
+    **<p>This revision:  2008 May 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static  double jauEe00b(double date1, double date2)
     {
        double  ee;
 
@@ -4011,12 +3916,7 @@ public class SOFA {
 
         }
  
-    public static double jauEe06a(double date1, double date2)
     /**
-    **  - - - - - - - - -
-    **   i a u E e 0 6 a
-    **  - - - - - - - - -
-    **
     **  Equation of the equinoxes, compatible with IAU 2000 resolutions and
     **  IAU 2006/2000A precession-nutation.
     **
@@ -4025,26 +3925,27 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double    TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned (function value):
-    **                  double    equation of the equinoxes (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    equation of the equinoxes (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -4052,26 +3953,27 @@ public class SOFA {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The result, which is in radians, operates in the following sense:
+    ** <li> The result, which is in radians, operates in the following sense:
     **
     **        Greenwich apparent ST = GMST + equation of the equinoxes
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauAnpm} normalize angle into range +/- pi
+    **     <li>{@link #jauGst06a} Greenwich apparent sidereal time, IAU 2006/2000A
+    **     <li>{@link #jauGmst06} Greenwich mean sidereal time, IAU 2006
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauAnpm      normalize angle into range +/- pi
-    **     jauGst06a    Greenwich apparent sidereal time, IAU 2006/2000A
-    **     jauGmst06    Greenwich mean sidereal time, IAU 2006
-    **
-    **  Reference:
-    **
-    **     McCarthy, D. D., Petit, G. (eds.), 2004, IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), 2004, IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG
     **
-    **  This revision:  2008 May 18
+    **<p>This revision:  2008 May 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauEe06a(double date1, double date2)
     {
        double gst06a, gmst06, ee;
 
@@ -4099,12 +4001,7 @@ public class SOFA {
      } 
 
 
-    public static double jauEect00(double date1, double date2)
     /**
-    **  - - - - - - - - - -
-    **   i a u E e c t 0 0
-    **  - - - - - - - - - -
-    **
     **  Equation of the equinoxes complementary terms, consistent with
     **  IAU 2000 resolutions.
     **
@@ -4113,26 +4010,27 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2  double   TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double    TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned (function value):
-    **                  double   complementary terms (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double   complementary terms (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -4140,7 +4038,7 @@ public class SOFA {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The "complementary terms" are part of the equation of the
+    ** <li> The "complementary terms" are part of the equation of the
     **     equinoxes (EE), classically the difference between apparent and
     **     mean Sidereal Time:
     **
@@ -4157,7 +4055,7 @@ public class SOFA {
     **     effects of precession-nutation.  In order to eliminate these
     **     effects from UT1, "complementary terms" were introduced in 1994
     **     (IAU, 1994) and took effect from 1997 (Capitaine and Gontier,
-    **     1993):
+    ** <li>:
     **
     **        GAST = GMST + CT + EE
     **
@@ -4170,37 +4068,38 @@ public class SOFA {
     **     The present function computes CT in the above expression,
     **     compatible with IAU 2000 resolutions (Capitaine et al., 2002, and
     **     IERS Conventions 2003).
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauFal03} mean anomaly of the Moon
+    **     <li>{@link #jauFalp03} mean anomaly of the Sun
+    **     <li>{@link #jauFaf03} mean argument of the latitude of the Moon
+    **     <li>{@link #jauFad03} mean elongation of the Moon from the Sun
+    **     <li>{@link #jauFaom03} mean longitude of the Moon's ascending node
+    **     <li>{@link #jauFave03} mean longitude of Venus
+    **     <li>{@link #jauFae03} mean longitude of Earth
+    **     <li>{@link #jauFapa03} general accumulated precession in longitude
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauFal03     mean anomaly of the Moon
-    **     jauFalp03    mean anomaly of the Sun
-    **     jauFaf03     mean argument of the latitude of the Moon
-    **     jauFad03     mean elongation of the Moon from the Sun
-    **     jauFaom03    mean longitude of the Moon's ascending node
-    **     jauFave03    mean longitude of Venus
-    **     jauFae03     mean longitude of Earth
-    **     jauFapa03    general accumulated precession in longitude
-    **
-    **  References:
-    **
-    **     Capitaine, N. & Gontier, A.-M., Astron. Astrophys., 275,
+    **     <br/>Capitaine, N. & Gontier, A.-M., Astron. Astrophys., 275,
     **     645-650 (1993)
     **
-    **     Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
+    **     <br/>Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
     **     implement the IAU 2000 definition of UT1", Astronomy &
     **     Astrophysics, 406, 1135-1149 (2003)
     **
-    **     IAU Resolution C7, Recommendation 3 (1994)
+    **     <br/>IAU Resolution C7, Recommendation 3 (1994)
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2009 December 17
+    **<p>This revision:  2009 December 17
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauEect00(double date1, double date2)
     {
     /* Time since J2000.0, in Julian centuries */
        double t;
@@ -4352,12 +4251,7 @@ public class SOFA {
             this.f = f;
         }
     }
-    public static  ReferenceEllipsoid jauEform ( int n ) throws SOFAIllegalParameter
     /**
-    **  - - - - - - - - -
-    **   i a u E f o r m
-    **  - - - - - - - - -
-    **
     **  Earth reference ellipsoids.
     **
     **  This function is derived from the International Astronomical Union's
@@ -4365,21 +4259,22 @@ public class SOFA {
     **
     **  Status:  canonical.
     **
-    **  Given:
-    **     n       int      ellipsoid identifier (Note 1)
+    **<!-- Given: -->
+    **     @param n        int       ellipsoid identifier (Note 1)
     **
-    **  Returned:
-    **     a       double   equatorial radius (meters, Note 2)
-    **     f       double   flattening (Note 2)
+    **<!-- Returned: -->
+    **     @param a        double     <u>returned</u> equatorial radius (meters, Note 2)
+    **     @param f        double     <u>returned</u> flattening (Note 2)
     **
-    **  Returned (function value):
-    **            int       status:
+    ** <!-- Returned (function value): -->
+    **  @return int       status:
     **                          0 = OK
     **                         -1 = illegal identifier (Note 3)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The identifier n is a number that specifies the choice of
+    ** <li> The identifier n is a number that specifies the choice of
     **     reference ellipsoid.  The following are supported:
     **
     **        n   ellipsoid
@@ -4390,34 +4285,35 @@ public class SOFA {
     **
     **     The number n has no significance outside the SOFA software.
     **
-    **  2) The ellipsoid parameters are returned in the form of equatorial
+    ** <li> The ellipsoid parameters are returned in the form of equatorial
     **     radius in meters (a) and flattening (f).  The latter is a number
     **     around 0.00335, i.e. around 1/298.
     **
-    **  3) For the case where an unsupported n value is supplied, zero a and
+    ** <li> For the case where an unsupported n value is supplied, zero a and
     **     f are returned, as well as error status.
     **
-    **  References:
+    **<p>References:
     **
-    **     Department of Defense World Geodetic System 1984, National
+    **     <br/>Department of Defense World Geodetic System 1984, National
     **     Imagery and Mapping Agency Technical Report 8350.2, Third
     **     Edition, p3-2.
     **
-    **     Moritz, H., Bull. Geodesique 66-2, 187 (1992).
+    **     <br/>Moritz, H., Bull. Geodesique 66-2, 187 (1992).
     **
-    **     The Department of Defense World Geodetic System 1972, World
+    **     <br/>The Department of Defense World Geodetic System 1972, World
     **     Geodetic System Committee, May 1974.
     **
-    **     Explanatory Supplement to the Astronomical Almanac,
+    **     <br/>Explanatory Supplement to the Astronomical Almanac,
     **     P. Kenneth Seidelmann (ed), University Science Books (1992),
     **     p220.
     **
-    **  This revision:  2010 January 18
+    **<p>This revision:  2010 January 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static  ReferenceEllipsoid jauEform ( int n ) throws SOFAIllegalParameter
     {
       double a,f;
     /* Look up a and f for the specified reference ellipsoid. */
@@ -4459,12 +4355,7 @@ public class SOFA {
     }
     
 
-    public static double jauEo06a(double date1, double date2)
     /**
-    **  - - - - - - - - -
-    **   i a u E o 0 6 a
-    **  - - - - - - - - -
-    **
     **  Equation of the origins, IAU 2006 precession and IAU 2000A nutation.
     **
     **  This function is derived from the International Astronomical Union's
@@ -4472,26 +4363,27 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double    TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned (function value):
-    **                  double    equation of the origins in radians
+    ** <!-- Returned (function value): -->
+    **  @return double    equation of the origins in radians
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -4499,31 +4391,32 @@ public class SOFA {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The equation of the origins is the distance between the true
+    ** <li> The equation of the origins is the distance between the true
     **     equinox and the celestial intermediate origin and, equivalently,
     **     the difference between Earth rotation angle and Greenwich
     **     apparent sidereal time (ERA-GST).  It comprises the precession
     **     (since J2000.0) in right ascension plus the equation of the
     **     equinoxes (including the small correction terms).
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPnm06a} classical NPB matrix, IAU 2006/2000A
+    **     <li>{@link #jauBpn2xy} extract CIP X,Y coordinates from NPB matrix
+    **     <li>{@link #jauS06} the CIO locator s, given X,Y, IAU 2006
+    **     <li>{@link #jauEors} equation of the origins, Given NPB matrix and s
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauPnm06a    classical NPB matrix, IAU 2006/2000A
-    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     jauS06       the CIO locator s, given X,Y, IAU 2006
-    **     jauEors      equation of the origins, Given NPB matrix and s
+    **     <br/>Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
     **
-    **  References:
+    **     <br/>Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
     **
-    **     Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
+    **<p>This revision:  2008 May 16
     **
-    **     Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
-    **
-    **  This revision:  2008 May 16
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauEo06a(double date1, double date2)
     {
        double r[][] = new double[3][3], s, eo;
 
@@ -4545,12 +4438,7 @@ public class SOFA {
         }
     
 
-    public static double jauEors(double rnpb[][], double s)
     /**
-    **  - - - - - - - -
-    **   i a u E o r s
-    **  - - - - - - - -
-    **
     **  Equation of the origins, given the classical NPB matrix and the
     **  quantity s.
     **
@@ -4559,36 +4447,38 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     rnpb  double[3][3]  classical nutation x precession x bias matrix
-    **     s     double        the quantity s (the CIO locator)
+    **<!-- Given: -->
+    **     @param rnpb   double[3][3]   classical nutation x precession x bias matrix
+    **     @param s      double         the quantity s (the CIO locator)
     **
-    **  Returned (function value):
-    **           double        the equation of the origins in radians.
+    ** <!-- Returned (function value): -->
+    **  @return double        the equation of the origins in radians.
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1)  The equation of the origins is the distance between the true
+    ** <li>  The equation of the origins is the distance between the true
     **      equinox and the celestial intermediate origin and, equivalently,
     **      the difference between Earth rotation angle and Greenwich
     **      apparent sidereal time (ERA-GST).  It comprises the precession
     **      (since J2000.0) in right ascension plus the equation of the
     **      equinoxes (including the small correction terms).
     **
-    **  2)  The algorithm is from Wallace & Capitaine (2006).
+    ** <li>  The algorithm is from Wallace & Capitaine (2006).
     **
     ** References:
     **
-    **     Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
+    **    <br/>Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
     **
-    **     Wallace, P. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
+    **    <br/>Wallace, P. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
     **
-    **  This revision:  2008 May 26
+    **<p>This revision:  2008 May 26
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauEors(double rnpb[][], double s)
     {
        double x, ax, xs, ys, zs, p, q, eo;
 
@@ -4608,12 +4498,7 @@ public class SOFA {
         }
     
 
-    public static double jauEpb(double dj1, double dj2)
     /**
-    **  - - - - - - -
-    **   i a u E p b
-    **  - - - - - - -
-    **
     **  Julian Date to Besselian Epoch.
     **
     **  This function is derived from the International Astronomical Union's
@@ -4621,11 +4506,11 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     dj1,dj2    double     Julian Date (see note)
+    **<!-- Given: -->
+    **     @param dj1,dj2     double      Julian Date (see note)
     **
-    **  Returned (function value):
-    **                double     Besselian Epoch.
+    ** <!-- Returned (function value): -->
+    **  @return double     Besselian Epoch.
     **
     **  Note:
     **
@@ -4635,16 +4520,17 @@ public class SOFA {
     **     dj2.  The maximum resolution is achieved if dj1 is 2451545D0
     **     (J2000.0).
     **
-    **  Reference:
+    **<p>Reference:
     **
     **     Lieske,J.H., 1979. Astron.Astrophys.,73,282.
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauEpb(double dj1, double dj2)
     {
     /* J2000.0 minus B1900.0 (2415019.81352) in Julian days */
        final double D1900 = 36524.68648;
@@ -4658,12 +4544,7 @@ public class SOFA {
 
         }
     
-    public static JulianDate jauEpb2jd(double epb)
     /**
-    **  - - - - - - - - - -
-    **   i a u E p b 2 j d
-    **  - - - - - - - - - -
-    **
     **  Besselian Epoch to Julian Date.
     **
     **  This function is derived from the International Astronomical Union's
@@ -4671,12 +4552,12 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     epb      double    Besselian Epoch (e.g. 1957.3D0)
+    **<!-- Given: -->
+    **     @param epb       double     Besselian Epoch (e.g. 1957.3D0)
     **
-    **  Returned:
-    **     djm0     double    MJD zero-point: always 2400000.5
-    **     djm      double    Modified Julian Date
+    **<!-- Returned: -->
+    **     @param djm0      double      <u>returned</u> MJD zero-point: always 2400000.5
+    **     @param djm       double      <u>returned</u> Modified Julian Date
     **
     **  Note:
     **
@@ -4685,16 +4566,17 @@ public class SOFA {
     **     Julian Date is available as a single number by adding djm0 and
     **     djm.
     **
-    **  Reference:
+    **<p>Reference:
     **
-    **     Lieske, J.H., 1979, Astron.Astrophys. 73, 282.
+    **     <br/>Lieske, J.H., 1979, Astron.Astrophys. 73, 282.
     **
-    **  This revision:  2008 May 24
+    **<p>This revision:  2008 May 24
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static JulianDate jauEpb2jd(double epb)
     {
         double djm0, djm;
        djm0 = 2400000.5;
@@ -4705,12 +4587,7 @@ public class SOFA {
         }
     
 
-    public static double jauEpj(double dj1, double dj2)
     /**
-    **  - - - - - - -
-    **   i a u E p j
-    **  - - - - - - -
-    **
     **  Julian Date to Julian Epoch.
     **
     **  This function is derived from the International Astronomical Union's
@@ -4718,11 +4595,11 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     dj1,dj2    double     Julian Date (see note)
+    **<!-- Given: -->
+    **     @param dj1,dj2     double      Julian Date (see note)
     **
-    **  Returned (function value):
-    **                double     Julian Epoch
+    ** <!-- Returned (function value): -->
+    **  @return double     Julian Epoch
     **
     **  Note:
     **
@@ -4732,16 +4609,17 @@ public class SOFA {
     **     dj2.  The maximum resolution is achieved if dj1 is 2451545D0
     **     (J2000.0).
     **
-    **  Reference:
+    **<p>Reference:
     **
-    **     Lieske, J.H., 1979, Astron.Astrophys. 73, 282.
+    **     <br/>Lieske, J.H., 1979, Astron.Astrophys. 73, 282.
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauEpj(double dj1, double dj2)
     {
        double epj;
 
@@ -4753,12 +4631,7 @@ public class SOFA {
         }
     
 
-    public static JulianDate jauEpj2jd(double epj)
     /**
-    **  - - - - - - - - - -
-    **   i a u E p j 2 j d
-    **  - - - - - - - - - -
-    **
     **  Julian Epoch to Julian Date.
     **
     **  This function is derived from the International Astronomical Union's
@@ -4766,12 +4639,12 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     epj      double    Julian Epoch (e.g. 1996.8D0)
+    **<!-- Given: -->
+    **     @param epj       double     Julian Epoch (e.g. 1996.8D0)
     **
-    **  Returned:
-    **     djm0     double    MJD zero-point: always 2400000.5
-    **     djm      double    Modified Julian Date
+    **<!-- Returned: -->
+    **     @param djm0      double      <u>returned</u> MJD zero-point: always 2400000.5
+    **     @param djm       double      <u>returned</u> Modified Julian Date
     **
     **  Note:
     **
@@ -4780,16 +4653,17 @@ public class SOFA {
     **     Julian Date is available as a single number by adding djm0 and
     **     djm.
     **
-    **  Reference:
+    **<p>Reference:
     **
-    **     Lieske, J.H., 1979, Astron.Astrophys. 73, 282.
+    **     <br/>Lieske, J.H., 1979, Astron.Astrophys. 73, 282.
     **
-    **  This revision:  2008 May 11
+    **<p>This revision:  2008 May 11
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static JulianDate jauEpj2jd(double epj)
     {
        double djm0, djm;
        djm0 = 2400000.5;
@@ -4800,13 +4674,7 @@ public class SOFA {
         }
     
 
-    public static int jauEpv00(final double date1, final double date2,
-                 double pvh[][], double pvb[][])
     /**
-    **  - - - - - - - - -
-    **   i a u E p v 0 0
-    **  - - - - - - - - -
-    **
     **  Earth position and velocity, heliocentric and barycentric, with
     **  respect to the Barycentric Celestial Reference System.
     **
@@ -4815,32 +4683,33 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double        TDB date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double         TDB date (Note 1)
     **
-    **  Returned:
-    **     pvh          double[2][3]  heliocentric Earth position/velocity
-    **     pvb          double[2][3]  barycentric Earth position/velocity
+    **<!-- Returned: -->
+    **     @param pvh           double[2][3]    <u>returned</u> heliocentric Earth position/velocity
+    **     @param pvb           double[2][3]    <u>returned</u> barycentric Earth position/velocity
     **
-    **  Returned (function value):
-    **                  int           status: 0 = OK
+    ** <!-- Returned (function value): -->
+    **  @return int           status: 0 = OK
     **                                       +1 = warning: date outside
     **                                            the range 1900-2100 AD
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TDB date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TDB date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TDB)=2450123.7 could be expressed in any of these ways, among
     **     others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in cases
     **     where the loss of several decimal digits of resolution is
     **     acceptable.  The J2000 method is best matched to the way the
@@ -4852,7 +4721,7 @@ public class SOFA {
     **
     **     n.b. TT can be used instead of TDB in most applications.
     **
-    **  2) On return, the arrays pvh and pvb contain the following:
+    ** <li> On return, the arrays pvh and pvb contain the following:
     **
     **        pvh[0][0]  x       }
     **        pvh[0][1]  y       } heliocentric position, AU
@@ -4873,12 +4742,12 @@ public class SOFA {
     **     The vectors are with respect to the Barycentric Celestial
     **     Reference System.  The time unit is one day in TDB.
     **
-    **  3) The function is a SIMPLIFIED SOLUTION from the planetary theory
+    ** <li> The function is a SIMPLIFIED SOLUTION from the planetary theory
     **     VSOP2000 (X. Moisson, P. Bretagnon, 2001, Celes. Mechanics &
     **     Dyn. Astron., 80, 3/4, 205-213) and is an adaptation of original
     **     Fortran code supplied by P. Bretagnon (private comm., 2000).
     **
-    **  4) Comparisons over the time span 1900-2100 with this simplified
+    ** <li> Comparisons over the time span 1900-2100 with this simplified
     **     solution and the JPL DE405 ephemeris give the following results:
     **
     **                                RMS    max
@@ -4896,15 +4765,17 @@ public class SOFA {
     **     by 1000 and 3000 a factor of 60.  The velocity accuracy falls off
     **     at about half that rate.
     **
-    **  5) It is permissible to use the same array for pvh and pvb, which
+    ** <li> It is permissible to use the same array for pvh and pvb, which
     **     will receive the barycentric values.
     **
-    **  This revision:  2008 November 18
+    **<p>This revision:  2008 November 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static int jauEpv00(final double date1, final double date2,
+                 double pvh[][], double pvb[][])
     {
     /*
     ** Matrix elements for orienting the analytical model to DE405.
@@ -7339,12 +7210,7 @@ public class SOFA {
         }
     
 
-    public static double jauEqeq94(double date1, double date2)
     /**
-    **  - - - - - - - - - -
-    **   i a u E q e q 9 4
-    **  - - - - - - - - - -
-    **
     **  Equation of the equinoxes, IAU 1994 model.
     **
     **  This function is derived from the International Astronomical Union's
@@ -7352,26 +7218,27 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2   double     TDB date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2    double      TDB date (Note 1)
     **
-    **  Returned (function value):
-    **                   double     equation of the equinoxes (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double     equation of the equinoxes (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -7379,27 +7246,28 @@ public class SOFA {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The result, which is in radians, operates in the following sense:
+    ** <li> The result, which is in radians, operates in the following sense:
     **
     **        Greenwich apparent ST = GMST + equation of the equinoxes
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauNut80} nutation, IAU 1980
+    **     <li>{@link #jauObl80} mean obliquity, IAU 1980
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauNut80     nutation, IAU 1980
-    **     jauObl80     mean obliquity, IAU 1980
+    **     <br/>IAU Resolution C7, Recommendation 3 (1994).
     **
-    **  References:
-    **
-    **     IAU Resolution C7, Recommendation 3 (1994).
-    **
-    **     Capitaine, N. & Gontier, A.-M., 1993, Astron. Astrophys., 275,
+    **     <br/>Capitaine, N. & Gontier, A.-M., 1993, Astron. Astrophys., 275,
     **     645-650.
     **
-    **  This revision:  2008 May 24
+    **<p>This revision:  2008 May 24
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauEqeq94(double date1, double date2)
     {
        double t,  om,  eps0, ee;
 
@@ -7425,12 +7293,7 @@ public class SOFA {
         }
     
 
-    public static double jauEra00(double dj1, double dj2)
     /**
-    **  - - - - - - - - -
-    **   i a u E r a 0 0
-    **  - - - - - - - - -
-    **
     **  Earth rotation angle (IAU 2000 model).
     **
     **  This function is derived from the International Astronomical Union's
@@ -7438,15 +7301,16 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     dj1,dj2   double    UT1 as a 2-part Julian Date (see note)
+    **<!-- Given: -->
+    **     @param dj1,dj2    double     UT1 as a 2-part Julian Date (see note)
     **
-    **  Returned (function value):
-    **               double    Earth rotation angle (radians), range 0-2pi
+    ** <!-- Returned (function value): -->
+    **  @return double    Earth rotation angle (radians), range 0-2pi
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The UT1 date dj1+dj2 is a Julian Date, apportioned in any
+    ** <li> The UT1 date dj1+dj2 is a Julian Date, apportioned in any
     **     convenient way between the arguments dj1 and dj2.  For example,
     **     JD(UT1)=2450123.7 could be expressed in any of these ways,
     **     among others:
@@ -7457,7 +7321,7 @@ public class SOFA {
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 and MJD methods are good compromises
@@ -7467,29 +7331,30 @@ public class SOFA {
     **     question and the dj2 argument lies in the range 0 to 1, or vice
     **     versa.
     **
-    **  2) The algorithm is adapted from Expression 22 of Capitaine et al.
+    ** <li> The algorithm is adapted from Expression 22 of Capitaine et al.
     **     2000.  The time argument has been expressed in days directly,
     **     and, to retain precision, integer contributions have been
     **     eliminated.  The same formulation is given in IERS Conventions
     **     (2003), Chap. 5, Eq. 14.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauAnp       normalize angle into range 0 to 2pi
-    **
-    **  References:
-    **
-    **     Capitaine N., Guinot B. and McCarthy D.D, 2000, Astron.
+    **     <br/>Capitaine N., Guinot B. and McCarthy D.D, 2000, Astron.
     **     Astrophys., 355, 398-405.
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2008 May 24
+    **<p>This revision:  2008 May 24
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauEra00(double dj1, double dj2)
     {
        double d1, d2, t, f, theta;
 
@@ -7516,12 +7381,7 @@ public class SOFA {
         }
     
 
-    public static double jauFad03(double t)
     /**
-    **  - - - - - - - - -
-    **   i a u F a d 0 3
-    **  - - - - - - - - -
-    **
     **  Fundamental argument, IERS Conventions (2003):
     **  mean elongation of the Moon from the Sun.
     **
@@ -7530,34 +7390,36 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     t     double    TDB, Julian centuries since J2000.0 (Note 1)
+    **<!-- Given: -->
+    **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     **
-    **  Returned (function value):
-    **           double    D, radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    D, radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Though t is strictly TDB, it is usually more convenient to use
+    ** <li> Though t is strictly TDB, it is usually more convenient to use
     **     TT, which makes no significant difference.
     **
-    **  2) The expression used is as adopted in IERS Conventions (2003) and
+    ** <li> The expression used is as adopted in IERS Conventions (2003) and
     **     is from Simon et al. (1994).
     **
-    **  References:
+    **<p>References:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
+    **     <br/>Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
     **     Francou, G., Laskar, J. 1994, Astron.Astrophys. 282, 663-683
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauFad03(double t)
     {
        double a;
 
@@ -7574,12 +7436,7 @@ public class SOFA {
         }
     
 
-    public static double jauFae03(double t)
     /**
-    **  - - - - - - - - -
-    **   i a u F a e 0 3
-    **  - - - - - - - - -
-    **
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Earth.
     **
@@ -7588,37 +7445,39 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     t     double    TDB, Julian centuries since J2000.0 (Note 1)
+    **<!-- Given: -->
+    **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     **
-    **  Returned (function value):
-    **           double    mean longitude of Earth, radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    mean longitude of Earth, radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Though t is strictly TDB, it is usually more convenient to use
+    ** <li> Though t is strictly TDB, it is usually more convenient to use
     **     TT, which makes no significant difference.
     **
-    **  2) The expression used is as adopted in IERS Conventions (2003) and
+    ** <li> The expression used is as adopted in IERS Conventions (2003) and
     **     comes from Souchay et al. (1999) after Simon et al. (1994).
     **
-    **  References:
+    **<p>References:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
+    **     <br/>Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
     **     Francou, G., Laskar, J. 1994, Astron.Astrophys. 282, 663-683
     **
-    **     Souchay, J., Loysel, B., Kinoshita, H., Folgueira, M. 1999,
+    **     <br/>Souchay, J., Loysel, B., Kinoshita, H., Folgueira, M. 1999,
     **     Astron.Astrophys.Supp.Ser. 135, 111
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauFae03(double t)
     {
        double a;
 
@@ -7631,12 +7490,7 @@ public class SOFA {
         }
     
 
-    public static double jauFaf03(double t)
     /**
-    **  - - - - - - - - -
-    **   i a u F a f 0 3
-    **  - - - - - - - - -
-    **
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of the Moon minus mean longitude of the ascending
     **  node.
@@ -7646,34 +7500,36 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     t     double    TDB, Julian centuries since J2000.0 (Note 1)
+    **<!-- Given: -->
+    **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     **
-    **  Returned (function value):
-    **           double    F, radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    F, radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Though t is strictly TDB, it is usually more convenient to use
+    ** <li> Though t is strictly TDB, it is usually more convenient to use
     **     TT, which makes no significant difference.
     **
-    **  2) The expression used is as adopted in IERS Conventions (2003) and
+    ** <li> The expression used is as adopted in IERS Conventions (2003) and
     **     is from Simon et al. (1994).
     **
-    **  References:
+    **<p>References:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
     **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
     **     Francou, G., Laskar, J. 1994, Astron.Astrophys. 282, 663-683
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauFaf03(double t)
     {
        double a;
 
@@ -7692,12 +7548,7 @@ public class SOFA {
         }
     
 
-    public static double jauFaju03(double t)
     /**
-    **  - - - - - - - - - -
-    **   i a u F a j u 0 3
-    **  - - - - - - - - - -
-    **
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Jupiter.
     **
@@ -7706,37 +7557,39 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     t     double    TDB, Julian centuries since J2000.0 (Note 1)
+    **<!-- Given: -->
+    **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     **
-    **  Returned (function value):
-    **           double    mean longitude of Jupiter, radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    mean longitude of Jupiter, radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Though t is strictly TDB, it is usually more convenient to use
+    ** <li> Though t is strictly TDB, it is usually more convenient to use
     **     TT, which makes no significant difference.
     **
-    **  2) The expression used is as adopted in IERS Conventions (2003) and
+    ** <li> The expression used is as adopted in IERS Conventions (2003) and
     **     comes from Souchay et al. (1999) after Simon et al. (1994).
     **
-    **  References:
+    **<p>References:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
+    **     <br/>Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
     **     Francou, G., Laskar, J. 1994, Astron.Astrophys. 282, 663-683
     **
-    **     Souchay, J., Loysel, B., Kinoshita, H., Folgueira, M. 1999,
+    **     <br/>Souchay, J., Loysel, B., Kinoshita, H., Folgueira, M. 1999,
     **     Astron.Astrophys.Supp.Ser. 135, 111
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauFaju03(double t)
     {
        double a;
 
@@ -7749,12 +7602,7 @@ public class SOFA {
         }
     
 
-    public static double jauFal03(double t)
     /**
-    **  - - - - - - - - -
-    **   i a u F a l 0 3
-    **  - - - - - - - - -
-    **
     **  Fundamental argument, IERS Conventions (2003):
     **  mean anomaly of the Moon.
     **
@@ -7763,34 +7611,36 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     t     double    TDB, Julian centuries since J2000.0 (Note 1)
+    **<!-- Given: -->
+    **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     **
-    **  Returned (function value):
-    **           double    l, radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    l, radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Though t is strictly TDB, it is usually more convenient to use
+    ** <li> Though t is strictly TDB, it is usually more convenient to use
     **     TT, which makes no significant difference.
     **
-    **  2) The expression used is as adopted in IERS Conventions (2003) and
+    ** <li> The expression used is as adopted in IERS Conventions (2003) and
     **     is from Simon et al. (1994).
     **
-    **  References:
+    **<p>References:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
     **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
     **     Francou, G., Laskar, J. 1994, Astron.Astrophys. 282, 663-683
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauFal03(double t)
     {
        double a;
 
@@ -7807,12 +7657,7 @@ public class SOFA {
         }
     
 
-    public static double jauFalp03(double t)
     /**
-    **  - - - - - - - - - -
-    **   i a u F a l p 0 3
-    **  - - - - - - - - - -
-    **
     **  Fundamental argument, IERS Conventions (2003):
     **  mean anomaly of the Sun.
     **
@@ -7821,34 +7666,36 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     t     double    TDB, Julian centuries since J2000.0 (Note 1)
+    **<!-- Given: -->
+    **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     **
-    **  Returned (function value):
-    **           double    l', radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    l', radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Though t is strictly TDB, it is usually more convenient to use
+    ** <li> Though t is strictly TDB, it is usually more convenient to use
     **     TT, which makes no significant difference.
     **
-    **  2) The expression used is as adopted in IERS Conventions (2003) and
+    ** <li> The expression used is as adopted in IERS Conventions (2003) and
     **     is from Simon et al. (1994).
     **
-    **  References:
+    **<p>References:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
     **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
     **     Francou, G., Laskar, J. 1994, Astron.Astrophys. 282, 663-683
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauFalp03(double t)
     {
        double a;
 
@@ -7865,12 +7712,7 @@ public class SOFA {
         }
     
 
-    public static double jauFama03(double t)
     /**
-    **  - - - - - - - - - -
-    **   i a u F a m a 0 3
-    **  - - - - - - - - - -
-    **
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Mars.
     **
@@ -7879,23 +7721,24 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     t     double    TDB, Julian centuries since J2000.0 (Note 1)
+    **<!-- Given: -->
+    **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     **
-    **  Returned (function value):
-    **           double    mean longitude of Mars, radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    mean longitude of Mars, radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Though t is strictly TDB, it is usually more convenient to use
+    ** <li> Though t is strictly TDB, it is usually more convenient to use
     **     TT, which makes no significant difference.
     **
-    **  2) The expression used is as adopted in IERS Conventions (2003) and
+    ** <li> The expression used is as adopted in IERS Conventions (2003) and
     **     comes from Souchay et al. (1999) after Simon et al. (1994).
     **
-    **  References:
+    **<p>References:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
     **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
@@ -7904,12 +7747,13 @@ public class SOFA {
     **     Souchay, J., Loysel, B., Kinoshita, H., Folgueira, M. 1999,
     **     Astron.Astrophys.Supp.Ser. 135, 111
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauFama03(double t)
     {
        double a;
 
@@ -7922,12 +7766,7 @@ public class SOFA {
         }
     
 
-    public static double jauFame03(double t)
     /**
-    **  - - - - - - - - - -
-    **   i a u F a m e 0 3
-    **  - - - - - - - - - -
-    **
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Mercury.
     **
@@ -7936,23 +7775,24 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     t     double    TDB, Julian centuries since J2000.0 (Note 1)
+    **<!-- Given: -->
+    **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     **
-    **  Returned (function value):
-    **           double    mean longitude of Mercury, radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    mean longitude of Mercury, radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Though t is strictly TDB, it is usually more convenient to use
+    ** <li> Though t is strictly TDB, it is usually more convenient to use
     **     TT, which makes no significant difference.
     **
-    **  2) The expression used is as adopted in IERS Conventions (2003) and
+    ** <li> The expression used is as adopted in IERS Conventions (2003) and
     **     comes from Souchay et al. (1999) after Simon et al. (1994).
     **
-    **  References:
+    **<p>References:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
     **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
@@ -7961,12 +7801,13 @@ public class SOFA {
     **     Souchay, J., Loysel, B., Kinoshita, H., Folgueira, M. 1999,
     **     Astron.Astrophys.Supp.Ser. 135, 111
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauFame03(double t)
     {
        double a;
 
@@ -7980,12 +7821,7 @@ public class SOFA {
     
 
 
-    public static double jauFane03(double t)
     /**
-    **  - - - - - - - - - -
-    **   i a u F a n e 0 3
-    **  - - - - - - - - - -
-    **
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Neptune.
     **
@@ -7994,34 +7830,36 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     t     double    TDB, Julian centuries since J2000.0 (Note 1)
+    **<!-- Given: -->
+    **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     **
-    **  Returned (function value):
-    **           double    mean longitude of Neptune, radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    mean longitude of Neptune, radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Though t is strictly TDB, it is usually more convenient to use
+    ** <li> Though t is strictly TDB, it is usually more convenient to use
     **     TT, which makes no significant difference.
     **
-    **  2) The expression used is as adopted in IERS Conventions (2003) and
+    ** <li> The expression used is as adopted in IERS Conventions (2003) and
     **     is adapted from Simon et al. (1994).
     **
-    **  References:
+    **<p>References:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
     **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
     **     Francou, G., Laskar, J. 1994, Astron.Astrophys. 282, 663-683
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauFane03(double t)
     {
        double a;
 
@@ -8034,12 +7872,7 @@ public class SOFA {
         }
     
 
-    public static double jauFaom03(double t)
     /**
-    **  - - - - - - - - - -
-    **   i a u F a o m 0 3
-    **  - - - - - - - - - -
-    **
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of the Moon's ascending node.
     **
@@ -8048,34 +7881,36 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     t     double    TDB, Julian centuries since J2000.0 (Note 1)
+    **<!-- Given: -->
+    **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     **
-    **  Returned (function value):
-    **           double    Omega, radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    Omega, radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Though t is strictly TDB, it is usually more convenient to use
+    ** <li> Though t is strictly TDB, it is usually more convenient to use
     **     TT, which makes no significant difference.
     **
-    **  2) The expression used is as adopted in IERS Conventions (2003) and
+    ** <li> The expression used is as adopted in IERS Conventions (2003) and
     **     is from Simon et al. (1994).
     **
-    **  References:
+    **<p>References:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
     **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
     **     Francou, G., Laskar, J. 1994, Astron.Astrophys. 282, 663-683
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauFaom03(double t)
     {
        double a;
 
@@ -8093,12 +7928,7 @@ public class SOFA {
         }
     
 
-    public static double jauFapa03(double t)
     /**
-    **  - - - - - - - - - -
-    **   i a u F a p a 0 3
-    **  - - - - - - - - - -
-    **
     **  Fundamental argument, IERS Conventions (2003):
     **  general accumulated precession in longitude.
     **
@@ -8107,38 +7937,40 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     t     double    TDB, Julian centuries since J2000.0 (Note 1)
+    **<!-- Given: -->
+    **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     **
-    **  Returned (function value):
-    **           double    general precession in longitude, radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    general precession in longitude, radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Though t is strictly TDB, it is usually more convenient to use
+    ** <li> Though t is strictly TDB, it is usually more convenient to use
     **     TT, which makes no significant difference.
     **
-    **  2) The expression used is as adopted in IERS Conventions (2003).  It
+    ** <li> The expression used is as adopted in IERS Conventions (2003).  It
     **     is taken from Kinoshita & Souchay (1990) and comes originally
     **     from Lieske et al. (1977).
     **
-    **  References:
+    **<p>References:
     **
     **     Kinoshita, H. and Souchay J. 1990, Celest.Mech. and Dyn.Astron.
     **     48, 187
     **
-    **     Lieske, J.H., Lederle, T., Fricke, W. & Morando, B. 1977,
+    **     <br/>Lieske, J.H., Lederle, T., Fricke, W. & Morando, B. 1977,
     **     Astron.Astrophys. 58, 1-16
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauFapa03(double t)
     {
        double a;
 
@@ -8151,12 +7983,7 @@ public class SOFA {
         }
     
 
-    public static double jauFasa03(double t)
     /**
-    **  - - - - - - - - - -
-    **   i a u F a s a 0 3
-    **  - - - - - - - - - -
-    **
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Saturn.
     **
@@ -8165,23 +7992,24 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     t     double    TDB, Julian centuries since J2000.0 (Note 1)
+    **<!-- Given: -->
+    **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     **
-    **  Returned (function value):
-    **           double    mean longitude of Saturn, radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    mean longitude of Saturn, radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Though t is strictly TDB, it is usually more convenient to use
+    ** <li> Though t is strictly TDB, it is usually more convenient to use
     **     TT, which makes no significant difference.
     **
-    **  2) The expression used is as adopted in IERS Conventions (2003) and
+    ** <li> The expression used is as adopted in IERS Conventions (2003) and
     **     comes from Souchay et al. (1999) after Simon et al. (1994).
     **
-    **  References:
+    **<p>References:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
     **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
@@ -8190,12 +8018,13 @@ public class SOFA {
     **     Souchay, J., Loysel, B., Kinoshita, H., Folgueira, M. 1999,
     **     Astron.Astrophys.Supp.Ser. 135, 111
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauFasa03(double t)
     {
        double a;
 
@@ -8208,12 +8037,7 @@ public class SOFA {
         }
     
 
-    public static double jauFaur03(double t)
     /**
-    **  - - - - - - - - - -
-    **   i a u F a u r 0 3
-    **  - - - - - - - - - -
-    **
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Uranus.
     **
@@ -8222,34 +8046,36 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     t     double    TDB, Julian centuries since J2000.0 (Note 1)
+    **<!-- Given: -->
+    **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     **
     **  Returned  (function value):
     **           double    mean longitude of Uranus, radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Though t is strictly TDB, it is usually more convenient to use
+    ** <li> Though t is strictly TDB, it is usually more convenient to use
     **     TT, which makes no significant difference.
     **
-    **  2) The expression used is as adopted in IERS Conventions (2003) and
+    ** <li> The expression used is as adopted in IERS Conventions (2003) and
     **     is adapted from Simon et al. (1994).
     **
-    **  References:
+    **<p>References:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
     **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
     **     Francou, G., Laskar, J. 1994, Astron.Astrophys. 282, 663-683
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauFaur03(double t)
     {
        double a;
 
@@ -8262,12 +8088,7 @@ public class SOFA {
         }
     
 
-    public static double jauFave03(double t)
     /**
-    **  - - - - - - - - - -
-    **   i a u F a v e 0 3
-    **  - - - - - - - - - -
-    **
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Venus.
     **
@@ -8276,23 +8097,24 @@ public class SOFA {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     t     double    TDB, Julian centuries since J2000.0 (Note 1)
+    **<!-- Given: -->
+    **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     **
-    **  Returned (function value):
-    **           double    mean longitude of Venus, radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    mean longitude of Venus, radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Though t is strictly TDB, it is usually more convenient to use
+    ** <li> Though t is strictly TDB, it is usually more convenient to use
     **     TT, which makes no significant difference.
     **
-    **  2) The expression used is as adopted in IERS Conventions (2003) and
+    ** <li> The expression used is as adopted in IERS Conventions (2003) and
     **     comes from Souchay et al. (1999) after Simon et al. (1994).
     **
-    **  References:
+    **<p>References:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
     **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
@@ -8301,12 +8123,13 @@ public class SOFA {
     **     Souchay, J., Loysel, B., Kinoshita, H., Folgueira, M. 1999,
     **     Astron.Astrophys.Supp.Ser. 135, 111
     **
-    **  This revision:  2009 December 16
+    **<p>This revision:  2009 December 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauFave03(double t)
     {
        double a;
 
@@ -8319,13 +8142,7 @@ public class SOFA {
         }
     
 
-    public static CatalogCoords jauFk52h(double r5, double d5,
-                  double dr5, double dd5, double px5, double rv5)
     /**
-    **  - - - - - - - - -
-    **   i a u F k 5 2 h
-    **  - - - - - - - - -
-    **
     **  Transform FK5 (J2000.0) star data into the Hipparcos system.
     **
     **  This function is derived from the International Astronomical Union's
@@ -8349,38 +8166,41 @@ public class SOFA {
     **     pxh     double    parallax (arcsec)
     **     rvh     double    radial velocity (km/s, positive = receding)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) This function transforms FK5 star positions and proper motions
+    ** <li> This function transforms FK5 star positions and proper motions
     **     into the system of the Hipparcos catalog.
     **
-    **  2) The proper motions in RA are dRA/dt rather than
+    ** <li> The proper motions in RA are dRA/dt rather than
     **     cos(Dec)*dRA/dt, and are per year rather than per century.
     **
-    **  3) The FK5 to Hipparcos transformation is modeled as a pure
+    ** <li> The FK5 to Hipparcos transformation is modeled as a pure
     **     rotation and spin;  zonal errors in the FK5 catalog are not
     **     taken into account.
     **
-    **  4) See also jauH2fk5, jauFk5hz, jauHfk5z.
+    ** <li> See also {@link #jauH2fk5), {@link #jauFk5hz}, {@link #ßjauHfk5z}.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauStarpv} star catalog data to space motion pv-vector
+    **     <li>{@link #jauFk5hip} FK5 to Hipparcos rotation and spin
+    **     <li>{@link #jauRxp} product of r-matrix and p-vector
+    **     <li>{@link #jauPxp} vector product of two p-vectors
+    **     <li>{@link #jauPpp} p-vector plus p-vector
+    **     <li>{@link #jauPvstar} space motion pv-vector to star catalog data
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauStarpv    star catalog data to space motion pv-vector
-    **     jauFk5hip    FK5 to Hipparcos rotation and spin
-    **     jauRxp       product of r-matrix and p-vector
-    **     jauPxp       vector product of two p-vectors
-    **     jauPpp       p-vector plus p-vector
-    **     jauPvstar    space motion pv-vector to star catalog data
+    **     <br/>F.Mignard & M.Froeschle, Astron. Astrophys. 354, 732-739 (2000).
     **
-    **  Reference:
+    **<p>This revision:  2009 December 17
     **
-    **     F.Mignard & M.Froeschle, Astron. Astrophys. 354, 732-739 (2000).
-    **
-    **  This revision:  2009 December 17
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static CatalogCoords jauFk52h(double r5, double d5,
+                  double dr5, double dd5, double px5, double rv5)
     {
        int i;
        double pv5[][] = new double[2][3], r5h[][] = new double[3][3], s5h[] = new double[3], wxp[] = new double[3], vv[] = new double[3], pvh[][] = new double[2][3];
@@ -8421,12 +8241,7 @@ public class SOFA {
         }
     
 
-    public static void jauFk5hip(double r5h[][], double s5h[] )
     /**
-    **  - - - - - - - - - -
-    **   i a u F k 5 h i p
-    **  - - - - - - - - - -
-    **
     **  FK5 to Hipparcos rotation and spin.
     **
     **  This function is derived from the International Astronomical Union's
@@ -8434,40 +8249,42 @@ public class SOFA {
     **
     **  Status:  support function.
     **
-    **  Returned:
-    **     r5h   double[3][3]  r-matrix: FK5 rotation wrt Hipparcos (Note 2)
-    **     s5h   double[3]     r-vector: FK5 spin wrt Hipparcos (Note 3)
+    **<!-- Returned: -->
+    **     @param r5h    double[3][3]    <u>returned</u> r-matrix: FK5 rotation wrt Hipparcos (Note 2)
+    **     @param s5h    double[3]       <u>returned</u> r-vector: FK5 spin wrt Hipparcos (Note 3)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) This function models the FK5 to Hipparcos transformation as a
+    ** <li> This function models the FK5 to Hipparcos transformation as a
     **     pure rotation and spin;  zonal errors in the FK5 catalogue are
     **     not taken into account.
     **
-    **  2) The r-matrix r5h operates in the sense:
+    ** <li> The r-matrix r5h operates in the sense:
     **
     **           P_Hipparcos = r5h x P_FK5
     **
     **     where P_FK5 is a p-vector in the FK5 frame, and P_Hipparcos is
     **     the equivalent Hipparcos p-vector.
     **
-    **  3) The r-vector s5h represents the time derivative of the FK5 to
+    ** <li> The r-vector s5h represents the time derivative of the FK5 to
     **     Hipparcos rotation.  The units are radians per year (Julian,
     **     TDB).
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauRv2m} r-vector to r-matrix
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauRv2m      r-vector to r-matrix
+    **     <br/>F.Mignard & M.Froeschle, Astron. Astrophys. 354, 732-739 (2000).
     **
-    **  Reference:
+    **<p>This revision:  2009 March 14
     **
-    **     F.Mignard & M.Froeschle, Astron. Astrophys. 354, 732-739 (2000).
-    **
-    **  This revision:  2009 March 14
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauFk5hip(double r5h[][], double s5h[] )
     {
        double v[] = new double[3];
 
@@ -8516,13 +8333,7 @@ public static class SphericalPosition {
           this.delta = delta;
       }
   }
-    public static SphericalPosition jauFk5hz(double r5, double d5, double date1, double date2
-                  )
     /**
-    **  - - - - - - - - -
-    **   i a u F k 5 h z
-    **  - - - - - - - - -
-    **
     **  Transform an FK5 (J2000.0) star position into the system of the
     **  Hipparcos catalogue, assuming zero Hipparcos proper motion.
     **
@@ -8531,35 +8342,36 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     r5           double   FK5 RA (radians), equinox J2000.0, at date
-    **     d5           double   FK5 Dec (radians), equinox J2000.0, at date
-    **     date1,date2  double   TDB date (Notes 1,2)
+    **<!-- Given: -->
+    **     @param r5            double    FK5 RA (radians), equinox J2000.0, at date
+    **     @param d5            double    FK5 Dec (radians), equinox J2000.0, at date
+    **     @param date1,date2   double    TDB date (Notes 1,2)
     **
-    **  Returned:
-    **     rh           double   Hipparcos RA (radians)
-    **     dh           double   Hipparcos Dec (radians)
+    **<!-- Returned: -->
+    **     @param rh            double     <u>returned</u> Hipparcos RA (radians)
+    **     @param dh            double     <u>returned</u> Hipparcos Dec (radians)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) This function converts a star position from the FK5 system to
+    ** <li> This function converts a star position from the FK5 system to
     **     the Hipparcos system, in such a way that the Hipparcos proper
     **     motion is zero.  Because such a star has, in general, a non-zero
     **     proper motion in the FK5 system, the function requires the date
     **     at which the position in the FK5 system was determined.
     **
-    **  2) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -8567,35 +8379,37 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  3) The FK5 to Hipparcos transformation is modeled as a pure
+    ** <li> The FK5 to Hipparcos transformation is modeled as a pure
     **     rotation and spin;  zonal errors in the FK5 catalogue are not
     **     taken into account.
     **
-    **  4) The position returned by this function is in the Hipparcos
+    ** <li> The position returned by this function is in the Hipparcos
     **     reference system but at date date1+date2.
     **
-    **  5) See also jauFk52h, jauH2fk5, jauHfk5z.
+    ** <li> See also jauFk52h, jauH2fk5, jauHfk5z.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauS2c} spherical coordinates to unit vector
+    **     <li>{@link #jauFk5hip} FK5 to Hipparcos rotation and spin
+    **     <li>{@link #jauSxp} multiply p-vector by scalar
+    **     <li>{@link #jauRv2m} r-vector to r-matrix
+    **     <li>{@link #jauTrxp} product of transpose of r-matrix and p-vector
+    **     <li>{@link #jauPxp} vector product of two p-vectors
+    **     <li>{@link #jauC2s} p-vector to spherical
+    **     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauS2c       spherical coordinates to unit vector
-    **     jauFk5hip    FK5 to Hipparcos rotation and spin
-    **     jauSxp       multiply p-vector by scalar
-    **     jauRv2m      r-vector to r-matrix
-    **     jauTrxp      product of transpose of r-matrix and p-vector
-    **     jauPxp       vector product of two p-vectors
-    **     jauC2s       p-vector to spherical
-    **     jauAnp       normalize angle into range 0 to 2pi
+    **     <br/>F.Mignard & M.Froeschle, 2000, Astron.Astrophys. 354, 732-739.
     **
-    **  Reference:
+    **<p>This revision:  2009 December 17
     **
-    **     F.Mignard & M.Froeschle, 2000, Astron.Astrophys. 354, 732-739.
-    **
-    **  This revision:  2009 December 17
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static SphericalPosition jauFk5hz(double r5, double d5, double date1, double date2
+                  )
     {
        double t, p5e[] = new double[3], r5h[][] = new double[3][3], s5h[] = new double[3], vst[] = new double[3], rst[][] = new double[3][3], p5[] = new double[3],
               ph[] = new double[3];
@@ -8632,13 +8446,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauFw2m(double gamb, double phib, double psi, double eps,
-                 double r[][])
     /**
-    **  - - - - - - - -
-    **   i a u F w 2 m
-    **  - - - - - - - -
-    **
     **  Form rotation matrix given the Fukushima-Williams angles.
     **
     **  This function is derived from the International Astronomical Union's
@@ -8646,18 +8454,19 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     gamb     double         F-W angle gamma_bar (radians)
-    **     phib     double         F-W angle phi_bar (radians)
-    **     psi      double         F-W angle psi (radians)
-    **     eps      double         F-W angle epsilon (radians)
+    **<!-- Given: -->
+    **     @param gamb      double          F-W angle gamma_bar (radians)
+    **     @param phib      double          F-W angle phi_bar (radians)
+    **     @param psi       double          F-W angle psi (radians)
+    **     @param eps       double          F-W angle epsilon (radians)
     **
-    **  Returned:
-    **     r        double[3][3]   rotation matrix
+    **<!-- Returned: -->
+    **     @param r         double[3][3]     <u>returned</u> rotation matrix
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Naming the following points:
+    ** <li> Naming the following points:
     **
     **           e = J2000.0 ecliptic pole,
     **           p = GCRS pole,
@@ -8671,12 +8480,12 @@ public static class SphericalPosition {
     **        psi = psi = pEP
     **        eps = epsilon = EP
     **
-    **  2) The matrix representing the combined effects of frame bias,
+    ** <li> The matrix representing the combined effects of frame bias,
     **     precession and nutation is:
     **
     **        NxPxB = R_1(-eps).R_3(-psi).R_1(phib).R_3(gamb)
     **
-    **  3) Three different matrices can be constructed, depending on the
+    ** <li> Three different matrices can be constructed, depending on the
     **     supplied angles:
     **
     **     o  To obtain the nutation x precession x frame bias matrix,
@@ -8692,22 +8501,24 @@ public static class SphericalPosition {
     **
     **     The nutation-only and precession-only matrices can if necessary
     **     be obtained by combining these three appropriately.
-    **
-    **  Called:
-    **     jauIr        initialize r-matrix to identity
-    **     jauRz        rotate around Z-axis
-    **     jauRx        rotate around X-axis
-    **
-    **  Reference:
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauIr} initialize r-matrix to identity
+    **     <li>{@link #jauRz} rotate around Z-axis
+    **     <li>{@link #jauRx} rotate around X-axis
+    ** </ul>
+    **<p>Reference:
     **
     **     Hilton, J. et al., 2006, Celest.Mech.Dyn.Astron. 94, 351
     **
-    **  This revision:  2009 December 17
+    **<p>This revision:  2009 December 17
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauFw2m(double gamb, double phib, double psi, double eps,
+                 double r[][])
     {
     /* Construct the matrix. */
        jauIr(r);
@@ -8721,12 +8532,7 @@ public static class SphericalPosition {
         }
     
 
-    public static CelestialIntermediatePole jauFw2xy(double gamb, double phib, double psi, double eps)
     /**
-    **  - - - - - - - - -
-    **   i a u F w 2 x y
-    **  - - - - - - - - -
-    **
     **  CIP X,Y given Fukushima-Williams bias-precession-nutation angles.
     **
     **  This function is derived from the International Astronomical Union's
@@ -8734,18 +8540,19 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     gamb     double    F-W angle gamma_bar (radians)
-    **     phib     double    F-W angle phi_bar (radians)
-    **     psi      double    F-W angle psi (radians)
-    **     eps      double    F-W angle epsilon (radians)
+    **<!-- Given: -->
+    **     @param gamb      double     F-W angle gamma_bar (radians)
+    **     @param phib      double     F-W angle phi_bar (radians)
+    **     @param psi       double     F-W angle psi (radians)
+    **     @param eps       double     F-W angle epsilon (radians)
     **
-    **  Returned:
-    **     x,y      double    CIP X,Y ("radians")
+    **<!-- Returned: -->
+    **     @param x,y       double      <u>returned</u> CIP X,Y ("radians")
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) Naming the following points:
+    ** <li> Naming the following points:
     **
     **           e = J2000.0 ecliptic pole,
     **           p = GCRS pole
@@ -8759,27 +8566,28 @@ public static class SphericalPosition {
     **        psi = psi = pEP
     **        eps = epsilon = EP
     **
-    **  2) The matrix representing the combined effects of frame bias,
+    ** <li> The matrix representing the combined effects of frame bias,
     **     precession and nutation is:
     **
     **        NxPxB = R_1(-epsA).R_3(-psi).R_1(phib).R_3(gamb)
     **
     **     X,Y are elements (3,1) and (3,2) of the matrix.
-    **
-    **  Called:
-    **     jauFw2m      F-W angles to r-matrix
-    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **
-    **  Reference:
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauFw2m} F-W angles to r-matrix
+    **     <li>{@link #jauBpn2xy} extract CIP X,Y coordinates from NPB matrix
+    ** </ul>
+    **<p>Reference:
     **
     **     Hilton, J. et al., 2006, Celest.Mech.Dyn.Astron. 94, 351
     **
-    **  This revision:  2009 December 17
+    **<p>This revision:  2009 December 17
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static CelestialIntermediatePole jauFw2xy(double gamb, double phib, double psi, double eps)
     {
        double r[][] = new double[3][3];
 
@@ -8805,12 +8613,7 @@ public static class SphericalPosition {
             this.height = height;
         }
 }
-    public static GeodeticCoord jauGc2gd ( int n, double xyz[] ) throws SOFAIllegalParameter
     /**
-    **  - - - - - - - - -
-    **   i a u G c 2 g d
-    **  - - - - - - - - -
-    **
     **  Transform geocentric coordinates to geodetic using the specified
     **  reference ellipsoid.
     **
@@ -8819,24 +8622,25 @@ public static class SphericalPosition {
     **
     **  Status:  canonical transformation.
     **
-    **  Given:
-    **     n       int        ellipsoid identifier (Note 1)
-    **     xyz     double[3]  geocentric vector (Note 2)
+    **<!-- Given: -->
+    **     @param n        int         ellipsoid identifier (Note 1)
+    **     @param xyz      double[3]   geocentric vector (Note 2)
     **
-    **  Returned:
-    **     elong   double     longitude (radians, east +ve)
-    **     phi     double     latitude (geodetic, radians, Note 3)
-    **     height  double     height above ellipsoid (geodetic, Notes 2,3)
+    **<!-- Returned: -->
+    **     @param elong    double       <u>returned</u> longitude (radians, east +ve)
+    **     @param phi      double       <u>returned</u> latitude (geodetic, radians, Note 3)
+    **     @param height   double       <u>returned</u> height above ellipsoid (geodetic, Notes 2,3)
     **
-    **  Returned (function value):
-    **            int       status:
+    ** <!-- Returned (function value): -->
+    **  @return int       status:
     **                          0 = OK
     **                         -1 = illegal identifier (Note 3)
     **                         -2 = internal error (Note 3)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The identifier n is a number that specifies the choice of
+    ** <li> The identifier n is a number that specifies the choice of
     **     reference ellipsoid.  The following are supported:
     **
     **        n   ellipsoid
@@ -8846,25 +8650,26 @@ public static class SphericalPosition {
     **
     **     The number n has no significance outside the SOFA software.
     **
-    **  2) The geocentric vector (xyz, given) and height (height, returned)
+    ** <li> The geocentric vector (xyz, given) and height (height, returned)
     **     are in meters.
     **
-    **  3) An error status -1 means that the identifier n is illegal.  An
+    ** <li> An error status -1 means that the identifier n is illegal.  An
     **     error status -2 is theoretically impossible.  In all error cases,
     **     phi and height are both set to -1e9.
     **
-    **  4) The inverse transformation is performed in the function jauGd2gc.
+    ** <li> The inverse transformation is performed in the function jauGd2gc.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauEform} Earth reference ellipsoids
+    **     <li>{@link #jauGc2gde} geocentric to geodetic transformation, general
+    ** </ul>
+    **<p>This revision:  2010 January 18
     **
-    **  Called:
-    **     jauEform     Earth reference ellipsoids
-    **     jauGc2gde    geocentric to geodetic transformation, general
-    **
-    **  This revision:  2010 January 18
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static GeodeticCoord jauGc2gd ( int n, double xyz[] ) throws SOFAIllegalParameter
     {
       GeodeticCoord gc;
 
@@ -8882,10 +8687,6 @@ public static class SphericalPosition {
     }
     
    /**
-    **  - - - - - - - - - -
-    **   i a u G c 2 g d e
-    **  - - - - - - - - - -
-    **
     **  Transform geocentric coordinates to geodetic for a reference
     **  ellipsoid of specified form.
     **
@@ -8894,15 +8695,15 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     a       double     equatorial radius (Notes 2,4)
-    **     f       double     flattening (Note 3)
-    **     xyz     double[3]  geocentric vector (Note 4)
+    **<!-- Given: -->
+    **     @param a        double      equatorial radius (Notes 2,4)
+    **     @param f        double      flattening (Note 3)
+    **     @param xyz      double[3]   geocentric vector (Note 4)
     **
-    **  Returned:
-    **     elong   double     longitude (radians, east +ve)
-    **     phi     double     latitude (geodetic, radians)
-    **     height  double     height above ellipsoid (geodetic, Note 4)
+    **<!-- Returned: -->
+    **     @param elong    double       <u>returned</u> longitude (radians, east +ve)
+    **     @param phi      double       <u>returned</u> latitude (geodetic, radians)
+    **     @param height   double       <u>returned</u> height above ellipsoid (geodetic, Note 4)
     **
     **  @throws SOFAIllegalParameter 
     **            int       status:
@@ -8910,41 +8711,42 @@ public static class SphericalPosition {
     **                         -1 = illegal a
     **                         -2 = illegal f
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) This function is based on the GCONV2H Fortran subroutine by
+    ** <li> This function is based on the GCONV2H Fortran subroutine by
     **     Toshio Fukushima (see reference).
     **
-    **  2) The equatorial radius, a, can be in any units, but meters is
+    ** <li> The equatorial radius, a, can be in any units, but meters is
     **     the conventional choice.
     **
-    **  3) The flattening, f, is (for the Earth) a value around 0.00335,
+    ** <li> The flattening, f, is (for the Earth) a value around 0.00335,
     **     i.e. around 1/298.
     **
-    **  4) The equatorial radius, a, and the geocentric vector, xyz,
+    ** <li> The equatorial radius, a, and the geocentric vector, xyz,
     **     must be given in the same units, and determine the units of
     **     the returned height, height.
     **
-    **  5) If an error occurs (status < 0), elong, phi and height are
+    ** <li> If an error occurs (status < 0), elong, phi and height are
     **     unchanged.
     **
-    **  6) The inverse transformation is performed in the function
+    ** <li> The inverse transformation is performed in the function
     **     jauGd2gce.
     **
-    **  7) The transformation for a standard ellipsoid (such as WGS84) can
+    ** <li> The transformation for a standard ellipsoid (such as WGS84) can
     **     more conveniently be performed by calling jauGc2gd, which uses a
     **     numerical code (1 for WGS84) to identify the required A and F
     **     values.
     **
-    **  Reference:
+    **<p>Reference:
     **
     **     Fukushima, T., "Transformation from Cartesian to geodetic
     **     coordinates accelerated by Halley's method", J.Geodesy (2006)
     **     79: 689-693
     **
-    **  This revision:  2009 November 2
+    **<p>This revision:  2009 November 2
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
  * 
@@ -9038,12 +8840,7 @@ public static class SphericalPosition {
     }
     
 
-    public static double[] jauGd2gc ( int n, double elong, double phi, double height ) throws SOFAIllegalParameter, SOFAInternalError
     /**
-    **  - - - - - - - - -
-    **   i a u G d 2 g c
-    **  - - - - - - - - -
-    **
     **  Transform geodetic coordinates to geocentric using the specified
     **  reference ellipsoid.
     **
@@ -9052,24 +8849,25 @@ public static class SphericalPosition {
     **
     **  Status:  canonical transformation.
     **
-    **  Given:
-    **     n       int        ellipsoid identifier (Note 1)
-    **     elong   double     longitude (radians, east +ve)
-    **     phi     double     latitude (geodetic, radians, Note 3)
-    **     height  double     height above ellipsoid (geodetic, Notes 2,3)
+    **<!-- Given: -->
+    **     @param n        int         ellipsoid identifier (Note 1)
+    **     @param elong    double      longitude (radians, east +ve)
+    **     @param phi      double      latitude (geodetic, radians, Note 3)
+    **     @param height   double      height above ellipsoid (geodetic, Notes 2,3)
     **
-    **  Returned:
-    **     xyz     double[3]  geocentric vector (Note 2)
+    **<!-- Returned: -->
+    **     @param xyz      double[3]    <u>returned</u> geocentric vector (Note 2)
     **
-    **  Returned (function value):
-    **            int       status:
+    ** <!-- Returned (function value): -->
+    **  @return int       status:
     **                          0 = OK
     **                         -1 = illegal identifier (Note 3)
     **                         -2 = illegal case (Note 3)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The identifier n is a number that specifies the choice of
+    ** <li> The identifier n is a number that specifies the choice of
     **     reference ellipsoid.  The following are supported:
     **
     **        n   ellipsoid
@@ -9079,28 +8877,29 @@ public static class SphericalPosition {
     **
     **     The number n has no significance outside the SOFA software.
     **
-    **  2) The height (height, given) and the geocentric vector (xyz,
+    ** <li> The height (height, given) and the geocentric vector (xyz,
     **     returned) are in meters.
     **
-    **  3) No validation is performed on the arguments elong, phi and
+    ** <li> No validation is performed on the arguments elong, phi and
     **     height.  An error status -1 means that the identifier n is
     **     illegal.  An error status -2 protects against cases that would
     **     lead to arithmetic exceptions.  In all error cases, xyz is set
     **     to zeros.
     **
-    **  4) The inverse transformation is performed in the function jauGc2gd.
+    ** <li> The inverse transformation is performed in the function jauGc2gd.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauEform} Earth reference ellipsoids
+    **     <li>{@link #jauGd2gce} geodetic to geocentric transformation, general
+    **     <li>{@link #jauZp} zero p-vector
+    ** </ul>
+    **<p>This revision:  2010 January 18
     **
-    **  Called:
-    **     jauEform     Earth reference ellipsoids
-    **     jauGd2gce    geodetic to geocentric transformation, general
-    **     jauZp        zero p-vector
-    **
-    **  This revision:  2010 January 18
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double[] jauGd2gc ( int n, double elong, double phi, double height ) throws SOFAIllegalParameter, SOFAInternalError
     {
 
 
@@ -9114,13 +8913,7 @@ public static class SphericalPosition {
     }
     
 
-    public static double[] jauGd2gce ( double a, double f, double elong, double phi,
-                    double height ) throws SOFAInternalError
     /**
-    **  - - - - - - - - - -
-    **   i a u G d 2 g c e
-    **  - - - - - - - - - -
-    **
     **  Transform geodetic coordinates to geocentric for a reference
     **  ellipsoid of specified form.
     **
@@ -9129,59 +8922,62 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     a       double     equatorial radius (Notes 1,4)
-    **     f       double     flattening (Notes 2,4)
-    **     elong   double     longitude (radians, east +ve)
-    **     phi     double     latitude (geodetic, radians, Note 4)
-    **     height  double     height above ellipsoid (geodetic, Notes 3,4)
+    **<!-- Given: -->
+    **     @param a        double      equatorial radius (Notes 1,4)
+    **     @param f        double      flattening (Notes 2,4)
+    **     @param elong    double      longitude (radians, east +ve)
+    **     @param phi      double      latitude (geodetic, radians, Note 4)
+    **     @param height   double      height above ellipsoid (geodetic, Notes 3,4)
     **
-    **  Returned:
-    **     xyz     double[3]  geocentric vector (Note 3)
+    **<!-- Returned: -->
+    **     @param xyz      double[3]    <u>returned</u> geocentric vector (Note 3)
     **
-    **  Returned (function value):
-    **            int         status:
+    ** <!-- Returned (function value): -->
+    **  @return int         status:
     **                            0 = OK
     **                           -1 = illegal case (Note 4)
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The equatorial radius, a, can be in any units, but meters is
+    ** <li> The equatorial radius, a, can be in any units, but meters is
     **     the conventional choice.
     **
-    **  2) The flattening, f, is (for the Earth) a value around 0.00335,
+    ** <li> The flattening, f, is (for the Earth) a value around 0.00335,
     **     i.e. around 1/298.
     **
-    **  3) The equatorial radius, a, and the height, height, must be
+    ** <li> The equatorial radius, a, and the height, height, must be
     **     given in the same units, and determine the units of the
     **     returned geocentric vector, xyz.
     **
-    **  4) No validation is performed on individual arguments.  The error
+    ** <li> No validation is performed on individual arguments.  The error
     **     status -1 protects against (unrealistic) cases that would lead
     **     to arithmetic exceptions.  If an error occurs, xyz is unchanged.
     **
-    **  5) The inverse transformation is performed in the function
+    ** <li> The inverse transformation is performed in the function
     **     jauGc2gde.
     **
-    **  6) The transformation for a standard ellipsoid (such as WGS84) can
+    ** <li> The transformation for a standard ellipsoid (such as WGS84) can
     **     more conveniently be performed by calling jauGd2gc,  which uses a
     **     numerical code (1 for WGS84) to identify the required a and f
     **     values.
     **
-    **  References:
+    **<p>References:
     **
-    **     Green, R.M., Spherical Astronomy, Cambridge University Press,
+    **     <br/>Green, R.M., Spherical Astronomy, Cambridge University Press,
     **     (1985) Section 4.5, p96.
     **
-    **     Explanatory Supplement to the Astronomical Almanac,
+    **     <br/>Explanatory Supplement to the Astronomical Almanac,
     **     P. Kenneth Seidelmann (ed), University Science Books (1992),
     **     Section 4.22, p202.
     **
-    **  This revision:  2009 November 2
+    **<p>This revision:  2009 November 2
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double[] jauGd2gce ( double a, double f, double elong, double phi,
+                    double height ) throws SOFAInternalError
     {
        double sp, cp, w, d, ac, as, r;
        double xyz[] = new double[3];
@@ -9210,12 +9006,7 @@ public static class SphericalPosition {
     }
     
 
-    public static double jauGmst00(double uta, double utb, double tta, double ttb)
     /**
-    **  - - - - - - - - - -
-    **   i a u G m s t 0 0
-    **  - - - - - - - - - -
-    **
     **  Greenwich mean sidereal time (model consistent with IAU 2000
     **  resolutions).
     **
@@ -9224,27 +9015,28 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     uta,utb    double    UT1 as a 2-part Julian Date (Notes 1,2)
-    **     tta,ttb    double    TT as a 2-part Julian Date (Notes 1,2)
+    **<!-- Given: -->
+    **     @param uta,utb     double     UT1 as a 2-part Julian Date (Notes 1,2)
+    **     @param tta,ttb     double     TT as a 2-part Julian Date (Notes 1,2)
     **
-    **  Returned (function value):
-    **                double    Greenwich mean sidereal time (radians)
+    ** <!-- Returned (function value): -->
+    **  @return double    Greenwich mean sidereal time (radians)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The UT1 and TT dates uta+utb and tta+ttb respectively, are both
+    ** <li> The UT1 and TT dates uta+utb and tta+ttb respectively, are both
     **     Julian Dates, apportioned in any convenient way between the
     **     argument pairs.  For example, JD=2450123.7 could be expressed in
     **     any of these ways, among others:
-    **
+    **<pre>
     **            Part A         Part B
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable (in the case of UT;  the TT is not at all critical
@@ -9256,39 +9048,40 @@ public static class SphericalPosition {
     **     question and the utb argument lies in the range 0 to 1, or vice
     **     versa.
     **
-    **  2) Both UT1 and TT are required, UT1 to predict the Earth rotation
+    ** <li> Both UT1 and TT are required, UT1 to predict the Earth rotation
     **     and TT to predict the effects of precession.  If UT1 is used for
     **     both purposes, errors of order 100 microarcseconds result.
     **
-    **  3) This GMST is compatible with the IAU 2000 resolutions and must be
+    ** <li> This GMST is compatible with the IAU 2000 resolutions and must be
     **     used only in conjunction with other IAU 2000 compatible
     **     components such as precession-nutation and equation of the
     **     equinoxes.
     **
-    **  4) The result is returned in the range 0 to 2pi.
+    ** <li> The result is returned in the range 0 to 2pi.
     **
-    **  5) The algorithm is from Capitaine et al. (2003) and IERS
+    ** <li> The algorithm is from Capitaine et al. (2003) and IERS
     **     Conventions 2003.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauEra00} Earth rotation angle, IAU 2000
+    **     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauEra00     Earth rotation angle, IAU 2000
-    **     jauAnp       normalize angle into range 0 to 2pi
-    **
-    **  References:
-    **
-    **     Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
+    **    <br/>Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
     **     implement the IAU 2000 definition of UT1", Astronomy &
     **     Astrophysics, 406, 1135-1149 (2003)
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2009 March 16
+    **<p>This revision:  2009 March 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauGmst00(double uta, double utb, double tta, double ttb)
     {
        double t, gmst;
 
@@ -9310,12 +9103,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauGmst06(double uta, double utb, double tta, double ttb)
     /**
-    **  - - - - - - - - - -
-    **   i a u G m s t 0 6
-    **  - - - - - - - - - -
-    **
     **  Greenwich mean sidereal time (consistent with IAU 2006 precession).
     **
     **  This function is derived from the International Astronomical Union's
@@ -9323,27 +9111,28 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     uta,utb    double    UT1 as a 2-part Julian Date (Notes 1,2)
-    **     tta,ttb    double    TT as a 2-part Julian Date (Notes 1,2)
+    **<!-- Given: -->
+    **     @param uta,utb     double     UT1 as a 2-part Julian Date (Notes 1,2)
+    **     @param tta,ttb     double     TT as a 2-part Julian Date (Notes 1,2)
     **
-    **  Returned (function value):
-    **                double    Greenwich mean sidereal time (radians)
+    ** <!-- Returned (function value): -->
+    **  @return double    Greenwich mean sidereal time (radians)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The UT1 and TT dates uta+utb and tta+ttb respectively, are both
+    ** <li> The UT1 and TT dates uta+utb and tta+ttb respectively, are both
     **     Julian Dates, apportioned in any convenient way between the
     **     argument pairs.  For example, JD=2450123.7 could be expressed in
     **     any of these ways, among others:
-    **
+    **<pre>
     **            Part A        Part B
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable (in the case of UT;  the TT is not at all critical
@@ -9355,30 +9144,31 @@ public static class SphericalPosition {
     **     question and the utb argument lies in the range 0 to 1, or vice
     **     versa.
     **
-    **  2) Both UT1 and TT are required, UT1 to predict the Earth rotation
+    ** <li> Both UT1 and TT are required, UT1 to predict the Earth rotation
     **     and TT to predict the effects of precession.  If UT1 is used for
     **     both purposes, errors of order 100 microarcseconds result.
     **
-    **  3) This GMST is compatible with the IAU 2006 precession and must not
+    ** <li> This GMST is compatible with the IAU 2006 precession and must not
     **     be used with other precession models.
     **
-    **  4) The result is returned in the range 0 to 2pi.
+    ** <li> The result is returned in the range 0 to 2pi.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauEra00} Earth rotation angle, IAU 2000
+    **     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauEra00     Earth rotation angle, IAU 2000
-    **     jauAnp       normalize angle into range 0 to 2pi
-    **
-    **  Reference:
-    **
-    **     Capitaine, N., Wallace, P.T. & Chapront, J., 2005,
+    **    <br/>Capitaine, N., Wallace, P.T. & Chapront, J., 2005,
     **     Astron.Astrophys. 432, 355
     **
-    **  This revision:  2008 May 24
+    **<p>This revision:  2008 May 24
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauGmst06(double uta, double utb, double tta, double ttb)
     {
        double t, gmst;
 
@@ -9401,12 +9191,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauGmst82(double dj1, double dj2)
     /**
-    **  - - - - - - - - - -
-    **   i a u G m s t 8 2
-    **  - - - - - - - - - -
-    **
     **  Universal Time to Greenwich mean sidereal time (IAU 1982 model).
     **
     **  This function is derived from the International Astronomical Union's
@@ -9414,15 +9199,16 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     dj1,dj2    double    UT1 Julian Date (see note)
+    **<!-- Given: -->
+    **     @param dj1,dj2     double     UT1 Julian Date (see note)
     **
-    **  Returned (function value):
-    **                double    Greenwich mean sidereal time (radians)
+    ** <!-- Returned (function value): -->
+    **  @return double    Greenwich mean sidereal time (radians)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The UT1 date dj1+dj2 is a Julian Date, apportioned in any
+    ** <li> The UT1 date dj1+dj2 is a Julian Date, apportioned in any
     **     convenient way between the arguments dj1 and dj2.  For example,
     **     JD(UT1)=2450123.7 could be expressed in any of these ways,
     **     among others:
@@ -9433,7 +9219,7 @@ public static class SphericalPosition {
     **          2451545D0      -1421.3D0     (J2000 method)
     **         2400000.5D0     50123.2D0     (MJD method)
     **         2450123.5D0       0.2D0       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 and MJD methods are good compromises
@@ -9443,35 +9229,36 @@ public static class SphericalPosition {
     **     0hrs UT1 on the day in question and the dj2 argument lies in the
     **     range 0 to 1, or vice versa.
     **
-    **  2) The algorithm is based on the IAU 1982 expression.  This is
+    ** <li> The algorithm is based on the IAU 1982 expression.  This is
     **     always described as giving the GMST at 0 hours UT1.  In fact, it
     **     gives the difference between the GMST and the UT, the steady
     **     4-minutes-per-day drawing-ahead of ST with respect to UT.  When
     **     whole days are ignored, the expression happens to equal the GMST
     **     at 0 hours UT1 each day.
     **
-    **  3) In this function, the entire UT1 (the sum of the two arguments
+    ** <li> In this function, the entire UT1 (the sum of the two arguments
     **     dj1 and dj2) is used directly as the argument for the standard
     **     formula, the constant term of which is adjusted by 12 hours to
     **     take account of the noon phasing of Julian Date.  The UT1 is then
     **     added, but omitting whole days to conserve accuracy.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauAnp       normalize angle into range 0 to 2pi
-    **
-    **  References:
-    **
-    **     Transactions of the International Astronomical Union,
+    **     <br/>Transactions of the International Astronomical Union,
     **     XVIII B, 67 (1983).
     **
-    **     Aoki et al., Astron. Astrophys. 105, 359-361 (1982).
+    **     <br/>Aoki et al., Astron. Astrophys. 105, 359-361 (1982).
     **
-    **  This revision:  2008 May 24
+    **<p>This revision:  2008 May 24
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauGmst82(double dj1, double dj2)
     {
     /* Coefficients of IAU 1982 GMST-UT1 model */
        double A = 24110.54841  -  DAYSEC / 2.0;
@@ -9507,12 +9294,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauGst00a(double uta, double utb, double tta, double ttb)
     /**
-    **  - - - - - - - - - -
-    **   i a u G s t 0 0 a
-    **  - - - - - - - - - -
-    **
     **  Greenwich apparent sidereal time (consistent with IAU 2000
     **  resolutions).
     **
@@ -9521,27 +9303,28 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     uta,utb    double    UT1 as a 2-part Julian Date (Notes 1,2)
-    **     tta,ttb    double    TT as a 2-part Julian Date (Notes 1,2)
+    **<!-- Given: -->
+    **     @param uta,utb     double     UT1 as a 2-part Julian Date (Notes 1,2)
+    **     @param tta,ttb     double     TT as a 2-part Julian Date (Notes 1,2)
     **
-    **  Returned (function value):
-    **                double    Greenwich apparent sidereal time (radians)
+    ** <!-- Returned (function value): -->
+    **  @return double    Greenwich apparent sidereal time (radians)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The UT1 and TT dates uta+utb and tta+ttb respectively, are both
+    ** <li> The UT1 and TT dates uta+utb and tta+ttb respectively, are both
     **     Julian Dates, apportioned in any convenient way between the
     **     argument pairs.  For example, JD=2450123.7 could be expressed in
     **     any of these ways, among others:
-    **
+    **<pre>
     **            Part A        Part B
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable (in the case of UT;  the TT is not at all critical
@@ -9553,40 +9336,41 @@ public static class SphericalPosition {
     **     question and the utb argument lies in the range 0 to 1, or vice
     **     versa.
     **
-    **  2) Both UT1 and TT are required, UT1 to predict the Earth rotation
+    ** <li> Both UT1 and TT are required, UT1 to predict the Earth rotation
     **     and TT to predict the effects of precession-nutation.  If UT1 is
     **     used for both purposes, errors of order 100 microarcseconds
     **     result.
     **
-    **  3) This GAST is compatible with the IAU 2000 resolutions and must be
+    ** <li> This GAST is compatible with the IAU 2000 resolutions and must be
     **     used only in conjunction with other IAU 2000 compatible
     **     components such as precession-nutation.
     **
-    **  4) The result is returned in the range 0 to 2pi.
+    ** <li> The result is returned in the range 0 to 2pi.
     **
-    **  5) The algorithm is from Capitaine et al. (2003) and IERS
+    ** <li> The algorithm is from Capitaine et al. (2003) and IERS
     **     Conventions 2003.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauGmst00} Greenwich mean sidereal time, IAU 2000
+    **     <li>{@link #jauEe00a} equation of the equinoxes, IAU 2000A
+    **     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauGmst00    Greenwich mean sidereal time, IAU 2000
-    **     jauEe00a     equation of the equinoxes, IAU 2000A
-    **     jauAnp       normalize angle into range 0 to 2pi
-    **
-    **  References:
-    **
-    **     Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
+    **    <br/>Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
     **     implement the IAU 2000 definition of UT1", Astronomy &
     **     Astrophysics, 406, 1135-1149 (2003)
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2008 May 16
+    **<p>This revision:  2008 May 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauGst00a(double uta, double utb, double tta, double ttb)
     {
        double gmst00, ee00a, gst;
 
@@ -9600,12 +9384,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauGst00b(double uta, double utb)
     /**
-    **  - - - - - - - - - -
-    **   i a u G s t 0 0 b
-    **  - - - - - - - - - -
-    **
     **  Greenwich apparent sidereal time (consistent with IAU 2000
     **  resolutions but using the truncated nutation model IAU 2000B).
     **
@@ -9614,26 +9393,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     uta,utb    double    UT1 as a 2-part Julian Date (Notes 1,2)
+    **<!-- Given: -->
+    **     @param uta,utb     double     UT1 as a 2-part Julian Date (Notes 1,2)
     **
-    **  Returned (function value):
-    **                double    Greenwich apparent sidereal time (radians)
+    ** <!-- Returned (function value): -->
+    **  @return double    Greenwich apparent sidereal time (radians)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The UT1 date uta+utb is a Julian Date, apportioned in any
+    ** <li> The UT1 date uta+utb is a Julian Date, apportioned in any
     **     convenient way between the argument pair.  For example,
     **     JD=2450123.7 could be expressed in any of these ways, among
     **     others:
-    **
+    **<pre>
     **             uta            utb
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in cases
     **     where the loss of several decimal digits of resolution is
     **     acceptable.  The J2000 and MJD methods are good compromises
@@ -9644,7 +9424,7 @@ public static class SphericalPosition {
     **     question and the utb argument lies in the range 0 to 1, or vice
     **     versa.
     **
-    **  2) The result is compatible with the IAU 2000 resolutions, except
+    ** <li> The result is compatible with the IAU 2000 resolutions, except
     **     that accuracy has been compromised for the sake of speed and
     **     convenience in two respects:
     **
@@ -9655,39 +9435,40 @@ public static class SphericalPosition {
     **     . The IAU 2000B abridged nutation model (McCarthy & Luzum, 2001)
     **       is used, introducing errors of up to 1 mas.
     **
-    **  3) This GAST is compatible with the IAU 2000 resolutions and must be
+    ** <li> This GAST is compatible with the IAU 2000 resolutions and must be
     **     used only in conjunction with other IAU 2000 compatible
     **     components such as precession-nutation.
     **
-    **  4) The result is returned in the range 0 to 2pi.
+    ** <li> The result is returned in the range 0 to 2pi.
     **
-    **  5) The algorithm is from Capitaine et al. (2003) and IERS
+    ** <li> The algorithm is from Capitaine et al. (2003) and IERS
     **     Conventions 2003.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauGmst00} Greenwich mean sidereal time, IAU 2000
+    **     <li>{@link #jauEe00b} equation of the equinoxes, IAU 2000B
+    **     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauGmst00    Greenwich mean sidereal time, IAU 2000
-    **     jauEe00b     equation of the equinoxes, IAU 2000B
-    **     jauAnp       normalize angle into range 0 to 2pi
-    **
-    **  References:
-    **
-    **     Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
+    **    <br/>Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
     **     implement the IAU 2000 definition of UT1", Astronomy &
     **     Astrophysics, 406, 1135-1149 (2003)
     **
-    **     McCarthy, D.D. & Luzum, B.J., "An abridged model of the
+    **     <br/>McCarthy, D.D. & Luzum, B.J., "An abridged model of the
     **     precession-nutation of the celestial pole", Celestial Mechanics &
     **     Dynamical Astronomy, 85, 37-49 (2003)
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2008 May 16
+    **<p>This revision:  2008 May 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauGst00b(double uta, double utb)
     {
        double gmst00, ee00b, gst;
 
@@ -9701,13 +9482,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauGst06(double uta, double utb, double tta, double ttb,
-                    double rnpb[][])
     /**
-    **  - - - - - - - - -
-    **   i a u G s t 0 6
-    **  - - - - - - - - -
-    **
     **  Greenwich apparent sidereal time, IAU 2006, given the NPB matrix.
     **
     **  This function is derived from the International Astronomical Union's
@@ -9715,28 +9490,29 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     uta,utb  double        UT1 as a 2-part Julian Date (Notes 1,2)
-    **     tta,ttb  double        TT as a 2-part Julian Date (Notes 1,2)
-    **     rnpb     double[3][3]  nutation x precession x bias matrix
+    **<!-- Given: -->
+    **     @param uta,utb   double         UT1 as a 2-part Julian Date (Notes 1,2)
+    **     @param tta,ttb   double         TT as a 2-part Julian Date (Notes 1,2)
+    **     @param rnpb      double[3][3]   nutation x precession x bias matrix
     **
-    **  Returned (function value):
-    **              double        Greenwich apparent sidereal time (radians)
+    ** <!-- Returned (function value): -->
+    **  @return double        Greenwich apparent sidereal time (radians)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The UT1 and TT dates uta+utb and tta+ttb respectively, are both
+    ** <li> The UT1 and TT dates uta+utb and tta+ttb respectively, are both
     **     Julian Dates, apportioned in any convenient way between the
     **     argument pairs.  For example, JD=2450123.7 could be expressed in
     **     any of these ways, among others:
-    **
+    **<pre>
     **            Part A        Part B
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable (in the case of UT;  the TT is not at all critical
@@ -9748,34 +9524,36 @@ public static class SphericalPosition {
     **     question and the utb argument lies in the range 0 to 1, or vice
     **     versa.
     **
-    **  2) Both UT1 and TT are required, UT1 to predict the Earth rotation
+    ** <li> Both UT1 and TT are required, UT1 to predict the Earth rotation
     **     and TT to predict the effects of precession-nutation.  If UT1 is
     **     used for both purposes, errors of order 100 microarcseconds
     **     result.
     **
-    **  3) Although the function uses the IAU 2006 series for s+XY/2, it is
+    ** <li> Although the function uses the IAU 2006 series for s+XY/2, it is
     **     otherwise independent of the precession-nutation model and can in
     **     practice be used with any equinox-based NPB matrix.
     **
-    **  4) The result is returned in the range 0 to 2pi.
+    ** <li> The result is returned in the range 0 to 2pi.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauBpn2xy} extract CIP X,Y coordinates from NPB matrix
+    **     <li>{@link #jauS06} the CIO locator s, given X,Y, IAU 2006
+    **     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+    **     <li>{@link #jauEra00} Earth rotation angle, IAU 2000
+    **     <li>{@link #jauEors} equation of the origins, given NPB matrix and s
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     jauS06       the CIO locator s, given X,Y, IAU 2006
-    **     jauAnp       normalize angle into range 0 to 2pi
-    **     jauEra00     Earth rotation angle, IAU 2000
-    **     jauEors      equation of the origins, given NPB matrix and s
+    **    <br/>Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
     **
-    **  Reference:
+    **<p>This revision:  2008 May 24
     **
-    **     Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
-    **
-    **  This revision:  2008 May 24
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauGst06(double uta, double utb, double tta, double ttb,
+                    double rnpb[][])
     {
        double s, era, eors, gst;
 
@@ -9796,12 +9574,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauGst06a(double uta, double utb, double tta, double ttb)
     /**
-    **  - - - - - - - - - -
-    **   i a u G s t 0 6 a
-    **  - - - - - - - - - -
-    **
     **  Greenwich apparent sidereal time (consistent with IAU 2000 and 2006
     **  resolutions).
     **
@@ -9810,27 +9583,28 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     uta,utb    double    UT1 as a 2-part Julian Date (Notes 1,2)
-    **     tta,ttb    double    TT as a 2-part Julian Date (Notes 1,2)
+    **<!-- Given: -->
+    **     @param uta,utb     double     UT1 as a 2-part Julian Date (Notes 1,2)
+    **     @param tta,ttb     double     TT as a 2-part Julian Date (Notes 1,2)
     **
-    **  Returned (function value):
-    **                double    Greenwich apparent sidereal time (radians)
+    ** <!-- Returned (function value): -->
+    **  @return double    Greenwich apparent sidereal time (radians)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The UT1 and TT dates uta+utb and tta+ttb respectively, are both
+    ** <li> The UT1 and TT dates uta+utb and tta+ttb respectively, are both
     **     Julian Dates, apportioned in any convenient way between the
     **     argument pairs.  For example, JD=2450123.7 could be expressed in
     **     any of these ways, among others:
-    **
+    **<pre>
     **            Part A        Part B
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable (in the case of UT;  the TT is not at all critical
@@ -9842,31 +9616,32 @@ public static class SphericalPosition {
     **     question and the utb argument lies in the range 0 to 1, or vice
     **     versa.
     **
-    **  2) Both UT1 and TT are required, UT1 to predict the Earth rotation
+    ** <li> Both UT1 and TT are required, UT1 to predict the Earth rotation
     **     and TT to predict the effects of precession-nutation.  If UT1 is
     **     used for both purposes, errors of order 100 microarcseconds
     **     result.
     **
-    **  3) This GAST is compatible with the IAU 2000/2006 resolutions and
+    ** <li> This GAST is compatible with the IAU 2000/2006 resolutions and
     **     must be used only in conjunction with IAU 2006 precession and
     **     IAU 2000A nutation.
     **
-    **  4) The result is returned in the range 0 to 2pi.
+    ** <li> The result is returned in the range 0 to 2pi.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPnm06a} classical NPB matrix, IAU 2006/2000A
+    **     <li>{@link #jauGst06} Greenwich apparent ST, IAU 2006, given NPB matrix
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauPnm06a    classical NPB matrix, IAU 2006/2000A
-    **     jauGst06     Greenwich apparent ST, IAU 2006, given NPB matrix
+    **    <br/>Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
     **
-    **  Reference:
+    **<p>This revision:  2008 May 16
     **
-    **     Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
-    **
-    **  This revision:  2008 May 16
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauGst06a(double uta, double utb, double tta, double ttb)
     {
        double rnpb[][] = new double[3][3], gst;
 
@@ -9882,12 +9657,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauGst94(double uta, double utb)
     /**
-    **  - - - - - - - - -
-    **   i a u G s t 9 4
-    **  - - - - - - - - -
-    **
     **  Greenwich apparent sidereal time (consistent with IAU 1982/94
     **  resolutions).
     **
@@ -9896,26 +9666,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     uta,utb    double    UT1 as a 2-part Julian Date (Notes 1,2)
+    **<!-- Given: -->
+    **     @param uta,utb     double     UT1 as a 2-part Julian Date (Notes 1,2)
     **
-    **  Returned (function value):
-    **                double    Greenwich apparent sidereal time (radians)
+    ** <!-- Returned (function value): -->
+    **  @return double    Greenwich apparent sidereal time (radians)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The UT1 date uta+utb is a Julian Date, apportioned in any
+    ** <li> The UT1 date uta+utb is a Julian Date, apportioned in any
     **     convenient way between the argument pair.  For example,
     **     JD=2450123.7 could be expressed in any of these ways, among
     **     others:
-    **
+    **<pre>
     **             uta            utb
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in cases
     **     where the loss of several decimal digits of resolution is
     **     acceptable.  The J2000 and MJD methods are good compromises
@@ -9926,35 +9697,36 @@ public static class SphericalPosition {
     **     question and the utb argument lies in the range 0 to 1, or vice
     **     versa.
     **
-    **  2) The result is compatible with the IAU 1982 and 1994 resolutions,
+    ** <li> The result is compatible with the IAU 1982 and 1994 resolutions,
     **     except that accuracy has been compromised for the sake of
     **     convenience in that UT is used instead of TDB (or TT) to compute
     **     the equation of the equinoxes.
     **
-    **  3) This GAST must be used only in conjunction with contemporaneous
+    ** <li> This GAST must be used only in conjunction with contemporaneous
     **     IAU standards such as 1976 precession, 1980 obliquity and 1982
     **     nutation.  It is not compatible with the IAU 2000 resolutions.
     **
-    **  4) The result is returned in the range 0 to 2pi.
+    ** <li> The result is returned in the range 0 to 2pi.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauGmst82} Greenwich mean sidereal time, IAU 1982
+    **     <li>{@link #jauEqeq94} equation of the equinoxes, IAU 1994
+    **     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauGmst82    Greenwich mean sidereal time, IAU 1982
-    **     jauEqeq94    equation of the equinoxes, IAU 1994
-    **     jauAnp       normalize angle into range 0 to 2pi
-    **
-    **  References:
-    **
-    **     Explanatory Supplement to the Astronomical Almanac,
+    **     <br/>Explanatory Supplement to the Astronomical Almanac,
     **     P. Kenneth Seidelmann (ed), University Science Books (1992)
     **
     **     IAU Resolution C7, Recommendation 3 (1994)
     **
-    **  This revision:  2008 May 16
+    **<p>This revision:  2008 May 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauGst94(double uta, double utb)
     {
        double gmst82, eqeq94, gst;
 
@@ -9968,13 +9740,7 @@ public static class SphericalPosition {
         }
     
 
-    public static CatalogCoords jauH2fk5(double rh, double dh,
-                  double drh, double ddh, double pxh, double rvh)
     /**
-    **  - - - - - - - - -
-    **   i a u H 2 f k 5
-    **  - - - - - - - - -
-    **
     **  Transform Hipparcos star data into the FK5 (J2000.0) system.
     **
     **  This function is derived from the International Astronomical Union's
@@ -9998,40 +9764,43 @@ public static class SphericalPosition {
     **     px5     double    parallax (arcsec)
     **     rv5     double    radial velocity (km/s, positive = receding)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) This function transforms Hipparcos star positions and proper
+    ** <li> This function transforms Hipparcos star positions and proper
     **     motions into FK5 J2000.0.
     **
-    **  2) The proper motions in RA are dRA/dt rather than
+    ** <li> The proper motions in RA are dRA/dt rather than
     **     cos(Dec)*dRA/dt, and are per year rather than per century.
     **
-    **  3) The FK5 to Hipparcos transformation is modeled as a pure
+    ** <li> The FK5 to Hipparcos transformation is modeled as a pure
     **     rotation and spin;  zonal errors in the FK5 catalog are not
     **     taken into account.
     **
-    **  4) See also jauFk52h, jauFk5hz, jauHfk5z.
+    ** <li> See also jauFk52h, jauFk5hz, jauHfk5z.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauStarpv} star catalog data to space motion pv-vector
+    **     <li>{@link #jauFk5hip} FK5 to Hipparcos rotation and spin
+    **     <li>{@link #jauRv2m} r-vector to r-matrix
+    **     <li>{@link #jauRxp} product of r-matrix and p-vector
+    **     <li>{@link #jauTrxp} product of transpose of r-matrix and p-vector
+    **     <li>{@link #jauPxp} vector product of two p-vectors
+    **     <li>{@link #jauPmp} p-vector minus p-vector
+    **     <li>{@link #jauPvstar} space motion pv-vector to star catalog data
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauStarpv    star catalog data to space motion pv-vector
-    **     jauFk5hip    FK5 to Hipparcos rotation and spin
-    **     jauRv2m      r-vector to r-matrix
-    **     jauRxp       product of r-matrix and p-vector
-    **     jauTrxp      product of transpose of r-matrix and p-vector
-    **     jauPxp       vector product of two p-vectors
-    **     jauPmp       p-vector minus p-vector
-    **     jauPvstar    space motion pv-vector to star catalog data
+    **     <br/>F.Mignard & M.Froeschle, Astron. Astrophys. 354, 732-739 (2000).
     **
-    **  Reference:
+    **<p>This revision:  2009 December 17
     **
-    **     F.Mignard & M.Froeschle, Astron. Astrophys. 354, 732-739 (2000).
-    **
-    **  This revision:  2009 December 17
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static CatalogCoords jauH2fk5(double rh, double dh,
+                  double drh, double ddh, double pxh, double rvh)
     {
        int i;
        double pvh[][] = new double[2][3], r5h[][] = new double[3][3], s5h[] = new double[3], sh[] = new double[3], wxp[] = new double[3], vv[] = new double[3], pv5[][] = new double[2][3];
@@ -10075,12 +9844,7 @@ public static class SphericalPosition {
         }
     
 
-    public static CatalogCoords jauHfk5z(double rh, double dh, double date1, double date2)
     /**
-    **  - - - - - - - - -
-    **   i a u H f k 5 z
-    **  - - - - - - - - -
-    **
     **  Transform a Hipparcos star position into FK5 J2000.0, assuming
     **  zero Hipparcos proper motion.
     **
@@ -10089,31 +9853,33 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     rh            double    Hipparcos RA (radians)
-    **     dh            double    Hipparcos Dec (radians)
-    **     date1,date2   double    TDB date (Note 1)
+    **<!-- Given: -->
+    **     @param rh             double     Hipparcos RA (radians)
+    **     @param dh             double     Hipparcos Dec (radians)
+    **     @param date1,date2    double     TDB date (Note 1)
     **
+    ** FIXME original did not return the parallax and radial velocity of the CatalogCoords type.
     **  Returned (all FK5, equinox J2000.0, date date1+date2):
     **     r5            double    RA (radians)
     **     d5            double    Dec (radians)
     **     dr5           double    FK5 RA proper motion (rad/year, Note 4)
     **     dd5           double    Dec proper motion (rad/year, Note 4)
-    **FIXME original did not return the parallax and radial velocity of the CatalogCoords type.
-    **  Notes:
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <p>Notes:
+    ** <ol>
+    **
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -10121,45 +9887,46 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The proper motion in RA is dRA/dt rather than cos(Dec)*dRA/dt.
+    ** <li> The proper motion in RA is dRA/dt rather than cos(Dec)*dRA/dt.
     **
-    **  3) The FK5 to Hipparcos transformation is modeled as a pure rotation
+    ** <li> The FK5 to Hipparcos transformation is modeled as a pure rotation
     **     and spin;  zonal errors in the FK5 catalogue are not taken into
     **     account.
     **
-    **  4) It was the intention that Hipparcos should be a close
+    ** <li> It was the intention that Hipparcos should be a close
     **     approximation to an inertial frame, so that distant objects have
     **     zero proper motion;  such objects have (in general) non-zero
     **     proper motion in FK5, and this function returns those fictitious
     **     proper motions.
     **
-    **  5) The position returned by this function is in the FK5 J2000.0
+    ** <li> The position returned by this function is in the FK5 J2000.0
     **     reference system but at date date1+date2.
     **
-    **  6) See also jauFk52h, jauH2fk5, jauFk5zhz.
+    ** <li> See also jauFk52h, jauH2fk5, jauFk5zhz.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauS2c} spherical coordinates to unit vector
+    **     <li>{@link #jauFk5hip} FK5 to Hipparcos rotation and spin
+    **     <li>{@link #jauRxp} product of r-matrix and p-vector
+    **     <li>{@link #jauSxp} multiply p-vector by scalar
+    **     <li>{@link #jauRxr} product of two r-matrices
+    **     <li>{@link #jauTrxp} product of transpose of r-matrix and p-vector
+    **     <li>{@link #jauPxp} vector product of two p-vectors
+    **     <li>{@link #jauPv2s} pv-vector to spherical
+    **     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauS2c       spherical coordinates to unit vector
-    **     jauFk5hip    FK5 to Hipparcos rotation and spin
-    **     jauRxp       product of r-matrix and p-vector
-    **     jauSxp       multiply p-vector by scalar
-    **     jauRxr       product of two r-matrices
-    **     jauTrxp      product of transpose of r-matrix and p-vector
-    **     jauPxp       vector product of two p-vectors
-    **     jauPv2s      pv-vector to spherical
-    **     jauAnp       normalize angle into range 0 to 2pi
+    **     <br/>F.Mignard & M.Froeschle, 2000, Astron.Astrophys. 354, 732-739.
     **
-    **  Reference:
+    **<p>This revision:  2009 December 17
     **
-    **     F.Mignard & M.Froeschle, 2000, Astron.Astrophys. 354, 732-739.
-    **
-    **  This revision:  2009 December 17
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     *
     */
+    public static CatalogCoords jauHfk5z(double rh, double dh, double date1, double date2)
     {
        double t, ph[] = new double[3], r5h[][] = new double[3][3], s5h[] = new double[3], sh[] = new double[3], vst[] = new double[3],
        rst[][] = new double[3][3], r5ht[][] = new double[3][3], pv5e[][] = new double[2][3], vv[] = new double[3];
@@ -10204,12 +9971,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauIr(double r[][])
     /**
-    **  - - - - - -
-    **   i a u I r
-    **  - - - - - -
-    **
     **  Initialize an r-matrix to the identity matrix.
     **
     **  This function is derived from the International Astronomical Union's
@@ -10217,18 +9979,19 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Returned:
-    **     r       double[3][3]    r-matrix
+    **<!-- Returned: -->
+    **     @param r        double[3][3]      <u>returned</u> r-matrix
     **
-    **  Called:
-    **     jauZr        zero r-matrix
+    **<p>Called:<ul>
+    **     <li>{@link #jauZr} zero r-matrix
+    ** </ul>
+    **<p>This revision:  2008 May 11
     **
-    **  This revision:  2008 May 11
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauIr(double r[][])
     {
        jauZr(r);
        r[0][0] = 1.0;
@@ -10252,12 +10015,7 @@ public static class SphericalPosition {
             this.fd = fd;
         }
     }
-    public static Calendar jauJd2cal(double dj1, double dj2) throws SOFAIllegalParameter
     /**
-    **  - - - - - - - - - -
-    **   i a u J d 2 c a l
-    **  - - - - - - - - - -
-    **
     **  Julian Date to Gregorian year, month, day, and fraction of a day.
     **
     **  This function is derived from the International Astronomical Union's
@@ -10265,8 +10023,8 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     dj1,dj2   double   Julian Date (Notes 1, 2)
+    **<!-- Given: -->
+    **     @param dj1,dj2    double    Julian Date (Notes 1, 2)
     **
     **  Returned (arguments):
     **     iy        int      year
@@ -10274,17 +10032,18 @@ public static class SphericalPosition {
     **     id        int      day
     **     fd        double   fraction of day
     **
-    **  Returned (function value):
-    **               int      status:
+    ** <!-- Returned (function value): -->
+    **  @return int      status:
     **                           0 = OK
     **                          -1 = unacceptable date (Note 3)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The earliest valid date is -68569.5 (-4900 March 1).  The
+    ** <li> The earliest valid date is -68569.5 (-4900 March 1).  The
     **     largest value accepted is 10^9.
     **
-    **  2) The Julian Date is apportioned in any convenient way between
+    ** <li> The Julian Date is apportioned in any convenient way between
     **     the arguments dj1 and dj2.  For example, JD=2450123.7 could
     **     be expressed in any of these ways, among others:
     **
@@ -10294,24 +10053,25 @@ public static class SphericalPosition {
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
-    **  3) In early eras the conversion is from the "proleptic Gregorian
+    **</pre>
+    ** <li> In early eras the conversion is from the "proleptic Gregorian
     **     calendar";  no account is taken of the date(s) of adoption of
     **     the Gregorian calendar, nor is the AD/BC numbering convention
     **     observed.
     **
-    **  Reference:
+    **<p>Reference:
     **
-    **     Explanatory Supplement to the Astronomical Almanac,
+    **     <br/>Explanatory Supplement to the Astronomical Almanac,
     **     P. Kenneth Seidelmann (ed), University Science Books (1992),
     **     Section 12.92 (p604).
     **
-    **  This revision:  2008 May 26
+    **<p>This revision:  2008 May 26
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static Calendar jauJd2cal(double dj1, double dj2) throws SOFAIllegalParameter
     {
     /* Minimum and maximum allowed JD */
        final double djmin = -68569.5;
@@ -10360,12 +10120,7 @@ public static class SphericalPosition {
 
         }
      
-    public static int jauJdcalf(int ndp, double dj1, double dj2, int iymdf[])
     /**
-    **  - - - - - - - - - -
-    **   i a u J d c a l f
-    **  - - - - - - - - - -
-    **
     **  Julian Date to Gregorian Calendar, expressed in a form convenient
     **  for formatting messages:  rounded to a specified precision.
     **
@@ -10374,23 +10129,24 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     ndp       int      number of decimal places of days in fraction
-    **     dj1,dj2   double   dj1+dj2 = Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param ndp        int       number of decimal places of days in fraction
+    **     @param dj1,dj2    double    dj1+dj2 = Julian Date (Note 1)
     **
-    **  Returned:
-    **     iymdf     int[4]   year, month, day, fraction in Gregorian
-    **                        calendar
+    **<!-- Returned: -->
+    **     @param iymdf      int[4]     <u>returned</u> year, month, day, fraction in Gregorian calendar
     **
-    **  Returned (function value):
-    **               int      status:
+    **
+    ** <!-- Returned (function value): -->
+    **  @return int      status:
     **                          -1 = date out of range
     **                           0 = OK
     **                          +1 = NDP not 0-9 (interpreted as 0)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The Julian Date is apportioned in any convenient way between
+    ** <li> The Julian Date is apportioned in any convenient way between
     **     the arguments dj1 and dj2.  For example, JD=2450123.7 could
     **     be expressed in any of these ways, among others:
     **
@@ -10400,32 +10156,33 @@ public static class SphericalPosition {
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
-    **  2) In early eras the conversion is from the "Proleptic Gregorian
+    **</pre>
+    ** <li> In early eras the conversion is from the "Proleptic Gregorian
     **     Calendar";  no account is taken of the date(s) of adoption of
     **     the Gregorian Calendar, nor is the AD/BC numbering convention
     **     observed.
     **
-    **  3) Refer to the function jauJd2cal.
+    ** <li> Refer to the function jauJd2cal.
     **
-    **  4) NDP should be 4 or less if internal overflows are to be
+    ** <li> NDP should be 4 or less if internal overflows are to be
     **     avoided on machines which use 16-bit integers.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauJd2cal} JD to Gregorian calendar
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauJd2cal    JD to Gregorian calendar
-    **
-    **  Reference:
-    **
-    **     Explanatory Supplement to the Astronomical Almanac,
+    **     <br/>Explanatory Supplement to the Astronomical Almanac,
     **     P. Kenneth Seidelmann (ed), University Science Books (1992),
     **     Section 12.92 (p604).
     **
-    **  This revision:  2008 October 28
+    **<p>This revision:  2008 October 28
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static int jauJdcalf(int ndp, double dj1, double dj2, int iymdf[])
     {
        int j, js;
        double denom, d1, d2, f1, f2, f;
@@ -10479,12 +10236,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauNum00a(double date1, double date2, double rmatn[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u N u m 0 0 a
-    **  - - - - - - - - - -
-    **
     **  Form the matrix of nutation for a given date, IAU 2000A model.
     **
     **  This function is derived from the International Astronomical Union's
@@ -10492,26 +10244,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double          TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     rmatn        double[3][3]    nutation matrix
+    **<!-- Returned: -->
+    **     @param rmatn         double[3][3]      <u>returned</u> nutation matrix
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -10519,29 +10272,30 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix operates in the sense V(true) = rmatn * V(mean), where
+    ** <li> The matrix operates in the sense V(true) = rmatn * V(mean), where
     **     the p-vector V(true) is with respect to the true equatorial triad
     **     of date and the p-vector V(mean) is with respect to the mean
     **     equatorial triad of date.
     **
-    **  3) A faster, but slightly less accurate result (about 1 mas), can be
+    ** <li> A faster, but slightly less accurate result (about 1 mas), can be
     **     obtained by using instead the jauNum00b function.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPn00a} bias/precession/nutation, IAU 2000A
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauPn00a     bias/precession/nutation, IAU 2000A
-    **
-    **  Reference:
-    **
-    **     Explanatory Supplement to the Astronomical Almanac,
+    **     <br/>Explanatory Supplement to the Astronomical Almanac,
     **     P. Kenneth Seidelmann (ed), University Science Books (1992),
     **     Section 3.222-3 (p114).
     **
-    **  This revision:  2008 May 12
+    **<p>This revision:  2008 May 12
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauNum00a(double date1, double date2, double rmatn[][])
     {
 
     /* Obtain the required matrix (discarding other results). */
@@ -10559,12 +10313,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauNum00b(double date1, double date2, double rmatn[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u N u m 0 0 b
-    **  - - - - - - - - - -
-    **
     **  Form the matrix of nutation for a given date, IAU 2000B model.
     **
     **  This function is derived from the International Astronomical Union's
@@ -10572,26 +10321,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double         TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double          TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     rmatn        double[3][3]   nutation matrix
+    **<!-- Returned: -->
+    **     @param rmatn         double[3][3]     <u>returned</u> nutation matrix
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -10599,29 +10349,30 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix operates in the sense V(true) = rmatn * V(mean), where
+    ** <li> The matrix operates in the sense V(true) = rmatn * V(mean), where
     **     the p-vector V(true) is with respect to the true equatorial triad
     **     of date and the p-vector V(mean) is with respect to the mean
     **     equatorial triad of date.
     **
-    **  3) The present function is faster, but slightly less accurate (about
+    ** <li> The present function is faster, but slightly less accurate (about
     **     1 mas), than the jauNum00a function.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPn00b} bias/precession/nutation, IAU 2000B
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauPn00b     bias/precession/nutation, IAU 2000B
-    **
-    **  Reference:
-    **
-    **     Explanatory Supplement to the Astronomical Almanac,
+    **     <br/>Explanatory Supplement to the Astronomical Almanac,
     **     P. Kenneth Seidelmann (ed), University Science Books (1992),
     **     Section 3.222-3 (p114).
     **
-    **  This revision:  2008 May 12
+    **<p>This revision:  2008 May 12
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauNum00b(double date1, double date2, double rmatn[][])
     {
 
     /* Obtain the required matrix (discarding other results). */
@@ -10638,12 +10389,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauNum06a(double date1, double date2, double rmatn[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u N u m 0 6 a
-    **  - - - - - - - - - -
-    **
     **  Form the matrix of nutation for a given date, IAU 2006/2000A model.
     **
     **  This function is derived from the International Astronomical Union's
@@ -10651,26 +10397,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2   double          TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2    double           TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     rmatn         double[3][3]    nutation matrix
+    **<!-- Returned: -->
+    **     @param rmatn          double[3][3]      <u>returned</u> nutation matrix
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -10678,28 +10425,29 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix operates in the sense V(true) = rmatn * V(mean), where
+    ** <li> The matrix operates in the sense V(true) = rmatn * V(mean), where
     **     the p-vector V(true) is with respect to the true equatorial triad
     **     of date and the p-vector V(mean) is with respect to the mean
     **     equatorial triad of date.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauObl06} mean obliquity, IAU 2006
+    **     <li>{@link #jauNut06a} nutation, IAU 2006/2000A
+    **     <li>{@link #jauNumat} form nutation matrix
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauObl06     mean obliquity, IAU 2006
-    **     jauNut06a    nutation, IAU 2006/2000A
-    **     jauNumat     form nutation matrix
-    **
-    **  Reference:
-    **
-    **     Explanatory Supplement to the Astronomical Almanac,
+    **     <br/>Explanatory Supplement to the Astronomical Almanac,
     **     P. Kenneth Seidelmann (ed), University Science Books (1992),
     **     Section 3.222-3 (p114).
     **
-    **  This revision:  2008 May 12
+    **<p>This revision:  2008 May 12
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauNum06a(double date1, double date2, double rmatn[][])
     {
        double eps;
 
@@ -10718,12 +10466,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauNumat(double epsa, double dpsi, double deps, double rmatn[][])
     /**
-    **  - - - - - - - - -
-    **   i a u N u m a t
-    **  - - - - - - - - -
-    **
     **  Form the matrix of nutation.
     **
     **  This function is derived from the International Astronomical Union's
@@ -10731,45 +10474,47 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     epsa        double         mean obliquity of date (Note 1)
-    **     dpsi,deps   double         nutation (Note 2)
+    **<!-- Given: -->
+    **     @param epsa         double          mean obliquity of date (Note 1)
+    **     @param dpsi,deps    double          nutation (Note 2)
     **
-    **  Returned:
-    **     rmatn       double[3][3]   nutation matrix (Note 3)
+    **<!-- Returned: -->
+    **     @param rmatn        double[3][3]     <u>returned</u> nutation matrix (Note 3)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
     **
-    **  1) The supplied mean obliquity epsa, must be consistent with the
+    ** <li> The supplied mean obliquity epsa, must be consistent with the
     **     precession-nutation models from which dpsi and deps were obtained.
     **
-    **  2) The caller is responsible for providing the nutation components;
+    ** <li> The caller is responsible for providing the nutation components;
     **     they are in longitude and obliquity, in radians and are with
     **     respect to the equinox and ecliptic of date.
     **
-    **  3) The matrix operates in the sense V(true) = rmatn * V(mean),
+    ** <li> The matrix operates in the sense V(true) = rmatn * V(mean),
     **     where the p-vector V(true) is with respect to the true
     **     equatorial triad of date and the p-vector V(mean) is with
     **     respect to the mean equatorial triad of date.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauIr} initialize r-matrix to identity
+    **     <li>{@link #jauRx} rotate around X-axis
+    **     <li>{@link #jauRz} rotate around Z-axis
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauIr        initialize r-matrix to identity
-    **     jauRx        rotate around X-axis
-    **     jauRz        rotate around Z-axis
-    **
-    **  Reference:
-    **
-    **     Explanatory Supplement to the Astronomical Almanac,
+    **     <br/>Explanatory Supplement to the Astronomical Almanac,
     **     P. Kenneth Seidelmann (ed), University Science Books (1992),
     **     Section 3.222-3 (p114).
     **
-    **  This revision:  2008 May 11
+    **<p>This revision:  2008 May 11
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauNumat(double epsa, double dpsi, double deps, double rmatn[][])
     {
     /* Build the rotation matrix. */
        jauIr(rmatn);
@@ -10791,12 +10536,7 @@ public static class SphericalPosition {
             this.deps = deps;
         }
     }
-    public static NutationTerms jauNut00a(double date1, double date2 )
     /**
-    **  - - - - - - - - - -
-    **   i a u N u t 0 0 a
-    **  - - - - - - - - - -
-    **
     **  Nutation, IAU 2000A model (MHB2000 luni-solar and planetary nutation
     **  with free core nutation omitted).
     **
@@ -10805,26 +10545,27 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2   double   TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2    double    TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     dpsi,deps     double   nutation, luni-solar + planetary (Note 2)
+    **<!-- Returned: -->
+    **     @param dpsi,deps      double     <u>returned</u> nutation, luni-solar + planetary (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -10832,7 +10573,7 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The nutation components in longitude and obliquity are in radians
+    ** <li> The nutation components in longitude and obliquity are in radians
     **     and with respect to the equinox and ecliptic of date.  The
     **     obliquity at J2000.0 is assumed to be the Lieske et al. (1977)
     **     value of 84381.448 arcsec.
@@ -10841,14 +10582,14 @@ public static class SphericalPosition {
     **     latter are due to direct planetary nutations and the
     **     perturbations of the lunar and terrestrial orbits.
     **
-    **  3) The function computes the MHB2000 nutation series with the
+    ** <li> The function computes the MHB2000 nutation series with the
     **     associated corrections for planetary nutations.  It is an
     **     implementation of the nutation part of the IAU 2000A precession-
     **     nutation model, formally adopted by the IAU General Assembly in
     **     2000, namely MHB2000 (Mathews et al. 2002), but with the free
     **     core nutation (FCN - see Note 4) omitted.
     **
-    **  4) The full MHB2000 model also contains contributions to the
+    ** <li> The full MHB2000 model also contains contributions to the
     **     nutations in longitude and obliquity due to the free-excitation
     **     of the free-core-nutation during the period 1979-2000.  These FCN
     **     terms, which are time-dependent and unpredictable, are NOT
@@ -10858,7 +10599,7 @@ public static class SphericalPosition {
     **     accurate to a few hundred microarcseconds.  The omission of FCN
     **     introduces further errors of about that size.
     **
-    **  5) The present function provides classical nutation.  The MHB2000
+    ** <li> The present function provides classical nutation.  The MHB2000
     **     algorithm, from which it is adapted, deals also with (i) the
     **     offsets between the GCRS and mean poles and (ii) the adjustments
     **     in longitude and obliquity due to the changed precession rates.
@@ -10866,7 +10607,7 @@ public static class SphericalPosition {
     **     adjustments, are supported by the SOFA functions jauBi00  and
     **     jauPr00.
     **
-    **  6) The MHB2000 algorithm also provides "total" nutations, comprising
+    ** <li> The MHB2000 algorithm also provides "total" nutations, comprising
     **     the arithmetic sum of the frame bias, precession adjustments,
     **     luni-solar nutation and planetary nutation.  These total
     **     nutations can be used in combination with an existing IAU 1976
@@ -10905,51 +10646,52 @@ public static class SphericalPosition {
     **     generated by calling jauBi00, jauPr00 and the present function
     **     and adding the results.
     **
-    **  7) The MHB2000 model contains 41 instances where the same frequency
+    ** <li> The MHB2000 model contains 41 instances where the same frequency
     **     appears multiple times, of which 38 are duplicates and three are
     **     triplicates.  To keep the present code close to the original MHB
     **     algorithm, this small inefficiency has not been corrected.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauFal03} mean anomaly of the Moon
+    **     <li>{@link #jauFaf03} mean argument of the latitude of the Moon
+    **     <li>{@link #jauFaom03} mean longitude of the Moon's ascending node
+    **     <li>{@link #jauFame03} mean longitude of Mercury
+    **     <li>{@link #jauFave03} mean longitude of Venus
+    **     <li>{@link #jauFae03} mean longitude of Earth
+    **     <li>{@link #jauFama03} mean longitude of Mars
+    **     <li>{@link #jauFaju03} mean longitude of Jupiter
+    **     <li>{@link #jauFasa03} mean longitude of Saturn
+    **     <li>{@link #jauFaur03} mean longitude of Uranus
+    **     <li>{@link #jauFapa03} general accumulated precession in longitude
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauFal03     mean anomaly of the Moon
-    **     jauFaf03     mean argument of the latitude of the Moon
-    **     jauFaom03    mean longitude of the Moon's ascending node
-    **     jauFame03    mean longitude of Mercury
-    **     jauFave03    mean longitude of Venus
-    **     jauFae03     mean longitude of Earth
-    **     jauFama03    mean longitude of Mars
-    **     jauFaju03    mean longitude of Jupiter
-    **     jauFasa03    mean longitude of Saturn
-    **     jauFaur03    mean longitude of Uranus
-    **     jauFapa03    general accumulated precession in longitude
-    **
-    **  References:
-    **
-    **     Chapront, J., Chapront-Touze, M. & Francou, G. 2002,
+    **     <br/>Chapront, J., Chapront-Touze, M. & Francou, G. 2002,
     **     Astron.Astrophys. 387, 700
     **
-    **     Lieske, J.H., Lederle, T., Fricke, W. & Morando, B. 1977,
+    **     <br/>Lieske, J.H., Lederle, T., Fricke, W. & Morando, B. 1977,
     **     Astron.Astrophys. 58, 1-16
     **
-    **     Mathews, P.M., Herring, T.A., Buffet, B.A. 2002, J.Geophys.Res.
+    **     <br/>Mathews, P.M., Herring, T.A., Buffet, B.A. 2002, J.Geophys.Res.
     **     107, B4.  The MHB_2000 code itself was obtained on 9th September
     **     2002 from ftp//maia.usno.navy.mil/conv2000/chapter5/IAU2000A.
     **
-    **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
+    **     <br/>Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
     **     Francou, G., Laskar, J. 1994, Astron.Astrophys. 282, 663-683
     **
-    **     Souchay, J., Loysel, B., Kinoshita, H., Folgueira, M. 1999,
+    **     <br/>Souchay, J., Loysel, B., Kinoshita, H., Folgueira, M. 1999,
     **     Astron.Astrophys.Supp.Ser. 135, 111
     **
-    **     Wallace, P.T., "Software for Implementing the IAU 2000
+    **    <br/>Wallace, P.T., "Software for Implementing the IAU 2000
     **     Resolutions", in IERS Workshop 5.1 (2002)
     **
-    **  This revision:  2009 December 17
+    **<p>This revision:  2009 December 17
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static NutationTerms jauNut00a(double date1, double date2 )
     {
        int i;
        double t, el, elp, f, d, om, arg, dp, de, sarg, carg,
@@ -12842,12 +12584,7 @@ public static class SphericalPosition {
        }
     
 
-    public static NutationTerms jauNut00b(double date1, double date2)
     /**
-    **  - - - - - - - - - -
-    **   i a u N u t 0 0 b
-    **  - - - - - - - - - -
-    **
     **  Nutation, IAU 2000B model.
     **
     **  This function is derived from the International Astronomical Union's
@@ -12855,26 +12592,27 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2   double    TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2    double     TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     dpsi,deps     double    nutation, luni-solar + planetary (Note 2)
+    **<!-- Returned: -->
+    **     @param dpsi,deps      double      <u>returned</u> nutation, luni-solar + planetary (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -12882,7 +12620,7 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The nutation components in longitude and obliquity are in radians
+    ** <li> The nutation components in longitude and obliquity are in radians
     **     and with respect to the equinox and ecliptic of date.  The
     **     obliquity at J2000.0 is assumed to be the Lieske et al. (1977)
     **     value of 84381.448 arcsec.  (The errors that result from using
@@ -12893,14 +12631,14 @@ public static class SphericalPosition {
     **     includes also a fixed offset which compensates for certain long-
     **     period planetary terms (Note 7).
     **
-    **  3) This function is an implementation of the IAU 2000B abridged
+    ** <li> This function is an implementation of the IAU 2000B abridged
     **     nutation model formally adopted by the IAU General Assembly in
     **     2000.  The function computes the MHB_2000_SHORT luni-solar
     **     nutation series (Luzum 2001), but without the associated
     **     corrections for the precession rate adjustments and the offset
     **     between the GCRS and J2000.0 mean poles.
     **
-    **  4) The full IAU 2000A (MHB2000) nutation model contains nearly 1400
+    ** <li> The full IAU 2000A (MHB2000) nutation model contains nearly 1400
     **     terms.  The IAU 2000B model (McCarthy & Luzum 2003) contains only
     **     77 terms, plus additional simplifications, yet still delivers
     **     results of 1 mas accuracy at present epochs.  This combination of
@@ -12915,7 +12653,7 @@ public static class SphericalPosition {
     **     corrections for the essentially unpredictable free-core-nutation
     **     (FCN) must also be included.
     **
-    **  5) The present function provides classical nutation.  The
+    ** <li> The present function provides classical nutation.  The
     **     MHB_2000_SHORT algorithm, from which it is adapted, deals also
     **     with (i) the offsets between the GCRS and mean poles and (ii) the
     **     adjustments in longitude and obliquity due to the changed
@@ -12923,7 +12661,7 @@ public static class SphericalPosition {
     **     and precession adjustments, are supported by the SOFA functions
     **     jauBi00  and jauPr00.
     **
-    **  6) The MHB_2000_SHORT algorithm also provides "total" nutations,
+    ** <li> The MHB_2000_SHORT algorithm also provides "total" nutations,
     **     comprising the arithmetic sum of the frame bias, precession
     **     adjustments, and nutation (luni-solar + planetary).  These total
     **     nutations can be used in combination with an existing IAU 1976
@@ -12935,7 +12673,7 @@ public static class SphericalPosition {
     **     be generated by calling jauBi00, jauPr00 and the present function
     **     and adding the results.
     **
-    **  7) The IAU 2000B model includes "planetary bias" terms that are
+    ** <li> The IAU 2000B model includes "planetary bias" terms that are
     **     fixed in size but compensate for long-period nutations.  The
     **     amplitudes quoted in McCarthy & Luzum (2003), namely
     **     Dpsi = -1.5835 mas and Depsilon = +1.6339 mas, are optimized for
@@ -12947,28 +12685,29 @@ public static class SphericalPosition {
     **     implementation delivers a maximum error of 1.001 mas (not
     **     including FCN).
     **
-    **  References:
+    **<p>References:
     **
-    **     Lieske, J.H., Lederle, T., Fricke, W., Morando, B., "Expressions
+    **     <br/>Lieske, J.H., Lederle, T., Fricke, W., Morando, B., "Expressions
     **     for the precession quantities based upon the IAU /1976/ system of
     **     astronomical constants", Astron.Astrophys. 58, 1-2, 1-16. (1977)
     **
-    **     Luzum, B., private communication, 2001 (Fortran code
+    **     <br/>Luzum, B., private communication, 2001 (Fortran code
     **     MHB_2000_SHORT)
     **
-    **     McCarthy, D.D. & Luzum, B.J., "An abridged model of the
+    **     <br/>McCarthy, D.D. & Luzum, B.J., "An abridged model of the
     **     precession-nutation of the celestial pole", Cel.Mech.Dyn.Astron.
     **     85, 37-49 (2003)
     **
-    **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
+    **     <br/>Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
     **     Francou, G., Laskar, J., Astron.Astrophys. 282, 663-683 (1994)
     **
-    **  This revision:  2009 December 17
+    **<p>This revision:  2009 December 17
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static NutationTerms jauNut00b(double date1, double date2)
     {
        double t, el, elp, f, d, om, arg, dp, de, sarg, carg,
               dpsils, depsls, dpsipl, depspl;
@@ -13177,37 +12916,33 @@ public static class SphericalPosition {
     }
     
 
-    public static NutationTerms jauNut06a(double date1, double date2)
     /**
-    **  - - - - - - - - - -
-    **   i a u N u t 0 6 a
-    **  - - - - - - - - - -
-    **
     **  IAU 2000A nutation with adjustments to match the IAU 2006
     **  precession.
     **
-    **  Given:
-    **     date1,date2   double   TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2    double    TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     dpsi,deps     double   nutation, luni-solar + planetary (Note 2)
+    **<!-- Returned: -->
+    **     @param dpsi,deps      double     <u>returned</u> nutation, luni-solar + planetary (Note 2)
     **
     **  Status:  canonical model.
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -13215,51 +12950,52 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The nutation components in longitude and obliquity are in radians
+    ** <li> The nutation components in longitude and obliquity are in radians
     **     and with respect to the mean equinox and ecliptic of date,
     **     IAU 2006 precession model (Hilton et al. 2006, Capitaine et al.
     **     2005).
     **
-    **  3) The function first computes the IAU 2000A nutation, then applies
+    ** <li> The function first computes the IAU 2000A nutation, then applies
     **     adjustments for (i) the consequences of the change in obliquity
     **     from the IAU 1980 ecliptic to the IAU 2006 ecliptic and (ii) the
     **     secular variation in the Earth's dynamical flattening.
     **
-    **  4) The present function provides classical nutation, complementing
+    ** <li> The present function provides classical nutation, complementing
     **     the IAU 2000 frame bias and IAU 2006 precession.  It delivers a
     **     pole which is at current epochs accurate to a few tens of
     **     microarcseconds, apart from the free core nutation.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauNut00a} nutation, IAU 2000A
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauNut00a    nutation, IAU 2000A
-    **
-    **  References:
-    **
-    **     Chapront, J., Chapront-Touze, M. & Francou, G. 2002,
+    **     <br/>Chapront, J., Chapront-Touze, M. & Francou, G. 2002,
     **     Astron.Astrophys. 387, 700
     **
-    **     Lieske, J.H., Lederle, T., Fricke, W. & Morando, B. 1977,
+    **     <br/>Lieske, J.H., Lederle, T., Fricke, W. & Morando, B. 1977,
     **     Astron.Astrophys. 58, 1-16
     **
-    **     Mathews, P.M., Herring, T.A., Buffet, B.A. 2002, J.Geophys.Res.
+    **     <br/>Mathews, P.M., Herring, T.A., Buffet, B.A. 2002, J.Geophys.Res.
     **     107, B4.  The MHB_2000 code itself was obtained on 9th September
     **     2002 from ftp//maia.usno.navy.mil/conv2000/chapter5/IAU2000A.
     **
-    **     Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
+    **     <br/>Simon, J.-L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
     **     Francou, G., Laskar, J. 1994, Astron.Astrophys. 282, 663-683
     **
-    **     Souchay, J., Loysel, B., Kinoshita, H., Folgueira, M. 1999,
+    **     <br/>Souchay, J., Loysel, B., Kinoshita, H., Folgueira, M. 1999,
     **     Astron.Astrophys.Supp.Ser. 135, 111
     **
-    **     Wallace, P.T., "Software for Implementing the IAU 2000
+    **    <br/>Wallace, P.T., "Software for Implementing the IAU 2000
     **     Resolutions", in IERS Workshop 5.1 (2002)
     **
-    **  This revision:  2008 May 24
+    **<p>This revision:  2008 May 24
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static NutationTerms jauNut06a(double date1, double date2)
     {
        double t, fj2;
 
@@ -13279,12 +13015,7 @@ public static class SphericalPosition {
 
      }
     
-    public static NutationTerms jauNut80(double date1, double date2)
     /**
-    **  - - - - - - - - -
-    **   i a u N u t 8 0
-    **  - - - - - - - - -
-    **
     **  Nutation, IAU 1980 model.
     **
     **  This function is derived from the International Astronomical Union's
@@ -13292,27 +13023,28 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2   double    TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2    double     TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     dpsi          double    nutation in longitude (radians)
-    **     deps          double    nutation in obliquity (radians)
+    **<!-- Returned: -->
+    **     @param dpsi           double      <u>returned</u> nutation in longitude (radians)
+    **     @param deps           double      <u>returned</u> nutation in obliquity (radians)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -13320,24 +13052,25 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The nutation components are with respect to the ecliptic of
+    ** <li> The nutation components are with respect to the ecliptic of
     **     date.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauAnpm} normalize angle into range +/- pi
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauAnpm      normalize angle into range +/- pi
-    **
-    **  Reference:
-    **
-    **     Explanatory Supplement to the Astronomical Almanac,
+    **     <br/>Explanatory Supplement to the Astronomical Almanac,
     **     P. Kenneth Seidelmann (ed), University Science Books (1992),
     **     Section 3.222 (p111).
     **
-    **  This revision:  2008 September 30
+    **<p>This revision:  2008 September 30
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static NutationTerms jauNut80(double date1, double date2)
     {
        double t, el, elp, f, d, om, dp, de, arg, s, c;
        int j;
@@ -13566,12 +13299,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauNutm80(double date1, double date2, double rmatn[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u N u t m 8 0
-    **  - - - - - - - - - -
-    **
     **  Form the matrix of nutation for a given date, IAU 1980 model.
     **
     **  This function is derived from the International Astronomical Union's
@@ -13579,26 +13307,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2    double          TDB date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2     double           TDB date (Note 1)
     **
-    **  Returned:
-    **     rmatn          double[3][3]    nutation matrix
+    **<!-- Returned: -->
+    **     @param rmatn           double[3][3]      <u>returned</u> nutation matrix
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -13606,22 +13335,23 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix operates in the sense V(true) = rmatn * V(mean),
+    ** <li> The matrix operates in the sense V(true) = rmatn * V(mean),
     **     where the p-vector V(true) is with respect to the true
     **     equatorial triad of date and the p-vector V(mean) is with
     **     respect to the mean equatorial triad of date.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauNut80} nutation, IAU 1980
+    **     <li>{@link #jauObl80} mean obliquity, IAU 1980
+    **     <li>{@link #jauNumat} form nutation matrix
+    ** </ul>
+    **<p>This revision:  2008 May 12
     **
-    **  Called:
-    **     jauNut80     nutation, IAU 1980
-    **     jauObl80     mean obliquity, IAU 1980
-    **     jauNumat     form nutation matrix
-    **
-    **  This revision:  2008 May 12
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauNutm80(double date1, double date2, double rmatn[][])
     {
  
     /* Nutation components and mean obliquity. */
@@ -13636,12 +13366,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauObl06(double date1, double date2)
     /**
-    **  - - - - - - - - -
-    **   i a u O b l 0 6
-    **  - - - - - - - - -
-    **
     **  Mean obliquity of the ecliptic, IAU 2006 precession model.
     **
     **  This function is derived from the International Astronomical Union's
@@ -13649,26 +13374,27 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2  double   TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double    TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned (function value):
-    **                  double   obliquity of the ecliptic (radians, Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double   obliquity of the ecliptic (radians, Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -13676,19 +13402,20 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The result is the angle between the ecliptic and mean equator of
+    ** <li> The result is the angle between the ecliptic and mean equator of
     **     date date1+date2.
     **
-    **  Reference:
+    **<p>Reference:
     **
     **     Hilton, J. et al., 2006, Celest.Mech.Dyn.Astron. 94, 351
     **
-    **  This revision:  2009 March 16
+    **<p>This revision:  2009 March 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauObl06(double date1, double date2)
     {
        double t, eps0;
 
@@ -13709,12 +13436,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauObl80(double date1, double date2)
     /**
-    **  - - - - - - - - -
-    **   i a u O b l 8 0
-    **  - - - - - - - - -
-    **
     **  Mean obliquity of the ecliptic, IAU 1980 model.
     **
     **  This function is derived from the International Astronomical Union's
@@ -13722,26 +13444,27 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2   double    TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2    double     TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned (function value):
-    **                   double    obliquity of the ecliptic (radians, Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    obliquity of the ecliptic (radians, Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -13749,21 +13472,22 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The result is the angle between the ecliptic and mean equator of
+    ** <li> The result is the angle between the ecliptic and mean equator of
     **     date date1+date2.
     **
-    **  Reference:
+    **<p>Reference:
     **
-    **     Explanatory Supplement to the Astronomical Almanac,
+    **     <br/>Explanatory Supplement to the Astronomical Almanac,
     **     P. Kenneth Seidelmann (ed), University Science Books (1992),
     **     Expression 3.222-1 (p114).
     **
-    **  This revision:  2009 March 16
+    **<p>This revision:  2009 March 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauObl80(double date1, double date2)
     {
        double t, eps0;
 
@@ -13840,12 +13564,7 @@ public static class SphericalPosition {
             this.psi = psi;
         }
     }
-    public static PrecessionAngles jauP06e(double date1, double date2)
     /**
-    **  - - - - - - - -
-    **   i a u P 0 6 e
-    **  - - - - - - - -
-    **
     **  Precession angles, IAU 2006, equinox based.
     **
     **  This function is derived from the International Astronomical Union's
@@ -13853,8 +13572,8 @@ public static class SphericalPosition {
     **
     **  Status:  canonical models.
     **
-    **  Given:
-    **     date1,date2   double   TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2    double    TT as a 2-part Julian Date (Note 1)
     **
     **  Returned (see Note 2):
     **     eps0          double   epsilon_0
@@ -13874,20 +13593,21 @@ public static class SphericalPosition {
     **     phi           double   F-W angle phi_J2000
     **     psi           double   F-W angle psi_J2000
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -13895,7 +13615,7 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) This function returns the set of equinox based angles for the
+    ** <li> This function returns the set of equinox based angles for the
     **     Capitaine et al. "P03" precession theory, adopted by the IAU in
     **     2006.  The angles are set out in Table 1 of Hilton et al. (2006):
     **
@@ -13918,7 +13638,7 @@ public static class SphericalPosition {
     **
     **     The returned values are all radians.
     **
-    **  3) Hilton et al. (2006) Table 1 also contains angles that depend on
+    ** <li> Hilton et al. (2006) Table 1 also contains angles that depend on
     **     models distinct from the P03 precession theory itself, namely the
     **     IAU 2000A frame bias and nutation.  The quoted polynomials are
     **     used in other SOFA functions:
@@ -13931,42 +13651,43 @@ public static class SphericalPosition {
     **       angles that are with respect to the GCRS pole (i.e. the variants
     **       that include frame bias).
     **
-    **  4) The IAU resolution stipulated that the choice of parameterization
+    ** <li> The IAU resolution stipulated that the choice of parameterization
     **     was left to the user, and so an IAU compliant precession
     **     implementation can be constructed using various combinations of
     **     the angles returned by the present function.
     **
-    **  5) The parameterization used by SOFA is the Fukushima-Williams angles
+    ** <li> The parameterization used by SOFA is the Fukushima-Williams angles
     **     referred directly to the GCRS pole.  These are the final four
     **     arguments returned by the present function, but are more
     **     efficiently calculated by calling the function jauPfw06.   SOFA
     **     also supports the direct computation of the CIP GCRS X,Y by
     **     series, available by calling jauXy06.
     **
-    **  6) The agreement between the different parameterizations is at the
+    ** <li> The agreement between the different parameterizations is at the
     **     1 microarcsecond level in the present era.
     **
-    **  7) When constructing a precession formulation that refers to the GCRS
+    ** <li> When constructing a precession formulation that refers to the GCRS
     **     pole rather than the dynamical pole, it may (depending on the
     **     choice of angles) be necessary to introduce the frame bias
     **     explicitly.
     **
-    **  8) It is permissible to re-use the same variable in the returned
+    ** <li> It is permissible to re-use the same variable in the returned
     **     arguments.  The quantities are stored in the stated order.
-    **
-    **  Reference:
+    **</ol>
+    **<p>Reference:
     **
     **     Hilton, J. et al., 2006, Celest.Mech.Dyn.Astron. 94, 351
     **
-    **  Called:
-    **     jauObl06     mean obliquity, IAU 2006
+    **<p>Called:<ul>
+    **     <li>{@link #jauObl06} mean obliquity, IAU 2006
+    ** </ul>
+    **<p>This revision:  2009 December 17
     **
-    **  This revision:  2009 December 17
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static PrecessionAngles jauP06e(double date1, double date2)
     {
        double t;
        double eps0,  psia,  oma,  bpa,
@@ -14116,12 +13837,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauP2pv(double p[] , double pv[][])
     /**
-    **  - - - - - - - -
-    **   i a u P 2 p v
-    **  - - - - - - - -
-    **
     **  Extend a p-vector to a pv-vector by appending a zero velocity.
     **
     **  This function is derived from the International Astronomical Union's
@@ -14129,22 +13845,23 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     p        double[3]       p-vector
+    **<!-- Given: -->
+    **     @param p         double[3]        p-vector
     **
-    **  Returned:
-    **     pv       double[2][3]    pv-vector
+    **<!-- Returned: -->
+    **     @param pv        double[2][3]      <u>returned</u> pv-vector
     **
-    **  Called:
-    **     jauCp        copy p-vector
-    **     jauZp        zero p-vector
+    **<p>Called:<ul>
+    **     <li>{@link #jauCp} copy p-vector
+    **     <li>{@link #jauZp} zero p-vector
+    ** </ul>
+    **<p>This revision:  2008 May 11
     **
-    **  This revision:  2008 May 11
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauP2pv(double p[] , double pv[][])
     {
        jauCp(p, pv[0]);
        jauZp(pv[1]);
@@ -14167,12 +13884,7 @@ public static class SphericalPosition {
         }
     }
     
-    public static PolarCoordinate jauP2s(double p[])
     /**
-    **  - - - - - - -
-    **   i a u P 2 s
-    **  - - - - - - -
-    **
     **  P-vector to spherical polar coordinates.
     **
     **  This function is derived from the International Astronomical Union's
@@ -14180,30 +13892,32 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     p        double[3]    p-vector
+    **<!-- Given: -->
+    **     @param p         double[3]     p-vector
     **
-    **  Returned:
-    **     theta    double       longitude angle (radians)
-    **     phi      double       latitude angle (radians)
-    **     r        double       radial distance
+    **<!-- Returned: -->
+    **     @param theta     double         <u>returned</u> longitude angle (radians)
+    **     @param phi       double         <u>returned</u> latitude angle (radians)
+    **     @param r         double         <u>returned</u> radial distance
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) If P is null, zero theta, phi and r are returned.
+    ** <li> If P is null, zero theta, phi and r are returned.
     **
-    **  2) At either pole, zero theta is returned.
+    ** <li> At either pole, zero theta is returned.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauC2s} p-vector to spherical
+    **     <li>{@link #jauPm} modulus of p-vector
+    ** </ul>
+    **<p>This revision:  2008 May 22
     **
-    **  Called:
-    **     jauC2s       p-vector to spherical
-    **     jauPm        modulus of p-vector
-    **
-    **  This revision:  2008 May 22
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static PolarCoordinate jauP2s(double p[])
     {
        SphericalPosition sc = jauC2s(p);
        double r = jauPm(p);
@@ -14213,12 +13927,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauPap(double a[] , double b[] )
     /**
-    **  - - - - - - -
-    **   i a u P a p
-    **  - - - - - - -
-    **
     **  Position-angle from two p-vectors.
     **
     **  This function is derived from the International Astronomical Union's
@@ -14226,41 +13935,43 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     a      double[3]  direction of reference point
-    **     b      double[3]  direction of point whose PA is required
+    **<!-- Given: -->
+    **     @param a       double[3]   direction of reference point
+    **     @param b       double[3]   direction of point whose PA is required
     **
-    **  Returned (function value):
-    **            double     position angle of b with respect to a (radians)
+    ** <!-- Returned (function value): -->
+    **  @return double     position angle of b with respect to a (radians)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The result is the position angle, in radians, of direction b with
+    ** <li> The result is the position angle, in radians, of direction b with
     **     respect to direction a.  It is in the range -pi to +pi.  The
     **     sense is such that if b is a small distance "north" of a the
     **     position angle is approximately zero, and if b is a small
     **     distance "east" of a the position angle is approximately +pi/2.
     **
-    **  2) The vectors a and b need not be of unit length.
+    ** <li> The vectors a and b need not be of unit length.
     **
-    **  3) Zero is returned if the two directions are the same or if either
+    ** <li> Zero is returned if the two directions are the same or if either
     **     vector is null.
     **
-    **  4) If vector a is at a pole, the result is ill-defined.
+    ** <li> If vector a is at a pole, the result is ill-defined.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPn} decompose p-vector into modulus and direction
+    **     <li>{@link #jauPm} modulus of p-vector
+    **     <li>{@link #jauPxp} vector product of two p-vectors
+    **     <li>{@link #jauPmp} p-vector minus p-vector
+    **     <li>{@link #jauPdp} scalar product of two p-vectors
+    ** </ul>
+    **<p>This revision:  2008 May 25
     **
-    **  Called:
-    **     jauPn        decompose p-vector into modulus and direction
-    **     jauPm        modulus of p-vector
-    **     jauPxp       vector product of two p-vectors
-    **     jauPmp       p-vector minus p-vector
-    **     jauPdp       scalar product of two p-vectors
-    **
-    **  This revision:  2008 May 25
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauPap(double a[] , double b[] )
     {
        double am, au[] = new double[3], bm, st, ct, xa, ya, za, eta[] = new double[3], xi[] = new double[3], a2b[] = new double[3], pa;
 
@@ -14307,12 +14018,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauPas(double al, double ap, double bl, double bp)
     /**
-    **  - - - - - - -
-    **   i a u P a s
-    **  - - - - - - -
-    **
     **  Position-angle from spherical coordinates.
     **
     **  This function is derived from the International Astronomical Union's
@@ -14320,30 +14026,32 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     al     double     longitude of point A (e.g. RA) in radians
-    **     ap     double     latitude of point A (e.g. Dec) in radians
-    **     bl     double     longitude of point B
-    **     bp     double     latitude of point B
+    **<!-- Given: -->
+    **     @param al      double      longitude of point A (e.g. RA) in radians
+    **     @param ap      double      latitude of point A (e.g. Dec) in radians
+    **     @param bl      double      longitude of point B
+    **     @param bp      double      latitude of point B
     **
-    **  Returned (function value):
-    **            double     position angle of B with respect to A
+    ** <!-- Returned (function value): -->
+    **  @return double     position angle of B with respect to A
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The result is the bearing (position angle), in radians, of point
+    ** <li> The result is the bearing (position angle), in radians, of point
     **     B with respect to point A.  It is in the range -pi to +pi.  The
     **     sense is such that if B is a small distance "east" of point A,
     **     the bearing is approximately +pi/2.
     **
-    **  2) Zero is returned if the two points are coincident.
+    ** <li> Zero is returned if the two points are coincident.
     **
-    **  This revision:  2008 May 22
+    **<p>This revision:  2008 May 22
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauPas(double al, double ap, double bl, double bp)
     {
        double dl, x, y, pa;
 
@@ -14358,12 +14066,7 @@ public static class SphericalPosition {
         }
     
 
-    public static EulerAngles jauPb06(double date1, double date2)
     /**
-    **  - - - - - - - -
-    **   i a u P b 0 6
-    **  - - - - - - - -
-    **
     **  This function forms three Euler angles which implement general
     **  precession from epoch J2000.0, using the IAU 2006 model.  Frame
     **  bias (the offset between ICRS and mean J2000.0) is included.
@@ -14373,28 +14076,29 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double   TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double    TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     bzeta        double   1st rotation: radians cw around z
-    **     bz           double   3rd rotation: radians cw around z
-    **     btheta       double   2nd rotation: radians ccw around y
+    **<!-- Returned: -->
+    **     @param bzeta         double     <u>returned</u> 1st rotation: radians cw around z
+    **     @param bz            double     <u>returned</u> 3rd rotation: radians cw around z
+    **     @param btheta        double     <u>returned</u> 2nd rotation: radians ccw around y
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -14402,7 +14106,7 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The traditional accumulated precession angles zeta_A, z_A,
+    ** <li> The traditional accumulated precession angles zeta_A, z_A,
     **     theta_A cannot be obtained in the usual way, namely through
     **     polynomial expressions, because of the frame bias.  The latter
     **     means that two of the angles undergo rapid changes near this
@@ -14412,25 +14116,26 @@ public static class SphericalPosition {
     **     decomposition returns values which can be used in the
     **     conventional formulation and which include frame bias.
     **
-    **  3) The three angles are returned in the conventional order, which
+    ** <li> The three angles are returned in the conventional order, which
     **     is not the same as the order of the corresponding Euler
     **     rotations.  The precession-bias matrix is
     **     R_3(-z) x R_2(+theta) x R_3(-zeta).
     **
-    **  4) Should zeta_A, z_A, theta_A angles be required that do not
+    ** <li> Should zeta_A, z_A, theta_A angles be required that do not
     **     contain frame bias, they are available by calling the SOFA
     **     function jauP06e.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPmat06} PB matrix, IAU 2006
+    **     <li>{@link #jauRz} rotate around Z-axis
+    ** </ul>
+    **<p>This revision:  2008 May 26
     **
-    **  Called:
-    **     jauPmat06    PB matrix, IAU 2006
-    **     jauRz        rotate around Z-axis
-    **
-    **  This revision:  2008 May 26
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static EulerAngles jauPb06(double date1, double date2)
     {
        double r[][] = new double[3][3], r31, r32;
 
@@ -14456,12 +14161,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauPdp(double a[] , double b[] )
     /**
-    **  - - - - - - -
-    **   i a u P d p
-    **  - - - - - - -
-    **
     **  p-vector inner (=scalar=dot) product.
     **
     **  This function is derived from the International Astronomical Union's
@@ -14469,19 +14169,20 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     a      double[3]     first p-vector
-    **     b      double[3]     second p-vector
+    **<!-- Given: -->
+    **     @param a       double[3]      first p-vector
+    **     @param b       double[3]      second p-vector
     **
-    **  Returned (function value):
-    **            double        a . b
+    ** <!-- Returned (function value): -->
+    **  @return double        a . b
     **
-    **  This revision:  2008 May 22
+    **<p>This revision:  2008 May 22
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauPdp(double a[] , double b[] )
     {
        double w;
 
@@ -14518,12 +14219,7 @@ public static class SphericalPosition {
             this.epsa = epsa;
         }
     }
-    public static FWPrecessionAngles jauPfw06(double date1, double date2 )
     /**
-    **  - - - - - - - - -
-    **   i a u P f w 0 6
-    **  - - - - - - - - -
-    **
     **  Precession angles, IAU 2006 (Fukushima-Williams 4-angle formulation).
     **
     **  This function is derived from the International Astronomical Union's
@@ -14531,29 +14227,30 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2  double   TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double    TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     gamb         double   F-W angle gamma_bar (radians)
-    **     phib         double   F-W angle phi_bar (radians)
-    **     psib         double   F-W angle psi_bar (radians)
-    **     epsa         double   F-W angle epsilon_A (radians)
+    **<!-- Returned: -->
+    **     @param gamb          double     <u>returned</u> F-W angle gamma_bar (radians)
+    **     @param phib          double     <u>returned</u> F-W angle phi_bar (radians)
+    **     @param psib          double     <u>returned</u> F-W angle psi_bar (radians)
+    **     @param epsa          double     <u>returned</u> F-W angle epsilon_A (radians)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -14561,7 +14258,7 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) Naming the following points:
+    ** <li> Naming the following points:
     **
     **           e = J2000.0 ecliptic pole,
     **           p = GCRS pole,
@@ -14575,32 +14272,33 @@ public static class SphericalPosition {
     **        psib = psi_bar = pEP
     **        epsa = epsilon_A = EP
     **
-    **  3) The matrix representing the combined effects of frame bias and
+    ** <li> The matrix representing the combined effects of frame bias and
     **     precession is:
     **
     **        PxB = R_1(-epsa).R_3(-psib).R_1(phib).R_3(gamb)
     **
-    **  4) The matrix representing the combined effects of frame bias,
+    ** <li> The matrix representing the combined effects of frame bias,
     **     precession and nutation is simply:
     **
     **        NxPxB = R_1(-epsa-dE).R_3(-psib-dP).R_1(phib).R_3(gamb)
     **
     **     where dP and dE are the nutation components with respect to the
     **     ecliptic of date.
-    **
-    **  Reference:
+    **</ol>
+    **<p>Reference:
     **
     **     Hilton, J. et al., 2006, Celest.Mech.Dyn.Astron. 94, 351
     **
-    **  Called:
-    **     jauObl06     mean obliquity, IAU 2006
+    **<p>Called:<ul>
+    **     <li>{@link #jauObl06} mean obliquity, IAU 2006
+    ** </ul>
+    **<p>This revision:  2009 December 17
     **
-    **  This revision:  2009 December 17
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static FWPrecessionAngles jauPfw06(double date1, double date2 )
     {
        double t;
 
@@ -14637,12 +14335,7 @@ public static class SphericalPosition {
         }
     
 
-    public static int jauPlan94(double date1, double date2, int np, double pv[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u P l a n 9 4
-    **  - - - - - - - - - -
-    **
     **  This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
@@ -14652,35 +14345,36 @@ public static class SphericalPosition {
     **  planet:  Mercury, Venus, EMB, Mars, Jupiter, Saturn, Uranus or
     **  Neptune (but not the Earth itself).
     **
-    **  Given:
-    **     date1  double       TDB date part A (Note 1)
-    **     date2  double       TDB date part B (Note 1)
-    **     np     int          planet (1=Mercury, 2=Venus, 3=EMB, 4=Mars,
-    **                             5=Jupiter, 6=Saturn, 7=Uranus, 8=Neptune)
+    **<!-- Given: -->
+    **     @param date1   double        TDB date part A (Note 1)
+    **     @param date2   double        TDB date part B (Note 1)
+    **     @param np      int           planet (1=Mercury, 2=Venus, 3=EMB, 4=Mars,
+    **                             @param 5=Jupiter,  6=Saturn,  7=Uranus, 8=Neptune)
     **
     **  Returned (argument):
-    **     pv     double[3][2] planet p,v (heliocentric, J2000.0, AU,AU/d)
+    **     @param  pv     double[3][2] planet p,v (heliocentric, J2000.0, AU,AU/d)
     **
-    **  Returned (function value):
-    **            int          status: -1 = illegal NP (outside 1-8)
+    ** <!-- Returned (function value): -->
+    **  @return int          status: -1 = illegal NP (outside 1-8)
     **                                  0 = OK
     **                                 +1 = warning: year outside 1000-3000
     **                                 +2 = warning: failed to converge
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The date date1+date2 is in the TDB time scale (in practice TT can
+    ** <li> The date date1+date2 is in the TDB time scale (in practice TT can
     **     be used) and is a Julian Date, apportioned in any convenient way
     **     between the two arguments.  For example, JD(TDB)=2450123.7 could
     **     be expressed in any of these ways, among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in cases
     **     where the loss of several decimal digits of resolution is
     **     acceptable.  The J2000 method is best matched to the way the
@@ -14690,15 +14384,15 @@ public static class SphericalPosition {
     **     accuracy of the present algorithm is such that any of the methods
     **     is satisfactory.
     **
-    **  2) If an np value outside the range 1-8 is supplied, an error status
+    ** <li> If an np value outside the range 1-8 is supplied, an error status
     **     (function value -1) is returned and the pv vector set to zeroes.
     **
-    **  3) For np=3 the result is for the Earth-Moon Barycenter.  To obtain
+    ** <li> For np=3 the result is for the Earth-Moon Barycenter.  To obtain
     **     the heliocentric position and velocity of the Earth, use instead
     **     the SOFA function jauEpv00.
     **
-    **  4) On successful return, the array pv contains the following:
-    **
+    ** <li> On successful return, the array pv contains the following:
+    **<pre>
     **        pv[0][0]   x      }
     **        pv[1][0]   y      } heliocentric position, AU
     **        pv[2][0]   z      }
@@ -14706,16 +14400,16 @@ public static class SphericalPosition {
     **        pv[0][1]   xdot   }
     **        pv[1][1]   ydot   } heliocentric velocity, AU/d
     **        pv[2][1]   zdot   }
-    **
+    **</pre>
     **     The reference frame is equatorial and is with respect to the
     **     mean equator and equinox of epoch J2000.0.
     **
-    **  5) The algorithm is due to J.L. Simon, P. Bretagnon, J. Chapront,
+    ** <li> The algorithm is due to J.L. Simon, P. Bretagnon, J. Chapront,
     **     M. Chapront-Touze, G. Francou and J. Laskar (Bureau des
     **     Longitudes, Paris, France).  From comparisons with JPL
     **     ephemeris DE102, they quote the following maximum errors
     **     over the interval 1800-2050:
-    **
+    **<pre>
     **                     L (arcsec)    B (arcsec)      R (km)
     **
     **        Mercury          4             1             300
@@ -14726,14 +14420,14 @@ public static class SphericalPosition {
     **        Saturn          81            13          267000
     **        Uranus          86             7          712000
     **        Neptune         11             1          253000
-    **
+    **</pre>
     **     Over the interval 1000-3000, they report that the accuracy is no
     **     worse than 1.5 times that over 1800-2050.  Outside 1000-3000 the
     **     accuracy declines.
     **
     **     Comparisons of the present function with the JPL DE200 ephemeris
     **     give the following RMS errors over the interval 1960-2025:
-    **
+    **<pre>
     **                      position (km)     velocity (m/s)
     **
     **        Mercury            334               0.437
@@ -14744,11 +14438,11 @@ public static class SphericalPosition {
     **        Saturn          199000              19.4
     **        Uranus          564000              16.4
     **        Neptune         158000              14.4
-    **
+    **</pre>
     **     Comparisons against DE200 over the interval 1800-2100 gave the
     **     following maximum absolute differences.  (The results using
     **     DE406 were essentially the same.)
-    **
+    **<pre>
     **                   L (arcsec)   B (arcsec)     R (km)   Rdot (m/s)
     **
     **        Mercury        7            1            500       0.7
@@ -14759,52 +14453,53 @@ public static class SphericalPosition {
     **        Saturn        87           14         263000      24.6
     **        Uranus        86            7         661000      27.4
     **        Neptune       11            2         248000      21.4
-    **
-    **  6) The present SOFA re-implementation of the original Simon et al.
+    **</pre>
+    ** <li> The present SOFA re-implementation of the original Simon et al.
     **     Fortran code differs from the original in the following respects:
+    **<ul>
+    **       <li>  C instead of Fortran.
     **
-    **       *  C instead of Fortran.
+    **       <li>  The date is supplied in two parts.
     **
-    **       *  The date is supplied in two parts.
-    **
-    **       *  The result is returned only in equatorial Cartesian form;
+    **       <li>  The result is returned only in equatorial Cartesian form;
     **          the ecliptic longitude, latitude and radius vector are not
     **          returned.
     **
-    **       *  The result is in the J2000.0 equatorial frame, not ecliptic.
+    **       <li>  The result is in the J2000.0 equatorial frame, not ecliptic.
     **
-    **       *  More is done in-line: there are fewer calls to subroutines.
+    **       <li>  More is done in-line: there are fewer calls to subroutines.
     **
-    **       *  Different error/warning status values are used.
+    **       <li>  Different error/warning status values are used.
     **
-    **       *  A different Kepler's-equation-solver is used (avoiding
+    **       <li>  A different Kepler's-equation-solver is used (avoiding
     **          use of double precision complex).
     **
-    **       *  Polynomials in t are nested to minimize rounding errors.
+    **       <li>  Polynomials in t are nested to minimize rounding errors.
     **
-    **       *  Explicit double constants are used to avoid mixed-mode
+    **       <li>  Explicit double constants are used to avoid mixed-mode
     **          expressions.
-    **
+    **</ul>
     **     None of the above changes affects the result significantly.
     **
-    **  7) The returned status indicates the most serious condition
+    ** <li> The returned status indicates the most serious condition
     **     encountered during execution of the function.  Illegal np is
     **     considered the most serious, overriding failure to converge,
     **     which in turn takes precedence over the remote date warning.
-    **
-    **  Called:
-    **     jauAnp       normalize angle into range 0 to 2pi
-    **
-    **  Reference:  Simon, J.L, Bretagnon, P., Chapront, J.,
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+    ** </ul>
+    **<p>Reference:  Simon, J.L, Bretagnon, P., Chapront, J.,
     **              Chapront-Touze, M., Francou, G., and Laskar, J.,
     **              Astron. Astrophys. 282, 663 (1994).
     **
-    **  This revision:  2009 December 17
+    **<p>This revision:  2009 December 17
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static int jauPlan94(double date1, double date2, int np, double pv[][])
     {
     /* Gaussian constant */
        final double GK = 0.017202098950;
@@ -15106,12 +14801,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauPm(double p[] )
     /**
-    **  - - - - - -
-    **   i a u P m
-    **  - - - - - -
-    **
     **  Modulus of p-vector.
     **
     **  This function is derived from the International Astronomical Union's
@@ -15119,18 +14809,19 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     p      double[3]     p-vector
+    **<!-- Given: -->
+    **     @param p       double[3]      p-vector
     **
-    **  Returned (function value):
-    **            double        modulus
+    ** <!-- Returned (function value): -->
+    **  @return double        modulus
     **
-    **  This revision:  2008 May 22
+    **<p>This revision:  2008 May 22
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauPm(double p[] )
     {
        double w;
 
@@ -15144,12 +14835,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPmat00(double date1, double date2, double rbp[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u P m a t 0 0
-    **  - - - - - - - - - -
-    **
     **  Precession matrix (including frame bias) from GCRS to a specified
     **  date, IAU 2000 model.
     **
@@ -15158,26 +14844,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double          TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     rbp          double[3][3]    bias-precession matrix (Note 2)
+    **<!-- Returned: -->
+    **     @param rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -15185,26 +14872,27 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix operates in the sense V(date) = rbp * V(GCRS), where
+    ** <li> The matrix operates in the sense V(date) = rbp * V(GCRS), where
     **     the p-vector V(GCRS) is with respect to the Geocentric Celestial
     **     Reference System (IAU, 2000) and the p-vector V(date) is with
     **     respect to the mean equatorial triad of the given date.
-    **
-    **  Called:
-    **     jauBp00      frame bias and precession matrices, IAU 2000
-    **
-    **  Reference:
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauBp00} frame bias and precession matrices, IAU 2000
+    ** </ul>
+    **<p>Reference:
     **
     **     IAU: Trans. International Astronomical Union, Vol. XXIVB;  Proc.
     **     24th General Assembly, Manchester, UK.  Resolutions B1.3, B1.6.
     **     (2000)
     **
-    **  This revision:  2009 December 21
+    **<p>This revision:  2009 December 21
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPmat00(double date1, double date2, double rbp[][])
     {
        double rb[][] = new double[3][3], rp[][] = new double[3][3];
 
@@ -15217,12 +14905,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPmat06(double date1, double date2, double rbp[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u P m a t 0 6
-    **  - - - - - - - - - -
-    **
     **  Precession matrix (including frame bias) from GCRS to a specified
     **  date, IAU 2006 model.
     **
@@ -15231,26 +14914,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double          TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     rbp          double[3][3]    bias-precession matrix (Note 2)
+    **<!-- Returned: -->
+    **     @param rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -15258,27 +14942,28 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix operates in the sense V(date) = rbp * V(GCRS), where
+    ** <li> The matrix operates in the sense V(date) = rbp * V(GCRS), where
     **     the p-vector V(GCRS) is with respect to the Geocentric Celestial
     **     Reference System (IAU, 2000) and the p-vector V(date) is with
     **     respect to the mean equatorial triad of the given date.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPfw06} bias-precession F-W angles, IAU 2006
+    **     <li>{@link #jauFw2m} F-W angles to r-matrix
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauPfw06     bias-precession F-W angles, IAU 2006
-    **     jauFw2m      F-W angles to r-matrix
+    **    <br/>Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
     **
-    **  References:
+    **    <br/>Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
     **
-    **     Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
+    **<p>This revision:  2009 December 21
     **
-    **     Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
-    **
-    **  This revision:  2009 December 21
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPmat06(double date1, double date2, double rbp[][])
     {
 
     /* Bias-precession Fukushima-Williams angles. */
@@ -15292,12 +14977,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPmat76(double date1, double date2, double rmatp[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u P m a t 7 6
-    **  - - - - - - - - - -
-    **
     **  Precession matrix from J2000.0 to a specified date, IAU 1976 model.
     **
     **  This function is derived from the International Astronomical Union's
@@ -15305,26 +14985,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2 double       ending date, TT (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2  double        ending date, TT (Note 1)
     **
-    **  Returned:
-    **     rmatp       double[3][3] precession matrix, J2000.0 -> date1+date2
+    **<!-- Returned: -->
+    **     @param rmatp        double[3][3]   <u>returned</u> precession matrix, J2000.0 -> date1+date2
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -15332,13 +15013,13 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix operates in the sense V(date) = RMATP * V(J2000),
+    ** <li> The matrix operates in the sense V(date) = RMATP * V(J2000),
     **     where the p-vector V(J2000) is with respect to the mean
     **     equatorial triad of epoch J2000.0 and the p-vector V(date)
     **     is with respect to the mean equatorial triad of the given
     **     date.
     **
-    **  3) Though the matrix method itself is rigorous, the precession
+    ** <li> Though the matrix method itself is rigorous, the precession
     **     angles are expressed through canonical polynomials which are
     **     valid only for a limited time span.  In addition, the IAU 1976
     **     precession rate is known to be imperfect.  The absolute accuracy
@@ -15348,27 +15029,28 @@ public static class SphericalPosition {
     **     500BC to 3000AD.  The errors exceed 10 arcsec outside the
     **     range 1200BC to 3900AD, exceed 100 arcsec outside 4200BC to
     **     5600AD and exceed 1000 arcsec outside 6800BC to 8200AD.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPrec76} accumulated precession angles, IAU 1976
+    **     <li>{@link #jauIr} initialize r-matrix to identity
+    **     <li>{@link #jauRz} rotate around Z-axis
+    **     <li>{@link #jauRy} rotate around Y-axis
+    **     <li>{@link #jauCr} copy r-matrix
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauPrec76    accumulated precession angles, IAU 1976
-    **     jauIr        initialize r-matrix to identity
-    **     jauRz        rotate around Z-axis
-    **     jauRy        rotate around Y-axis
-    **     jauCr        copy r-matrix
-    **
-    **  References:
-    **
-    **     Lieske, J.H., 1979, Astron.Astrophys. 73, 282.
+    **     <br/>Lieske, J.H., 1979, Astron.Astrophys. 73, 282.
     **      equations (6) & (7), p283.
     **
     **     Kaplan,G.H., 1981. USNO circular no. 163, pA2.
     **
-    **  This revision:  2009 December 18
+    **<p>This revision:  2009 December 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPmat76(double date1, double date2, double rmatp[][])
     {
        double wmat[][] = new double[3][3];
 
@@ -15388,12 +15070,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void  jauPmp(double a[] , double b[] , double amb[] )
     /**
-    **  - - - - - - -
-    **   i a u P m p
-    **  - - - - - - -
-    **
     **  P-vector subtraction.
     **
     **  This function is derived from the International Astronomical Union's
@@ -15401,23 +15078,24 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     a        double[3]      first p-vector
-    **     b        double[3]      second p-vector
+    **<!-- Given: -->
+    **     @param a         double[3]       first p-vector
+    **     @param b         double[3]       second p-vector
     **
-    **  Returned:
-    **     amb      double[3]      a - b
+    **<!-- Returned: -->
+    **     @param amb       double[3]        <u>returned</u> a - b
     **
     **  Note:
     **     It is permissible to re-use the same array for any of the
     **     arguments.
     **
-    **  This revision:  2008 November 18
+    **<p>This revision:  2008 November 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void  jauPmp(double a[] , double b[] , double amb[] )
     {
        amb[0] = a[0] - b[0];
        amb[1] = a[1] - b[1];
@@ -15441,12 +15119,7 @@ public static class SphericalPosition {
             this.u = u;
         }
     }
-    public static NormalizedVector jauPn(double p[])
     /**
-    **  - - - - - -
-    **   i a u P n
-    **  - - - - - -
-    **
     **  Convert a p-vector into modulus and unit vector.
     **
     **  This function is derived from the International Astronomical Union's
@@ -15454,32 +15127,34 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     p        double[3]      p-vector
+    **<!-- Given: -->
+    **     @param p         double[3]       p-vector
     **
-    **  Returned:
-    **     r        double         modulus
-    **     u        double[3]      unit vector
+    **<!-- Returned: -->
+    **     @param r         double           <u>returned</u> modulus
+    **     @param u         double[3]        <u>returned</u> unit vector
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) If p is null, the result is null.  Otherwise the result is a unit
+    ** <li> If p is null, the result is null.  Otherwise the result is a unit
     **     vector.
     **
-    **  2) It is permissible to re-use the same array for any of the
+    ** <li> It is permissible to re-use the same array for any of the
     **     arguments.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPm} modulus of p-vector
+    **     <li>{@link #jauZp} zero p-vector
+    **     <li>{@link #jauSxp} multiply p-vector by scalar
+    ** </ul>
+    **<p>This revision:  2008 November 18
     **
-    **  Called:
-    **     jauPm        modulus of p-vector
-    **     jauZp        zero p-vector
-    **     jauSxp       multiply p-vector by scalar
-    **
-    **  This revision:  2008 November 18
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static NormalizedVector jauPn(double p[])
     {
        double w;
 
@@ -15503,12 +15178,7 @@ public static class SphericalPosition {
         }
     
 
-    public static PrecessionNutation  jauPn00(double date1, double date2, double dpsi, double deps)
     /**
-    **  - - - - - - - -
-    **   i a u P n 0 0
-    **  - - - - - - - -
-    **
     **  Precession-nutation, IAU 2000 model:  a multi-purpose function,
     **  supporting classical (equinox-based) use directly and CIO-based
     **  use indirectly.
@@ -15518,32 +15188,33 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double          TT as a 2-part Julian Date (Note 1)
-    **     dpsi,deps    double          nutation (Note 2)
+    **<!-- Given: -->
+    **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
+    **     @param dpsi,deps     double           nutation (Note 2)
     **
-    **  Returned:
-    **     epsa         double          mean obliquity (Note 3)
-    **     rb           double[3][3]    frame bias matrix (Note 4)
-    **     rp           double[3][3]    precession matrix (Note 5)
-    **     rbp          double[3][3]    bias-precession matrix (Note 6)
-    **     rn           double[3][3]    nutation matrix (Note 7)
-    **     rbpn         double[3][3]    GCRS-to-true matrix (Note 8)
+    **<!-- Returned: -->
+    **     @param epsa          double            <u>returned</u> mean obliquity (Note 3)
+    **     @param rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
+    **     @param rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
+    **     @param rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 6)
+    **     @param rn            double[3][3]      <u>returned</u> nutation matrix (Note 7)
+    **     @param rbpn          double[3][3]      <u>returned</u> GCRS-to-true matrix (Note 8)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -15551,48 +15222,48 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The caller is responsible for providing the nutation components;
+    ** <li> The caller is responsible for providing the nutation components;
     **     they are in longitude and obliquity, in radians and are with
     **     respect to the equinox and ecliptic of date.  For high-accuracy
     **     applications, free core nutation should be included as well as
     **     any other relevant corrections to the position of the CIP.
     **
-    **  3) The returned mean obliquity is consistent with the IAU 2000
+    ** <li> The returned mean obliquity is consistent with the IAU 2000
     **     precession-nutation models.
     **
-    **  4) The matrix rb transforms vectors from GCRS to J2000.0 mean
+    ** <li> The matrix rb transforms vectors from GCRS to J2000.0 mean
     **     equator and equinox by applying frame bias.
     **
-    **  5) The matrix rp transforms vectors from J2000.0 mean equator and
+    ** <li> The matrix rp transforms vectors from J2000.0 mean equator and
     **     equinox to mean equator and equinox of date by applying
     **     precession.
     **
-    **  6) The matrix rbp transforms vectors from GCRS to mean equator and
+    ** <li> The matrix rbp transforms vectors from GCRS to mean equator and
     **     equinox of date by applying frame bias then precession.  It is
     **     the product rp x rb.
     **
-    **  7) The matrix rn transforms vectors from mean equator and equinox of
+    ** <li> The matrix rn transforms vectors from mean equator and equinox of
     **     date to true equator and equinox of date by applying the nutation
     **     (luni-solar + planetary).
     **
-    **  8) The matrix rbpn transforms vectors from GCRS to true equator and
+    ** <li> The matrix rbpn transforms vectors from GCRS to true equator and
     **     equinox of date.  It is the product rn x rbp, applying frame
     **     bias, precession and nutation in that order.
     **
-    **  9) It is permissible to re-use the same array in the returned
+    ** <li> It is permissible to re-use the same array in the returned
     **     arguments.  The arrays are filled in the order given.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPr00} IAU 2000 precession adjustments
+    **     <li>{@link #jauObl80} mean obliquity, IAU 1980
+    **     <li>{@link #jauBp00} frame bias and precession matrices, IAU 2000
+    **     <li>{@link #jauCr} copy r-matrix
+    **     <li>{@link #jauNumat} form nutation matrix
+    **     <li>{@link #jauRxr} product of two r-matrices
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauPr00      IAU 2000 precession adjustments
-    **     jauObl80     mean obliquity, IAU 1980
-    **     jauBp00      frame bias and precession matrices, IAU 2000
-    **     jauCr        copy r-matrix
-    **     jauNumat     form nutation matrix
-    **     jauRxr       product of two r-matrices
-    **
-    **  Reference:
-    **
-    **     Capitaine, N., Chapront, J., Lambert, S. and Wallace, P.,
+    **    <br/>Capitaine, N., Chapront, J., Lambert, S. and Wallace, P.,
     **     "Expressions for the Celestial Intermediate Pole and Celestial
     **     Ephemeris Origin consistent with the IAU 2000A precession-
     **     nutation model", Astron.Astrophys. 400, 1145-1154 (2003)
@@ -15600,12 +15271,13 @@ public static class SphericalPosition {
     **     n.b. The celestial ephemeris origin (CEO) was renamed "celestial
     **          intermediate origin" (CIO) by IAU 2006 Resolution 2.
     **
-    **  This revision:  2010 January 18
+    **<p>This revision:  2010 January 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static PrecessionNutation  jauPn00(double date1, double date2, double dpsi, double deps)
     {
        double  rbpw[][] = new double[3][3], rnw[][] = new double[3][3];
        double[][] rb = new double[3][3];
@@ -15664,12 +15336,7 @@ public static class SphericalPosition {
         }
         
     }
-    public static PrecessionNutation jauPn00a(double date1, double date2)
     /**
-    **  - - - - - - - - -
-    **   i a u P n 0 0 a
-    **  - - - - - - - - -
-    **
     **  Precession-nutation, IAU 2000A model:  a multi-purpose function,
     **  supporting classical (equinox-based) use directly and CIO-based
     **  use indirectly.
@@ -15679,32 +15346,33 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double          TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     dpsi,deps    double          nutation (Note 2)
-    **     epsa         double          mean obliquity (Note 3)
-    **     rb           double[3][3]    frame bias matrix (Note 4)
-    **     rp           double[3][3]    precession matrix (Note 5)
-    **     rbp          double[3][3]    bias-precession matrix (Note 6)
-    **     rn           double[3][3]    nutation matrix (Note 7)
-    **     rbpn         double[3][3]    GCRS-to-true matrix (Notes 8,9)
+    **<!-- Returned: -->
+    **     @param dpsi,deps     double            <u>returned</u> nutation (Note 2)
+    **     @param epsa          double            <u>returned</u> mean obliquity (Note 3)
+    **     @param rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
+    **     @param rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
+    **     @param rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 6)
+    **     @param rn            double[3][3]      <u>returned</u> nutation matrix (Note 7)
+    **     @param rbpn          double[3][3]      <u>returned</u> GCRS-to-true matrix (Notes 8,9)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1)  The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li>  The TT date date1+date2 is a Julian Date, apportioned in any
     **      convenient way between the two arguments.  For example,
     **      JD(TT)=2450123.7 could be expressed in any of these ways,
     **      among others:
-    **
+    **<pre>
     **             date1          date2
     **
     **          2450123.7           0.0       (JD method)
     **          2451545.0       -1421.3       (J2000 method)
     **          2400000.5       50123.2       (MJD method)
     **          2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **      The JD method is the most natural and convenient to use in
     **      cases where the loss of several decimal digits of resolution
     **      is acceptable.  The J2000 method is best matched to the way
@@ -15712,47 +15380,47 @@ public static class SphericalPosition {
     **      optimum resolution.  The MJD method and the date & time methods
     **      are both good compromises between resolution and convenience.
     **
-    **  2)  The nutation components (luni-solar + planetary, IAU 2000A) in
+    ** <li>  The nutation components (luni-solar + planetary, IAU 2000A) in
     **      longitude and obliquity are in radians and with respect to the
     **      equinox and ecliptic of date.  Free core nutation is omitted;
     **      for the utmost accuracy, use the jauPn00  function, where the
     **      nutation components are caller-specified.  For faster but
     **      slightly less accurate results, use the jauPn00b function.
     **
-    **  3)  The mean obliquity is consistent with the IAU 2000 precession.
+    ** <li>  The mean obliquity is consistent with the IAU 2000 precession.
     **
-    **  4)  The matrix rb transforms vectors from GCRS to J2000.0 mean
+    ** <li>  The matrix rb transforms vectors from GCRS to J2000.0 mean
     **      equator and equinox by applying frame bias.
     **
-    **  5)  The matrix rp transforms vectors from J2000.0 mean equator and
+    ** <li>  The matrix rp transforms vectors from J2000.0 mean equator and
     **      equinox to mean equator and equinox of date by applying
     **      precession.
     **
-    **  6)  The matrix rbp transforms vectors from GCRS to mean equator and
+    ** <li>  The matrix rbp transforms vectors from GCRS to mean equator and
     **      equinox of date by applying frame bias then precession.  It is
     **      the product rp x rb.
     **
-    **  7)  The matrix rn transforms vectors from mean equator and equinox
+    ** <li>  The matrix rn transforms vectors from mean equator and equinox
     **      of date to true equator and equinox of date by applying the
     **      nutation (luni-solar + planetary).
     **
-    **  8)  The matrix rbpn transforms vectors from GCRS to true equator and
+    ** <li>  The matrix rbpn transforms vectors from GCRS to true equator and
     **      equinox of date.  It is the product rn x rbp, applying frame
     **      bias, precession and nutation in that order.
     **
-    **  9)  The X,Y,Z coordinates of the IAU 2000B Celestial Intermediate
+    ** <li>  The X,Y,Z coordinates of the IAU 2000B Celestial Intermediate
     **      Pole are elements (3,1-3) of the matrix rbpn.
     **
-    **  10) It is permissible to re-use the same array in the returned
+    **  <li> It is permissible to re-use the same array in the returned
     **      arguments.  The arrays are filled in the order given.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauNut00a} nutation, IAU 2000A
+    **     <li>{@link #jauPn00} bias/precession/nutation results, IAU 2000
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauNut00a    nutation, IAU 2000A
-    **     jauPn00      bias/precession/nutation results, IAU 2000
-    **
-    **  Reference:
-    **
-    **     Capitaine, N., Chapront, J., Lambert, S. and Wallace, P.,
+    **    <br/>Capitaine, N., Chapront, J., Lambert, S. and Wallace, P.,
     **     "Expressions for the Celestial Intermediate Pole and Celestial
     **     Ephemeris Origin consistent with the IAU 2000A precession-
     **     nutation model", Astron.Astrophys. 400, 1145-1154 (2003)
@@ -15760,12 +15428,13 @@ public static class SphericalPosition {
     **     n.b. The celestial ephemeris origin (CEO) was renamed "celestial
     **          intermediate origin" (CIO) by IAU 2006 Resolution 2.
     **
-    **  This revision:  2010 January 18
+    **<p>This revision:  2010 January 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static PrecessionNutation jauPn00a(double date1, double date2)
     {
     /* Nutation. */
        NutationTerms nut = jauNut00a(date1, date2);
@@ -15777,12 +15446,7 @@ public static class SphericalPosition {
         }
     
 
-    public static PrecessionNutation jauPn00b(double date1, double date2)
     /**
-    **  - - - - - - - - -
-    **   i a u P n 0 0 b
-    **  - - - - - - - - -
-    **
     **  Precession-nutation, IAU 2000B model:  a multi-purpose function,
     **  supporting classical (equinox-based) use directly and CIO-based
     **  use indirectly.
@@ -15792,32 +15456,33 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double          TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     dpsi,deps    double          nutation (Note 2)
-    **     epsa         double          mean obliquity (Note 3)
-    **     rb           double[3][3]    frame bias matrix (Note 4)
-    **     rp           double[3][3]    precession matrix (Note 5)
-    **     rbp          double[3][3]    bias-precession matrix (Note 6)
-    **     rn           double[3][3]    nutation matrix (Note 7)
-    **     rbpn         double[3][3]    GCRS-to-true matrix (Notes 8,9)
+    **<!-- Returned: -->
+    **     @param dpsi,deps     double            <u>returned</u> nutation (Note 2)
+    **     @param epsa          double            <u>returned</u> mean obliquity (Note 3)
+    **     @param rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
+    **     @param rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
+    **     @param rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 6)
+    **     @param rn            double[3][3]      <u>returned</u> nutation matrix (Note 7)
+    **     @param rbpn          double[3][3]      <u>returned</u> GCRS-to-true matrix (Notes 8,9)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1)  The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li>  The TT date date1+date2 is a Julian Date, apportioned in any
     **      convenient way between the two arguments.  For example,
     **      JD(TT)=2450123.7 could be expressed in any of these ways,
     **      among others:
-    **
+    **<pre>
     **             date1          date2
     **
     **          2450123.7           0.0       (JD method)
     **          2451545.0       -1421.3       (J2000 method)
     **          2400000.5       50123.2       (MJD method)
     **          2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **      The JD method is the most natural and convenient to use in
     **      cases where the loss of several decimal digits of resolution
     **      is acceptable.  The J2000 method is best matched to the way
@@ -15825,47 +15490,47 @@ public static class SphericalPosition {
     **      optimum resolution.  The MJD method and the date & time methods
     **      are both good compromises between resolution and convenience.
     **
-    **  2)  The nutation components (luni-solar + planetary, IAU 2000B) in
+    ** <li>  The nutation components (luni-solar + planetary, IAU 2000B) in
     **      longitude and obliquity are in radians and with respect to the
     **      equinox and ecliptic of date.  For more accurate results, but
     **      at the cost of increased computation, use the jauPn00a function.
     **      For the utmost accuracy, use the jauPn00  function, where the
     **      nutation components are caller-specified.
     **
-    **  3)  The mean obliquity is consistent with the IAU 2000 precession.
+    ** <li>  The mean obliquity is consistent with the IAU 2000 precession.
     **
-    **  4)  The matrix rb transforms vectors from GCRS to J2000.0 mean
+    ** <li>  The matrix rb transforms vectors from GCRS to J2000.0 mean
     **      equator and equinox by applying frame bias.
     **
-    **  5)  The matrix rp transforms vectors from J2000.0 mean equator and
+    ** <li>  The matrix rp transforms vectors from J2000.0 mean equator and
     **      equinox to mean equator and equinox of date by applying
     **      precession.
     **
-    **  6)  The matrix rbp transforms vectors from GCRS to mean equator and
+    ** <li>  The matrix rbp transforms vectors from GCRS to mean equator and
     **      equinox of date by applying frame bias then precession.  It is
     **      the product rp x rb.
     **
-    **  7)  The matrix rn transforms vectors from mean equator and equinox
+    ** <li>  The matrix rn transforms vectors from mean equator and equinox
     **      of date to true equator and equinox of date by applying the
     **      nutation (luni-solar + planetary).
     **
-    **  8)  The matrix rbpn transforms vectors from GCRS to true equator and
+    ** <li>  The matrix rbpn transforms vectors from GCRS to true equator and
     **      equinox of date.  It is the product rn x rbp, applying frame
     **      bias, precession and nutation in that order.
     **
-    **  9)  The X,Y,Z coordinates of the IAU 2000B Celestial Intermediate
+    ** <li>  The X,Y,Z coordinates of the IAU 2000B Celestial Intermediate
     **      Pole are elements (3,1-3) of the matrix rbpn.
     **
-    **  10) It is permissible to re-use the same array in the returned
+    ** <li> It is permissible to re-use the same array in the returned
     **      arguments.  The arrays are filled in the stated order.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauNut00b} nutation, IAU 2000B
+    **     <li>{@link #jauPn00} bias/precession/nutation results, IAU 2000
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauNut00b    nutation, IAU 2000B
-    **     jauPn00      bias/precession/nutation results, IAU 2000
-    **
-    **  Reference:
-    **
-    **     Capitaine, N., Chapront, J., Lambert, S. and Wallace, P.,
+    **    <br/>Capitaine, N., Chapront, J., Lambert, S. and Wallace, P.,
     **     "Expressions for the Celestial Intermediate Pole and Celestial
     **     Ephemeris Origin consistent with the IAU 2000A precession-
     **     nutation model", Astron.Astrophys. 400, 1145-1154 (2003).
@@ -15873,12 +15538,13 @@ public static class SphericalPosition {
     **     n.b. The celestial ephemeris origin (CEO) was renamed "celestial
     **          intermediate origin" (CIO) by IAU 2006 Resolution 2.
     **
-    **  This revision:  2010 January 18
+    **<p>This revision:  2010 January 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static PrecessionNutation jauPn00b(double date1, double date2)
     {
     /* Nutation. */
        NutationTerms nut = jauNut00b(date1, date2);
@@ -15890,12 +15556,7 @@ public static class SphericalPosition {
         }
     
 
-    public static PrecessionNutation jauPn06(double date1, double date2, double dpsi, double deps)
     /**
-    **  - - - - - - - -
-    **   i a u P n 0 6
-    **  - - - - - - - -
-    **
     **  Precession-nutation, IAU 2006 model:  a multi-purpose function,
     **  supporting classical (equinox-based) use directly and CIO-based use
     **  indirectly.
@@ -15905,32 +15566,33 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double          TT as a 2-part Julian Date (Note 1)
-    **     dpsi,deps    double          nutation (Note 2)
+    **<!-- Given: -->
+    **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
+    **     @param dpsi,deps     double           nutation (Note 2)
     **
-    **  Returned:
-    **     epsa         double          mean obliquity (Note 3)
-    **     rb           double[3][3]    frame bias matrix (Note 4)
-    **     rp           double[3][3]    precession matrix (Note 5)
-    **     rbp          double[3][3]    bias-precession matrix (Note 6)
-    **     rn           double[3][3]    nutation matrix (Note 7)
-    **     rbpn         double[3][3]    GCRS-to-true matrix (Note 8)
+    **<!-- Returned: -->
+    **     @param epsa          double            <u>returned</u> mean obliquity (Note 3)
+    **     @param rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
+    **     @param rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
+    **     @param rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 6)
+    **     @param rn            double[3][3]      <u>returned</u> nutation matrix (Note 7)
+    **     @param rbpn          double[3][3]      <u>returned</u> GCRS-to-true matrix (Note 8)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1)  The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li>  The TT date date1+date2 is a Julian Date, apportioned in any
     **      convenient way between the two arguments.  For example,
     **      JD(TT)=2450123.7 could be expressed in any of these ways,
     **      among others:
-    **
+    **<pre>
     **             date1          date2
     **
     **          2450123.7           0.0       (JD method)
     **          2451545.0       -1421.3       (J2000 method)
     **          2400000.5       50123.2       (MJD method)
     **          2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **      The JD method is the most natural and convenient to use in
     **      cases where the loss of several decimal digits of resolution
     **      is acceptable.  The J2000 method is best matched to the way
@@ -15938,59 +15600,60 @@ public static class SphericalPosition {
     **      optimum resolution.  The MJD method and the date & time methods
     **      are both good compromises between resolution and convenience.
     **
-    **  2)  The caller is responsible for providing the nutation components;
+    ** <li>  The caller is responsible for providing the nutation components;
     **      they are in longitude and obliquity, in radians and are with
     **      respect to the equinox and ecliptic of date.  For high-accuracy
     **      applications, free core nutation should be included as well as
     **      any other relevant corrections to the position of the CIP.
     **
-    **  3)  The returned mean obliquity is consistent with the IAU 2006
+    ** <li>  The returned mean obliquity is consistent with the IAU 2006
     **      precession.
     **
-    **  4)  The matrix rb transforms vectors from GCRS to J2000.0 mean
+    ** <li>  The matrix rb transforms vectors from GCRS to J2000.0 mean
     **      equator and equinox by applying frame bias.
     **
-    **  5)  The matrix rp transforms vectors from J2000.0 mean equator and
+    ** <li>  The matrix rp transforms vectors from J2000.0 mean equator and
     **      equinox to mean equator and equinox of date by applying
     **      precession.
     **
-    **  6)  The matrix rbp transforms vectors from GCRS to mean equator and
+    ** <li>  The matrix rbp transforms vectors from GCRS to mean equator and
     **      equinox of date by applying frame bias then precession.  It is
     **      the product rp x rb.
     **
-    **  7)  The matrix rn transforms vectors from mean equator and equinox
+    ** <li>  The matrix rn transforms vectors from mean equator and equinox
     **      of date to true equator and equinox of date by applying the
     **      nutation (luni-solar + planetary).
     **
-    **  8)  The matrix rbpn transforms vectors from GCRS to true equator and
+    ** <li>  The matrix rbpn transforms vectors from GCRS to true equator and
     **      equinox of date.  It is the product rn x rbp, applying frame
     **      bias, precession and nutation in that order.
     **
-    **  9)  The X,Y,Z coordinates of the IAU 2000B Celestial Intermediate
+    ** <li>  The X,Y,Z coordinates of the IAU 2000B Celestial Intermediate
     **      Pole are elements (3,1-3) of the matrix rbpn.
     **
-    **  10) It is permissible to re-use the same array in the returned
+    **  <li> It is permissible to re-use the same array in the returned
     **      arguments.  The arrays are filled in the stated order.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPfw06} bias-precession F-W angles, IAU 2006
+    **     <li>{@link #jauFw2m} F-W angles to r-matrix
+    **     <li>{@link #jauCr} copy r-matrix
+    **     <li>{@link #jauTr} transpose r-matrix
+    **     <li>{@link #jauRxr} product of two r-matrices
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauPfw06     bias-precession F-W angles, IAU 2006
-    **     jauFw2m      F-W angles to r-matrix
-    **     jauCr        copy r-matrix
-    **     jauTr        transpose r-matrix
-    **     jauRxr       product of two r-matrices
+    **    <br/>Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
     **
-    **  References:
+    **    <br/>Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
     **
-    **     Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
+    **<p>This revision:  2009 December 17
     **
-    **     Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
-    **
-    **  This revision:  2009 December 17
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static PrecessionNutation jauPn06(double date1, double date2, double dpsi, double deps)
     {
        double r1[][] = new double[3][3], r2[][] = new double[3][3], rt[][] = new double[3][3],
        rb[][] = new double[3][3], rbp[][] = new double[3][3], rp[][] = new double[3][3],
@@ -16031,12 +15694,7 @@ public static class SphericalPosition {
         }
     
 
-    public static PrecessionNutation jauPn06a(double date1, double date2)
     /**
-    **  - - - - - - - - -
-    **   i a u P n 0 6 a
-    **  - - - - - - - - -
-    **
     **  Precession-nutation, IAU 2006/2000A models:  a multi-purpose function,
     **  supporting classical (equinox-based) use directly and CIO-based use
     **  indirectly.
@@ -16046,32 +15704,33 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double          TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     dpsi,deps    double          nutation (Note 2)
-    **     epsa         double          mean obliquity (Note 3)
-    **     rb           double[3][3]    frame bias matrix (Note 4)
-    **     rp           double[3][3]    precession matrix (Note 5)
-    **     rbp          double[3][3]    bias-precession matrix (Note 6)
-    **     rn           double[3][3]    nutation matrix (Note 7)
-    **     rbpn         double[3][3]    GCRS-to-true matrix (Notes 8,9)
+    **<!-- Returned: -->
+    **     @param dpsi,deps     double            <u>returned</u> nutation (Note 2)
+    **     @param epsa          double            <u>returned</u> mean obliquity (Note 3)
+    **     @param rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
+    **     @param rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
+    **     @param rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 6)
+    **     @param rn            double[3][3]      <u>returned</u> nutation matrix (Note 7)
+    **     @param rbpn          double[3][3]      <u>returned</u> GCRS-to-true matrix (Notes 8,9)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1)  The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li>  The TT date date1+date2 is a Julian Date, apportioned in any
     **      convenient way between the two arguments.  For example,
     **      JD(TT)=2450123.7 could be expressed in any of these ways,
     **      among others:
-    **
+    **<pre>
     **             date1          date2
     **
     **          2450123.7           0.0       (JD method)
     **          2451545.0       -1421.3       (J2000 method)
     **          2400000.5       50123.2       (MJD method)
     **          2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **      The JD method is the most natural and convenient to use in
     **      cases where the loss of several decimal digits of resolution
     **      is acceptable.  The J2000 method is best matched to the way
@@ -16079,50 +15738,51 @@ public static class SphericalPosition {
     **      optimum resolution.  The MJD method and the date & time methods
     **      are both good compromises between resolution and convenience.
     **
-    **  2)  The nutation components (luni-solar + planetary, IAU 2000A) in
+    ** <li>  The nutation components (luni-solar + planetary, IAU 2000A) in
     **      longitude and obliquity are in radians and with respect to the
     **      equinox and ecliptic of date.  Free core nutation is omitted;
     **      for the utmost accuracy, use the jauPn06 function, where the
     **      nutation components are caller-specified.
     **
-    **  3)  The mean obliquity is consistent with the IAU 2006 precession.
+    ** <li>  The mean obliquity is consistent with the IAU 2006 precession.
     **
-    **  4)  The matrix rb transforms vectors from GCRS to mean J2000.0 by
+    ** <li>  The matrix rb transforms vectors from GCRS to mean J2000.0 by
     **      applying frame bias.
     **
-    **  5)  The matrix rp transforms vectors from mean J2000.0 to mean of
+    ** <li>  The matrix rp transforms vectors from mean J2000.0 to mean of
     **      date by applying precession.
     **
-    **  6)  The matrix rbp transforms vectors from GCRS to mean of date by
+    ** <li>  The matrix rbp transforms vectors from GCRS to mean of date by
     **      applying frame bias then precession.  It is the product rp x rb.
     **
-    **  7)  The matrix rn transforms vectors from mean of date to true of
+    ** <li>  The matrix rn transforms vectors from mean of date to true of
     **      date by applying the nutation (luni-solar + planetary).
     **
-    **  8)  The matrix rbpn transforms vectors from GCRS to true of date
+    ** <li>  The matrix rbpn transforms vectors from GCRS to true of date
     **      (CIP/equinox).  It is the product rn x rbp, applying frame bias,
     **      precession and nutation in that order.
     **
-    **  9)  The X,Y,Z coordinates of the IAU 2006/2000A Celestial
+    ** <li>  The X,Y,Z coordinates of the IAU 2006/2000A Celestial
     **      Intermediate Pole are elements (1,1-3) of the matrix rbpn.
     **
-    **  10) It is permissible to re-use the same array in the returned
+    **  <li> It is permissible to re-use the same array in the returned
     **      arguments.  The arrays are filled in the stated order.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauNut06a} nutation, IAU 2006/2000A
+    **     <li>{@link #jauPn06} bias/precession/nutation results, IAU 2006
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauNut06a    nutation, IAU 2006/2000A
-    **     jauPn06      bias/precession/nutation results, IAU 2006
+    **    <br/>Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
     **
-    **  Reference:
+    **<p>This revision:  2009 December 18
     **
-    **     Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
-    **
-    **  This revision:  2009 December 18
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static PrecessionNutation jauPn06a(double date1, double date2)
     {
     /* Nutation. */
        NutationTerms nut = jauNut06a(date1, date2);
@@ -16133,12 +15793,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPnm00a(double date1, double date2, double rbpn[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u P n m 0 0 a
-    **  - - - - - - - - - -
-    **
     **  Form the matrix of precession-nutation for a given date (including
     **  frame bias), equinox-based, IAU 2000A model.
     **
@@ -16147,26 +15802,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double     TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double      TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     rbpn         double[3][3]    classical NPB matrix (Note 2)
+    **<!-- Returned: -->
+    **     @param rbpn          double[3][3]      <u>returned</u> classical NPB matrix (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -16174,29 +15830,30 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix operates in the sense V(date) = rbpn * V(GCRS), where
+    ** <li> The matrix operates in the sense V(date) = rbpn * V(GCRS), where
     **     the p-vector V(date) is with respect to the true equatorial triad
     **     of date date1+date2 and the p-vector V(GCRS) is with respect to
     **     the Geocentric Celestial Reference System (IAU, 2000).
     **
-    **  3) A faster, but slightly less accurate result (about 1 mas), can be
+    ** <li> A faster, but slightly less accurate result (about 1 mas), can be
     **     obtained by using instead the jauPnm00b function.
-    **
-    **  Called:
-    **     jauPn00a     bias/precession/nutation, IAU 2000A
-    **
-    **  Reference:
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPn00a} bias/precession/nutation, IAU 2000A
+    ** </ul>
+    **<p>Reference:
     **
     **     IAU: Trans. International Astronomical Union, Vol. XXIVB;  Proc.
     **     24th General Assembly, Manchester, UK.  Resolutions B1.3, B1.6.
     **     (2000)
     **
-    **  This revision:  2009 December 21
+    **<p>This revision:  2009 December 21
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPnm00a(double date1, double date2, double rbpn[][])
     {
 
     /* Obtain the required matrix (discarding other results). */
@@ -16213,12 +15870,7 @@ public static class SphericalPosition {
     }
 
 
-    public static void jauPnm00b(double date1, double date2, double rbpn[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u P n m 0 0 b
-    **  - - - - - - - - - -
-    **
     **  Form the matrix of precession-nutation for a given date (including
     **  frame bias), equinox-based, IAU 2000B model.
     **
@@ -16227,26 +15879,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2 double       TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2  double        TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     rbpn        double[3][3] bias-precession-nutation matrix (Note 2)
+    **<!-- Returned: -->
+    **     @param rbpn         double[3][3]   <u>returned</u> bias-precession-nutation matrix (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -16254,29 +15907,30 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix operates in the sense V(date) = rbpn * V(GCRS), where
+    ** <li> The matrix operates in the sense V(date) = rbpn * V(GCRS), where
     **     the p-vector V(date) is with respect to the true equatorial triad
     **     of date date1+date2 and the p-vector V(GCRS) is with respect to
     **     the Geocentric Celestial Reference System (IAU, 2000).
     **
-    **  3) The present function is faster, but slightly less accurate (about
+    ** <li> The present function is faster, but slightly less accurate (about
     **     1 mas), than the jauPnm00a function.
-    **
-    **  Called:
-    **     jauPn00b     bias/precession/nutation, IAU 2000B
-    **
-    **  Reference:
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPn00b} bias/precession/nutation, IAU 2000B
+    ** </ul>
+    **<p>Reference:
     **
     **     IAU: Trans. International Astronomical Union, Vol. XXIVB;  Proc.
     **     24th General Assembly, Manchester, UK.  Resolutions B1.3, B1.6.
     **     (2000)
     **
-    **  This revision:  2009 December 21
+    **<p>This revision:  2009 December 21
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPnm00b(double date1, double date2, double rbpn[][])
     {
 
     /* Obtain the required matrix (discarding other results). */
@@ -16294,12 +15948,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPnm06a(double date1, double date2, double rnpb[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u P n m 0 6 a
-    **  - - - - - - - - - -
-    **
     **  Form the matrix of precession-nutation for a given date (including
     **  frame bias), IAU 2006 precession and IAU 2000A nutation models.
     **
@@ -16308,26 +15957,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2 double       TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2  double        TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     rnpb        double[3][3] bias-precession-nutation matrix (Note 2)
+    **<!-- Returned: -->
+    **     @param rnpb         double[3][3]   <u>returned</u> bias-precession-nutation matrix (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -16335,26 +15985,27 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix operates in the sense V(date) = rnpb * V(GCRS), where
+    ** <li> The matrix operates in the sense V(date) = rnpb * V(GCRS), where
     **     the p-vector V(date) is with respect to the true equatorial triad
     **     of date date1+date2 and the p-vector V(GCRS) is with respect to
     **     the Geocentric Celestial Reference System (IAU, 2000).
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPfw06} bias-precession F-W angles, IAU 2006
+    **     <li>{@link #jauNut06a} nutation, IAU 2006/2000A
+    **     <li>{@link #jauFw2m} F-W angles to r-matrix
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauPfw06     bias-precession F-W angles, IAU 2006
-    **     jauNut06a    nutation, IAU 2006/2000A
-    **     jauFw2m      F-W angles to r-matrix
+    **    <br/>Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855.
     **
-    **  Reference:
+    **<p>This revision:  2009 December 21
     **
-    **     Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855.
-    **
-    **  This revision:  2009 December 21
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPnm06a(double date1, double date2, double rnpb[][])
     {
 
     /* Fukushima-Williams angles for frame bias and precession. */
@@ -16371,12 +16022,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPnm80(double date1, double date2, double rmatpn[][])
     /**
-    **  - - - - - - - - -
-    **   i a u P n m 8 0
-    **  - - - - - - - - -
-    **
     **  Form the matrix of precession/nutation for a given date, IAU 1976
     **  precession model, IAU 1980 nutation model.
     **
@@ -16385,26 +16031,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2    double         TDB date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2     double          TDB date (Note 1)
     **
-    **  Returned:
-    **     rmatpn         double[3][3]   combined precession/nutation matrix
+    **<!-- Returned: -->
+    **     @param rmatpn          double[3][3]     <u>returned</u> combined precession/nutation matrix
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TDB date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TDB date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TDB)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -16412,28 +16059,29 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The matrix operates in the sense V(date) = rmatpn * V(J2000),
+    ** <li> The matrix operates in the sense V(date) = rmatpn * V(J2000),
     **     where the p-vector V(date) is with respect to the true equatorial
     **     triad of date date1+date2 and the p-vector V(J2000) is with
     **     respect to the mean equatorial triad of epoch J2000.0.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPmat76} precession matrix, IAU 1976
+    **     <li>{@link #jauNutm80} nutation matrix, IAU 1980
+    **     <li>{@link #jauRxr} product of two r-matrices
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauPmat76    precession matrix, IAU 1976
-    **     jauNutm80    nutation matrix, IAU 1980
-    **     jauRxr       product of two r-matrices
-    **
-    **  Reference:
-    **
-    **     Explanatory Supplement to the Astronomical Almanac,
+    **     <br/>Explanatory Supplement to the Astronomical Almanac,
     **     P. Kenneth Seidelmann (ed), University Science Books (1992),
     **     Section 3.3 (p145).
     **
-    **  This revision:  2010 January 23
+    **<p>This revision:  2010 January 23
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPnm80(double date1, double date2, double rmatpn[][])
     {
        double rmatp[][] = new double[3][3], rmatn[][] = new double[3][3];
 
@@ -16452,12 +16100,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPom00(double xp, double yp, double sp, double rpom[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u P o m 0 0
-    **  - - - - - - - - - -
-    **
     **  Form the matrix of polar motion for a given date, IAU 2000.
     **
     **  This function is derived from the International Astronomical Union's
@@ -16465,21 +16108,22 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     xp,yp    double    coordinates of the pole (radians, Note 1)
-    **     sp       double    the TIO locator s' (radians, Note 2)
+    **<!-- Given: -->
+    **     @param xp,yp     double     coordinates of the pole (radians, Note 1)
+    **     @param sp        double     the TIO locator s' (radians, Note 2)
     **
-    **  Returned:
-    **     rpom     double[3][3]   polar-motion matrix (Note 3)
+    **<!-- Returned: -->
+    **     @param rpom      double[3][3]     <u>returned</u> polar-motion matrix (Note 3)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The arguments xp and yp are the coordinates (in radians) of the
+    ** <li> The arguments xp and yp are the coordinates (in radians) of the
     **     Celestial Intermediate Pole with respect to the International
     **     Terrestrial Reference System (see IERS Conventions 2003),
     **     measured along the meridians to 0 and 90 deg west respectively.
     **
-    **  2) The argument sp is the TIO locator s', in radians, which
+    ** <li> The argument sp is the TIO locator s', in radians, which
     **     positions the Terrestrial Intermediate Origin on the equator.  It
     **     is obtained from polar motion observations by numerical
     **     integration, and so is in essence unpredictable.  However, it is
@@ -16488,27 +16132,28 @@ public static class SphericalPosition {
     **     where t is centuries since J2000.0.  The function jauSp00
     **     implements this approximation.
     **
-    **  3) The matrix operates in the sense V(TRS) = rpom * V(CIP), meaning
+    ** <li> The matrix operates in the sense V(TRS) = rpom * V(CIP), meaning
     **     that it is the final rotation when computing the pointing
     **     direction to a celestial source.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauIr} initialize r-matrix to identity
+    **     <li>{@link #jauRz} rotate around Z-axis
+    **     <li>{@link #jauRy} rotate around Y-axis
+    **     <li>{@link #jauRx} rotate around X-axis
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauIr        initialize r-matrix to identity
-    **     jauRz        rotate around Z-axis
-    **     jauRy        rotate around Y-axis
-    **     jauRx        rotate around X-axis
-    **
-    **  Reference:
-    **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2009 December 17
+    **<p>This revision:  2009 December 17
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPom00(double xp, double yp, double sp, double rpom[][])
     {
 
     /* Construct the matrix. */
@@ -16522,12 +16167,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPpp(double a[] , double b[] , double apb[] )
     /**
-    **  - - - - - - -
-    **   i a u P p p
-    **  - - - - - - -
-    **
     **  P-vector addition.
     **
     **  This function is derived from the International Astronomical Union's
@@ -16535,23 +16175,24 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     a        double[3]      first p-vector
-    **     b        double[3]      second p-vector
+    **<!-- Given: -->
+    **     @param a         double[3]       first p-vector
+    **     @param b         double[3]       second p-vector
     **
-    **  Returned:
-    **     apb      double[3]      a + b
+    **<!-- Returned: -->
+    **     @param apb       double[3]        <u>returned</u> a + b
     **
     **  Note:
     **     It is permissible to re-use the same array for any of the
     **     arguments.
     **
-    **  This revision:  2008 November 18
+    **<p>This revision:  2008 November 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPpp(double a[] , double b[] , double apb[] )
     {
        apb[0] = a[0] + b[0];
        apb[1] = a[1] + b[1];
@@ -16562,12 +16203,7 @@ public static class SphericalPosition {
         }
     
 
-    static void jauPpsp(double a[] , double s, double b[] , double apsb[] )
     /**
-    **  - - - - - - - -
-    **   i a u P p s p
-    **  - - - - - - - -
-    **
     **  P-vector plus scaled p-vector.
     **
     **  This function is derived from the International Astronomical Union's
@@ -16575,27 +16211,28 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     a      double[3]     first p-vector
-    **     s      double        scalar (multiplier for b)
-    **     b      double[3]     second p-vector
+    **<!-- Given: -->
+    **     @param a       double[3]      first p-vector
+    **     @param s       double         scalar (multiplier for b)
+    **     @param b       double[3]      second p-vector
     **
-    **  Returned:
-    **     apsb   double[3]     a + s*b
+    **<!-- Returned: -->
+    **     @param apsb    double[3]       <u>returned</u> a + s*b
     **
     **  Note:
     **     It is permissible for any of a, b and apsb to be the same array.
     **
-    **  Called:
-    **     jauSxp       multiply p-vector by scalar
-    **     jauPpp       p-vector plus p-vector
+    **<p>Called:<ul>
+    **     <li>{@link #jauSxp} multiply p-vector by scalar
+    **     <li>{@link #jauPpp} p-vector plus p-vector
+    ** </ul>
+    **<p>This revision:  2008 November 18
     **
-    **  This revision:  2008 November 18
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    static void jauPpsp(double a[] , double s, double b[] , double apsb[] )
     {
        double sb[] = new double[3];
 
@@ -16621,12 +16258,7 @@ public static class SphericalPosition {
         }
     }
 
-    static NutationDeltaTerms jauPr00(double date1, double date2)
     /**
-    **  - - - - - - - -
-    **   i a u P r 0 0
-    **  - - - - - - - -
-    **
     **  Precession-rate part of the IAU 2000 precession-nutation models
     **  (part of MHB2000).
     **
@@ -16635,26 +16267,27 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2    double  TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2     double   TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     dpsipr,depspr  double  precession corrections (Notes 2,3)
+    **<!-- Returned: -->
+    **     @param dpsipr,depspr   double    <u>returned</u> precession corrections (Notes 2,3)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -16662,42 +16295,43 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The precession adjustments are expressed as "nutation
+    ** <li> The precession adjustments are expressed as "nutation
     **     components", corrections in longitude and obliquity with respect
     **     to the J2000.0 equinox and ecliptic.
     **
-    **  3) Although the precession adjustments are stated to be with respect
+    ** <li> Although the precession adjustments are stated to be with respect
     **     to Lieske et al. (1977), the MHB2000 model does not specify which
     **     set of Euler angles are to be used and how the adjustments are to
     **     be applied.  The most literal and straightforward procedure is to
     **     adopt the 4-rotation epsilon_0, psi_A, omega_A, xi_A option, and
     **     to add dpsipr to psi_A and depspr to both omega_A and eps_A.
     **
-    **  4) This is an implementation of one aspect of the IAU 2000A nutation
+    ** <li> This is an implementation of one aspect of the IAU 2000A nutation
     **     model, formally adopted by the IAU General Assembly in 2000,
     **     namely MHB2000 (Mathews et al. 2002).
     **
-    **  References:
+    **<p>References:
     **
-    **     Lieske, J.H., Lederle, T., Fricke, W. & Morando, B., "Expressions
+    **     <br/>Lieske, J.H., Lederle, T., Fricke, W. & Morando, B., "Expressions
     **     for the precession quantities based upon the IAU (1976) System of
     **     Astronomical Constants", Astron.Astrophys., 58, 1-16 (1977)
     **
-    **     Mathews, P.M., Herring, T.A., Buffet, B.A., "Modeling of nutation
+    **     <br/>Mathews, P.M., Herring, T.A., Buffet, B.A., "Modeling of nutation
     **     and precession   New nutation series for nonrigid Earth and
     **     insights into the Earth's interior", J.Geophys.Res., 107, B4,
     **     2002.  The MHB2000 code itself was obtained on 9th September 2002
     **     from ftp://maia.usno.navy.mil/conv2000/chapter5/IAU2000A.
     **
-    **     Wallace, P.T., "Software for Implementing the IAU 2000
+    **    <br/>Wallace, P.T., "Software for Implementing the IAU 2000
     **     Resolutions", in IERS Workshop 5.1 (2002).
     **
-    **  This revision:  2009 December 17
+    **<p>This revision:  2009 December 17
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    static NutationDeltaTerms jauPr00(double date1, double date2)
     {
        double t;
 
@@ -16730,13 +16364,8 @@ public static class SphericalPosition {
             this.theta = theta;
         }
     }
-    static EulerAngles jauPrec76(double ep01, double ep02, double ep11, double ep12)
                    
     /**
-    **  - - - - - - - - - -
-    **   i a u P r e c 7 6
-    **  - - - - - - - - - -
-    **
     **  IAU 1976 precession model.
     **
     **  This function forms the three Euler angles which implement general
@@ -16748,18 +16377,19 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     ep01,ep02   double    TDB starting epoch (Note 1)
-    **     ep11,ep12   double    TDB ending epoch (Note 1)
+    **<!-- Given: -->
+    **     @param ep01,ep02    double     TDB starting epoch (Note 1)
+    **     @param ep11,ep12    double     TDB ending epoch (Note 1)
     **
-    **  Returned:
-    **     zeta        double    1st rotation: radians cw around z
-    **     z           double    3rd rotation: radians cw around z
-    **     theta       double    2nd rotation: radians ccw around y
+    **<!-- Returned: -->
+    **     @param zeta         double      <u>returned</u> 1st rotation: radians cw around z
+    **     @param z            double      <u>returned</u> 3rd rotation: radians cw around z
+    **     @param theta        double      <u>returned</u> 2nd rotation: radians ccw around y
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The epochs ep01+ep02 and ep11+ep12 are Julian Dates, apportioned
+    ** <li> The epochs ep01+ep02 and ep11+ep12 are Julian Dates, apportioned
     **     in any convenient way between the arguments epn1 and epn2.  For
     **     example, JD(TDB)=2450123.7 could be expressed in any of these
     **     ways, among others:
@@ -16770,7 +16400,7 @@ public static class SphericalPosition {
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in cases
     **     where the loss of several decimal digits of resolution is
     **     acceptable.  The J2000 method is best matched to the way the
@@ -16780,7 +16410,7 @@ public static class SphericalPosition {
     **     The two epochs may be expressed using different methods, but at
     **     the risk of losing some resolution.
     **
-    **  2) The accumulated precession angles zeta, z, theta are expressed
+    ** <li> The accumulated precession angles zeta, z, theta are expressed
     **     through canonical polynomials which are valid only for a limited
     **     time span.  In addition, the IAU 1976 precession rate is known to
     **     be imperfect.  The absolute accuracy of the present formulation
@@ -16791,22 +16421,23 @@ public static class SphericalPosition {
     **     outside 4200BC to 5600AD and exceed 1000 arcsec outside 6800BC to
     **     8200AD.
     **
-    **  3) The three angles are returned in the conventional order, which
+    ** <li> The three angles are returned in the conventional order, which
     **     is not the same as the order of the corresponding Euler
     **     rotations.  The precession matrix is
     **     R_3(-z) x R_2(+theta) x R_3(-zeta).
     **
-    **  Reference:
+    **<p>Reference:
     **
-    **     Lieske, J.H., 1979, Astron.Astrophys. 73, 282, equations
+    **     <br/>Lieske, J.H., 1979, Astron.Astrophys. 73, 282, equations
     **     (6) & (7), p283.
     **
-    **  This revision:  2009 December 17
+    **<p>This revision:  2009 December 17
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    static EulerAngles jauPrec76(double ep01, double ep02, double ep11, double ep12)
     {
        double t0, t, tas2r, w;
 
@@ -16833,12 +16464,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPv2p(double pv[][], double p[] )
     /**
-    **  - - - - - - - -
-    **   i a u P v 2 p
-    **  - - - - - - - -
-    **
     **  Discard velocity component of a pv-vector.
     **
     **  This function is derived from the International Astronomical Union's
@@ -16846,21 +16472,22 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     pv      double[2][3]     pv-vector
+    **<!-- Given: -->
+    **     @param pv       double[2][3]      pv-vector
     **
-    **  Returned:
-    **     p       double[3]        p-vector
+    **<!-- Returned: -->
+    **     @param p        double[3]          <u>returned</u> p-vector
     **
-    **  Called:
-    **     jauCp        copy p-vector
+    **<p>Called:<ul>
+    **     <li>{@link #jauCp} copy p-vector
+    ** </ul>
+    **<p>This revision:  2008 May 11
     **
-    **  This revision:  2008 May 11
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPv2p(double pv[][], double p[] )
     {
        jauCp(pv[0], p);
 
@@ -16878,12 +16505,7 @@ public static class SphericalPosition {
             vel = new PolarCoordinate(td,pd,rd);
         }
     }
-    public static SphericalPositionVelocity jauPv2s(double pv[][])
     /**
-    **  - - - - - - - -
-    **   i a u P v 2 s
-    **  - - - - - - - -
-    **
     **  Convert position/velocity from Cartesian to spherical coordinates.
     **
     **  This function is derived from the International Astronomical Union's
@@ -16891,20 +16513,21 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     pv       double[2][3]  pv-vector
+    **<!-- Given: -->
+    **     @param pv        double[2][3]   pv-vector
     **
-    **  Returned:
-    **     theta    double        longitude angle (radians)
-    **     phi      double        latitude angle (radians)
-    **     r        double        radial distance
-    **     td       double        rate of change of theta
-    **     pd       double        rate of change of phi
-    **     rd       double        rate of change of r
+    **<!-- Returned: -->
+    **     @param theta     double          <u>returned</u> longitude angle (radians)
+    **     @param phi       double          <u>returned</u> latitude angle (radians)
+    **     @param r         double          <u>returned</u> radial distance
+    **     @param td        double          <u>returned</u> rate of change of theta
+    **     @param pd        double          <u>returned</u> rate of change of phi
+    **     @param rd        double          <u>returned</u> rate of change of r
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) If the position part of pv is null, theta, phi, td and pd
+    ** <li> If the position part of pv is null, theta, phi, td and pd
     **     are indeterminate.  This is handled by extrapolating the
     **     position through unit time by using the velocity part of
     **     pv.  This moves the origin without changing the direction
@@ -16912,15 +16535,16 @@ public static class SphericalPosition {
     **     components of pv are both null, zeroes are returned for all
     **     six results.
     **
-    **  2) If the position is a pole, theta, td and pd are indeterminate.
+    ** <li> If the position is a pole, theta, td and pd are indeterminate.
     **     In such cases zeroes are returned for all three.
     **
-    **  This revision:  2008 October 28
+    **<p>This revision:  2008 October 28
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static SphericalPositionVelocity jauPv2s(double pv[][])
     {
        double x, y, z, xd, yd, zd, rxy2, rxy, r2, rtrue, rw, xyp;
        double theta, phi, r, td, pd, rd;
@@ -16975,12 +16599,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPvdpv(double a[][], double b[][], double adb[] )
     /**
-    **  - - - - - - - - -
-    **   i a u P v d p v
-    **  - - - - - - - - -
-    **
     **  Inner (=scalar=dot) product of two pv-vectors.
     **
     **  This function is derived from the International Astronomical Union's
@@ -16988,12 +16607,12 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     a        double[2][3]      first pv-vector
-    **     b        double[2][3]      second pv-vector
+    **<!-- Given: -->
+    **     @param a         double[2][3]       first pv-vector
+    **     @param b         double[2][3]       second pv-vector
     **
-    **  Returned:
-    **     adb      double[2]         a . b (see note)
+    **<!-- Returned: -->
+    **     @param adb       double[2]           <u>returned</u> a . b (see note)
     **
     **  Note:
     **
@@ -17002,15 +16621,16 @@ public static class SphericalPosition {
     **     numbers ( ap . bp , ap . bv + av . bp ).  The two numbers are the
     **     dot-product of the two p-vectors and its derivative.
     **
-    **  Called:
-    **     jauPdp       scalar product of two p-vectors
+    **<p>Called:<ul>
+    **     <li>{@link #jauPdp} scalar product of two p-vectors
+    ** </ul>
+    **<p>This revision:  2008 May 22
     **
-    **  This revision:  2008 May 22
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPvdpv(double a[][], double b[][], double adb[] )
     {
        double adbd, addb;
 
@@ -17040,12 +16660,7 @@ public static class SphericalPosition {
             this.s = s;
         }
     }
-    public static PVModulus jauPvm(double pv[][])
     /**
-    **  - - - - - - -
-    **   i a u P v m
-    **  - - - - - - -
-    **
     **  Modulus of pv-vector.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17053,22 +16668,23 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     pv     double[2][3]   pv-vector
+    **<!-- Given: -->
+    **     @param pv      double[2][3]    pv-vector
     **
-    **  Returned:
-    **     r      double         modulus of position component
-    **     s      double         modulus of velocity component
+    **<!-- Returned: -->
+    **     @param r       double           <u>returned</u> modulus of position component
+    **     @param s       double           <u>returned</u> modulus of velocity component
     **
-    **  Called:
-    **     jauPm        modulus of p-vector
+    **<p>Called:<ul>
+    **     <li>{@link #jauPm} modulus of p-vector
+    ** </ul>
+    **<p>This revision:  2008 May 22
     **
-    **  This revision:  2008 May 22
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static PVModulus jauPvm(double pv[][])
     {
     /* Distance. */
        double r = jauPm(pv[0]);
@@ -17081,12 +16697,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPvmpv(double a[][], double b[][], double amb[][])
     /**
-    **  - - - - - - - - -
-    **   i a u P v m p v
-    **  - - - - - - - - -
-    **
     **  Subtract one pv-vector from another.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17094,26 +16705,27 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     a       double[2][3]      first pv-vector
-    **     b       double[2][3]      second pv-vector
+    **<!-- Given: -->
+    **     @param a        double[2][3]       first pv-vector
+    **     @param b        double[2][3]       second pv-vector
     **
-    **  Returned:
-    **     amb     double[2][3]      a - b
+    **<!-- Returned: -->
+    **     @param amb      double[2][3]        <u>returned</u> a - b
     **
     **  Note:
     **     It is permissible to re-use the same array for any of the
     **     arguments.
     **
-    **  Called:
-    **     jauPmp       p-vector minus p-vector
+    **<p>Called:<ul>
+    **     <li>{@link #jauPmp} p-vector minus p-vector
+    ** </ul>
+    **<p>This revision:  2008 November 18
     **
-    **  This revision:  2008 November 18
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPvmpv(double a[][], double b[][], double amb[][])
     {
        jauPmp(a[0], b[0], amb[0]);
        jauPmp(a[1], b[1], amb[1]);
@@ -17123,12 +16735,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPvppv(double a[][], double b[][], double apb[][])
     /**
-    **  - - - - - - - - -
-    **   i a u P v p p v
-    **  - - - - - - - - -
-    **
     **  Add one pv-vector to another.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17136,26 +16743,27 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     a        double[2][3]      first pv-vector
-    **     b        double[2][3]      second pv-vector
+    **<!-- Given: -->
+    **     @param a         double[2][3]       first pv-vector
+    **     @param b         double[2][3]       second pv-vector
     **
-    **  Returned:
-    **     apb      double[2][3]      a + b
+    **<!-- Returned: -->
+    **     @param apb       double[2][3]        <u>returned</u> a + b
     **
     **  Note:
     **     It is permissible to re-use the same array for any of the
     **     arguments.
     **
-    **  Called:
-    **     jauPpp       p-vector plus p-vector
+    **<p>Called:<ul>
+    **     <li>{@link #jauPpp} p-vector plus p-vector
+    ** </ul>
+    **<p>This revision:  2008 November 18
     **
-    **  This revision:  2008 November 18
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPvppv(double a[][], double b[][], double apb[][])
     {
        jauPpp(a[0], b[0], apb[0]);
        jauPpp(a[1], b[1], apb[1]);
@@ -17183,12 +16791,7 @@ public static class SphericalPosition {
             this.rv = rv;
         }
     }
-    public static CatalogCoords jauPvstar(double pv[][]) throws SOFAInternalError
     /**
-    **  - - - - - - - - - -
-    **   i a u P v s t a r
-    **  - - - - - - - - - -
-    **
     **  Convert star position+velocity vector to catalog coordinates.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17207,19 +16810,20 @@ public static class SphericalPosition {
     **     px     double         parallax (arcsec)
     **     rv     double         radial velocity (km/s, positive = receding)
     **
-    **  Returned (function value):
-    **            int            status:
+    ** <!-- Returned (function value): -->
+    **  @return int            status:
     **                              0 = OK
     **                             -1 = superluminal speed (Note 5)
     **                             -2 = null position vector
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The specified pv-vector is the coordinate direction (and its rate
+    ** <li> The specified pv-vector is the coordinate direction (and its rate
     **     of change) for the date at which the light leaving the star
     **     reached the solar-system barycenter.
     **
-    **  2) The star data returned by this function are "observables" for an
+    ** <li> The star data returned by this function are "observables" for an
     **     imaginary observer at the solar-system barycenter.  Proper motion
     **     and radial velocity are, strictly, in terms of barycentric
     **     coordinate time, TCB.  For most practical applications, it is
@@ -17249,43 +16853,44 @@ public static class SphericalPosition {
     **
     **     (ii) The transformation complies with special relativity.
     **
-    **  3) Care is needed with units.  The star coordinates are in radians
+    ** <li> Care is needed with units.  The star coordinates are in radians
     **     and the proper motions in radians per Julian year, but the
     **     parallax is in arcseconds; the radial velocity is in km/s, but
     **     the pv-vector result is in AU and AU/day.
     **
-    **  4) The proper motions are the rate of change of the right ascension
+    ** <li> The proper motions are the rate of change of the right ascension
     **     and declination at the catalog epoch and are in radians per Julian
     **     year.  The RA proper motion is in terms of coordinate angle, not
     **     true angle, and will thus be numerically larger at high
     **     declinations.
     **
-    **  5) Straight-line motion at constant speed in the inertial frame is
+    ** <li> Straight-line motion at constant speed in the inertial frame is
     **     assumed.  If the speed is greater than or equal to the speed of
     **     light, the function aborts with an error status.
     **
-    **  6) The inverse transformation is performed by the function jauStarpv.
-    **
-    **  Called:
-    **     jauPn        decompose p-vector into modulus and direction
-    **     jauPdp       scalar product of two p-vectors
-    **     jauSxp       multiply p-vector by scalar
-    **     jauPmp       p-vector minus p-vector
-    **     jauPm        modulus of p-vector
-    **     jauPpp       p-vector plus p-vector
-    **     jauPv2s      pv-vector to spherical
-    **     jauAnp       normalize angle into range 0 to 2pi
-    **
-    **  Reference:
+    ** <li> The inverse transformation is performed by the function jauStarpv.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPn} decompose p-vector into modulus and direction
+    **     <li>{@link #jauPdp} scalar product of two p-vectors
+    **     <li>{@link #jauSxp} multiply p-vector by scalar
+    **     <li>{@link #jauPmp} p-vector minus p-vector
+    **     <li>{@link #jauPm} modulus of p-vector
+    **     <li>{@link #jauPpp} p-vector plus p-vector
+    **     <li>{@link #jauPv2s} pv-vector to spherical
+    **     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+    ** </ul>
+    **<p>Reference:
     **
     **     Stumpff, P., 1985, Astron.Astrophys. 144, 232-240.
     **
-    **  This revision:  2008 May 18
+    **<p>This revision:  2008 May 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static CatalogCoords jauPvstar(double pv[][]) throws SOFAInternalError
     {
        double r, x[] = new double[3], vr, ur[] = new double[3], vt, ut[] = new double[3], bett, betr, d, w, del,
               usr[] = new double[3], ust[] = new double[3];
@@ -17346,12 +16951,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPvu(double dt, double pv[][], double upv[][])
     /**
-    **  - - - - - - -
-    **   i a u P v u
-    **  - - - - - - -
-    **
     **  Update a pv-vector.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17359,32 +16959,34 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     dt       double           time interval
-    **     pv       double[2][3]     pv-vector
+    **<!-- Given: -->
+    **     @param dt        double            time interval
+    **     @param pv        double[2][3]      pv-vector
     **
-    **  Returned:
-    **     upv      double[2][3]     p updated, v unchanged
+    **<!-- Returned: -->
+    **     @param upv       double[2][3]       <u>returned</u> p updated, v unchanged
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) "Update" means "refer the position component of the vector
+    ** <li> "Update" means "refer the position component of the vector
     **     to a new date dt time units from the existing date".
     **
-    **  2) The time units of dt must match those of the velocity.
+    ** <li> The time units of dt must match those of the velocity.
     **
-    **  3) It is permissible for pv and upv to be the same array.
+    ** <li> It is permissible for pv and upv to be the same array.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPpsp} p-vector plus scaled p-vector
+    **     <li>{@link #jauCp} copy p-vector
+    ** </ul>
+    **<p>This revision:  2008 November 17
     **
-    **  Called:
-    **     jauPpsp      p-vector plus scaled p-vector
-    **     jauCp        copy p-vector
-    **
-    **  This revision:  2008 November 17
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPvu(double dt, double pv[][], double upv[][])
     {
        jauPpsp(pv[0], dt, pv[1], upv[0]);
        jauCp(pv[1], upv[1]);
@@ -17394,12 +16996,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPvup(double dt, double pv[][], double p[] )
     /**
-    **  - - - - - - - -
-    **   i a u P v u p
-    **  - - - - - - - -
-    **
     **  Update a pv-vector, discarding the velocity component.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17407,26 +17004,28 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     dt       double            time interval
-    **     pv       double[2][3]      pv-vector
+    **<!-- Given: -->
+    **     @param dt        double             time interval
+    **     @param pv        double[2][3]       pv-vector
     **
-    **  Returned:
-    **     p        double[3]         p-vector
+    **<!-- Returned: -->
+    **     @param p         double[3]           <u>returned</u> p-vector
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) "Update" means "refer the position component of the vector to a
+    ** <li> "Update" means "refer the position component of the vector to a
     **     new date dt time units from the existing date".
     **
-    **  2) The time units of dt must match those of the velocity.
+    ** <li> The time units of dt must match those of the velocity.
     **
-    **  This revision:  2008 May 11
+    **<p>This revision:  2008 May 11
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPvup(double dt, double pv[][], double p[] )
     {
        p[0] = pv[0][0] + dt * pv[1][0];
        p[1] = pv[0][1] + dt * pv[1][1];
@@ -17437,12 +17036,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPvxpv(double a[][], double b[][], double axb[][])
     /**
-    **  - - - - - - - - -
-    **   i a u P v x p v
-    **  - - - - - - - - -
-    **
     **  Outer (=vector=cross) product of two pv-vectors.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17450,34 +17044,36 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     a        double[2][3]      first pv-vector
-    **     b        double[2][3]      second pv-vector
+    **<!-- Given: -->
+    **     @param a         double[2][3]       first pv-vector
+    **     @param b         double[2][3]       second pv-vector
     **
-    **  Returned:
-    **     axb      double[2][3]      a x b
+    **<!-- Returned: -->
+    **     @param axb       double[2][3]        <u>returned</u> a x b
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) If the position and velocity components of the two pv-vectors are
+    ** <li> If the position and velocity components of the two pv-vectors are
     **     ( ap, av ) and ( bp, bv ), the result, a x b, is the pair of
     **     vectors ( ap x bp, ap x bv + av x bp ).  The two vectors are the
     **     cross-product of the two p-vectors and its derivative.
     **
-    **  2) It is permissible to re-use the same array for any of the
+    ** <li> It is permissible to re-use the same array for any of the
     **     arguments.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauCpv} copy pv-vector
+    **     <li>{@link #jauPxp} vector product of two p-vectors
+    **     <li>{@link #jauPpp} p-vector plus p-vector
+    ** </ul>
+    **<p>This revision:  2008 November 18
     **
-    **  Called:
-    **     jauCpv       copy pv-vector
-    **     jauPxp       vector product of two p-vectors
-    **     jauPpp       p-vector plus p-vector
-    **
-    **  This revision:  2008 November 18
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPvxpv(double a[][], double b[][], double axb[][])
     {
        double wa[][] = new double[2][3], wb[][] = new double[2][3], axbd[] = new double[3], adxb[] = new double[3];
 
@@ -17499,12 +17095,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauPxp(double a[] , double b[] , double axb[] )
     /**
-    **  - - - - - - -
-    **   i a u P x p
-    **  - - - - - - -
-    **
     **  p-vector outer (=vector=cross) product.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17512,23 +17103,24 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     a        double[3]      first p-vector
-    **     b        double[3]      second p-vector
+    **<!-- Given: -->
+    **     @param a         double[3]       first p-vector
+    **     @param b         double[3]       second p-vector
     **
-    **  Returned:
-    **     axb      double[3]      a x b
+    **<!-- Returned: -->
+    **     @param axb       double[3]        <u>returned</u> a x b
     **
     **  Note:
     **     It is permissible to re-use the same array for any of the
     **     arguments.
     **
-    **  This revision:  2008 November 18
+    **<p>This revision:  2008 November 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauPxp(double a[] , double b[] , double axb[] )
     {
        double xa, ya, za, xb, yb, zb;
 
@@ -17548,12 +17140,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauRm2v(double r[][], double w[] )
     /**
-    **  - - - - - - - -
-    **   i a u R m 2 v
-    **  - - - - - - - -
-    **
     **  Express an r-matrix as an r-vector.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17561,33 +17148,35 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     r        double[3][3]    rotation matrix
+    **<!-- Given: -->
+    **     @param r         double[3][3]     rotation matrix
     **
-    **  Returned:
-    **     w        double[3]       rotation vector (Note 1)
+    **<!-- Returned: -->
+    **     @param w         double[3]         <u>returned</u> rotation vector (Note 1)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) A rotation matrix describes a rotation through some angle about
+    ** <li> A rotation matrix describes a rotation through some angle about
     **     some arbitrary axis called the Euler axis.  The "rotation vector"
     **     returned by this function has the same direction as the Euler axis,
     **     and its magnitude is the angle in radians.  (The magnitude and
     **     direction can be separated by means of the function jauPn.)
     **
-    **  2) If r is null, so is the result.  If r is not a rotation matrix
+    ** <li> If r is null, so is the result.  If r is not a rotation matrix
     **     the result is undefined;  r must be proper (i.e. have a positive
     **     determinant) and real orthogonal (inverse = transpose).
     **
-    **  3) The reference frame rotates clockwise as seen looking along
+    ** <li> The reference frame rotates clockwise as seen looking along
     **     the rotation vector from the origin.
     **
-    **  This revision:  2008 May 12
+    **<p>This revision:  2008 May 12
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauRm2v(double r[][], double w[] )
     {
        double x, y, z, s2, c2, phi, f;
 
@@ -17614,12 +17203,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauRv2m(double w[] , double r[][])
     /**
-    **  - - - - - - - -
-    **   i a u R v 2 m
-    **  - - - - - - - -
-    **
     **  Form the r-matrix corresponding to a given r-vector.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17627,30 +17211,32 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     w        double[3]      rotation vector (Note 1)
+    **<!-- Given: -->
+    **     @param w         double[3]       rotation vector (Note 1)
     **
-    **  Returned:
-    **     r        double[3][3]    rotation matrix
+    **<!-- Returned: -->
+    **     @param r         double[3][3]      <u>returned</u> rotation matrix
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) A rotation matrix describes a rotation through some angle about
+    ** <li> A rotation matrix describes a rotation through some angle about
     **     some arbitrary axis called the Euler axis.  The "rotation vector"
     **     supplied to This function has the same direction as the Euler
     **     axis, and its magnitude is the angle in radians.
     **
-    **  2) If w is null, the unit matrix is returned.
+    ** <li> If w is null, the unit matrix is returned.
     **
-    **  3) The reference frame rotates clockwise as seen looking along the
+    ** <li> The reference frame rotates clockwise as seen looking along the
     **     rotation vector from the origin.
     **
-    **  This revision:  2008 May 11
+    **<p>This revision:  2008 May 11
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauRv2m(double w[] , double r[][])
     {
        double x, y, z, phi, s, c, f;
 
@@ -17687,12 +17273,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauRx(double phi, double r[][])
     /**
-    **  - - - - - -
-    **   i a u R x
-    **  - - - - - -
-    **
     **  Rotate an r-matrix about the x-axis.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17700,8 +17281,8 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     phi    double          angle (radians)
+    **<!-- Given: -->
+    **     @param phi     double           angle (radians)
     **
     **  Given and returned:
     **     r      double[3][3]    r-matrix
@@ -17711,17 +17292,18 @@ public static class SphericalPosition {
     **  incorporates in the matrix an additional rotation, about the x-axis,
     **  anticlockwise as seen looking towards the origin from positive x.
     **
-    **  Called:
-    **     jauIr        initialize r-matrix to identity
-    **     jauRxr       product of two r-matrices
-    **     jauCr        copy r-matrix
+    **<p>Called:<ul>
+    **     <li>{@link #jauIr} initialize r-matrix to identity
+    **     <li>{@link #jauRxr} product of two r-matrices
+    **     <li>{@link #jauCr} copy r-matrix
+    ** </ul>
+    **<p>This revision:  2008 May 22
     **
-    **  This revision:  2008 May 22
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauRx(double phi, double r[][])
     {
        double s, c, a[][] = new double[3][3], w[][] = new double[3][3];
 
@@ -17746,12 +17328,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauRxp(double r[][], double p[] , double rp[] )
     /**
-    **  - - - - - - -
-    **   i a u R x p
-    **  - - - - - - -
-    **
     **  Multiply a p-vector by an r-matrix.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17759,25 +17336,26 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     r        double[3][3]    r-matrix
-    **     p        double[3]       p-vector
+    **<!-- Given: -->
+    **     @param r         double[3][3]     r-matrix
+    **     @param p         double[3]        p-vector
     **
-    **  Returned:
-    **     rp       double[3]       r * p
+    **<!-- Returned: -->
+    **     @param rp        double[3]         <u>returned</u> r * p
     **
     **  Note:
     **     It is permissible for p and rp to be the same array.
     **
-    **  Called:
-    **     jauCp        copy p-vector
+    **<p>Called:<ul>
+    **     <li>{@link #jauCp} copy p-vector
+    ** </ul>
+    **<p>This revision:  2008 October 28
     **
-    **  This revision:  2008 October 28
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauRxp(double r[][], double p[] , double rp[] )
     {
        double w, wrp[] = new double[3];
        int i, j;
@@ -17800,12 +17378,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauRxpv(double r[][], double pv[][], double rpv[][])
     /**
-    **  - - - - - - - -
-    **   i a u R x p v
-    **  - - - - - - - -
-    **
     **  Multiply a pv-vector by an r-matrix.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17813,25 +17386,26 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     r        double[3][3]    r-matrix
-    **     pv       double[2][3]    pv-vector
+    **<!-- Given: -->
+    **     @param r         double[3][3]     r-matrix
+    **     @param pv        double[2][3]     pv-vector
     **
-    **  Returned:
-    **     rpv      double[2][3]    r * pv
+    **<!-- Returned: -->
+    **     @param rpv       double[2][3]      <u>returned</u> r * pv
     **
     **  Note:
     **     It is permissible for pv and rpv to be the same array.
     **
-    **  Called:
-    **     jauRxp       product of r-matrix and p-vector
+    **<p>Called:<ul>
+    **     <li>{@link #jauRxp} product of r-matrix and p-vector
+    ** </ul>
+    **<p>This revision:  2008 October 28
     **
-    **  This revision:  2008 October 28
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauRxpv(double r[][], double pv[][], double rpv[][])
     {
        jauRxp(r, pv[0], rpv[0]);
        jauRxp(r, pv[1], rpv[1]);
@@ -17841,12 +17415,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauRxr(double a[][], double b[][], double atb[][])
     /**
-    **  - - - - - - -
-    **   i a u R x r
-    **  - - - - - - -
-    **
     **  Multiply two r-matrices.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17854,26 +17423,27 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     a        double[3][3]    first r-matrix
-    **     b        double[3][3]    second r-matrix
+    **<!-- Given: -->
+    **     @param a         double[3][3]     first r-matrix
+    **     @param b         double[3][3]     second r-matrix
     **
-    **  Returned:
-    **     atb      double[3][3]    a * b
+    **<!-- Returned: -->
+    **     @param atb       double[3][3]      <u>returned</u> a * b
     **
     **  Note:
     **     It is permissible to re-use the same array for any of the
     **     arguments.
     **
-    **  Called:
-    **     jauCr        copy r-matrix
+    **<p>Called:<ul>
+    **     <li>{@link #jauCr} copy r-matrix
+    ** </ul>
+    **<p>This revision:  2008 November 18
     **
-    **  This revision:  2008 November 18
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauRxr(double a[][], double b[][], double atb[][])
     {
        int i, j, k;
        double w, wm[][] = new double[3][3];
@@ -17895,12 +17465,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauRy(double theta, double r[][])
     /**
-    **  - - - - - -
-    **   i a u R y
-    **  - - - - - -
-    **
     **  Rotate an r-matrix about the y-axis.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17908,8 +17473,8 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     theta  double          angle (radians)
+    **<!-- Given: -->
+    **     @param theta   double           angle (radians)
     **
     **  Given and returned:
     **     r      double[3][3]    r-matrix
@@ -17919,17 +17484,18 @@ public static class SphericalPosition {
     **  incorporates in the matrix an additional rotation, about the y-axis,
     **  anticlockwise as seen looking towards the origin from positive y.
     **
-    **  Called:
-    **     jauIr        initialize r-matrix to identity
-    **     jauRxr       product of two r-matrices
-    **     jauCr        copy r-matrix
+    **<p>Called:<ul>
+    **     <li>{@link #jauIr} initialize r-matrix to identity
+    **     <li>{@link #jauRxr} product of two r-matrices
+    **     <li>{@link #jauCr} copy r-matrix
+    ** </ul>
+    **<p>This revision:  2008 May 22
     **
-    **  This revision:  2008 May 22
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauRy(double theta, double r[][])
     {
        double s, c, a[][] = new double[3][3], w[][] = new double[3][3];
 
@@ -17954,12 +17520,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauRz(double psi, double r[][])
     /**
-    **  - - - - - -
-    **   i a u R z
-    **  - - - - - -
-    **
     **  Rotate an r-matrix about the z-axis.
     **
     **  This function is derived from the International Astronomical Union's
@@ -17967,8 +17528,8 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     psi    double          angle (radians)
+    **<!-- Given: -->
+    **     @param psi     double           angle (radians)
     **
     **  Given and returned:
     **     r      double[3][3]    r-matrix, rotated
@@ -17978,17 +17539,18 @@ public static class SphericalPosition {
     **  incorporates in the matrix an additional rotation, about the z-axis,
     **  anticlockwise as seen looking towards the origin from positive z.
     **
-    **  Called:
-    **     jauIr        initialize r-matrix to identity
-    **     jauRxr       product of two r-matrices
-    **     jauCr        copy r-matrix
+    **<p>Called:<ul>
+    **     <li>{@link #jauIr} initialize r-matrix to identity
+    **     <li>{@link #jauRxr} product of two r-matrices
+    **     <li>{@link #jauCr} copy r-matrix
+    ** </ul>
+    **<p>This revision:  2008 May 22
     **
-    **  This revision:  2008 May 22
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauRz(double psi, double r[][])
     {
        double s, c, a[][] = new double[3][3], w[][] = new double[3][3];
 
@@ -18013,12 +17575,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauS00(double date1, double date2, double x, double y)
     /**
-    **  - - - - - - -
-    **   i a u S 0 0
-    **  - - - - - - -
-    **
     **  The CIO locator s, positioning the Celestial Intermediate Origin on
     **  the equator of the Celestial Intermediate Pole, given the CIP's X,Y
     **  coordinates.  Compatible with IAU 2000A precession-nutation.
@@ -18028,27 +17585,28 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2   double    TT as a 2-part Julian Date (Note 1)
-    **     x,y           double    CIP coordinates (Note 3)
+    **<!-- Given: -->
+    **     @param date1,date2    double     TT as a 2-part Julian Date (Note 1)
+    **     @param x,y            double     CIP coordinates (Note 3)
     **
-    **  Returned (function value):
-    **                   double    the CIO locator s in radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    the CIO locator s in radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -18056,34 +17614,34 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The CIO locator s is the difference between the right ascensions
+    ** <li> The CIO locator s is the difference between the right ascensions
     **     of the same point in two systems:  the two systems are the GCRS
     **     and the CIP,CIO, and the point is the ascending node of the
     **     CIP equator.  The quantity s remains below 0.1 arcsecond
     **     throughout 1900-2100.
     **
-    **  3) The series used to compute s is in fact for s+XY/2, where X and Y
+    ** <li> The series used to compute s is in fact for s+XY/2, where X and Y
     **     are the x and y components of the CIP unit vector;  this series
     **     is more compact than a direct series for s would be.  This
     **     function requires X,Y to be supplied by the caller, who is
     **     responsible for providing values that are consistent with the
     **     supplied date.
     **
-    **  4) The model is consistent with the IAU 2000A precession-nutation.
+    ** <li> The model is consistent with the IAU 2000A precession-nutation.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauFal03} mean anomaly of the Moon
+    **     <li>{@link #jauFalp03} mean anomaly of the Sun
+    **     <li>{@link #jauFaf03} mean argument of the latitude of the Moon
+    **     <li>{@link #jauFad03} mean elongation of the Moon from the Sun
+    **     <li>{@link #jauFaom03} mean longitude of the Moon's ascending node
+    **     <li>{@link #jauFave03} mean longitude of Venus
+    **     <li>{@link #jauFae03} mean longitude of Earth
+    **     <li>{@link #jauFapa03} general accumulated precession in longitude
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauFal03     mean anomaly of the Moon
-    **     jauFalp03    mean anomaly of the Sun
-    **     jauFaf03     mean argument of the latitude of the Moon
-    **     jauFad03     mean elongation of the Moon from the Sun
-    **     jauFaom03    mean longitude of the Moon's ascending node
-    **     jauFave03    mean longitude of Venus
-    **     jauFae03     mean longitude of Earth
-    **     jauFapa03    general accumulated precession in longitude
-    **
-    **  References:
-    **
-    **     Capitaine, N., Chapront, J., Lambert, S. and Wallace, P.,
+    **    <br/>Capitaine, N., Chapront, J., Lambert, S. and Wallace, P.,
     **     "Expressions for the Celestial Intermediate Pole and Celestial
     **     Ephemeris Origin consistent with the IAU 2000A precession-
     **     nutation model", Astron.Astrophys. 400, 1145-1154 (2003)
@@ -18091,15 +17649,16 @@ public static class SphericalPosition {
     **     n.b. The celestial ephemeris origin (CEO) was renamed "celestial
     **          intermediate origin" (CIO) by IAU 2006 Resolution 2.
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2010 January 18
+    **<p>This revision:  2010 January 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauS00(double date1, double date2, double x, double y)
     {
     /* Time since J2000.0, in Julian centuries */
        double t;
@@ -18334,12 +17893,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauS00a(double date1, double date2)
     /**
-    **  - - - - - - - -
-    **   i a u S 0 0 a
-    **  - - - - - - - -
-    **
     **  The CIO locator s, positioning the Celestial Intermediate Origin on
     **  the equator of the Celestial Intermediate Pole, using the IAU 2000A
     **  precession-nutation model.
@@ -18349,26 +17903,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double    TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned (function value):
-    **                  double    the CIO locator s in radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    the CIO locator s in radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -18376,28 +17931,28 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The CIO locator s is the difference between the right ascensions
+    ** <li> The CIO locator s is the difference between the right ascensions
     **     of the same point in two systems.  The two systems are the GCRS
     **     and the CIP,CIO, and the point is the ascending node of the
     **     CIP equator.  The CIO locator s remains a small fraction of
     **     1 arcsecond throughout 1900-2100.
     **
-    **  3) The series used to compute s is in fact for s+XY/2, where X and Y
+    ** <li> The series used to compute s is in fact for s+XY/2, where X and Y
     **     are the x and y components of the CIP unit vector;  this series
     **     is more compact than a direct series for s would be.  The present
     **     function uses the full IAU 2000A nutation model when predicting
     **     the CIP position.  Faster results, with no significant loss of
     **     accuracy, can be obtained via the function jauS00b, which uses
     **     instead the IAU 2000B truncated model.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPnm00a} classical NPB matrix, IAU 2000A
+    **     <li>{@link #jauBnp2xy} extract CIP X,Y from the BPN matrix
+    **     <li>{@link #jauS00} the CIO locator s, given X,Y, IAU 2000A
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauPnm00a     classical NPB matrix, IAU 2000A
-    **     jauBnp2xy     extract CIP X,Y from the BPN matrix
-    **     jauS00        the CIO locator s, given X,Y, IAU 2000A
-    **
-    **  References:
-    **
-    **     Capitaine, N., Chapront, J., Lambert, S. and Wallace, P.,
+    **    <br/>Capitaine, N., Chapront, J., Lambert, S. and Wallace, P.,
     **     "Expressions for the Celestial Intermediate Pole and Celestial
     **     Ephemeris Origin consistent with the IAU 2000A precession-
     **     nutation model", Astron.Astrophys. 400, 1145-1154 (2003)
@@ -18405,15 +17960,16 @@ public static class SphericalPosition {
     **     n.b. The celestial ephemeris origin (CEO) was renamed "celestial
     **          intermediate origin" (CIO) by IAU 2006 Resolution 2.
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2010 January 18
+    **<p>This revision:  2010 January 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauS00a(double date1, double date2)
     {
        double rbpn[][] = new double[3][3], s;
 
@@ -18432,12 +17988,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauS00b(double date1, double date2)
     /**
-    **  - - - - - - - -
-    **   i a u S 0 0 b
-    **  - - - - - - - -
-    **
     **  The CIO locator s, positioning the Celestial Intermediate Origin on
     **  the equator of the Celestial Intermediate Pole, using the IAU 2000B
     **  precession-nutation model.
@@ -18447,26 +17998,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double    TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned (function value):
-    **                  double    the CIO locator s in radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    the CIO locator s in radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -18474,28 +18026,28 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The CIO locator s is the difference between the right ascensions
+    ** <li> The CIO locator s is the difference between the right ascensions
     **     of the same point in two systems.  The two systems are the GCRS
     **     and the CIP,CIO, and the point is the ascending node of the
     **     CIP equator.  The CIO locator s remains a small fraction of
     **     1 arcsecond throughout 1900-2100.
     **
-    **  3) The series used to compute s is in fact for s+XY/2, where X and Y
+    ** <li> The series used to compute s is in fact for s+XY/2, where X and Y
     **     are the x and y components of the CIP unit vector;  this series
     **     is more compact than a direct series for s would be.  The present
     **     function uses the IAU 2000B truncated nutation model when
     **     predicting the CIP position.  The function jauS00a uses instead
     **     the full IAU 2000A model, but with no significant increase in
     **     accuracy and at some cost in speed.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPnm00b} classical NPB matrix, IAU 2000B
+    **     <li>{@link #jauBnp2xy} extract CIP X,Y from the BPN matrix
+    **     <li>{@link #jauS00} the CIO locator s, given X,Y, IAU 2000A
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauPnm00b     classical NPB matrix, IAU 2000B
-    **     jauBnp2xy     extract CIP X,Y from the BPN matrix
-    **     jauS00        the CIO locator s, given X,Y, IAU 2000A
-    **
-    **  References:
-    **
-    **     Capitaine, N., Chapront, J., Lambert, S. and Wallace, P.,
+    **    <br/>Capitaine, N., Chapront, J., Lambert, S. and Wallace, P.,
     **     "Expressions for the Celestial Intermediate Pole and Celestial
     **     Ephemeris Origin consistent with the IAU 2000A precession-
     **     nutation model", Astron.Astrophys. 400, 1145-1154 (2003)
@@ -18503,15 +18055,16 @@ public static class SphericalPosition {
     **     n.b. The celestial ephemeris origin (CEO) was renamed "celestial
     **          intermediate origin" (CIO) by IAU 2006 Resolution 2.
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2010 January 18
+    **<p>This revision:  2010 January 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauS00b(double date1, double date2)
     {
        double rbpn[][] = new double[3][3], s;
 
@@ -18530,12 +18083,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauS06(double date1, double date2, double x, double y)
     /**
-    **  - - - - - - -
-    **   i a u S 0 6
-    **  - - - - - - -
-    **
     **  The CIO locator s, positioning the Celestial Intermediate Origin on
     **  the equator of the Celestial Intermediate Pole, given the CIP's X,Y
     **  coordinates.  Compatible with IAU 2006/2000A precession-nutation.
@@ -18545,27 +18093,28 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2   double    TT as a 2-part Julian Date (Note 1)
-    **     x,y           double    CIP coordinates (Note 3)
+    **<!-- Given: -->
+    **     @param date1,date2    double     TT as a 2-part Julian Date (Note 1)
+    **     @param x,y            double     CIP coordinates (Note 3)
     **
-    **  Returned (function value):
-    **                   double    the CIO locator s in radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    the CIO locator s in radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -18573,47 +18122,48 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The CIO locator s is the difference between the right ascensions
+    ** <li> The CIO locator s is the difference between the right ascensions
     **     of the same point in two systems:  the two systems are the GCRS
     **     and the CIP,CIO, and the point is the ascending node of the
     **     CIP equator.  The quantity s remains below 0.1 arcsecond
     **     throughout 1900-2100.
     **
-    **  3) The series used to compute s is in fact for s+XY/2, where X and Y
+    ** <li> The series used to compute s is in fact for s+XY/2, where X and Y
     **     are the x and y components of the CIP unit vector;  this series
     **     is more compact than a direct series for s would be.  This
     **     function requires X,Y to be supplied by the caller, who is
     **     responsible for providing values that are consistent with the
     **     supplied date.
     **
-    **  4) The model is consistent with the "P03" precession (Capitaine et
+    ** <li> The model is consistent with the "P03" precession (Capitaine et
     **     al. 2003), adopted by IAU 2006 Resolution 1, 2006, and the
     **     IAU 2000A nutation (with P03 adjustments).
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauFal03} mean anomaly of the Moon
+    **     <li>{@link #jauFalp03} mean anomaly of the Sun
+    **     <li>{@link #jauFaf03} mean argument of the latitude of the Moon
+    **     <li>{@link #jauFad03} mean elongation of the Moon from the Sun
+    **     <li>{@link #jauFaom03} mean longitude of the Moon's ascending node
+    **     <li>{@link #jauFave03} mean longitude of Venus
+    **     <li>{@link #jauFae03} mean longitude of Earth
+    **     <li>{@link #jauFapa03} general accumulated precession in longitude
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauFal03     mean anomaly of the Moon
-    **     jauFalp03    mean anomaly of the Sun
-    **     jauFaf03     mean argument of the latitude of the Moon
-    **     jauFad03     mean elongation of the Moon from the Sun
-    **     jauFaom03    mean longitude of the Moon's ascending node
-    **     jauFave03    mean longitude of Venus
-    **     jauFae03     mean longitude of Earth
-    **     jauFapa03    general accumulated precession in longitude
-    **
-    **  References:
-    **
-    **     Capitaine, N., Wallace, P.T. & Chapront, J., 2003, Astron.
+    **    <br/>Capitaine, N., Wallace, P.T. & Chapront, J., 2003, Astron.
     **     Astrophys. 432, 355
     **
-    **     McCarthy, D.D., Petit, G. (eds.) 2004, IERS Conventions (2003),
+    **     <br/>McCarthy, D.D., Petit, G. (eds.) 2004, IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG
     **
-    **  This revision:  2009 December 17
+    **<p>This revision:  2009 December 17
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauS06(double date1, double date2, double x, double y)
     {
     /* Time since J2000.0, in Julian centuries */
        double t;
@@ -18848,12 +18398,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauS06a(double date1, double date2)
     /**
-    **  - - - - - - - -
-    **   i a u S 0 6 a
-    **  - - - - - - - -
-    **
     **  The CIO locator s, positioning the Celestial Intermediate Origin on
     **  the equator of the Celestial Intermediate Pole, using the IAU 2006
     **  precession and IAU 2000A nutation models.
@@ -18863,26 +18408,27 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double    TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned (function value):
-    **                  double    the CIO locator s in radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    the CIO locator s in radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -18890,26 +18436,26 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The CIO locator s is the difference between the right ascensions
+    ** <li> The CIO locator s is the difference between the right ascensions
     **     of the same point in two systems.  The two systems are the GCRS
     **     and the CIP,CIO, and the point is the ascending node of the
     **     CIP equator.  The CIO locator s remains a small fraction of
     **     1 arcsecond throughout 1900-2100.
     **
-    **  3) The series used to compute s is in fact for s+XY/2, where X and Y
+    ** <li> The series used to compute s is in fact for s+XY/2, where X and Y
     **     are the x and y components of the CIP unit vector;  this series is
     **     more compact than a direct series for s would be.  The present
     **     function uses the full IAU 2000A nutation model when predicting
     **     the CIP position.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPnm06a} classical NPB matrix, IAU 2006/2000A
+    **     <li>{@link #jauBpn2xy} extract CIP X,Y coordinates from NPB matrix
+    **     <li>{@link #jauS06} the CIO locator s, given X,Y, IAU 2006
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauPnm06a    classical NPB matrix, IAU 2006/2000A
-    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     jauS06       the CIO locator s, given X,Y, IAU 2006
-    **
-    **  References:
-    **
-    **     Capitaine, N., Chapront, J., Lambert, S. and Wallace, P.,
+    **    <br/>Capitaine, N., Chapront, J., Lambert, S. and Wallace, P.,
     **     "Expressions for the Celestial Intermediate Pole and Celestial
     **     Ephemeris Origin consistent with the IAU 2000A precession-
     **     nutation model", Astron.Astrophys. 400, 1145-1154 (2003)
@@ -18917,19 +18463,20 @@ public static class SphericalPosition {
     **     n.b. The celestial ephemeris origin (CEO) was renamed "celestial
     **          intermediate origin" (CIO) by IAU 2006 Resolution 2.
     **
-    **     Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
+    **    <br/>Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
     **
-    **     McCarthy, D. D., Petit, G. (eds.), 2004, IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), 2004, IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG
     **
-    **     Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
+    **    <br/>Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
     **
-    **  This revision:  2010 January 18
+    **<p>This revision:  2010 January 18
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauS06a(double date1, double date2)
     {
        double rnpb[][] = new double[3][3], s;
 
@@ -18948,12 +18495,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauS2c(double theta, double phi, double c[] )
     /**
-    **  - - - - - - -
-    **   i a u S 2 c
-    **  - - - - - - -
-    **
     **  Convert spherical coordinates to Cartesian.
     **
     **  This function is derived from the International Astronomical Union's
@@ -18961,19 +18503,20 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     theta    double       longitude angle (radians)
-    **     phi      double       latitude angle (radians)
+    **<!-- Given: -->
+    **     @param theta     double        longitude angle (radians)
+    **     @param phi       double        latitude angle (radians)
     **
-    **  Returned:
-    **     c        double[3]    direction cosines
+    **<!-- Returned: -->
+    **     @param c         double[3]      <u>returned</u> direction cosines
     **
-    **  This revision:  2008 October 28
+    **<p>This revision:  2008 October 28
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauS2c(double theta, double phi, double c[] )
     {
        double cp;
 
@@ -18988,12 +18531,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauS2p(double theta, double phi, double r, double p[] )
     /**
-    **  - - - - - - -
-    **   i a u S 2 p
-    **  - - - - - - -
-    **
     **  Convert spherical polar coordinates to p-vector.
     **
     **  This function is derived from the International Astronomical Union's
@@ -19001,24 +18539,25 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     theta   double       longitude angle (radians)
-    **     phi     double       latitude angle (radians)
-    **     r       double       radial distance
+    **<!-- Given: -->
+    **     @param theta    double        longitude angle (radians)
+    **     @param phi      double        latitude angle (radians)
+    **     @param r        double        radial distance
     **
-    **  Returned:
-    **     p       double[3]    Cartesian coordinates
+    **<!-- Returned: -->
+    **     @param p        double[3]      <u>returned</u> Cartesian coordinates
     **
-    **  Called:
-    **     jauS2c       spherical coordinates to unit vector
-    **     jauSxp       multiply p-vector by scalar
+    **<p>Called:<ul>
+    **     <li>{@link #jauS2c} spherical coordinates to unit vector
+    **     <li>{@link #jauSxp} multiply p-vector by scalar
+    ** </ul>
+    **<p>This revision:  2008 May 11
     **
-    **  This revision:  2008 May 11
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauS2p(double theta, double phi, double r, double p[] )
     {
        double u[] = new double[3];
 
@@ -19031,14 +18570,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauS2pv(double theta, double phi, double r,
-                 double td, double pd, double rd,
-                 double pv[][])
     /**
-    **  - - - - - - - -
-    **   i a u S 2 p v
-    **  - - - - - - - -
-    **
     **  Convert position/velocity from spherical to Cartesian coordinates.
     **
     **  This function is derived from the International Astronomical Union's
@@ -19046,23 +18578,26 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     theta    double          longitude angle (radians)
-    **     phi      double          latitude angle (radians)
-    **     r        double          radial distance
-    **     td       double          rate of change of theta
-    **     pd       double          rate of change of phi
-    **     rd       double          rate of change of r
+    **<!-- Given: -->
+    **     @param theta     double           longitude angle (radians)
+    **     @param phi       double           latitude angle (radians)
+    **     @param r         double           radial distance
+    **     @param td        double           rate of change of theta
+    **     @param pd        double           rate of change of phi
+    **     @param rd        double           rate of change of r
     **
-    **  Returned:
-    **     pv       double[2][3]    pv-vector
+    **<!-- Returned: -->
+    **     @param pv        double[2][3]      <u>returned</u> pv-vector
     **
-    **  This revision:  2008 May 25
+    **<p>This revision:  2008 May 25
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauS2pv(double theta, double phi, double r,
+                 double td, double pd, double rd,
+                 double pv[][])
     {
        double st, ct, sp, cp, rcp, x, y, rpd, w;
 
@@ -19089,12 +18624,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauS2xpv(double s1, double s2, double pv[][], double spv[][])
     /**
-    **  - - - - - - - - -
-    **   i a u S 2 x p v
-    **  - - - - - - - - -
-    **
     **  Multiply a pv-vector by two scalars.
     **
     **  This function is derived from the International Astronomical Union's
@@ -19102,26 +18632,27 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     s1     double         scalar to multiply position component by
-    **     s2     double         scalar to multiply velocity component by
-    **     pv     double[2][3]   pv-vector
+    **<!-- Given: -->
+    **     @param s1      double          scalar to multiply position component by
+    **     @param s2      double          scalar to multiply velocity component by
+    **     @param pv      double[2][3]    pv-vector
     **
-    **  Returned:
-    **     spv    double[2][3]   pv-vector: p scaled by s1, v scaled by s2
+    **<!-- Returned: -->
+    **     @param spv     double[2][3]     <u>returned</u> pv-vector: p scaled by s1, v scaled by s2
     **
     **  Note:
     **     It is permissible for pv and spv to be the same array.
     **
-    **  Called:
-    **     jauSxp       multiply p-vector by scalar
+    **<p>Called:<ul>
+    **     <li>{@link #jauSxp} multiply p-vector by scalar
+    ** </ul>
+    **<p>This revision:  2008 October 28
     **
-    **  This revision:  2008 October 28
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauS2xpv(double s1, double s2, double pv[][], double spv[][])
     {
        jauSxp(s1, pv[0], spv[0]);
        jauSxp(s2, pv[1], spv[1]);
@@ -19131,12 +18662,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauSepp(double a[] , double b[] )
     /**
-    **  - - - - - - - -
-    **   i a u S e p p
-    **  - - - - - - - -
-    **
     **  Angular separation between two p-vectors.
     **
     **  This function is derived from the International Astronomical Union's
@@ -19144,34 +18670,36 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     a      double[3]    first p-vector (not necessarily unit length)
-    **     b      double[3]    second p-vector (not necessarily unit length)
+    **<!-- Given: -->
+    **     @param a       double[3]     first p-vector (not necessarily unit length)
+    **     @param b       double[3]     second p-vector (not necessarily unit length)
     **
-    **  Returned (function value):
-    **            double       angular separation (radians, always positive)
+    ** <!-- Returned (function value): -->
+    **  @return double       angular separation (radians, always positive)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) If either vector is null, a zero result is returned.
+    ** <li> If either vector is null, a zero result is returned.
     **
-    **  2) The angular separation is most simply formulated in terms of
+    ** <li> The angular separation is most simply formulated in terms of
     **     scalar product.  However, this gives poor accuracy for angles
     **     near zero and pi.  The present algorithm uses both cross product
     **     and dot product, to deliver full accuracy whatever the size of
     **     the angle.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPxp} vector product of two p-vectors
+    **     <li>{@link #jauPm} modulus of p-vector
+    **     <li>{@link #jauPdp} scalar product of two p-vectors
+    ** </ul>
+    **<p>This revision:  2008 May 22
     **
-    **  Called:
-    **     jauPxp       vector product of two p-vectors
-    **     jauPm        modulus of p-vector
-    **     jauPdp       scalar product of two p-vectors
-    **
-    **  This revision:  2008 May 22
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauSepp(double a[] , double b[] )
     {
        double axb[] = new double[3], ss, cs, s;
 
@@ -19191,12 +18719,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauSeps(double al, double ap, double bl, double bp)
     /**
-    **  - - - - - - - -
-    **   i a u S e p s
-    **  - - - - - - - -
-    **
     **  Angular separation between two sets of spherical coordinates.
     **
     **  This function is derived from the International Astronomical Union's
@@ -19204,25 +18727,26 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     al     double       first longitude (radians)
-    **     ap     double       first latitude (radians)
-    **     bl     double       second longitude (radians)
-    **     bp     double       second latitude (radians)
+    **<!-- Given: -->
+    **     @param al      double        first longitude (radians)
+    **     @param ap      double        first latitude (radians)
+    **     @param bl      double        second longitude (radians)
+    **     @param bp      double        second latitude (radians)
     **
-    **  Returned (function value):
-    **            double       angular separation (radians)
+    ** <!-- Returned (function value): -->
+    **  @return double       angular separation (radians)
     **
-    **  Called:
-    **     jauS2c       spherical coordinates to unit vector
-    **     jauSepp      angular separation between two p-vectors
+    **<p>Called:<ul>
+    **     <li>{@link #jauS2c} spherical coordinates to unit vector
+    **     <li>{@link #jauSepp} angular separation between two p-vectors
+    ** </ul>
+    **<p>This revision:  2008 May 16
     **
-    **  This revision:  2008 May 16
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauSeps(double al, double ap, double bl, double bp)
     {
        double ac[] = new double[3], bc[] = new double[3], s;
 
@@ -19239,12 +18763,7 @@ public static class SphericalPosition {
         }
     
 
-    public static double jauSp00(double date1, double date2)
     /**
-    **  - - - - - - - -
-    **   i a u S p 0 0
-    **  - - - - - - - -
-    **
     **  The TIO locator s', positioning the Terrestrial Intermediate Origin
     **  on the equator of the Celestial Intermediate Pole.
     **
@@ -19253,26 +18772,27 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2  double    TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned (function value):
-    **                  double    the TIO locator s' in radians (Note 2)
+    ** <!-- Returned (function value): -->
+    **  @return double    the TIO locator s' in radians (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -19280,23 +18800,24 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The TIO locator s' is obtained from polar motion observations by
+    ** <li> The TIO locator s' is obtained from polar motion observations by
     **     numerical integration, and so is in essence unpredictable.
     **     However, it is dominated by a secular drift of about
     **     47 microarcseconds per century, which is the approximation
     **     evaluated by the present function.
     **
-    **  Reference:
+    **<p>Reference:
     **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2008 May 24
+    **<p>This revision:  2008 May 24
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static double jauSp00(double date1, double date2)
     {
        double t, sp;
 
@@ -19312,14 +18833,7 @@ public static class SphericalPosition {
         }
     
 
-    public static CatalogCoords jauStarpm(double ra1, double dec1,
-                  double pmr1, double pmd1, double px1, double rv1,
-                  double ep1a, double ep1b, double ep2a, double ep2b) throws SOFAInternalError
     /**
-    **  - - - - - - - - - -
-    **   i a u S t a r p m
-    **  - - - - - - - - - -
-    **
     **  Star proper motion:  update star catalog data for space motion.
     **
     **  This function is derived from the International Astronomical Union's
@@ -19327,38 +18841,39 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     ra1    double     right ascension (radians), before
-    **     dec1   double     declination (radians), before
-    **     pmr1   double     RA proper motion (radians/year), before
-    **     pmd1   double     Dec proper motion (radians/year), before
-    **     px1    double     parallax (arcseconds), before
-    **     rv1    double     radial velocity (km/s, +ve = receding), before
-    **     ep1a   double     "before" epoch, part A (Note 1)
-    **     ep1b   double     "before" epoch, part B (Note 1)
-    **     ep2a   double     "after" epoch, part A (Note 1)
-    **     ep2b   double     "after" epoch, part B (Note 1)
+    **<!-- Given: -->
+    **     @param ra1     double      right ascension (radians), before
+    **     @param dec1    double      declination (radians), before
+    **     @param pmr1    double      RA proper motion (radians/year), before
+    **     @param pmd1    double      Dec proper motion (radians/year), before
+    **     @param px1     double      parallax (arcseconds), before
+    **     @param rv1     double      radial velocity (km/s, +ve = receding), before
+    **     @param ep1a    double      "before" epoch, part A (Note 1)
+    **     @param ep1b    double      "before" epoch, part B (Note 1)
+    **     @param ep2a    double      "after" epoch, part A (Note 1)
+    **     @param ep2b    double      "after" epoch, part B (Note 1)
     **
-    **  Returned:
-    **     ra2    double     right ascension (radians), after
-    **     dec2   double     declination (radians), after
-    **     pmr2   double     RA proper motion (radians/year), after
-    **     pmd2   double     Dec proper motion (radians/year), after
-    **     px2    double     parallax (arcseconds), after
-    **     rv2    double     radial velocity (km/s, +ve = receding), after
-    **FIXME need to return the status as well.
-    **  Returned (function value):
-    **            int        status:
+    **<!-- Returned: -->
+    **     @param ra2     double       <u>returned</u> right ascension (radians), after
+    **     @param dec2    double       <u>returned</u> declination (radians), after
+    **     @param pmr2    double       <u>returned</u> RA proper motion (radians/year), after
+    **     @param pmd2    double       <u>returned</u> Dec proper motion (radians/year), after
+    **     @param px2     double       <u>returned</u> parallax (arcseconds), after
+    **     @param rv2     double       <u>returned</u> radial velocity (km/s, +ve = receding), after
+    **
+    ** <!-- Returned (function value): -->
+    **  @return int        status:
     **                          -1 = system error (should not occur)
     **                           0 = no warnings or errors
     **                           1 = distance overridden (Note 6)
     **                           2 = excessive velocity (Note 7)
     **                           4 = solution didn't converge (Note 8)
     **                        else = binary logical OR of the above warnings
+    **FIXME need to return the status as well.
+    ** <p>Notes:
+    ** <ol>
     **
-    **  Notes:
-    **
-    **  1) The starting and ending TDB dates ep1a+ep1b and ep2a+ep2b are
+    ** <li> The starting and ending TDB dates ep1a+ep1b and ep2a+ep2b are
     **     Julian Dates, apportioned in any convenient way between the two
     **     parts (A and B).  For example, JD(TDB)=2450123.7 could be
     **     expressed in any of these ways, among others:
@@ -19369,7 +18884,7 @@ public static class SphericalPosition {
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -19377,7 +18892,7 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) In accordance with normal star-catalog conventions, the object's
+    ** <li> In accordance with normal star-catalog conventions, the object's
     **     right ascension and declination are freed from the effects of
     **     secular aberration.  The frame, which is aligned to the catalog
     **     equator and equinox, is Lorentzian and centered on the SSB.
@@ -19388,45 +18903,48 @@ public static class SphericalPosition {
     **
     **     The parallax and radial velocity are in the same frame.
     **
-    **  3) Care is needed with units.  The star coordinates are in radians
+    ** <li> Care is needed with units.  The star coordinates are in radians
     **     and the proper motions in radians per Julian year, but the
     **     parallax is in arcseconds.
     **
-    **  4) The RA proper motion is in terms of coordinate angle, not true
+    ** <li> The RA proper motion is in terms of coordinate angle, not true
     **     angle.  If the catalog uses arcseconds for both RA and Dec proper
     **     motions, the RA proper motion will need to be divided by cos(Dec)
     **     before use.
     **
-    **  5) Straight-line motion at constant speed, in the inertial frame,
+    ** <li> Straight-line motion at constant speed, in the inertial frame,
     **     is assumed.
     **
-    **  6) An extremely small (or zero or negative) parallax is interpreted
+    ** <li> An extremely small (or zero or negative) parallax is interpreted
     **     to mean that the object is on the "celestial sphere", the radius
     **     of which is an arbitrary (large) value (see the jauStarpv
     **     function for the value used).  When the distance is overridden in
     **     this way, the status, initially zero, has 1 added to it.
     **
-    **  7) If the space velocity is a significant fraction of c (see the
+    ** <li> If the space velocity is a significant fraction of c (see the
     **     constant VMAX in the function jauStarpv),  it is arbitrarily set
     **     to zero.  When this action occurs, 2 is added to the status.
     **
-    **  8) The relativistic adjustment carried out in the jauStarpv function
+    ** <li> The relativistic adjustment carried out in the jauStarpv function
     **     involves an iterative calculation.  If the process fails to
     **     converge within a set number of iterations, 4 is added to the
     **     status.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauStarpv} star catalog data to space motion pv-vector
+    **     <li>{@link #jauPvu} update a pv-vector
+    **     <li>{@link #jauPdp} scalar product of two p-vectors
+    **     <li>{@link #jauPvstar} space motion pv-vector to star catalog data
+    ** </ul>
+    **<p>This revision:  2008 May 16
     **
-    **  Called:
-    **     jauStarpv    star catalog data to space motion pv-vector
-    **     jauPvu       update a pv-vector
-    **     jauPdp       scalar product of two p-vectors
-    **     jauPvstar    space motion pv-vector to star catalog data
-    **
-    **  This revision:  2008 May 16
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static CatalogCoords jauStarpm(double ra1, double dec1,
+                  double pmr1, double pmd1, double px1, double rv1,
+                  double ep1a, double ep1b, double ep2a, double ep2b) throws SOFAInternalError
     {
        double pv1[][] = new double[2][3], tl1, dt, pv[][] = new double[2][3], r2, rdv, v2, c2mv2, tl2,
               pv2[][] = new double[2][3];
@@ -19467,14 +18985,7 @@ public static class SphericalPosition {
         }
     
 
-    public static int jauStarpv(double ra, double dec,
-                  double pmr, double pmd, double px, double rv,
-                  double pv[][])
     /**
-    **  - - - - - - - - - -
-    **   i a u S t a r p v
-    **  - - - - - - - - - -
-    **
     **  Convert star catalog coordinates to position+velocity vector.
     **
     **  This function is derived from the International Astronomical Union's
@@ -19493,17 +19004,18 @@ public static class SphericalPosition {
     **  Returned (Note 2):
     **     pv     double[2][3]  pv-vector (AU, AU/day)
     **
-    **  Returned (function value):
-    **            int           status:
+    ** <!-- Returned (function value): -->
+    **  @return int           status:
     **                              0 = no warnings
     **                              1 = distance overridden (Note 6)
     **                              2 = excessive speed (Note 7)
     **                              4 = solution didn't converge (Note 8)
     **                           else = binary logical OR of the above
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The star data accepted by this function are "observables" for an
+    ** <li> The star data accepted by this function are "observables" for an
     **     imaginary observer at the solar-system barycenter.  Proper motion
     **     and radial velocity are, strictly, in terms of barycentric
     **     coordinate time, TCB.  For most practical applications, it is
@@ -19519,7 +19031,7 @@ public static class SphericalPosition {
     **     secular aberration.  The frame, which is aligned to the catalog
     **     equator and equinox, is Lorentzian and centered on the SSB.
     **
-    **  2) The resulting position and velocity pv-vector is with respect to
+    ** <li> The resulting position and velocity pv-vector is with respect to
     **     the same frame and, like the catalog coordinates, is freed from
     **     the effects of secular aberration.  Should the "coordinate
     **     direction", where the object was located at the catalog epoch, be
@@ -19541,56 +19053,59 @@ public static class SphericalPosition {
     **
     **     (ii) The transformation complies with special relativity.
     **
-    **  3) Care is needed with units.  The star coordinates are in radians
+    ** <li> Care is needed with units.  The star coordinates are in radians
     **     and the proper motions in radians per Julian year, but the
     **     parallax is in arcseconds; the radial velocity is in km/s, but
     **     the pv-vector result is in AU and AU/day.
     **
-    **  4) The RA proper motion is in terms of coordinate angle, not true
+    ** <li> The RA proper motion is in terms of coordinate angle, not true
     **     angle.  If the catalog uses arcseconds for both RA and Dec proper
     **     motions, the RA proper motion will need to be divided by cos(Dec)
     **     before use.
     **
-    **  5) Straight-line motion at constant speed, in the inertial frame,
+    ** <li> Straight-line motion at constant speed, in the inertial frame,
     **     is assumed.
     **
-    **  6) An extremely small (or zero or negative) parallax is interpreted
+    ** <li> An extremely small (or zero or negative) parallax is interpreted
     **     to mean that the object is on the "celestial sphere", the radius
     **     of which is an arbitrary (large) value (see the constant PXMIN).
     **     When the distance is overridden in this way, the status,
     **     initially zero, has 1 added to it.
     **
-    **  7) If the space velocity is a significant fraction of c (see the
+    ** <li> If the space velocity is a significant fraction of c (see the
     **     constant VMAX), it is arbitrarily set to zero.  When this action
     **     occurs, 2 is added to the status.
     **
-    **  8) The relativistic adjustment involves an iterative calculation.
+    ** <li> The relativistic adjustment involves an iterative calculation.
     **     If the process fails to converge within a set number (IMAX) of
     **     iterations, 4 is added to the status.
     **
-    **  9) The inverse transformation is performed by the function
+    ** <li> The inverse transformation is performed by the function
     **     jauPvstar.
-    **
-    **  Called:
-    **     jauS2pv      spherical coordinates to pv-vector
-    **     jauPm        modulus of p-vector
-    **     jauZp        zero p-vector
-    **     jauPn        decompose p-vector into modulus and direction
-    **     jauPdp       scalar product of two p-vectors
-    **     jauSxp       multiply p-vector by scalar
-    **     jauPmp       p-vector minus p-vector
-    **     jauPpp       p-vector plus p-vector
-    **
-    **  Reference:
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauS2pv} spherical coordinates to pv-vector
+    **     <li>{@link #jauPm} modulus of p-vector
+    **     <li>{@link #jauZp} zero p-vector
+    **     <li>{@link #jauPn} decompose p-vector into modulus and direction
+    **     <li>{@link #jauPdp} scalar product of two p-vectors
+    **     <li>{@link #jauSxp} multiply p-vector by scalar
+    **     <li>{@link #jauPmp} p-vector minus p-vector
+    **     <li>{@link #jauPpp} p-vector plus p-vector
+    ** </ul>
+    **<p>Reference:
     **
     **     Stumpff, P., 1985, Astron.Astrophys. 144, 232-240.
     **
-    **  This revision:  2009 July 6
+    **<p>This revision:  2009 July 6
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static int jauStarpv(double ra, double dec,
+                  double pmr, double pmd, double px, double rv,
+                  double pv[][])
     {
     /* Smallest allowed parallax */
        final double PXMIN = 1e-7;
@@ -19688,12 +19203,7 @@ public static class SphericalPosition {
         }
     
 
-    public static  void jauSxp(double s, double p[] , double sp[] )
     /**
-    **  - - - - - - -
-    **   i a u S x p
-    **  - - - - - - -
-    **
     **  Multiply a p-vector by a scalar.
     **
     **  This function is derived from the International Astronomical Union's
@@ -19701,22 +19211,23 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     s      double        scalar
-    **     p      double[3]     p-vector
+    **<!-- Given: -->
+    **     @param s       double         scalar
+    **     @param p       double[3]      p-vector
     **
-    **  Returned:
-    **     sp     double[3]     s * p
+    **<!-- Returned: -->
+    **     @param sp      double[3]       <u>returned</u> s * p
     **
     **  Note:
     **     It is permissible for p and sp to be the same array.
     **
-    **  This revision:  2008 October 28
+    **<p>This revision:  2008 October 28
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static  void jauSxp(double s, double p[] , double sp[] )
     {
        sp[0] = s * p[0];
        sp[1] = s * p[1];
@@ -19727,12 +19238,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauSxpv(double s, double pv[][], double spv[][])
     /**
-    **  - - - - - - - -
-    **   i a u S x p v
-    **  - - - - - - - -
-    **
     **  Multiply a pv-vector by a scalar.
     **
     **  This function is derived from the International Astronomical Union's
@@ -19740,25 +19246,26 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     s       double          scalar
-    **     pv      double[2][3]    pv-vector
+    **<!-- Given: -->
+    **     @param s        double           scalar
+    **     @param pv       double[2][3]     pv-vector
     **
-    **  Returned:
-    **     spv     double[2][3]    s * pv
+    **<!-- Returned: -->
+    **     @param spv      double[2][3]      <u>returned</u> s * pv
     **
     **  Note:
     **     It is permissible for pv and psv to be the same array
     **
-    **  Called:
-    **     jauS2xpv     multiply pv-vector by two scalars
+    **<p>Called:<ul>
+    **     <li>{@link #jauS2xpv} multiply pv-vector by two scalars
+    ** </ul>
+    **<p>This revision:  2008 October 28
     **
-    **  This revision:  2008 October 28
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauSxpv(double s, double pv[][], double spv[][])
     {
        jauS2xpv(s, s, pv, spv);
 
@@ -19766,12 +19273,7 @@ public static class SphericalPosition {
 
         }
 
-    public static void jauTr(double r[][], double rt[][])
     /**
-    **  - - - - - -
-    **   i a u T r
-    **  - - - - - -
-    **
     **  Transpose an r-matrix.
     **
     **  This function is derived from the International Astronomical Union's
@@ -19779,24 +19281,25 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     r        double[3][3]    r-matrix
+    **<!-- Given: -->
+    **     @param r         double[3][3]     r-matrix
     **
-    **  Returned:
-    **     rt       double[3][3]    transpose
+    **<!-- Returned: -->
+    **     @param rt        double[3][3]      <u>returned</u> transpose
     **
     **  Note:
     **     It is permissible for r and rt to be the same array.
     **
-    **  Called:
-    **     jauCr        copy r-matrix
+    **<p>Called:<ul>
+    **     <li>{@link #jauCr} copy r-matrix
+    ** </ul>
+    **<p>This revision:  2008 May 22
     **
-    **  This revision:  2008 May 22
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauTr(double r[][], double rt[][])
     {
        double wm[][]= new double[3][3];
        int i, j;
@@ -19814,12 +19317,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauTrxp(double r[][], double p[] , double trp[] )
     /**
-    **  - - - - - - - -
-    **   i a u T r x p
-    **  - - - - - - - -
-    **
     **  Multiply a p-vector by the transpose of an r-matrix.
     **
     **  This function is derived from the International Astronomical Union's
@@ -19827,26 +19325,27 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     r        double[3][3]   r-matrix
-    **     p        double[3]      p-vector
+    **<!-- Given: -->
+    **     @param r         double[3][3]    r-matrix
+    **     @param p         double[3]       p-vector
     **
-    **  Returned:
-    **     trp      double[3]      r * p
+    **<!-- Returned: -->
+    **     @param trp       double[3]        <u>returned</u> r * p
     **
     **  Note:
     **     It is permissible for p and trp to be the same array.
     **
-    **  Called:
-    **     jauTr        transpose r-matrix
-    **     jauRxp       product of r-matrix and p-vector
+    **<p>Called:<ul>
+    **     <li>{@link #jauTr} transpose r-matrix
+    **     <li>{@link #jauRxp} product of r-matrix and p-vector
+    ** </ul>
+    **<p>This revision:  2008 October 28
     **
-    **  This revision:  2008 October 28
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauTrxp(double r[][], double p[] , double trp[] )
     {
        double tr[][] = new double[3][3];
 
@@ -19862,12 +19361,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauTrxpv(double r[][], double pv[][], double trpv[][])
     /**
-    **  - - - - - - - - -
-    **   i a u T r x p v
-    **  - - - - - - - - -
-    **
     **  Multiply a pv-vector by the transpose of an r-matrix.
     **
     **  This function is derived from the International Astronomical Union's
@@ -19875,26 +19369,27 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Given:
-    **     r        double[3][3]    r-matrix
-    **     pv       double[2][3]    pv-vector
+    **<!-- Given: -->
+    **     @param r         double[3][3]     r-matrix
+    **     @param pv        double[2][3]     pv-vector
     **
-    **  Returned:
-    **     trpv     double[2][3]    r * pv
+    **<!-- Returned: -->
+    **     @param trpv      double[2][3]      <u>returned</u> r * pv
     **
     **  Note:
     **     It is permissible for pv and trpv to be the same array.
     **
-    **  Called:
-    **     jauTr        transpose r-matrix
-    **     jauRxpv      product of r-matrix and pv-vector
+    **<p>Called:<ul>
+    **     <li>{@link #jauTr} transpose r-matrix
+    **     <li>{@link #jauRxpv} product of r-matrix and pv-vector
+    ** </ul>
+    **<p>This revision:  2008 October 28
     **
-    **  This revision:  2008 October 28
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauTrxpv(double r[][], double pv[][], double trpv[][])
     {
        double tr[][] = new double[3][3];
 
@@ -21507,10 +21002,6 @@ public static class SphericalPosition {
 
     public static CelestialIntermediatePole jauXy06(double date1, double date2)
     /**
-    **  - - - - - - - -
-    **   i a u X y 0 6
-    **  - - - - - - - -
-    **
     **  X,Y coordinates of celestial intermediate pole from series based
     **  on IAU 2006 precession and IAU 2000A nutation.
     **
@@ -21519,26 +21010,27 @@ public static class SphericalPosition {
     **
     **  Status:  canonical model.
     **
-    **  Given:
-    **     date1,date2  double     TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double      TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     x,y          double     CIP X,Y coordinates (Note 2)
+    **<!-- Returned: -->
+    **     @param x,y           double       <u>returned</u> CIP X,Y coordinates (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -21546,45 +21038,45 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The X,Y coordinates are those of the unit vector towards the
+    ** <li> The X,Y coordinates are those of the unit vector towards the
     **     celestial intermediate pole.  They represent the combined effects
     **     of frame bias, precession and nutation.
     **
-    **  3) The fundamental arguments used are as adopted in IERS Conventions
+    ** <li> The fundamental arguments used are as adopted in IERS Conventions
     **     (2003) and are from Simon et al. (1994) and Souchay et al.
     **     (1999).
     **
-    **  4) This is an alternative to the angles-based method, via the SOFA
+    ** <li> This is an alternative to the angles-based method, via the SOFA
     **     function jauFw2xy and as used in jauXys06a for example.  The two
     **     methods agree at the 1 microarcsecond level (at present), a
     **     negligible amount compared with the intrinsic accuracy of the
     **     models.  However, it would be unwise to mix the two methods
     **     (angles-based and series-based) in a single application.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauFal03} mean anomaly of the Moon
+    **     <li>{@link #jauFalp03} mean anomaly of the Sun
+    **     <li>{@link #jauFaf03} mean argument of the latitude of the Moon
+    **     <li>{@link #jauFad03} mean elongation of the Moon from the Sun
+    **     <li>{@link #jauFaom03} mean longitude of the Moon's ascending node
+    **     <li>{@link #jauFame03} mean longitude of Mercury
+    **     <li>{@link #jauFave03} mean longitude of Venus
+    **     <li>{@link #jauFae03} mean longitude of Earth
+    **     <li>{@link #jauFama03} mean longitude of Mars
+    **     <li>{@link #jauFaju03} mean longitude of Jupiter
+    **     <li>{@link #jauFasa03} mean longitude of Saturn
+    **     <li>{@link #jauFaur03} mean longitude of Uranus
+    **     <li>{@link #jauFane03} mean longitude of Neptune
+    **     <li>{@link #jauFapa03} general accumulated precession in longitude
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauFal03     mean anomaly of the Moon
-    **     jauFalp03    mean anomaly of the Sun
-    **     jauFaf03     mean argument of the latitude of the Moon
-    **     jauFad03     mean elongation of the Moon from the Sun
-    **     jauFaom03    mean longitude of the Moon's ascending node
-    **     jauFame03    mean longitude of Mercury
-    **     jauFave03    mean longitude of Venus
-    **     jauFae03     mean longitude of Earth
-    **     jauFama03    mean longitude of Mars
-    **     jauFaju03    mean longitude of Jupiter
-    **     jauFasa03    mean longitude of Saturn
-    **     jauFaur03    mean longitude of Uranus
-    **     jauFane03    mean longitude of Neptune
-    **     jauFapa03    general accumulated precession in longitude
-    **
-    **  References:
-    **
-    **     Capitaine, N., Wallace, P.T. & Chapront, J., 2003,
+    **    <br/>Capitaine, N., Wallace, P.T. & Chapront, J., 2003,
     **     Astron.Astrophys., 412, 567
     **
-    **     Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
+    **    <br/>Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
     **
-    **     McCarthy, D. D., Petit, G. (eds.), 2004, IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), 2004, IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG
     **
     **     Simon, J.L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
@@ -21593,11 +21085,11 @@ public static class SphericalPosition {
     **     Souchay, J., Loysel, B., Kinoshita, H., Folgueira, M., 1999,
     **     Astron.Astrophys.Supp.Ser. 135, 111
     **
-    **     Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
+    **    <br/>Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
     **
-    **  This revision:  2009 October 16
+    **<p>This revision:  2009 October 16
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
@@ -22638,12 +22130,7 @@ public static class SphericalPosition {
         }
     
 
-    public static ICRFrame jauXys00a(double date1, double date2)
     /**
-    **  - - - - - - - - - -
-    **   i a u X y s 0 0 a
-    **  - - - - - - - - - -
-    **
     **  For a given TT date, compute the X,Y coordinates of the Celestial
     **  Intermediate Pole and the CIO locator s, using the IAU 2000A
     **  precession-nutation model.
@@ -22653,27 +22140,28 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double   TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double    TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     x,y          double   Celestial Intermediate Pole (Note 2)
-    **     s            double   the CIO locator s (Note 2)
+    **<!-- Returned: -->
+    **     @param x,y           double     <u>returned</u> Celestial Intermediate Pole (Note 2)
+    **     @param s             double     <u>returned</u> the CIO locator s (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -22681,32 +22169,33 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The Celestial Intermediate Pole coordinates are the x,y
+    ** <li> The Celestial Intermediate Pole coordinates are the x,y
     **     components of the unit vector in the Geocentric Celestial
     **     Reference System.
     **
-    **  3) The CIO locator s (in radians) positions the Celestial
+    ** <li> The CIO locator s (in radians) positions the Celestial
     **     Intermediate Origin on the equator of the CIP.
     **
-    **  4) A faster, but slightly less accurate result (about 1 mas for
+    ** <li> A faster, but slightly less accurate result (about 1 mas for
     **     X,Y), can be obtained by using instead the jauXys00b function.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPnm00a} classical NPB matrix, IAU 2000A
+    **     <li>{@link #jauBpn2xy} extract CIP X,Y coordinates from NPB matrix
+    **     <li>{@link #jauS00} the CIO locator s, given X,Y, IAU 2000A
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauPnm00a    classical NPB matrix, IAU 2000A
-    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     jauS00       the CIO locator s, given X,Y, IAU 2000A
-    **
-    **  Reference:
-    **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2008 May 12
+    **<p>This revision:  2008 May 12
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static ICRFrame jauXys00a(double date1, double date2)
     {
        double rbpn[][] = new double[3][3];
 
@@ -22730,7 +22219,7 @@ public static class SphericalPosition {
     **     components of the unit vector in the Geocentric Celestial
     **     Reference System.
     **
-    **  3) The CIO locator s (in radians) positions the Celestial
+    ** <li> The CIO locator s (in radians) positions the Celestial
     **     Intermediate Origin on the equator of the CIP.
  
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
@@ -22745,12 +22234,7 @@ public static class SphericalPosition {
             this.s = s;
         }
     }
-    public static ICRFrame jauXys00b(double date1, double date2)
     /**
-    **  - - - - - - - - - -
-    **   i a u X y s 0 0 b
-    **  - - - - - - - - - -
-    **
     **  For a given TT date, compute the X,Y coordinates of the Celestial
     **  Intermediate Pole and the CIO locator s, using the IAU 2000B
     **  precession-nutation model.
@@ -22760,27 +22244,28 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double   TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double    TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     x,y          double   Celestial Intermediate Pole (Note 2)
-    **     s            double   the CIO locator s (Note 2)
+    **<!-- Returned: -->
+    **     @param x,y           double     <u>returned</u> Celestial Intermediate Pole (Note 2)
+    **     @param s             double     <u>returned</u> the CIO locator s (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -22788,32 +22273,33 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The Celestial Intermediate Pole coordinates are the x,y
+    ** <li> The Celestial Intermediate Pole coordinates are the x,y
     **     components of the unit vector in the Geocentric Celestial
     **     Reference System.
     **
-    **  3) The CIO locator s (in radians) positions the Celestial
+    ** <li> The CIO locator s (in radians) positions the Celestial
     **     Intermediate Origin on the equator of the CIP.
     **
-    **  4) The present function is faster, but slightly less accurate (about
+    ** <li> The present function is faster, but slightly less accurate (about
     **     1 mas in X,Y), than the jauXys00a function.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPnm00b} classical NPB matrix, IAU 2000B
+    **     <li>{@link #jauBpn2xy} extract CIP X,Y coordinates from NPB matrix
+    **     <li>{@link #jauS00} the CIO locator s, given X,Y, IAU 2000A
+    ** </ul>
+    **<p>Reference:
     **
-    **  Called:
-    **     jauPnm00b    classical NPB matrix, IAU 2000B
-    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     jauS00       the CIO locator s, given X,Y, IAU 2000A
-    **
-    **  Reference:
-    **
-    **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+    **     <br/>McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
     **     IERS Technical Note No. 32, BKG (2004)
     **
-    **  This revision:  2008 May 12
+    **<p>This revision:  2008 May 12
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static ICRFrame jauXys00b(double date1, double date2)
     {
        double rbpn[][] = new double[3][3];
 
@@ -22832,12 +22318,7 @@ public static class SphericalPosition {
         }
     
 
-    public static ICRFrame jauXys06a(double date1, double date2)
     /**
-    **  - - - - - - - - - -
-    **   i a u X y s 0 6 a
-    **  - - - - - - - - - -
-    **
     **  For a given TT date, compute the X,Y coordinates of the Celestial
     **  Intermediate Pole and the CIO locator s, using the IAU 2006
     **  precession and IAU 2000A nutation models.
@@ -22847,27 +22328,28 @@ public static class SphericalPosition {
     **
     **  Status:  support function.
     **
-    **  Given:
-    **     date1,date2  double  TT as a 2-part Julian Date (Note 1)
+    **<!-- Given: -->
+    **     @param date1,date2   double   TT as a 2-part Julian Date (Note 1)
     **
-    **  Returned:
-    **     x,y          double  Celestial Intermediate Pole (Note 2)
-    **     s            double  the CIO locator s (Note 2)
+    **<!-- Returned: -->
+    **     @param x,y           double    <u>returned</u> Celestial Intermediate Pole (Note 2)
+    **     @param s             double    <u>returned</u> the CIO locator s (Note 2)
     **
-    **  Notes:
+    ** <p>Notes:
+    ** <ol>
     **
-    **  1) The TT date date1+date2 is a Julian Date, apportioned in any
+    ** <li> The TT date date1+date2 is a Julian Date, apportioned in any
     **     convenient way between the two arguments.  For example,
     **     JD(TT)=2450123.7 could be expressed in any of these ways,
     **     among others:
-    **
+    **<pre>
     **            date1          date2
     **
     **         2450123.7           0.0       (JD method)
     **         2451545.0       -1421.3       (J2000 method)
     **         2400000.5       50123.2       (MJD method)
     **         2450123.5           0.2       (date & time method)
-    **
+    **</pre>
     **     The JD method is the most natural and convenient to use in
     **     cases where the loss of several decimal digits of resolution
     **     is acceptable.  The J2000 method is best matched to the way
@@ -22875,32 +22357,33 @@ public static class SphericalPosition {
     **     optimum resolution.  The MJD method and the date & time methods
     **     are both good compromises between resolution and convenience.
     **
-    **  2) The Celestial Intermediate Pole coordinates are the x,y components
+    ** <li> The Celestial Intermediate Pole coordinates are the x,y components
     **     of the unit vector in the Geocentric Celestial Reference System.
     **
-    **  3) The CIO locator s (in radians) positions the Celestial
+    ** <li> The CIO locator s (in radians) positions the Celestial
     **     Intermediate Origin on the equator of the CIP.
     **
-    **  4) Series-based solutions for generating X and Y are also available:
+    ** <li> Series-based solutions for generating X and Y are also available:
     **     see Capitaine & Wallace (2006) and jauXy06.
+    **</ol>
+    **<p>Called:<ul>
+    **     <li>{@link #jauPnm06a} classical NPB matrix, IAU 2006/2000A
+    **     <li>{@link #jauBpn2xy} extract CIP X,Y coordinates from NPB matrix
+    **     <li>{@link #jauS06} the CIO locator s, given X,Y, IAU 2006
+    ** </ul>
+    **<p>References:
     **
-    **  Called:
-    **     jauPnm06a    classical NPB matrix, IAU 2006/2000A
-    **     jauBpn2xy    extract CIP X,Y coordinates from NPB matrix
-    **     jauS06       the CIO locator s, given X,Y, IAU 2006
+    **    <br/>Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
     **
-    **  References:
+    **    <br/>Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
     **
-    **     Capitaine, N. & Wallace, P.T., 2006, Astron.Astrophys. 450, 855
+    **<p>This revision:  2008 May 11
     **
-    **     Wallace, P.T. & Capitaine, N., 2006, Astron.Astrophys. 459, 981
-    **
-    **  This revision:  2008 May 11
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static ICRFrame jauXys06a(double date1, double date2)
     {
        double rbpn[][] = new double[3][3];
 
@@ -22919,12 +22402,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauZp(double p[] )
     /**
-    **  - - - - - -
-    **   i a u Z p
-    **  - - - - - -
-    **
     **  Zero a p-vector.
     **
     **  This function is derived from the International Astronomical Union's
@@ -22932,15 +22410,16 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Returned:
-    **     p        double[3]      p-vector
+    **<!-- Returned: -->
+    **     @param p         double[3]        <u>returned</u> p-vector
     **
-    **  This revision:  2008 May 11
+    **<p>This revision:  2008 May 11
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauZp(double p[] )
     {
        p[0] = 0.0;
        p[1] = 0.0;
@@ -22951,12 +22430,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauZpv(double pv[][])
     /**
-    **  - - - - - - -
-    **   i a u Z p v
-    **  - - - - - - -
-    **
     **  Zero a pv-vector.
     **
     **  This function is derived from the International Astronomical Union's
@@ -22964,18 +22438,19 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Returned:
-    **     pv       double[2][3]      pv-vector
+    **<!-- Returned: -->
+    **     @param pv        double[2][3]        <u>returned</u> pv-vector
     **
-    **  Called:
-    **     jauZp        zero p-vector
+    **<p>Called:<ul>
+    **     <li>{@link #jauZp} zero p-vector
+    ** </ul>
+    **<p>This revision:  2008 May 11
     **
-    **  This revision:  2008 May 11
-    **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauZpv(double pv[][])
     {
        jauZp(pv[0]);
        jauZp(pv[1]);
@@ -22985,12 +22460,7 @@ public static class SphericalPosition {
         }
     
 
-    public static void jauZr(double r[][])
     /**
-    **  - - - - - -
-    **   i a u Z r
-    **  - - - - - -
-    **
     **  Initialize an r-matrix to the null matrix.
     **
     **  This function is derived from the International Astronomical Union's
@@ -22998,15 +22468,16 @@ public static class SphericalPosition {
     **
     **  Status:  vector/matrix support function.
     **
-    **  Returned:
-    **     r        double[3][3]    r-matrix
+    **<!-- Returned: -->
+    **     @param r         double[3][3]      <u>returned</u> r-matrix
     **
-    **  This revision:  2008 May 11
+    **<p>This revision:  2008 May 11
     **
-    **  SOFA release 2009-12-31
+    **  <!-- Release 2009-12-31 -->
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
+    public static void jauZr(double r[][])
     {
        int i, j;
 

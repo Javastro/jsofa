@@ -1,5 +1,5 @@
 /**
- * This software is a translation of the official C SOFA software package. {@link http://www.iausofa.org/}. The translation was done 
+ * This software is a translation of the official C SOFA software package. <a href="http://www.iausofa.org/">http://www.iausofa.org/</a>. The translation was done 
  * by hand with the intention of retaining the structure of the original software as far as possible.
  * 
  * The translation was made from the 2009-12-31 release of the SOFA Library for ANSI C, as revised on 2010-01-27. Any updates to this software
