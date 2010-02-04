@@ -19,6 +19,11 @@ import static java.lang.Math.*; //IMPL strictmath better?
  * @version SOFA Release 2009-12-31
  * @since 26 Jan 2010
  */
+/**
+ * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
+ * @version $Name$
+ * @since AIDA Stage 1
+ */
 public class SOFA {
 
     /** Seconds of time per radian {@value} */
@@ -511,7 +516,7 @@ public class SOFA {
        chia   = (  10.5526 + (-2.38064 + (-0.001125) * t) * t) * t * DAS2R;
 
     /* Apply IAU 2000 precession corrections. */
-       NutationDeltaTerms pc = jauPr00(date1, date2);
+       PrecessionDeltaTerms pc = jauPr00(date1, date2);
        dpsipr = pc.dpsipr;  depspr = pc.depspr;
        psia = psia77 + dpsipr;
        oma  = oma77  + depspr;
@@ -3808,7 +3813,7 @@ public class SOFA {
 
 
     /* IAU 2000 precession-rate adjustments. */
-       NutationDeltaTerms nutd = jauPr00(date1, date2);
+       PrecessionDeltaTerms nutd = jauPr00(date1, date2);
 
     /* Mean obliquity, consistent with IAU 2000 precession-nutation. */
        epsa = jauObl80(date1, date2) + nutd.depspr;
@@ -3901,7 +3906,7 @@ public class SOFA {
 
 
     /* IAU 2000 precession-rate adjustments. */
-       NutationDeltaTerms nutd = jauPr00(date1, date2);
+       PrecessionDeltaTerms nutd = jauPr00(date1, date2);
 
     /* Mean obliquity, consistent with IAU 2000 precession-nutation. */
        double epsa = jauObl80(date1, date2) + nutd.depspr;
@@ -8600,6 +8605,12 @@ public static class SphericalPosition {
 
     }
 
+    /**
+     * Geodetic coordinates.
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
+     * @version $Name$
+     * @since AIDA Stage 1
+     */
     public static class GeodeticCoord {
         /** longitude (radians, east +ve) */
         public  double elong;
@@ -10003,6 +10014,12 @@ public static class SphericalPosition {
         }
     
 
+    /**
+     * Representation of Gregorian Calendar.
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
+     * @version $Name$
+     * @since AIDA Stage 1
+     */
     public static class Calendar {
         public final int iy;
         public final int im;
@@ -15288,7 +15305,7 @@ public static class SphericalPosition {
 
 
     /* IAU 2000 precession-rate adjustments. */
-       NutationDeltaTerms nut = jauPr00(date1, date2);
+       PrecessionDeltaTerms nut = jauPr00(date1, date2);
 
     /* Mean obliquity, consistent with IAU 2000 precession-nutation. */
        double epsa = jauObl80(date1, date2) + nut.depspr;
@@ -15309,6 +15326,12 @@ public static class SphericalPosition {
         }
     
 
+    /**
+     * Precession-nutation model. 
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
+     * @version $Name$
+     * @since AIDA Stage 1
+     */
     public static class PrecessionNutation {
         public NutationTerms nut;
         /** mean obliquity */
@@ -16247,12 +16270,18 @@ public static class SphericalPosition {
 
         }
     
-    public static class NutationDeltaTerms {
-        /**  nutation component in longitude  */
+    /**
+     * Precession correction terms.
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
+     * @version $Name$
+     * @since AIDA Stage 1
+     */
+    public static class PrecessionDeltaTerms {
+        /**  precession correction in longitude  */
         public double dpsipr;
-        /**  nutation component in obliquity */
+        /**  precession correction in obliquity */
         public double depspr;
-        public NutationDeltaTerms(double dpsipr, double depspr) {
+        public PrecessionDeltaTerms(double dpsipr, double depspr) {
             this.dpsipr = dpsipr;
             this.depspr = depspr;
         }
@@ -16331,7 +16360,7 @@ public static class SphericalPosition {
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
-    static NutationDeltaTerms jauPr00(double date1, double date2)
+    static PrecessionDeltaTerms jauPr00(double date1, double date2)
     {
        double t;
 
@@ -16347,10 +16376,16 @@ public static class SphericalPosition {
        double dpsipr = PRECOR * t;
        double depspr = OBLCOR * t;
 
-       return new NutationDeltaTerms(dpsipr, depspr);
+       return new PrecessionDeltaTerms(dpsipr, depspr);
 
         }
     
+    /**
+     * Euler Angles.
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
+     * @version $Name$
+     * @since AIDA Stage 1
+     */
     public static class EulerAngles {
         /** 1st rotation: radians cw around z */
         public double zeta;
@@ -16496,6 +16531,12 @@ public static class SphericalPosition {
         }
     
 
+    /**
+     * A position and velocity expressed in spherical polar coordinates.
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
+     * @version $Name$
+     * @since AIDA Stage 1
+     */
     public static class SphericalPositionVelocity {
         public PolarCoordinate pos;
         public PolarCoordinate vel;
@@ -16652,6 +16693,12 @@ public static class SphericalPosition {
         }
     
 
+    /**
+     * Modulus of pv-vector.
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
+     * @version $Name$
+     * @since AIDA Stage 1
+     */
     public static class PVModulus{
         public double r;
         public double s;
@@ -16773,6 +16820,12 @@ public static class SphericalPosition {
         }
     
 
+    /**
+     * Typical catalogue coordinates. i.e. Position, proper motion, parallax and radial velocity.
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
+     * @version $Name$
+     * @since AIDA Stage 1
+     */
     public static class CatalogCoords {
         /** position (radians) */
         public SphericalPosition pos;
@@ -22219,7 +22272,7 @@ public static class SphericalPosition {
     **     components of the unit vector in the Geocentric Celestial
     **     Reference System.
     **
-    ** <li> The CIO locator s (in radians) positions the Celestial
+    **  The CIO locator s (in radians) positions the Celestial
     **     Intermediate Origin on the equator of the CIP.
  
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
