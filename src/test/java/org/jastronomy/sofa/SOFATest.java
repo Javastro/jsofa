@@ -30,11 +30,11 @@ import org.jastronomy.sofa.SOFA.GeodeticCoord;
 import org.jastronomy.sofa.SOFA.ICRFrame;
 import org.jastronomy.sofa.SOFA.JulianDate;
 import org.jastronomy.sofa.SOFA.NormalizedVector;
-import org.jastronomy.sofa.SOFA.NutationDeltaTerms;
 import org.jastronomy.sofa.SOFA.NutationTerms;
 import org.jastronomy.sofa.SOFA.PVModulus;
 import org.jastronomy.sofa.SOFA.PolarCoordinate;
 import org.jastronomy.sofa.SOFA.PrecessionAngles;
+import org.jastronomy.sofa.SOFA.PrecessionDeltaTerms;
 import org.jastronomy.sofa.SOFA.PrecessionNutation;
 import org.jastronomy.sofa.SOFA.ReferenceEllipsoid;
 import org.jastronomy.sofa.SOFA.SphericalPosition;
@@ -4978,7 +4978,7 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       NutationDeltaTerms nut = jauPr00(2400000.5, 53736);
+       PrecessionDeltaTerms nut = jauPr00(2400000.5, 53736);
 
        vvd(nut.dpsipr, -0.8716465172668347629e-7, 1e-22,
           "jauPr00", "dpsipr");
