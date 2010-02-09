@@ -498,10 +498,10 @@ public class SOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double rc2i[][] = new double[3][3];
+       double rc2i[][];
 
 
-       jauC2i00a(2400000.5, 53736.0, rc2i);
+       rc2i = jauC2i00a(2400000.5, 53736.0);
 
        vvd(rc2i[0][0], 0.9999998323037165557, 1e-12,
            "jauC2i00a", "11");
@@ -546,7 +546,7 @@ public class SOFATest {
        double rc2i[][] = new double[3][3];
 
 
-       jauC2i00b(2400000.5, 53736.0, rc2i);
+       rc2i = jauC2i00b(2400000.5, 53736.0 );
 
        vvd(rc2i[0][0], 0.9999998323040954356, 1e-12,
            "jauC2i00b", "11");
@@ -591,7 +591,7 @@ public class SOFATest {
        double rc2i[][] = new double[3][3];
 
 
-       jauC2i06a(2400000.5, 53736.0, rc2i);
+       rc2i = jauC2i06a(2400000.5, 53736.0);
 
        vvd(rc2i[0][0], 0.9999998323037159379, 1e-12,
            "jauC2i06a", "11");
@@ -648,7 +648,7 @@ public class SOFATest {
        rbpn[2][1] = -4.281337229063151e-5;
        rbpn[2][2] =  9.999994012499173e-1;
 
-       jauC2ibpn(2400000.5, 50123.9999, rbpn, rc2i);
+       rc2i = jauC2ibpn(2400000.5, 50123.9999, rbpn );
 
        vvd(rc2i[0][0], 0.9999994021664089977, 1e-12,
            "jauC2ibpn", "11");
@@ -696,7 +696,7 @@ public class SOFATest {
        x = 0.5791308486706011000e-3;
        y = 0.4020579816732961219e-4;
 
-       jauC2ixy(2400000.5, 53736, x, y, rc2i);
+       rc2i = jauC2ixy(2400000.5, 53736, x, y);
 
        vvd(rc2i[0][0], 0.9999998323037157138, 1e-12,
            "jauC2ixy", "11");
@@ -745,7 +745,7 @@ public class SOFATest {
        y =  0.4020579816732961219e-4;
        s = -0.1220040848472271978e-7;
 
-       jauC2ixys(x, y, s, rc2i);
+       rc2i = jauC2ixys(x, y, s);
 
        vvd(rc2i[0][0], 0.9999998323037157138, 1e-12,
            "jauC2ixys", "11");
@@ -828,7 +828,7 @@ public class SOFATest {
        xp = 2.55060238e-7;
        yp = 1.860359247e-6;
 
-       jauC2t00a(tta, ttb, uta, utb, xp, yp, rc2t);
+       rc2t = jauC2t00a(tta, ttb, uta, utb, xp, yp);
 
        vvd(rc2t[0][0], -0.1810332128307182668, 1e-12,
            "jauC2t00a", "11");
@@ -880,7 +880,7 @@ public class SOFATest {
        xp = 2.55060238e-7;
        yp = 1.860359247e-6;
 
-       jauC2t00b(tta, ttb, uta, utb, xp, yp, rc2t);
+       rc2t = jauC2t00b(tta, ttb, uta, utb, xp, yp);
 
        vvd(rc2t[0][0], -0.1810332128439678965, 1e-12,
            "jauC2t00b", "11");
@@ -932,7 +932,7 @@ public class SOFATest {
        xp = 2.55060238e-7;
        yp = 1.860359247e-6;
 
-       jauC2t06a(tta, ttb, uta, utb, xp, yp, rc2t);
+       rc2t = jauC2t06a(tta, ttb, uta, utb, xp, yp);
 
        vvd(rc2t[0][0], -0.1810332128305897282, 1e-12,
            "jauC2t06a", "11");
@@ -1004,7 +1004,7 @@ public class SOFATest {
        rpom[2][2] =  0.9999999999982369658;
 
 
-       jauC2tcio(rc2i, era, rpom, rc2t);
+       rc2t = jauC2tcio(rc2i, era, rpom);
 
        vvd(rc2t[0][0], -0.1810332128307110439, 1e-12,
            "jauC2tcio", "11");
@@ -1075,7 +1075,7 @@ public class SOFATest {
        rpom[2][1] =  0.1860359247002413923e-5;
        rpom[2][2] =  0.9999999999982369658;
 
-       jauC2teqx(rbpn, gst, rpom, rc2t);
+       rc2t = jauC2teqx(rbpn, gst, rpom);
 
        vvd(rc2t[0][0], -0.1810332128528685730, 1e-12,
            "jauC2teqx", "11");
@@ -1129,7 +1129,7 @@ public class SOFATest {
        xp = 2.55060238e-7;
        yp = 1.860359247e-6;
 
-       jauC2tpe(tta, ttb, uta, utb, dpsi, deps, xp, yp, rc2t);
+       rc2t = jauC2tpe(tta, ttb, uta, utb, dpsi, deps, xp, yp);
 
        vvd(rc2t[0][0], -0.1813677995763029394, 1e-12,
            "jauC2tpe", "11");
@@ -1183,7 +1183,7 @@ public class SOFATest {
        xp = 2.55060238e-7;
        yp = 1.860359247e-6;
 
-       jauC2txy(tta, ttb, uta, utb, x, y, xp, yp, rc2t);
+       rc2t = jauC2txy(tta, ttb, uta, utb, x, y, xp, yp);
 
        vvd(rc2t[0][0], -0.1810332128306279253, 1e-12,
            "jauC2txy", "11");
@@ -2364,7 +2364,7 @@ public class SOFATest {
        psi  = -0.9501954178013015092e-3;
        eps  =  0.4091014316587367472;
 
-       jauFw2m(gamb, phib, psi, eps, r);
+       r = jauFw2m(gamb, phib, psi, eps);
 
        vvd(r[0][0], 0.9999995505176007047, 1e-12,
            "jauFw2m", "11");
@@ -3024,7 +3024,7 @@ public class SOFATest {
        double rmatn[][] = new double[3][3];
 
 
-       jauNum00a(2400000.5, 53736.0, rmatn);
+       rmatn = jauNum00a(2400000.5, 53736.0);
 
        vvd(rmatn[0][0], 0.9999999999536227949, 1e-12,
            "jauNum00a", "11");
@@ -3068,7 +3068,7 @@ public class SOFATest {
     {
         double rmatn[][] = new double[3][3];
 
-        jauNum00b(2400000.5, 53736, rmatn);
+        rmatn = jauNum00b(2400000.5, 53736);
 
        vvd(rmatn[0][0], 0.9999999999536069682, 1e-12,
            "jauNum00b", "11");
@@ -3112,7 +3112,7 @@ public class SOFATest {
     {
         double rmatn[][] = new double[3][3];
 
-        jauNum06a(2400000.5, 53736, rmatn);
+        rmatn = jauNum06a(2400000.5, 53736);
 
        vvd(rmatn[0][0], 0.9999999999536227668, 1e-12,
            "jauNum06a", "11");
@@ -3161,7 +3161,7 @@ public class SOFATest {
        dpsi = -0.9630909107115582393e-5;
        deps =  0.4063239174001678826e-4;
 
-       jauNumat(epsa, dpsi, deps, rmatn);
+       rmatn = jauNumat(epsa, dpsi, deps);
 
        vvd(rmatn[0][0], 0.9999999999536227949, 1e-12,
            "jauNumat", "11");
@@ -3316,7 +3316,7 @@ public class SOFATest {
        double rmatn[][] = new double[3][3];
 
 
-       jauNutm80(2400000.5, 53736.0, rmatn);
+       rmatn = jauNutm80(2400000.5, 53736.0);
 
        vvd(rmatn[0][0], 0.9999999999534999268, 1e-12,
           "jauNutm80", "11");
@@ -3476,7 +3476,7 @@ public class SOFATest {
        pv[1][1] =  3.1;
        pv[1][2] =  0.9;
 
-       jauP2pv(p, pv);
+       pv = jauP2pv(p);
 
        vvd(pv[0][0], 0.25, 0.0, "jauP2pv", "p1");
        vvd(pv[0][1], 1.2,  0.0, "jauP2pv", "p2");
@@ -3775,7 +3775,7 @@ public class SOFATest {
        double rbp[][] = new double[3][3];
 
 
-       jauPmat00(2400000.5, 50123.9999, rbp);
+       rbp = jauPmat00(2400000.5, 50123.9999);
 
        vvd(rbp[0][0], 0.9999995505175087260, 1e-12,
            "jauPmat00", "11");
@@ -3820,7 +3820,7 @@ public class SOFATest {
        double rbp[][] = new double[3][3];
 
 
-       jauPmat06(2400000.5, 50123.9999, rbp);
+       rbp = jauPmat06(2400000.5, 50123.9999);
 
        vvd(rbp[0][0], 0.9999995505176007047, 1e-12,
            "jauPmat06", "11");
@@ -3865,7 +3865,7 @@ public class SOFATest {
        double rmatp[][] = new double[3][3];
 
 
-       jauPmat76(2400000.5, 50123.9999, rmatp);
+       rmatp = jauPmat76(2400000.5, 50123.9999);
 
        vvd(rmatp[0][0], 0.9999995504328350733, 1e-12,
            "jauPmat76", "11");
@@ -3948,7 +3948,7 @@ public class SOFATest {
        b[1] = 3.0;
        b[2] = 4.0;
 
-       jauPmp(a, b, amb);
+       amb = jauPmp(a, b);
 
        vvd(amb[0],  1.0, 1e-12, "jauPmp", "0");
        vvd(amb[1], -1.0, 1e-12, "jauPmp", "1");
@@ -4678,7 +4678,7 @@ public class SOFATest {
        double rbpn[][] = new double[3][3];
 
 
-       jauPnm00a(2400000.5, 50123.9999, rbpn);
+       rbpn = jauPnm00a(2400000.5, 50123.9999);
 
        vvd(rbpn[0][0], 0.9999995832793134257, 1e-12,
            "jauPnm00a", "11");
@@ -4723,7 +4723,7 @@ public class SOFATest {
        double rbpn[][] = new double[3][3];
 
 
-       jauPnm00b(2400000.5, 50123.9999, rbpn);
+       rbpn = jauPnm00b(2400000.5, 50123.9999);
 
        vvd(rbpn[0][0], 0.9999995832776208280, 1e-12,
            "jauPnm00b", "11");
@@ -4768,7 +4768,7 @@ public class SOFATest {
        double rbpn[][] = new double[3][3];
 
 
-       jauPnm06a(2400000.5, 50123.9999, rbpn);
+       rbpn = jauPnm06a(2400000.5, 50123.9999);
 
        vvd(rbpn[0][0], 0.9999995832794205484, 1e-12,
            "jauPnm06a", "11");
@@ -4813,7 +4813,7 @@ public class SOFATest {
        double rmatpn[][] = new double[3][3];
 
 
-       jauPnm80(2400000.5, 50123.9999, rmatpn);
+       rmatpn = jauPnm80(2400000.5, 50123.9999);
 
        vvd(rmatpn[0][0], 0.9999995831934611169, 1e-12,
            "jauPnm80", "11");
@@ -4862,7 +4862,7 @@ public class SOFATest {
        yp =  1.860359247e-6;
        sp = -0.1367174580728891460e-10;
 
-       jauPom00(xp, yp, sp, rpom);
+       rpom = jauPom00(xp, yp, sp);
 
        vvd(rpom[0][0], 0.9999999999999674721, 1e-12,
            "jauPom00", "11");
@@ -4915,7 +4915,7 @@ public class SOFATest {
        b[1] = 3.0;
        b[2] = 4.0;
 
-       jauPpp(a, b, apb);
+       apb = jauPpp(a, b);
 
        vvd(apb[0], 3.0, 1e-12, "jauPpp", "0");
        vvd(apb[1], 5.0, 1e-12, "jauPpp", "1");
@@ -4953,7 +4953,7 @@ public class SOFATest {
        b[1] = 3.0;
        b[2] = 4.0;
 
-       jauPpsp(a, s, b, apsb);
+       apsb = jauPpsp(a, s, b);
 
        vvd(apsb[0], 7.0, 1e-12, "jauPpsp", "0");
        vvd(apsb[1], 17.0, 1e-12, "jauPpsp", "1");
@@ -5051,7 +5051,7 @@ public class SOFATest {
        pv[1][1] =  3.1;
        pv[1][2] =  0.9;
 
-       jauPv2p(pv, p);
+       p = jauPv2p(pv);
 
        vvd(p[0],  0.3, 0.0, "jauPv2p", "1");
        vvd(p[1],  1.2, 0.0, "jauPv2p", "2");
@@ -5134,7 +5134,7 @@ public class SOFATest {
        b[1][1] = 2.0;
        b[1][2] = 8.0;
 
-       jauPvdpv(a, b, adb);
+       adb = jauPvdpv(a, b);
 
        vvd(adb[0], 20.0, 1e-12, "jauPvdpv", "1");
        vvd(adb[1], 50.0, 1e-12, "jauPvdpv", "2");
@@ -5212,7 +5212,7 @@ public class SOFATest {
        b[1][1] = 2.0;
        b[1][2] = 1.0;
 
-       jauPvmpv(a, b, amb);
+       amb = jauPvmpv(a, b);
 
        vvd(amb[0][0],  1.0, 1e-12, "jauPvmpv", "11");
        vvd(amb[0][1], -1.0, 1e-12, "jauPvmpv", "21");
@@ -5260,7 +5260,7 @@ public class SOFATest {
        b[1][1] = 2.0;
        b[1][2] = 1.0;
 
-       jauPvppv(a, b, apb);
+       apb = jauPvppv(a, b);
 
        vvd(apb[0][0], 3.0, 1e-12, "jauPvppv", "p1");
        vvd(apb[0][1], 5.0, 1e-12, "jauPvppv", "p2");
@@ -5344,7 +5344,7 @@ public class SOFATest {
        pv[1][1] = -0.6253919754866175788e-2;
        pv[1][2] =  0.1189353719774107615e-1;
 
-       jauPvu(2920.0, pv, upv);
+       upv = jauPvu(2920.0, pv);
 
        vvd(upv[0][0], 126656.7598605317105, 1e-12,
            "jauPvu", "p1");
@@ -5390,7 +5390,7 @@ public class SOFATest {
        pv[1][1] = -0.6253919754866175788e-2;
        pv[1][2] =  0.1189353719774107615e-1;
 
-       jauPvup(2920.0, pv, p);
+       p = jauPvup(2920.0, pv);
 
        vvd(p[0],  126656.7598605317105,   1e-12, "jauPvup", "1");
        vvd(p[1],    2118.531271155726332, 1e-12, "jauPvup", "2");
@@ -5434,7 +5434,7 @@ public class SOFATest {
        b[1][1] = 2.0;
        b[1][2] = 8.0;
 
-       jauPvxpv(a, b, axb);
+       axb = jauPvxpv(a, b);
 
        vvd(axb[0][0],  -1.0, 1e-12, "jauPvxpv", "p1");
        vvd(axb[0][1],  -5.0, 1e-12, "jauPvxpv", "p2");
@@ -5474,7 +5474,7 @@ public class SOFATest {
        b[1] = 3.0;
        b[2] = 4.0;
 
-       jauPxp(a, b, axb);
+       axb = jauPxp(a, b);
 
        vvd(axb[0], -1.0, 1e-12, "jauPxp", "1");
        vvd(axb[1], -5.0, 1e-12, "jauPxp", "2");
@@ -5514,7 +5514,7 @@ public class SOFATest {
        r[2][1] =  0.48;
        r[2][2] = -0.64;
 
-       jauRm2v(r, w);
+       w = jauRm2v(r);
 
        vvd(w[0],  0.0,                  1e-12, "jauRm2v", "1");
        vvd(w[1],  1.413716694115406957, 1e-12, "jauRm2v", "2");
@@ -5546,7 +5546,7 @@ public class SOFATest {
        w[1] =  1.41371669;
        w[2] = -1.88495559;
 
-       jauRv2m(w, r);
+       r = jauRv2m(w);
 
        vvd(r[0][0], -0.7071067782221119905, 1e-14, "jauRv2m", "11");
        vvd(r[0][1], -0.5656854276809129651, 1e-14, "jauRv2m", "12");
@@ -5648,7 +5648,7 @@ public class SOFATest {
        p[1] = 1.5;
        p[2] = 0.1;
 
-       jauRxp(r, p, rp);
+       rp = jauRxp(r, p);
 
        vvd(rp[0], 5.1, 1e-12, "jauRxp", "1");
        vvd(rp[1], 3.9, 1e-12, "jauRxp", "2");
@@ -5696,7 +5696,7 @@ public class SOFATest {
        pv[1][1] = 0.2;
        pv[1][2] = 0.1;
 
-       jauRxpv(r, pv, rpv);
+       rpv = jauRxpv(r, pv);
 
        vvd(rpv[0][0], 5.1, 1e-12, "jauRxpv", "11");
        vvd(rpv[1][0], 3.8, 1e-12, "jauRxpv", "12");
@@ -5753,7 +5753,7 @@ public class SOFATest {
        b[2][1] = 0.0;
        b[2][2] = 1.0;
 
-       jauRxr(a, b, atb);
+       atb = jauRxr(a, b);
 
        vvd(atb[0][0], 20.0, 1e-12, "jauRxr", "11");
        vvd(atb[0][1],  7.0, 1e-12, "jauRxr", "12");
@@ -6025,7 +6025,7 @@ public class SOFATest {
        double c[] = new double[3];
 
 
-       jauS2c(3.0123, -0.999, c);
+       c = jauS2c(3.0123, -0.999);
 
        vvd(c[0], -0.5366267667260523906, 1e-12, "jauS2c", "1");
        vvd(c[1],  0.0697711109765145365, 1e-12, "jauS2c", "2");
@@ -6053,7 +6053,7 @@ public class SOFATest {
        double p[] = new double[3];
 
 
-       jauS2p(-3.21, 0.123, 0.456, p);
+       p = jauS2p(-3.21, 0.123, 0.456);
 
        vvd(p[0], -0.4514964673880165228, 1e-12, "jauS2p", "x");
        vvd(p[1],  0.0309339427734258688, 1e-12, "jauS2p", "y");
@@ -6081,7 +6081,7 @@ public class SOFATest {
        double pv[][] = new double[2][3];
 
 
-       jauS2pv(-3.21, 0.123, 0.456, -7.8e-6, 9.01e-6, -1.23e-5, pv);
+       pv = jauS2pv(-3.21, 0.123, 0.456, -7.8e-6, 9.01e-6, -1.23e-5);
 
        vvd(pv[0][0], -0.4514964673880165228, 1e-12, "jauS2pv", "x");
        vvd(pv[0][1],  0.0309339427734258688, 1e-12, "jauS2pv", "y");
@@ -6127,7 +6127,7 @@ public class SOFATest {
        pv[1][1] =  2.3;
        pv[1][2] = -0.4;
 
-       jauS2xpv(s1, s2, pv, spv);
+       spv = jauS2xpv(s1, s2, pv);
 
        vvd(spv[0][0],  0.6, 1e-12, "jauS2xpv", "p1");
        vvd(spv[0][1],  2.4, 1e-12, "jauS2xpv", "p2");
@@ -6353,7 +6353,7 @@ public class SOFATest {
        p[1] =  1.2;
        p[2] = -2.5;
 
-       jauSxp(s, p, sp);
+       sp = jauSxp(s, p);
 
        vvd(sp[0],  0.6, 0.0, "jauSxp", "1");
        vvd(sp[1],  2.4, 0.0, "jauSxp", "2");
@@ -6392,7 +6392,7 @@ public class SOFATest {
        pv[1][1] =  3.2;
        pv[1][2] = -0.7;
 
-       jauSxpv(s, pv, spv);
+       spv = jauSxpv(s, pv);
 
        vvd(spv[0][0],  0.6, 0.0, "jauSxpv", "p1");
        vvd(spv[0][1],  2.4, 0.0, "jauSxpv", "p2");
@@ -6436,7 +6436,7 @@ public class SOFATest {
        r[2][1] = 4.0;
        r[2][2] = 5.0;
 
-       jauTr(r, rt);
+       rt = jauTr(r);
 
        vvd(rt[0][0], 2.0, 0.0, "jauTr", "11");
        vvd(rt[0][1], 3.0, 0.0, "jauTr", "12");
@@ -6488,7 +6488,7 @@ public class SOFATest {
        p[1] = 1.5;
        p[2] = 0.1;
 
-       jauTrxp(r, p, trp);
+       trp = jauTrxp(r, p);
 
        vvd(trp[0], 5.2, 1e-12, "jauTrxp", "1");
        vvd(trp[1], 4.0, 1e-12, "jauTrxp", "2");
@@ -6536,7 +6536,7 @@ public class SOFATest {
        pv[1][1] = 0.2;
        pv[1][2] = 0.1;
 
-       jauTrxpv(r, pv, trpv);
+       trpv = jauTrxpv(r, pv);
 
        vvd(trpv[0][0], 5.2, 1e-12, "jauTrxpv", "p1");
        vvd(trpv[0][1], 4.0, 1e-12, "jauTrxpv", "p1");
