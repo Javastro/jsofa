@@ -19,11 +19,6 @@ import static java.lang.Math.*; //IMPL strictmath better?
  * @version SOFA Release 2009-12-31
  * @since 26 Jan 2010
  */
-/**
- * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
- * @version $Name$
- * @since AIDA Stage 1
- */
 public class SOFA {
 
     /** Seconds of time per radian {@value} */
@@ -96,14 +91,14 @@ public class SOFA {
      *     convenient way between the two arguments.  For example,
      *     JD(TT)=2450123.7 could be expressed in any of these ways,
      *     among others:
-     *<code>
+     *<pre>
      *            djm0          djm1
      *
      *         2450123.7           0.0       (JD method)
      *         2451545.0       -1421.3       (J2000 method)
      *         2400000.5       50123.2       (MJD method)
      *         2450123.5           0.2       (date & time method)
-     *</code>
+     *</pre>
      * 
      * The JD method is the most natural and convenient to use in
      *     cases where the loss of several decimal digits of resolution
@@ -17564,7 +17559,7 @@ public static class SphericalPosition {
     **     @param psi     double           angle (radians)
     **
     **  Given and returned:
-    **     @param r      double[3][3]    <u>given & retuned</ul>r-matrix, rotated
+    **     @param r      double[3][3]    <u>given & retuned</u>r-matrix, rotated
     **
     **  Sign convention:  The matrix can be used to rotate the reference
     **  frame of a vector.  Calling This function with positive psi
