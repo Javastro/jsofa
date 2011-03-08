@@ -1241,7 +1241,7 @@ public class SOFA {
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
-    public static SphericalPosition jauC2s(double p[])
+    public static SphericalCoordinate jauC2s(double p[])
     {
        double x, y, z, d2;
 
@@ -1254,7 +1254,7 @@ public class SOFA {
        double theta = (d2 == 0.0) ? 0.0 : atan2(y, x);
        double phi = (z == 0.0) ? 0.0 : atan2(z, sqrt(d2));
 
-       return new SphericalPosition(theta, phi);
+       return new SphericalCoordinate(theta, phi);
 
         }
     
@@ -8179,7 +8179,7 @@ public class SOFA {
     **     rotation and spin;  zonal errors in the FK5 catalog are not
     **     taken into account.
     **
-    ** <li> See also {@link #jauH2fk5), {@link #jauFk5hz}, {@link #ßjauHfk5z}.
+    ** <li> See also {@link #jauH2fk5), {@link #jauFk5hz}, {@link #ï¿½jauHfk5z}.
     **</ol>
     **<p>Called:<ul>
     **     <li>{@link #jauStarpv} star catalog data to space motion pv-vector
@@ -8324,12 +8324,12 @@ public class SOFA {
  * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
  * @version $Name$
  * @since AIDA Stage 1
- * @TODO needs better name cf {@link PolarCoordinate}
+ * @TODO needs better name cf {@link SphericalPosition}
  */
-public static class SphericalPosition {
+public static class SphericalCoordinate {
       public double alpha;
       public double delta;
-      public SphericalPosition(double alpha, double delta){
+      public SphericalCoordinate(double alpha, double delta){
           this.alpha = alpha;
           this.delta = delta;
       }
@@ -8409,7 +8409,7 @@ public static class SphericalPosition {
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
-    public static SphericalPosition jauFk5hz(double r5, double d5, double date1, double date2
+    public static SphericalCoordinate jauFk5hz(double r5, double d5, double date1, double date2
                   )
     {
        double t, p5e[] = new double[3], r5h[][] = new double[3][3], s5h[] = new double[3], vst[] = new double[3], rst[][] = new double[3][3], p5[] = new double[3],
@@ -8438,7 +8438,7 @@ public static class SphericalPosition {
        ph = jauRxp(r5h, p5);
 
     /* Hipparcos vector to spherical. */
-       SphericalPosition sc = jauC2s(ph);
+       SphericalCoordinate sc = jauC2s(ph);
        double rh = jauAnp(sc.alpha);
        sc.alpha = rh;
        
@@ -13872,14 +13872,14 @@ public static class SphericalPosition {
 
         }
     
-    public static class PolarCoordinate {
+    public static class SphericalPosition {
         /** longitude angle (radians) */
         public double theta;
         /** latitude angle (radians) */
         public double phi;
         /** radial distance */
         public double r;
-        public PolarCoordinate(double theta, double phi, double r) {
+        public SphericalPosition(double theta, double phi, double r) {
            this.theta = theta;
            this.phi = phi;
            this.r = r;
@@ -13919,12 +13919,12 @@ public static class SphericalPosition {
     **
     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
     */
-    public static PolarCoordinate jauP2s(double p[])
+    public static SphericalPosition jauP2s(double p[])
     {
-       SphericalPosition sc = jauC2s(p);
+       SphericalCoordinate sc = jauC2s(p);
        double r = jauPm(p);
 
-       return new PolarCoordinate(sc.alpha, sc.delta, r);
+       return new SphericalPosition(sc.alpha, sc.delta, r);
 
         }
     
@@ -16509,12 +16509,12 @@ public static class SphericalPosition {
      * @since AIDA Stage 1
      */
     public static class SphericalPositionVelocity {
-        public PolarCoordinate pos;
-        public PolarCoordinate vel;
+        public SphericalPosition pos;
+        public SphericalPosition vel;
         public SphericalPositionVelocity( double theta, double phi, double r,
                 double td, double pd, double rd) {
-            pos = new PolarCoordinate(theta, phi, r);
-            vel = new PolarCoordinate(td,pd,rd);
+            pos = new SphericalPosition(theta, phi, r);
+            vel = new SphericalPosition(td,pd,rd);
         }
     }
     /**
@@ -16801,9 +16801,9 @@ public static class SphericalPosition {
      */
     public static class CatalogCoords {
         /** position (radians) */
-        public SphericalPosition pos;
+        public SphericalCoordinate pos;
         /** proper motion (radians/year)*/
-        public SphericalPosition pm;
+        public SphericalCoordinate pm;
         /** parallax (arcsec) */
         public double px;
         /** radial velocity (km/s, positive = receding) */
@@ -16811,8 +16811,8 @@ public static class SphericalPosition {
         
         public CatalogCoords(double ra, double dec,
                 double pmr, double pmd, double px, double rv) {
-            this.pos = new SphericalPosition(ra, dec);
-            this.pm = new SphericalPosition(pmr, pmd);
+            this.pos = new SphericalCoordinate(ra, dec);
+            this.pm = new SphericalCoordinate(pmr, pmd);
             this.px = px;
             this.rv = rv;
         }
