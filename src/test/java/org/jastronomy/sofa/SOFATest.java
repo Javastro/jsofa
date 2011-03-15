@@ -32,12 +32,12 @@ import org.jastronomy.sofa.SOFA.JulianDate;
 import org.jastronomy.sofa.SOFA.NormalizedVector;
 import org.jastronomy.sofa.SOFA.NutationTerms;
 import org.jastronomy.sofa.SOFA.PVModulus;
-import org.jastronomy.sofa.SOFA.PolarCoordinate;
+import org.jastronomy.sofa.SOFA.SphericalPosition;
 import org.jastronomy.sofa.SOFA.PrecessionAngles;
 import org.jastronomy.sofa.SOFA.PrecessionDeltaTerms;
 import org.jastronomy.sofa.SOFA.PrecessionNutation;
 import org.jastronomy.sofa.SOFA.ReferenceEllipsoid;
-import org.jastronomy.sofa.SOFA.SphericalPosition;
+import org.jastronomy.sofa.SOFA.SphericalCoordinate;
 import org.jastronomy.sofa.SOFA.SphericalPositionVelocity;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -794,7 +794,7 @@ public class SOFATest {
        p[1] = -50.0;
        p[2] =  25.0;
 
-       SphericalPosition ret = jauC2s(p);
+       SphericalCoordinate ret = jauC2s(p);
 
        vvd(ret.alpha, -0.4636476090008061162, 1e-14, "jauC2s", "theta");
        vvd(ret.delta, 0.2199879773954594463, 1e-14, "jauC2s", "phi");
@@ -2332,7 +2332,7 @@ public class SOFATest {
        r5 =  1.76779433;
        d5 = -0.2917517103;
 
-       SphericalPosition pos = jauFk5hz(r5, d5, 2400000.5, 54479.0);
+       SphericalCoordinate pos = jauFk5hz(r5, d5, 2400000.5, 54479.0);
 
        vvd(pos.alpha,  1.767794191464423978, 1e-12, "jauFk5hz", "ra");
        vvd(pos.delta, -0.2917516001679884419, 1e-12, "jauFk5hz", "dec");
@@ -3512,7 +3512,7 @@ public class SOFATest {
        p[1] = -50.0;
        p[2] =  25.0;
 
-       PolarCoordinate co = jauP2s(p);
+       SphericalPosition co = jauP2s(p);
 
        vvd(co.theta, -0.4636476090008061162, 1e-12, "jauP2s", "theta");
        vvd(co.phi, 0.2199879773954594463, 1e-12, "jauP2s", "phi");
