@@ -9,7 +9,7 @@
   <artifactId>jsofa</artifactId>
   <name>JSOFA</name>
   <packaging>jar</packaging>
-  <version>20091231-SNAPSHOT</version>
+  <version>20091231</version>
   <dependencies>
   	<dependency>
   		<groupId>junit</groupId>
