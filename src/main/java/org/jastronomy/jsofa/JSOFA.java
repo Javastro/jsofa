@@ -68,12 +68,27 @@ public class JSOFA {
 
     /** Days per Julian millennium {@value} */
     public final static double DJM = (365250.0);
+    
+    /** 1977 Jan 1.0 as MJD */
+    public final static double DJM77 = (43144.0);
+
+    /** TT minus TAI (s) */
+    public final static double TTMTAI = (32.184);
+
 
     /** AU (m) {@value} */
     public final static double DAU = (149597870e3);
 
     /** Speed of light (AU per day) {@value} */
     public final static double DC = (DAYSEC / 499.004782);
+    
+    /* L_G = 1 - d(TT)/d(TCG) */
+    public final static double ELG = (6.969290134e-10);
+
+    /* L_B = 1 - d(TDB)/d(TCB), and TDB (s) at TAI 1977/1/1.0 */
+    public final static double ELB = (1.550519768e-8);
+    public final static double TDB0 = (-6.55e-5);
+
 
     /** dint(A) - truncate to nearest whole number towards zero (double)  */
     private static double dint(final double A){ return ((A)<0.0?ceil(A):floor(A));}
@@ -109,7 +124,7 @@ public class JSOFA {
      * 
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 28 Jan 2010
      * @version $Name$
-     * @since AIDA Stage 1
+     * 
      */
     public static class JulianDate {
         /**  MJD zero-point */
@@ -127,7 +142,7 @@ public class JSOFA {
     **  
     **
     **  <p>This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  <p>Status:  vector/matrix support function.
     **  
@@ -200,7 +215,7 @@ public class JSOFA {
     **  Decompose radians into hours, minutes, seconds, fraction.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -266,7 +281,7 @@ public class JSOFA {
     **  Normalize angle into the range 0 <= a < 2pi.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -299,7 +314,7 @@ public class JSOFA {
     **  Normalize angle into the range -pi <= a < +pi.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -346,7 +361,7 @@ public class JSOFA {
     **  of MHB2000 with additions).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -414,7 +429,7 @@ public class JSOFA {
     **  Frame bias and precession, IAU 2000.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -542,7 +557,7 @@ public class JSOFA {
     **  Frame bias and precession, IAU 2006.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -649,7 +664,7 @@ public class JSOFA {
     **  of the Celestial Intermediate Pole.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -699,7 +714,7 @@ public class JSOFA {
     **  IAU 2000A precession-nutation model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -789,7 +804,7 @@ public class JSOFA {
     **  IAU 2000B precession-nutation model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -880,7 +895,7 @@ public class JSOFA {
     **  IAU 2006 precession and IAU 2000A nutation models.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -968,7 +983,7 @@ public class JSOFA {
     **  the bias-precession-nutation matrix.  IAU 2000.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -1060,7 +1075,7 @@ public class JSOFA {
     **  date when the CIP X,Y coordinates are known.  IAU 2000.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -1142,7 +1157,7 @@ public class JSOFA {
     **  X,Y and the CIO locator s.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -1215,7 +1230,7 @@ public class JSOFA {
     **  P-vector to spherical coordinates.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -1264,7 +1279,7 @@ public class JSOFA {
     **  the polar motion, using the IAU 2000A nutation model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -1370,7 +1385,7 @@ public class JSOFA {
     **  the polar motion, using the IAU 2000B nutation model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -1473,7 +1488,7 @@ public class JSOFA {
     **  nutation models.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -1577,7 +1592,7 @@ public class JSOFA {
     **  Angle and the polar motion matrix).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -1650,7 +1665,7 @@ public class JSOFA {
     **  Sidereal Time and the polar motion matrix).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -1722,7 +1737,7 @@ public class JSOFA {
     **  the nutation and the polar motion.  IAU 2000.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -1838,7 +1853,7 @@ public class JSOFA {
     **  the CIP coordinates and the polar motion.  IAU 2000.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -1946,7 +1961,7 @@ public class JSOFA {
     **  Gregorian Calendar to Julian Date.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -2038,7 +2053,7 @@ public class JSOFA {
     **  Copy a p-vector.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -2070,7 +2085,7 @@ public class JSOFA {
     **  Copy a position/velocity vector.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -2104,7 +2119,7 @@ public class JSOFA {
     **  Copy an r-matrix.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -2139,7 +2154,7 @@ public class JSOFA {
     **  Decompose days to hours, minutes, seconds, fraction.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -2284,7 +2299,7 @@ public class JSOFA {
     **     :__________________________________________:
     **</pre>
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -2527,7 +2542,7 @@ public class JSOFA {
     **  Conventions (McCarthy & Petit 2003).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -3662,7 +3677,7 @@ public class JSOFA {
     **  given the nutation in longitude and the mean obliquity.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -3741,7 +3756,7 @@ public class JSOFA {
     **  Equation of the equinoxes, compatible with IAU 2000 resolutions.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -3829,7 +3844,7 @@ public class JSOFA {
     **  using the truncated nutation model IAU 2000B.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -3921,7 +3936,7 @@ public class JSOFA {
     **  IAU 2006/2000A precession-nutation.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -4006,7 +4021,7 @@ public class JSOFA {
     **  IAU 2000 resolutions.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -4359,7 +4374,7 @@ public class JSOFA {
     **  Equation of the origins, IAU 2006 precession and IAU 2000A nutation.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -4443,7 +4458,7 @@ public class JSOFA {
     **  quantity s.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -4502,7 +4517,7 @@ public class JSOFA {
     **  Julian Date to Besselian Epoch.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -4548,7 +4563,7 @@ public class JSOFA {
     **  Besselian Epoch to Julian Date.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -4591,7 +4606,7 @@ public class JSOFA {
     **  Julian Date to Julian Epoch.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -4635,7 +4650,7 @@ public class JSOFA {
     **  Julian Epoch to Julian Date.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -4674,128 +4689,11 @@ public class JSOFA {
         }
     
 
-    /**
-    **  Earth position and velocity, heliocentric and barycentric, with
-    **  respect to the Barycentric Celestial Reference System.
-    **
-    **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
-    **
-    **  Status:  support function.
-    **
-    **<!-- Given: -->
-    **     @param date1,date2   double         TDB date (Note 1)
-    **
-    **<!-- Returned: -->
-    **     @param pvh           double[2][3]    <u>returned</u> heliocentric Earth position/velocity
-    **     @param pvb           double[2][3]    <u>returned</u> barycentric Earth position/velocity
-    **
-    ** <!-- Returned (function value): -->
-    **  @return int           status: 0 = OK
-    **                                       +1 = warning: date outside
-    **                                            the range 1900-2100 AD
-    **
-    ** <p>Notes:
-    ** <ol>
-    **
-    ** <li> The TDB date date1+date2 is a Julian Date, apportioned in any
-    **     convenient way between the two arguments.  For example,
-    **     JD(TDB)=2450123.7 could be expressed in any of these ways, among
-    **     others:
-    **<pre>
-    **            date1          date2
-    **
-    **         2450123.7           0.0       (JD method)
-    **         2451545.0       -1421.3       (J2000 method)
-    **         2400000.5       50123.2       (MJD method)
-    **         2450123.5           0.2       (date & time method)
-    **</pre>
-    **     The JD method is the most natural and convenient to use in cases
-    **     where the loss of several decimal digits of resolution is
-    **     acceptable.  The J2000 method is best matched to the way the
-    **     argument is handled internally and will deliver the optimum
-    **     resolution.  The MJD method and the date & time methods are both
-    **     good compromises between resolution and convenience.  However,
-    **     the accuracy of the result is more likely to be limited by the
-    **     algorithm itself than the way the date has been expressed.
-    **
-    **     n.b. TT can be used instead of TDB in most applications.
-    **
-    ** <li> On return, the arrays pvh and pvb contain the following:
-    **
-    **        pvh[0][0]  x       }
-    **        pvh[0][1]  y       } heliocentric position, AU
-    **        pvh[0][2]  z       }
-    **
-    **        pvh[1][0]  xdot    }
-    **        pvh[1][1]  ydot    } heliocentric velocity, AU/d
-    **        pvh[1][2]  zdot    }
-    **
-    **        pvb[0][0]  x       }
-    **        pvb[0][1]  y       } barycentric position, AU
-    **        pvb[0][2]  z       }
-    **
-    **        pvb[1][0]  xdot    }
-    **        pvb[1][1]  ydot    } barycentric velocity, AU/d
-    **        pvb[1][2]  zdot    }
-    **
-    **     The vectors are with respect to the Barycentric Celestial
-    **     Reference System.  The time unit is one day in TDB.
-    **
-    ** <li> The function is a SIMPLIFIED SOLUTION from the planetary theory
-    **     VSOP2000 (X. Moisson, P. Bretagnon, 2001, Celes. Mechanics &
-    **     Dyn. Astron., 80, 3/4, 205-213) and is an adaptation of original
-    **     Fortran code supplied by P. Bretagnon (private comm., 2000).
-    **
-    ** <li> Comparisons over the time span 1900-2100 with this simplified
-    **     solution and the JPL DE405 ephemeris give the following results:
-    **
-    **                                RMS    max
-    **           Heliocentric:
-    **              position error    3.7   11.2   km
-    **              velocity error    1.4    5.0   mm/s
-    **
-    **           Barycentric:
-    **              position error    4.6   13.4   km
-    **              velocity error    1.4    4.9   mm/s
-    **
-    **     Comparisons with the JPL DE406 ephemeris show that by 1800 and
-    **     2200 the position errors are approximately double their 1900-2100
-    **     size.  By 1500 and 2500 the deterioration is a factor of 10 and
-    **     by 1000 and 3000 a factor of 60.  The velocity accuracy falls off
-    **     at about half that rate.
-    **
-    ** <li> It is permissible to use the same array for pvh and pvb, which
-    **     will receive the barycentric values.
-    **
-    **<p>This revision:  2008 November 18
-    **
-    **  <!-- Release 2009-12-31 -->
-    **
-    **  Copyright (C) 2009 IAU JSOFA Review Board.  See notes at end.
-    */
-    public static int jauEpv00(final double date1, final double date2,
-                 double pvh[][], double pvb[][])
-    {
     /*
-    ** Matrix elements for orienting the analytical model to DE405.
-    **
-    ** The corresponding Euler angles are:
-    **
-    **                       d  '  "
-    **   1st rotation    -  23 26 21.4091 about the x-axis  (obliquity)
-    **   2nd rotation    +         0.0475 about the z-axis  (RA offset)
-    **
-    ** These were obtained empirically, by comparisons with DE405 over
-    ** 1900-2100.
-    */
-       final double am12 =  0.000000211284,
-                           am13 = -0.000000091603,
-                           am21 = -0.000000230286,
-                           am22 =  0.917482137087,
-                           am23 = -0.397776982902,
-                           am32 =  0.397776982902,
-                           am33 =  0.917482137087;
+     * A utility class to get round 65536 byte limit on functions in java - The static initializer is too large on its own. - So split into two classes for no real semantic reason
+     */        
+    static private final class Ephemeris extends SSB {
+       
 
     /**
     ** ----------------------
@@ -4840,7 +4738,7 @@ public class JSOFA {
     */
 
     /* Sun-to-Earth, T^0, X */
-       final double e0x[] = {
+      static final double e0x[] = {
           0.9998292878132e+00, 0.1753485171504e+01, 0.6283075850446e+01,
           0.8352579567414e-02, 0.1710344404582e+01, 0.1256615170089e+02,
           0.5611445335148e-02, 0.0000000000000e+00, 0.0000000000000e+00,
@@ -5394,7 +5292,7 @@ public class JSOFA {
           0.9015823460025e-10, 0.3807792942715e+01, 0.4171445043968e+03 };
 
     /* Sun-to-Earth, T^0, Y */
-       final double e0y[] = {
+      static final double e0y[] = {
           0.9998921098898e+00, 0.1826583913846e+00, 0.6283075850446e+01,
          -0.2442700893735e-01, 0.0000000000000e+00, 0.0000000000000e+00,
           0.8352929742915e-02, 0.1395277998680e+00, 0.1256615170089e+02,
@@ -5948,7 +5846,7 @@ public class JSOFA {
           0.9015946748003e-10, 0.2236989966505e+01, 0.4171445043968e+03 };
 
     /* Sun-to-Earth, T^0, Z */
-       final double e0z[] = {
+      static final double e0z[] = {
           0.2796207639075e-05, 0.3198701560209e+01, 0.8433466158131e+02,
           0.1016042198142e-05, 0.5422360395913e+01, 0.5507553240374e+01,
           0.8044305033647e-06, 0.3880222866652e+01, 0.5223693906222e+01,
@@ -6101,7 +5999,7 @@ public class JSOFA {
           0.1128229264847e-09, 0.2787457156298e+01, 0.3119028331842e+03 };
 
     /* Sun-to-Earth, T^1, X */
-       final double e1x[] = {
+      static final double e1x[] = {
           0.1234046326004e-05, 0.0000000000000e+00, 0.0000000000000e+00,
           0.5150068824701e-06, 0.6002664557501e+01, 0.1256615170089e+02,
           0.1290743923245e-07, 0.5959437664199e+01, 0.1884922755134e+02,
@@ -6190,7 +6088,7 @@ public class JSOFA {
           0.2548395840944e-10, 0.2628351859400e-03, 0.1349867339771e+01 };
 
     /* Sun-to-Earth, T^1, Y */
-       final double e1y[] = {
+      static final double e1y[] = {
           0.9304690546528e-06, 0.0000000000000e+00, 0.0000000000000e+00,
           0.5150715570663e-06, 0.4431807116294e+01, 0.1256615170089e+02,
           0.1290825411056e-07, 0.4388610039678e+01, 0.1884922755134e+02,
@@ -6280,7 +6178,7 @@ public class JSOFA {
           0.6348533267831e-11, 0.3220226560321e+01, 0.8433466158131e+02 };
 
     /* Sun-to-Earth, T^1, Z */
-       final double e1z[] = {
+      static final double e1z[] = {
           0.2278290449966e-05, 0.3413716033863e+01, 0.6283075850446e+01,
           0.5429458209830e-07, 0.0000000000000e+00, 0.0000000000000e+00,
           0.1903240492525e-07, 0.3370592358297e+01, 0.1256615170089e+02,
@@ -6296,7 +6194,7 @@ public class JSOFA {
           0.3286995181628e-10, 0.4879512900483e+01, 0.1021328554739e+02 };
 
     /* Sun-to-Earth, T^2, X */
-       final double e2x[] = {
+      static final double e2x[] = {
          -0.4143818297913e-10, 0.0000000000000e+00, 0.0000000000000e+00,
           0.2171497694435e-10, 0.4398225628264e+01, 0.1256615170089e+02,
           0.9845398442516e-11, 0.2079720838384e+00, 0.6283075850446e+01,
@@ -6304,7 +6202,7 @@ public class JSOFA {
           0.1022049384115e-12, 0.5381133195658e+01, 0.8399684731857e+02 };
 
     /* Sun-to-Earth, T^2, Y */
-       final double e2y[] = {
+      static final double e2y[] = {
           0.5063375872532e-10, 0.0000000000000e+00, 0.0000000000000e+00,
           0.2173815785980e-10, 0.2827805833053e+01, 0.1256615170089e+02,
           0.1010231999920e-10, 0.4634612377133e+01, 0.6283075850446e+01,
@@ -6312,13 +6210,16 @@ public class JSOFA {
           0.1022202095812e-12, 0.3809562326066e+01, 0.8399684731857e+02 };
 
     /* Sun-to-Earth, T^2, Z */
-       final double e2z[] = {
+      static final double e2z[] = {
           0.9722666114891e-10, 0.5152219582658e+01, 0.6283075850446e+01,
          -0.3494819171909e-11, 0.0000000000000e+00, 0.0000000000000e+00,
           0.6713034376076e-12, 0.6440188750495e+00, 0.1256615170089e+02 };
 
+    }
+      //subclassed the 
+      private static class SSB {
     /* SSB-to-Sun, T^0, X */
-       final double s0x[] = {
+      static final double s0x[] = {
           0.4956757536410e-02, 0.3741073751789e+01, 0.5296909721118e+00,
           0.2718490072522e-02, 0.4016011511425e+01, 0.2132990797783e+00,
           0.1546493974344e-02, 0.2170528330642e+01, 0.3813291813120e-01,
@@ -6554,7 +6455,7 @@ public class JSOFA {
           0.9698639532817e-09, 0.1074134313634e+01, 0.7826370942180e+02 };
 
     /* SSB-to-Sun, T^0, Y */
-       final double s0y[] = {
+      static final double s0y[] = {
           0.4955392320126e-02, 0.2170467313679e+01, 0.5296909721118e+00,
           0.2722325167392e-02, 0.2444433682196e+01, 0.2132990797783e+00,
           0.1546579925346e-02, 0.5992779281546e+00, 0.3813291813120e-01,
@@ -6791,7 +6692,7 @@ public class JSOFA {
           0.9757679038404e-09, 0.5796846023126e+01, 0.7826370942180e+02 };
 
     /* SSB-to-Sun, T^0, Z */
-       final double s0z[] = {
+      static  final double s0z[] = {
           0.1181255122986e-03, 0.4607918989164e+00, 0.2132990797783e+00,
           0.1127777651095e-03, 0.4169146331296e+00, 0.5296909721118e+00,
           0.4777754401806e-04, 0.4582657007130e+01, 0.3813291813120e-01,
@@ -6869,7 +6770,7 @@ public class JSOFA {
           0.7788777276590e-09, 0.1900569908215e+01, 0.5217580628120e+02 };
 
     /* SSB-to-Sun, T^1, X */
-       final double s1x[] = {
+      static  final double s1x[] = {
          -0.1296310361520e-07, 0.0000000000000e+00, 0.0000000000000e+00,
           0.8975769009438e-08, 0.1128891609250e+01, 0.4265981595566e+00,
           0.7771113441307e-08, 0.2706039877077e+01, 0.2061856251104e+00,
@@ -6926,7 +6827,7 @@ public class JSOFA {
           0.2853033744415e-10, 0.3948481024894e+01, 0.2118763888447e+01 };
 
     /* SSB-to-Sun, T^1, Y */
-       final double s1y[] = {
+      static  final double s1y[] = {
           0.8989047573576e-08, 0.5840593672122e+01, 0.4265981595566e+00,
           0.7815938401048e-08, 0.1129664707133e+01, 0.2061856251104e+00,
           0.7550926713280e-08, 0.6196589104845e+00, 0.2204125344462e+00,
@@ -6983,7 +6884,7 @@ public class JSOFA {
           0.2852714675471e-10, 0.2377659870578e+01, 0.2118763888447e+01 };
 
     /* SSB-to-Sun, T^1, Z */
-       final double s1z[] = {
+      static final double s1z[] = {
           0.5444220475678e-08, 0.1803825509310e+01, 0.2132990797783e+00,
           0.3883412695596e-08, 0.4668616389392e+01, 0.5296909721118e+00,
           0.1334341434551e-08, 0.0000000000000e+00, 0.0000000000000e+00,
@@ -7001,7 +6902,7 @@ public class JSOFA {
           0.2586835212560e-10, 0.3019448001809e+01, 0.6398972393349e+00 };
 
     /* SSB-to-Sun, T^2, X */
-       final double s2x[] = {
+      static  final double s2x[] = {
           0.1603551636587e-11, 0.4404109410481e+01, 0.2061856251104e+00,
           0.1556935889384e-11, 0.4818040873603e+00, 0.2204125344462e+00,
           0.1182594414915e-11, 0.9935762734472e+00, 0.5225775174439e+00,
@@ -7013,7 +6914,7 @@ public class JSOFA {
           0.4478223877045e-12, 0.0000000000000e+00, 0.0000000000000e+00 };
 
     /* SSB-to-Sun, T^2, Y */
-       final double s2y[] = {
+      static final double s2y[] = {
           0.1609114495091e-11, 0.2831096993481e+01, 0.2061856251104e+00,
           0.1560330784946e-11, 0.5193058213906e+01, 0.2204125344462e+00,
           0.1183535479202e-11, 0.5707003443890e+01, 0.5225775174439e+00,
@@ -7025,38 +6926,165 @@ public class JSOFA {
           0.3946122651015e-12, 0.4108265279171e+00, 0.1059381944224e+01 };
 
     /* SSB-to-Sun, T^2, Z */
-       final double s2z[] = {
+      static final double s2z[] = {
           0.3749920358054e-12, 0.3230285558668e+01, 0.2132990797783e+00,
           0.2735037220939e-12, 0.6154322683046e+01, 0.5296909721118e+00 };
-
+        }
+      
+        /**
+         **  Earth position and velocity, heliocentric and barycentric, with
+         **  respect to the Barycentric Celestial Reference System.
+         **
+         **  This function is derived from the International Astronomical Union's
+         **  SOFA (Standards Of Fundamental Astronomy) software collection.
+         **
+         **  Status:  support function.
+         **
+         **<!-- Given: -->
+         **     @param date1,date2   double         TDB date (Note 1)
+         **
+         **<!-- Returned: -->
+         **     @param pvh           double[2][3]    <u>returned</u> heliocentric Earth position/velocity
+         **     @param pvb           double[2][3]    <u>returned</u> barycentric Earth position/velocity
+         **
+         ** <!-- Returned (function value): -->
+         **  @return int           status: 0 = OK
+         **                                       +1 = warning: date outside
+         **                                            the range 1900-2100 AD
+         **
+         ** <p>Notes:
+         ** <ol>
+         **
+         ** <li> The TDB date date1+date2 is a Julian Date, apportioned in any
+         **     convenient way between the two arguments.  For example,
+         **     JD(TDB)=2450123.7 could be expressed in any of these ways, among
+         **     others:
+         **<pre>
+         **            date1          date2
+         **
+         **         2450123.7           0.0       (JD method)
+         **         2451545.0       -1421.3       (J2000 method)
+         **         2400000.5       50123.2       (MJD method)
+         **         2450123.5           0.2       (date & time method)
+         **</pre>
+         **     The JD method is the most natural and convenient to use in cases
+         **     where the loss of several decimal digits of resolution is
+         **     acceptable.  The J2000 method is best matched to the way the
+         **     argument is handled internally and will deliver the optimum
+         **     resolution.  The MJD method and the date & time methods are both
+         **     good compromises between resolution and convenience.  However,
+         **     the accuracy of the result is more likely to be limited by the
+         **     algorithm itself than the way the date has been expressed.
+         **
+         **     n.b. TT can be used instead of TDB in most applications.
+         **
+         ** <li> On return, the arrays pvh and pvb contain the following:
+         **
+         **        pvh[0][0]  x       }
+         **        pvh[0][1]  y       } heliocentric position, AU
+         **        pvh[0][2]  z       }
+         **
+         **        pvh[1][0]  xdot    }
+         **        pvh[1][1]  ydot    } heliocentric velocity, AU/d
+         **        pvh[1][2]  zdot    }
+         **
+         **        pvb[0][0]  x       }
+         **        pvb[0][1]  y       } barycentric position, AU
+         **        pvb[0][2]  z       }
+         **
+         **        pvb[1][0]  xdot    }
+         **        pvb[1][1]  ydot    } barycentric velocity, AU/d
+         **        pvb[1][2]  zdot    }
+         **
+         **     The vectors are with respect to the Barycentric Celestial
+         **     Reference System.  The time unit is one day in TDB.
+         **
+         ** <li> The function is a SIMPLIFIED SOLUTION from the planetary theory
+         **     VSOP2000 (X. Moisson, P. Bretagnon, 2001, Celes. Mechanics &
+         **     Dyn. Astron., 80, 3/4, 205-213) and is an adaptation of original
+         **     Fortran code supplied by P. Bretagnon (private comm., 2000).
+         **
+         ** <li> Comparisons over the time span 1900-2100 with this simplified
+         **     solution and the JPL DE405 ephemeris give the following results:
+         **
+         **                                RMS    max
+         **           Heliocentric:
+         **              position error    3.7   11.2   km
+         **              velocity error    1.4    5.0   mm/s
+         **
+         **           Barycentric:
+         **              position error    4.6   13.4   km
+         **              velocity error    1.4    4.9   mm/s
+         **
+         **     Comparisons with the JPL DE406 ephemeris show that by 1800 and
+         **     2200 the position errors are approximately double their 1900-2100
+         **     size.  By 1500 and 2500 the deterioration is a factor of 10 and
+         **     by 1000 and 3000 a factor of 60.  The velocity accuracy falls off
+         **     at about half that rate.
+         **
+         ** <li> It is permissible to use the same array for pvh and pvb, which
+         **     will receive the barycentric values.
+         **
+         **<p>This revision:  2008 November 18
+         **
+         **  <!-- Release 2009-12-31 -->
+         **
+         **  Copyright (C) 2009 IAU JSOFA Review Board.  See notes at end.
+         */
+         public static int jauEpv00(final double date1, final double date2,
+                      double pvh[][], double pvb[][])
+         {
+         /*
+         ** Matrix elements for orienting the analytical model to DE405.
+         **
+         ** The corresponding Euler angles are:
+         **
+         **                       d  '  "
+         **   1st rotation    -  23 26 21.4091 about the x-axis  (obliquity)
+         **   2nd rotation    +         0.0475 about the z-axis  (RA offset)
+         **
+         ** These were obtained empirically, by comparisons with DE405 over
+         ** 1900-2100.
+         */
+            final double am12 =  0.000000211284,
+                                am13 = -0.000000091603,
+                                am21 = -0.000000230286,
+                                am22 =  0.917482137087,
+                                am23 = -0.397776982902,
+                                am32 =  0.397776982902,
+                                am33 =  0.917482137087;
+            
+      
+        
+        
     /* Pointers to coefficient arrays, in x,y,z sets */
-       final double ce0[][] = { e0x, e0y, e0z },
-                           ce1[][] = { e1x, e1y, e1z },
-                           ce2[][] = { e2x, e2y, e2z },
-                           cs0[][] = { s0x, s0y, s0z },
-                           cs1[][] = { s1x, s1y, s1z },
-                           cs2[][] = { s2x, s2y, s2z };
+       final double ce0[][] = { Ephemeris.e0x, Ephemeris.e0y, Ephemeris.e0z },
+                           ce1[][] = { Ephemeris.e1x, Ephemeris.e1y, Ephemeris.e1z },
+                           ce2[][] = { Ephemeris.e2x, Ephemeris.e2y, Ephemeris.e2z },
+                           cs0[][] = { Ephemeris.s0x, Ephemeris.s0y, Ephemeris.s0z },
+                           cs1[][] = { Ephemeris.s1x, Ephemeris.s1y, Ephemeris.s1z },
+                           cs2[][] = { Ephemeris.s2x, Ephemeris.s2y, Ephemeris.s2z };
        final double coeffs;
 
     /* Numbers of terms for each component of the model, in x,y,z sets */
-       final int ne0[] = {e0x.length/3,
-                                  e0y.length/3,
-                                  e0z.length/3 },
-                        ne1[] = {e1x.length/3,
-                                  e1y.length/3,
-                                  e1z.length/3 },
-                        ne2[] = {e2x.length/3,
-                                  e2y.length/3,
-                                  e2z.length/3 },
-                        ns0[] = {s0x.length/3,
-                                  s0y.length/3,
-                                  s0z.length/3 },
-                        ns1[] = {s1x.length/3,
-                                  s1y.length/3,
-                                  s1z.length/3 },
-                        ns2[] = {s2x.length/3,
-                                  s2y.length/3,
-                                  s2z.length/3 };
+       final int ne0[] = {Ephemeris.e0x.length/3,
+               Ephemeris.e0y.length/3,
+               Ephemeris.e0z.length/3 },
+                        ne1[] = {Ephemeris.e1x.length/3,
+               Ephemeris.e1y.length/3,
+               Ephemeris.e1z.length/3 },
+                        ne2[] = {Ephemeris.e2x.length/3,
+               Ephemeris.e2y.length/3,
+               Ephemeris.e2z.length/3 },
+                        ns0[] = {Ephemeris.s0x.length/3,
+               Ephemeris.s0y.length/3,
+               Ephemeris.s0z.length/3 },
+                        ns1[] = {Ephemeris.s1x.length/3,
+               Ephemeris.s1y.length/3,
+               Ephemeris.s1z.length/3 },
+                        ns2[] = {Ephemeris.s2x.length/3,
+               Ephemeris.s2y.length/3,
+               Ephemeris.s2z.length/3 };
        int nterms;
 
     /* Miscellaneous */
@@ -7214,7 +7242,7 @@ public class JSOFA {
     **  Equation of the equinoxes, IAU 1994 model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -7297,7 +7325,7 @@ public class JSOFA {
     **  Earth rotation angle (IAU 2000 model).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -7386,7 +7414,7 @@ public class JSOFA {
     **  mean elongation of the Moon from the Sun.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -7441,7 +7469,7 @@ public class JSOFA {
     **  mean longitude of Earth.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -7496,7 +7524,7 @@ public class JSOFA {
     **  node.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -7553,7 +7581,7 @@ public class JSOFA {
     **  mean longitude of Jupiter.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -7607,7 +7635,7 @@ public class JSOFA {
     **  mean anomaly of the Moon.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -7662,7 +7690,7 @@ public class JSOFA {
     **  mean anomaly of the Sun.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -7717,7 +7745,7 @@ public class JSOFA {
     **  mean longitude of Mars.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -7771,7 +7799,7 @@ public class JSOFA {
     **  mean longitude of Mercury.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -7826,7 +7854,7 @@ public class JSOFA {
     **  mean longitude of Neptune.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -7877,7 +7905,7 @@ public class JSOFA {
     **  mean longitude of the Moon's ascending node.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -7933,7 +7961,7 @@ public class JSOFA {
     **  general accumulated precession in longitude.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -7988,7 +8016,7 @@ public class JSOFA {
     **  mean longitude of Saturn.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -8042,7 +8070,7 @@ public class JSOFA {
     **  mean longitude of Uranus.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -8093,7 +8121,7 @@ public class JSOFA {
     **  mean longitude of Venus.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -8146,7 +8174,7 @@ public class JSOFA {
     **  Transform FK5 (J2000.0) star data into the Hipparcos system.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -8179,7 +8207,7 @@ public class JSOFA {
     **     rotation and spin;  zonal errors in the FK5 catalog are not
     **     taken into account.
     **
-    ** <li> See also {@link #jauH2fk5), {@link #jauFk5hz}, {@link #�jauHfk5z}.
+    ** <li> See also {@link #jauH2fk5), {@link #jauFk5hz}, {@link #jauHfk5z}.
     **</ol>
     **<p>Called:<ul>
     **     <li>{@link #jauStarpv} star catalog data to space motion pv-vector
@@ -8245,7 +8273,7 @@ public class JSOFA {
     **  FK5 to Hipparcos rotation and spin.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -8339,7 +8367,7 @@ public static class SphericalCoordinate {
     **  Hipparcos catalogue, assuming zero Hipparcos proper motion.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -8451,7 +8479,7 @@ public static class SphericalCoordinate {
     **  Form rotation matrix given the Fukushima-Williams angles.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -8537,7 +8565,7 @@ public static class SphericalCoordinate {
     **  CIP X,Y given Fukushima-Williams bias-precession-nutation angles.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -9018,7 +9046,7 @@ public static class SphericalCoordinate {
     **  resolutions).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -9114,7 +9142,7 @@ public static class SphericalCoordinate {
     **  Greenwich mean sidereal time (consistent with IAU 2006 precession).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -9202,7 +9230,7 @@ public static class SphericalCoordinate {
     **  Universal Time to Greenwich mean sidereal time (IAU 1982 model).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -9306,7 +9334,7 @@ public static class SphericalCoordinate {
     **  resolutions).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -9396,7 +9424,7 @@ public static class SphericalCoordinate {
     **  resolutions but using the truncated nutation model IAU 2000B).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -9493,7 +9521,7 @@ public static class SphericalCoordinate {
     **  Greenwich apparent sidereal time, IAU 2006, given the NPB matrix.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -9586,7 +9614,7 @@ public static class SphericalCoordinate {
     **  resolutions).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -9669,7 +9697,7 @@ public static class SphericalCoordinate {
     **  resolutions).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -9751,7 +9779,7 @@ public static class SphericalCoordinate {
     **  Transform Hipparcos star data into the FK5 (J2000.0) system.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -9856,7 +9884,7 @@ public static class SphericalCoordinate {
     **  zero Hipparcos proper motion.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -9982,7 +10010,7 @@ public static class SphericalCoordinate {
     **  Initialize an r-matrix to the identity matrix.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -10032,7 +10060,7 @@ public static class SphericalCoordinate {
     **  Julian Date to Gregorian year, month, day, and fraction of a day.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -10138,7 +10166,7 @@ public static class SphericalCoordinate {
     **  for formatting messages:  rounded to a specified precision.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -10253,7 +10281,7 @@ public static class SphericalCoordinate {
     **  Form the matrix of nutation for a given date, IAU 2000A model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -10323,7 +10351,7 @@ public static class SphericalCoordinate {
     **  Form the matrix of nutation for a given date, IAU 2000B model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -10393,7 +10421,7 @@ public static class SphericalCoordinate {
     **  Form the matrix of nutation for a given date, IAU 2006/2000A model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -10470,7 +10498,7 @@ public static class SphericalCoordinate {
     **  Form the matrix of nutation.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -10542,7 +10570,7 @@ public static class SphericalCoordinate {
     **  with free core nutation omitted).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -12589,7 +12617,7 @@ public static class SphericalCoordinate {
     **  Nutation, IAU 2000B model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -13020,7 +13048,7 @@ public static class SphericalCoordinate {
     **  Nutation, IAU 1980 model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -13304,7 +13332,7 @@ public static class SphericalCoordinate {
     **  Form the matrix of nutation for a given date, IAU 1980 model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -13371,7 +13399,7 @@ public static class SphericalCoordinate {
     **  Mean obliquity of the ecliptic, IAU 2006 precession model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -13441,7 +13469,7 @@ public static class SphericalCoordinate {
     **  Mean obliquity of the ecliptic, IAU 1980 model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -13569,7 +13597,7 @@ public static class SphericalCoordinate {
     **  Precession angles, IAU 2006, equinox based.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical models.
     **
@@ -13842,7 +13870,7 @@ public static class SphericalCoordinate {
     **  Extend a p-vector to a pv-vector by appending a zero velocity.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -13890,7 +13918,7 @@ public static class SphericalCoordinate {
     **  P-vector to spherical polar coordinates.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -13933,7 +13961,7 @@ public static class SphericalCoordinate {
     **  Position-angle from two p-vectors.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -14024,7 +14052,7 @@ public static class SphericalCoordinate {
     **  Position-angle from spherical coordinates.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -14074,7 +14102,7 @@ public static class SphericalCoordinate {
     **  bias (the offset between ICRS and mean J2000.0) is included.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -14167,7 +14195,7 @@ public static class SphericalCoordinate {
     **  p-vector inner (=scalar=dot) product.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -14225,7 +14253,7 @@ public static class SphericalCoordinate {
     **  Precession angles, IAU 2006 (Fukushima-Williams 4-angle formulation).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -14339,7 +14367,7 @@ public static class SphericalCoordinate {
 
     /**
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -14807,7 +14835,7 @@ public static class SphericalCoordinate {
     **  Modulus of p-vector.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -14842,7 +14870,7 @@ public static class SphericalCoordinate {
     **  date, IAU 2000 model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -14911,7 +14939,7 @@ public static class SphericalCoordinate {
     **  date, IAU 2006 model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -14982,7 +15010,7 @@ public static class SphericalCoordinate {
     **  Precession matrix from J2000.0 to a specified date, IAU 1976 model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -15075,7 +15103,7 @@ public static class SphericalCoordinate {
     **  P-vector subtraction.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -15125,7 +15153,7 @@ public static class SphericalCoordinate {
     **  Convert a p-vector into modulus and unit vector.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -15186,7 +15214,7 @@ public static class SphericalCoordinate {
     **  use indirectly.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -15350,7 +15378,7 @@ public static class SphericalCoordinate {
     **  use indirectly.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -15460,7 +15488,7 @@ public static class SphericalCoordinate {
     **  use indirectly.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -15570,7 +15598,7 @@ public static class SphericalCoordinate {
     **  indirectly.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -15705,7 +15733,7 @@ public static class SphericalCoordinate {
     **  indirectly.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -15803,7 +15831,7 @@ public static class SphericalCoordinate {
     **  frame bias), equinox-based, IAU 2000A model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -15873,7 +15901,7 @@ public static class SphericalCoordinate {
     **  frame bias), equinox-based, IAU 2000B model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -15944,7 +15972,7 @@ public static class SphericalCoordinate {
     **  frame bias), IAU 2006 precession and IAU 2000A nutation models.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -16018,7 +16046,7 @@ public static class SphericalCoordinate {
     **  precession model, IAU 1980 nutation model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -16095,7 +16123,7 @@ public static class SphericalCoordinate {
     **  Form the matrix of polar motion for a given date, IAU 2000.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -16163,7 +16191,7 @@ public static class SphericalCoordinate {
     **  P-vector addition.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -16200,7 +16228,7 @@ public static class SphericalCoordinate {
     **  P-vector plus scaled p-vector.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -16262,7 +16290,7 @@ public static class SphericalCoordinate {
     **  (part of MHB2000).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -16378,7 +16406,7 @@ public static class SphericalCoordinate {
     **  the FK5 catalog).
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -16473,7 +16501,7 @@ public static class SphericalCoordinate {
     **  Discard velocity component of a pv-vector.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -16521,7 +16549,7 @@ public static class SphericalCoordinate {
     **  Convert position/velocity from Cartesian to spherical coordinates.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -16615,7 +16643,7 @@ public static class SphericalCoordinate {
     **  Inner (=scalar=dot) product of two pv-vectors.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -16682,7 +16710,7 @@ public static class SphericalCoordinate {
     **  Modulus of pv-vector.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -16719,7 +16747,7 @@ public static class SphericalCoordinate {
     **  Subtract one pv-vector from another.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -16758,7 +16786,7 @@ public static class SphericalCoordinate {
     **  Add one pv-vector to another.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -16821,7 +16849,7 @@ public static class SphericalCoordinate {
     **  Convert star position+velocity vector to catalog coordinates.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -16981,7 +17009,7 @@ public static class SphericalCoordinate {
     **  Update a pv-vector.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -17027,7 +17055,7 @@ public static class SphericalCoordinate {
     **  Update a pv-vector, discarding the velocity component.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -17068,7 +17096,7 @@ public static class SphericalCoordinate {
     **  Outer (=vector=cross) product of two pv-vectors.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -17127,7 +17155,7 @@ public static class SphericalCoordinate {
     **  p-vector outer (=vector=cross) product.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -17172,7 +17200,7 @@ public static class SphericalCoordinate {
     **  Express an r-matrix as an r-vector.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -17235,7 +17263,7 @@ public static class SphericalCoordinate {
     **  Form the r-matrix corresponding to a given r-vector.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -17306,7 +17334,7 @@ public static class SphericalCoordinate {
     **  Rotate an r-matrix about the x-axis.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -17361,7 +17389,7 @@ public static class SphericalCoordinate {
     **  Multiply a p-vector by an r-matrix.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -17409,7 +17437,7 @@ public static class SphericalCoordinate {
     **  Multiply a pv-vector by an r-matrix.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -17447,7 +17475,7 @@ public static class SphericalCoordinate {
     **  Multiply two r-matrices.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -17496,7 +17524,7 @@ public static class SphericalCoordinate {
     **  Rotate an r-matrix about the y-axis.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -17551,7 +17579,7 @@ public static class SphericalCoordinate {
     **  Rotate an r-matrix about the z-axis.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -17608,7 +17636,7 @@ public static class SphericalCoordinate {
     **  coordinates.  Compatible with IAU 2000A precession-nutation.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -17926,7 +17954,7 @@ public static class SphericalCoordinate {
     **  precession-nutation model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -18021,7 +18049,7 @@ public static class SphericalCoordinate {
     **  precession-nutation model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -18116,7 +18144,7 @@ public static class SphericalCoordinate {
     **  coordinates.  Compatible with IAU 2006/2000A precession-nutation.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -18431,7 +18459,7 @@ public static class SphericalCoordinate {
     **  precession and IAU 2000A nutation models.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -18526,7 +18554,7 @@ public static class SphericalCoordinate {
     **  Convert spherical coordinates to Cartesian.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -18562,7 +18590,7 @@ public static class SphericalCoordinate {
     **  Convert spherical polar coordinates to p-vector.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -18602,7 +18630,7 @@ public static class SphericalCoordinate {
     **  Convert position/velocity from spherical to Cartesian coordinates.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -18656,7 +18684,7 @@ public static class SphericalCoordinate {
     **  Multiply a pv-vector by two scalars.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -18695,7 +18723,7 @@ public static class SphericalCoordinate {
     **  Angular separation between two p-vectors.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -18752,7 +18780,7 @@ public static class SphericalCoordinate {
     **  Angular separation between two sets of spherical coordinates.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -18797,7 +18825,7 @@ public static class SphericalCoordinate {
     **  on the equator of the Celestial Intermediate Pole.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -18866,7 +18894,7 @@ public static class SphericalCoordinate {
     **  Star proper motion:  update star catalog data for space motion.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -19018,7 +19046,7 @@ public static class SphericalCoordinate {
     **  Convert star catalog coordinates to position+velocity vector.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -19237,7 +19265,7 @@ public static class SphericalCoordinate {
     **  Multiply a p-vector by a scalar.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -19272,7 +19300,7 @@ public static class SphericalCoordinate {
     **  Multiply a pv-vector by a scalar.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -19305,69 +19333,726 @@ public static class SphericalCoordinate {
         }
 
     /**
-    **  Transpose an r-matrix.
-    **
-    **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
-    **
-    **  Status:  vector/matrix support function.
-    **
-    **<!-- Given: -->
-    **     @param r         double[3][3]     r-matrix
-    **
-    **<!-- Returned: -->
-    **     @return rt        double[3][3]      <u>returned</u> transpose
-    **
-    **  Note:
-    **     It is permissible for r and rt to be the same array.
-    **
-    **<p>Called:<ul>
-    **     <li>{@link #jauCr} copy r-matrix
-    ** </ul>
-    **<p>This revision:  2008 May 22
-    **
-    **  <!-- Release 2009-12-31 -->
-    **
-    **  Copyright (C) 2009 IAU JSOFA Review Board.  See notes at end.
-    */
-    public static double[][] jauTr(double r[][])
+     **
+     **  Time scale transformation:  International Atomic Time, TAI, to
+     **  Terrestrial Time, TT.
+     **
+     **  This function is part of the International Astronomical Union's
+     **  SOFA (Standards of Fundamental Astronomy) software collection.
+     **
+     **  Status:  canonical.
+     **
+     **  Given:
+     **  @param   tai1,tai2  double    TAI as a 2-part Julian Date
+     **
+     **  Returned:
+     **     @return    TT as a 2-part Julian Date
+     **
+     **
+     **  Note:
+     **
+     **     tai1+tai2 is Julian Date, apportioned in any convenient way
+     **     between the two arguments, for example where tai1 is the Julian
+     **     Day Number and tai2 is the fraction of a day.  The returned
+     **     tt1,tt2 follow suit.
+     **
+     **  References:
+     **
+     **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+     **     IERS Technical Note No. 32, BKG (2004)
+     **
+     **     Explanatory Supplement to the Astronomical Almanac,
+     **     P. Kenneth Seidelmann (ed), University Science Books (1992)
+     **
+     **  This revision:  2010 May 16
+     **
+     **  SOFA release 2010-12-01
+     **
+     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     */
+    public static JulianDate jauTaitt(double tai1, double tai2)
     {
-       double wm[][]= new double[3][3];
-       int i, j;
 
+        double tt1, tt2;
+        /* TT minus TAI (days). */
+        final double dtat = TTMTAI / DAYSEC;
 
-       for (i = 0; i < 3; i++) {
-          for (j = 0; j < 3; j++) {
-             wm[i][j] = r[j][i];
-          }
-       }
-       
-
-       return wm;
-
+        /* Result, safeguarding precision. */
+        
+        if ( tai1 > tai2 ) {
+            tt1 = tai1;
+            tt2 = tai2 + dtat;
+        } else {
+            tt1 = tai1 + dtat;
+            tt2 = tai2;
         }
-    
+
+
+        return new JulianDate(tt1, tt2);
+    };   
 
     /**
-    **  Multiply a p-vector by the transpose of an r-matrix.
-    **
-    **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
-    **
-    **  Status:  vector/matrix support function.
-    **
-    **<!-- Given: -->
-    **     @param r         double[3][3]    r-matrix
-    **     @param p         double[3]       p-vector
-    **
-    **<!-- Returned: -->
-    **     @return trp       double[3]        <u>returned</u> r * p
-    **
-    **  Note:
-    **     It is permissible for p and trp to be the same array.
-    **
-    **<p>Called:<ul>
-    **     <li>{@link #jauTr} transpose r-matrix
+     **
+     **  Time scale transformation:  International Atomic Time, TAI, to
+     **  Universal Time, UT1.
+     **
+     **  This function is part of the International Astronomical Union's
+     **  SOFA (Standards of Fundamental Astronomy) software collection.
+     **
+     **  Status:  canonical.
+     **
+     **  Given:
+     **  @param   tai1,tai2  double    TAI as a 2-part Julian Date
+     **  @param   dta        double    UT1-TAI in seconds
+     **
+     **  Returned:
+     **  @return      UT1 as a 2-part Julian Date
+     **
+     **
+     **  Notes:
+     **  <ol>
+     ** <li>  tai1+tai2 is Julian Date, apportioned in any convenient way
+     **     between the two arguments, for example where tai1 is the Julian
+     **     Day Number and tai2 is the fraction of a day.  The returned
+     **     UT11,UT12 follow suit.
+     **
+     **  <li>  The argument dta, i.e. UT1-TAI, is an observed quantity, and is
+     **     available from IERS tabulations.
+     **  </ol>
+     **  Reference:
+     **
+     **     Explanatory Supplement to the Astronomical Almanac,
+     **     P. Kenneth Seidelmann (ed), University Science Books (1992)
+     **
+     **  This revision:  2010 May 16
+     **
+     **  SOFA release 2010-12-01
+     **
+     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     **
+     */
+    public static JulianDate jauTaiut1(double tai1, double tai2, double dta)
+
+    {
+        double dtad,ut11, ut12;
+
+
+        /* Result, safeguarding precision. */
+        dtad = dta / DAYSEC;
+        if ( tai1 > tai2 ) {
+            ut11 = tai1;
+            ut12 = tai2 + dtad;
+        } else {
+            ut11 = tai1 + dtad;
+            ut12 = tai2;
+        }
+
+        return new JulianDate(ut11, ut12);
+    };   
+
+    /**
+     **
+     **  Time scale transformation:  International Atomic Time, TAI, to
+     **  Coordinated Universal Time, UTC.
+     **
+     **  This function is part of the International Astronomical Union's
+     **  SOFA (Standards of Fundamental Astronomy) software collection.
+     **
+     **  Status:  canonical.
+     **
+     **  Given:
+     **  @param   tai1,tai2     TAI as a 2-part Julian Date (Note 1)
+     **
+     **  Returned:
+     **  @return   UTC as a 2-part quasi Julian Date (Notes 1-3)
+     **
+     **  Returned (function value):
+     **                int      status: +1 = dubious year (Note 4)
+     **                                  0 = OK
+     **                                 -1 = unacceptable date
+     **
+     **  Notes:
+     ** <ol>
+     ** <li>  tai1+tai2 is Julian Date, apportioned in any convenient way
+     **     between the two arguments, for example where tai1 is the Julian
+     **     Day Number and tai2 is the fraction of a day.  The returned utc1
+     **     and utc2 form an analogous pair, except that a special convention
+     **     is used, to deal with the problem of leap seconds - see the next
+     **     note.
+     **
+     **  <li> JD cannot unambiguously represent UTC during a leap second unless
+     **     special measures are taken.  The convention in the present
+     **     function is that the JD day represents UTC days whether the
+     **     length is 86399, 86400 or 86401 SI seconds.
+     **
+     **  <li> The function jauD2dtf can be used to transform the UTC quasi-JD
+     **     into calendar date and clock time, including UTC leap second
+     **     handling.
+     **
+     **  <li> The warning status "dubious year" flags UTCs that predate the
+     **     introduction of the time scale and that are too far in the future
+     **     to be trusted.  See jauDat for further details.
+     **  </ol>
+     **  Called:
+     **     jauJd2cal    JD to Gregorian calendar
+     **     jauDat       delta(AT) = TAI-UTC
+     **     jauCal2jd    Gregorian calendar to JD
+     **
+     **  References:
+     **
+     **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+     **     IERS Technical Note No. 32, BKG (2004)
+     **
+     **     Explanatory Supplement to the Astronomical Almanac,
+     **     P. Kenneth Seidelmann (ed), University Science Books (1992)
+     **
+     **  This revision:  2010 May 16
+     **
+     **  SOFA release 2010-12-01
+     **
+     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAIllegalParameter 
+     * @throws JSOFAInternalError 
+     */
+    public static JulianDate jauTaiutc(double tai1, double tai2) throws JSOFAIllegalParameter, JSOFAInternalError
+    {
+        boolean big1;
+        int i, js;
+        double a1, a2,dats1, ddats, dats2, datd = 0.0, as1, as2, da, d1, d2, fd;
+        double utc1, utc2;
+
+
+        /* Put the two parts of the TAI into big-first order. */
+        big1 = ( tai1 >= tai2 );
+        if ( big1 ) {
+            a1 = tai1;
+            a2 = tai2;
+        } else {
+            a1 = tai2;
+            a2 = tai1;
+        }
+
+        /* See if the TAI can possibly be in a leap-second day. */
+        d1 = a1;
+        dats1 = 0.0;
+        for ( i = -1; i <= 3; i++ ) {
+            d2 = a2 + (double) i;
+            Calendar dt;
+            dt = jauJd2cal(d1, d2 );
+            dats2 = jauDat(dt.iy, dt.im, dt.id, 0.0);
+//FIXME            if ( js < 0 ) return -1;
+            if ( i == -1 ) dats1 = dats2;
+            ddats = dats2 - dats1;
+            datd = dats1 / DAYSEC;
+            if ( abs(ddats) >= 0.5 ) {
+
+                /* Yes.  Get TAI for the start of the UTC day that */
+                /* ends in a leap. */
+                JulianDate jd = jauCal2jd(dt.iy, dt.im, dt.id );
+                d1 = jd.djm0; d2 = jd.djm1;
+                as1 = d1;
+                as2 = d2 - 1.0 + datd;
+
+                /* Is the TAI after this point? */
+                da = a1 - as1;
+                da = da + ( a2 - as2 );
+                if ( da > 0 ) {
+
+                    /* Yes:  fraction of the current UTC day that has elapsed. */
+                    fd = da * DAYSEC / ( DAYSEC + ddats );
+
+                    /* Ramp TAI-UTC to bring about SOFA's JD(UTC) convention. */
+                    datd += ddats * ( fd <= 1.0 ? fd : 1.0 ) / DAYSEC;
+                }
+
+                /* Done. */
+                break;
+            }
+            dats1 = dats2;
+        }
+
+        /* Subtract the (possibly adjusted) TAI-UTC from TAI to give UTC. */
+        a2 -= datd;
+
+        /* Return the UTC result, preserving the TAI order. */
+        if ( big1 ) {
+            utc1 = a1;
+            utc2 = a2;
+        } else {
+            utc1 = a2;
+            utc2 = a1;
+        }
+
+        /* TODO Status */
+        return new JulianDate(utc1, utc2);
+
+    };
+
+    /**
+     **
+     **  Time scale transformation:  Barycentric Coordinate Time, TCB, to
+     **  Barycentric Dynamical Time, TDB.
+     **
+     **  This function is part of the International Astronomical Union's
+     **  SOFA (Standards of Fundamental Astronomy) software collection.
+     **
+     **  Status:  canonical.
+     **
+     **  Given:
+     **   @param  tcb1,tcb2  double    TCB as a 2-part Julian Date
+     **
+     **  Returned:
+     **   @return    TDB as a 2-part Julian Date
+     **
+     **
+     **  Notes:
+     **  <ol>
+     ** <li>  tcb1+tcb2 is Julian Date, apportioned in any convenient way
+     **     between the two arguments, for example where tcb1 is the Julian
+     **     Day Number and tcb2 is the fraction of a day.  The returned
+     **     tdb1,tdb2 follow suit.
+     **
+     ** <li>  The 2006 IAU General Assembly introduced a conventional linear
+     **     transformation between TDB and TCB.  This transformation
+     **     compensates for the drift between TCB and terrestrial time TT,
+     **     and keeps TDB approximately centered on TT.  Because the
+     **     relationship between TT and TCB depends on the adopted solar
+     **     system ephemeris, the degree of alignment between TDB and TT over
+     **     long intervals will vary according to which ephemeris is used.
+     **     Former definitions of TDB attempted to avoid this problem by
+     **     stipulating that TDB and TT should differ only by periodic
+     **     effects.  This is a good description of the nature of the
+     **     relationship but eluded precise mathematical formulation.  The
+     **     conventional linear relationship adopted in 2006 sidestepped
+     **     these difficulties whilst delivering a TDB that in practice was
+     **     consistent with values before that date.
+     **
+     **  <li>  TDB is essentially the same as Teph, the time argument for the
+     **     JPL solar system ephemerides.
+     ** </ol>
+     **  Reference:
+     **
+     **     IAU 2006 Resolution B3
+     **
+     **  This revision:  2010 May 16
+     **
+     **  SOFA release 2010-12-01
+     **
+     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     */
+    public static JulianDate jauTcbtdb(double tcb1, double tcb2)
+    {
+        double tdb1, tdb2;
+        /* 1977 Jan 1 00:00:32.184 TT, as two-part JD */
+        final double t77td = DJM0 + DJM77;
+        final double t77tf = TTMTAI/DAYSEC;
+
+        /* TDB (days) at TAI 1977 Jan 1.0 */
+        final double tdb0 = TDB0/86400.0;
+
+        double d;
+
+
+        /* Result, safeguarding precision. */
+        if ( tcb1 > tcb2 ) {
+            d = tcb1 - t77td;
+            tdb1 = tcb1;
+            tdb2 = tcb2 + tdb0 - ( d + ( tcb2 - t77tf ) ) * ELB;
+        } else {
+            d = tcb2 - t77td;
+            tdb1 = tcb1 + tdb0 - ( d + ( tcb1 - t77tf ) ) * ELB;
+            tdb2 = tcb2;
+        }
+
+
+        return new JulianDate(tdb1, tdb2);
+
+    };
+
+    /**
+     **  Time scale transformation:  Geocentric Coordinate Time, TCG, to
+     **  Terrestrial Time, TT.
+     **
+     **  This function is part of the International Astronomical Union's
+     **  SOFA (Standards of Fundamental Astronomy) software collection.
+     **
+     **  Status:  canonical.
+     **
+     **  Given:
+     **  @param   tcg1,tcg2  double    TCG as a 2-part Julian Date
+     **
+     **  Returned:
+     **   @return    TT as a 2-part Julian Date
+     **
+     **
+     **  Note:
+     **
+     **     tcg1+tcg2 is Julian Date, apportioned in any convenient way
+     **     between the two arguments, for example where tcg1 is the Julian
+     **     Day Number and tcg22 is the fraction of a day.  The returned
+     **     tt1,tt2 follow suit.
+     **
+     **  References:
+     **
+     **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),.
+     **     IERS Technical Note No. 32, BKG (2004)
+     **
+     **     IAU 2000 Resolution B1.9
+     **
+     **  This revision:  2010 May 14
+     **
+     **  SOFA release 2010-12-01
+     **
+     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     */
+    public static JulianDate jauTcgtt(double tcg1, double tcg2)
+    {
+        double tt1,tt2;
+        /* 1977 Jan 1 00:00:32.184 TT, as MJD */
+        final double t77t = DJM77 + TTMTAI/DAYSEC;
+
+
+        /* Result, safeguarding precision. */
+        if ( tcg1 > tcg2 ) {
+            tt1 = tcg1;
+            tt2 = tcg2 - ( ( tcg1 - DJM0 ) + ( tcg2 - t77t ) ) * ELG;
+        } else {
+            tt1 = tcg1 - ( ( tcg2 - DJM0 ) + ( tcg1 - t77t ) ) * ELG;
+            tt2 = tcg2;
+        }
+
+        return new JulianDate(tt1, tt2);
+    };
+
+
+    /**
+     **
+     **  Time scale transformation:  Barycentric Dynamical Time, TDB, to
+     **  Barycentric Coordinate Time, TCB.
+     **
+     **  This function is part of the International Astronomical Union's
+     **  SOFA (Standards of Fundamental Astronomy) software collection.
+     **
+     **  Status:  canonical.
+     **
+     **  Given:
+     **   @param  tdb1,tdb2      TDB as a 2-part Julian Date
+     **
+     **  Returned:
+     **   @return    TCB as a 2-part Julian Date
+     **
+     **  Notes:
+     ** <ol>
+     **  <li>  tdb1+tdb2 is Julian Date, apportioned in any convenient way
+     **     between the two arguments, for example where tdb1 is the Julian
+     **     Day Number and tdb2 is the fraction of a day.  The returned
+     **     tcb1,tcb2 follow suit.
+     **
+     **  <li> The 2006 IAU General Assembly introduced a conventional linear
+     **     transformation between TDB and TCB.  This transformation
+     **     compensates for the drift between TCB and terrestrial time TT,
+     **     and keeps TDB approximately centered on TT.  Because the
+     **     relationship between TT and TCB depends on the adopted solar
+     **     system ephemeris, the degree of alignment between TDB and TT over
+     **     long intervals will vary according to which ephemeris is used.
+     **     Former definitions of TDB attempted to avoid this problem by
+     **     stipulating that TDB and TT should differ only by periodic
+     **     effects.  This is a good description of the nature of the
+     **     relationship but eluded precise mathematical formulation.  The
+     **     conventional linear relationship adopted in 2006 sidestepped
+     **     these difficulties whilst delivering a TDB that in practice was
+     **     consistent with values before that date.
+     **
+     ** <li>  TDB is essentially the same as Teph, the time argument for the
+     **     JPL solar system ephemerides.
+     **  </ol>
+     **  Reference:
+     **
+     **     IAU 2006 Resolution B3
+     **
+     **  This revision:  2010 September 10
+     **
+     **  SOFA release 2010-12-01
+     **
+     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     */
+    public static JulianDate jauTdbtcb(double tdb1, double tdb2 )
+    {
+        double tcb1, tcb2;
+        /* 1977 Jan 1 00:00:32.184 TT, as two-part JD */
+        final double t77td = DJM0 + DJM77;
+        final double t77tf = TTMTAI/DAYSEC;
+
+        /* TDB (days) at TAI 1977 Jan 1.0 */
+        final double tdb0 = TDB0/DAYSEC;
+
+        /* TDB to TCB rate */
+        final double elbb = ELB/(1.0-ELB);
+
+        double d, f;
+
+
+        /* Result, preserving date format but safeguarding precision. */
+        if ( tdb1 > tdb2 ) {
+            d = t77td - tdb1;
+            f  = tdb2 - tdb0;
+            tcb1 = tdb1;
+            tcb2 = f - ( d - ( f - t77tf ) ) * elbb;
+        } else {
+            d = t77td - tdb2;
+            f  = tdb1 - tdb0;
+            tcb1 = f + ( d - ( f - t77tf ) ) * elbb;
+            tcb2 = tdb2;
+        }
+
+        return new JulianDate(tcb1, tcb2);
+
+    };
+
+
+    /**
+     **
+     **  Time scale transformation:  Barycentric Dynamical Time, TDB, to
+     **  Terrestrial Time, TT.
+     **
+     **  This function is part of the International Astronomical Union's
+     **  SOFA (Standards of Fundamental Astronomy) software collection.
+     **
+     **  Status:  canonical.
+     **
+     **  Given:
+     **    @param dtb1,tdb2  double    TDB as a 2-part Julian Date
+     **    @param dtr        double    TDB-TT in seconds
+     **
+     **  Returned:
+     **   @return   TT as a 2-part Julian Date
+     **
+     **
+     **  Notes:
+     ** <ol>
+     ** <li>  tdb1+tdb2 is Julian Date, apportioned in any convenient way
+     **     between the two arguments, for example where tdb1 is the Julian
+     **     Day Number and tdb2 is the fraction of a day.  The returned
+     **     tt1,tt2 follow suit.
+     **
+     **  <li>  The argument dtr represents the quasi-periodic component of the
+     **     GR transformation between TT and TCB.  It is dependent upon the
+     **     adopted solar-system ephemeris, and can be obtained by numerical
+     **     integration, by interrogating a precomputed time ephemeris or by
+     **     evaluating a model such as that implemented in the SOFA function
+     **     jauDtdb.   The quantity is dominated by an annual term of 1.7 ms
+     **     amplitude.
+     **
+     **  <li>  TDB is essentially the same as Teph, the time argument for the
+     **     JPL solar system ephemerides.
+     **  </ol>
+     **  References:
+     **
+     **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+     **     IERS Technical Note No. 32, BKG (2004)
+     **
+     **     IAU 2006 Resolution 3
+     **
+     **  This revision:  2010 May 13
+     **
+     **  SOFA release 2010-12-01
+     **
+     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     **
+     */
+    public static JulianDate jauTdbtt(double tdb1, double tdb2, double dtr  )
+    {
+        double tt1, tt2;
+        double dtrd;
+
+
+        /* Result, safeguarding precision. */
+        dtrd = dtr / DAYSEC;
+        if ( tdb1 > tdb2 ) {
+            tt1 = tdb1;
+            tt2 = tdb2 - dtrd;
+        } else {
+            tt1 = tdb1 - dtrd;
+            tt2 = tdb2;
+        }
+
+        return new JulianDate(tt1, tt2);
+
+    }
+
+    /**
+     **
+     **  Convert hours, minutes, seconds to radians.
+     **
+     **  This function is part of the International Astronomical Union's
+     **  SOFA (Standards of Fundamental Astronomy) software collection.
+     **
+     **  Status:  support function.
+     **
+     **  Given:
+     **     s         int     sign:  '-' = negative, otherwise positive
+     **     ihour     int     hours
+     **     imin      int     minutes
+     **     sec       double  seconds
+     **
+     **  Returned:
+     **     days      double  angle in radians
+     **
+     **  Returned (function value):
+     **               int     status:  0 = OK
+     **                                1 = ihour outside range 0-23
+     **                                2 = imin outside range 0-59
+     **                                3 = sec outside range 0-59.999...
+     **
+     **  Notes:
+     **
+     **  1)  The result is computed even if any of the range checks fail.
+     **
+     **  2)  Negative ihour, imin and/or sec produce a warning status, but
+     **      the absolute value is used in the conversion.
+     **
+     **  This revision:  2010 August 27
+     **
+     **  SOFA release 2010-12-01
+     **
+     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     */
+    double jauTf2a(int s, int ihour, int imin, double sec )
+    {
+        double rad;
+
+        /* Compute the interval. */
+        rad  = ( s == '-' ? -1.0 : 1.0 ) *
+                ( 60.0 * ( 60.0 * ( (double) abs(ihour) ) +
+                        ( (double) abs(imin) ) ) +
+                        abs(sec) ) * DS2R;
+
+        /* FIXME Validate arguments and return status. */
+        if ( ihour < 0 || ihour > 23 ) return 1;
+        if ( imin < 0 || imin > 59 ) return 2;
+        if ( sec < 0.0 || sec >= 60.0 ) return 3;
+        return rad;
+
+    };
+
+    /**
+     **
+     **  Convert hours, minutes, seconds to days.
+     **
+     **  This function is part of the International Astronomical Union's
+     **  SOFA (Standards of Fundamental Astronomy) software collection.
+     **
+     **  Status:  support function.
+     **
+     **  Given:
+     **     s         int     sign:  '-' = negative, otherwise positive
+     **     ihour     int     hours
+     **     imin      int     minutes
+     **     sec       double  seconds
+     **
+     **  Returned:
+     **     days      double  interval in days
+     **
+     **  Returned (function value):
+     **               int     status:  0 = OK
+     **                                1 = ihour outside range 0-23
+     **                                2 = imin outside range 0-59
+     **                                3 = sec outside range 0-59.999...
+     **
+     **  Notes:
+     **
+     **  1)  The result is computed even if any of the range checks fail.
+     **
+     **  2)  Negative ihour, imin and/or sec produce a warning status, but
+     **      the absolute value is used in the conversion.
+     **
+     **  This revision:  2010 August 27
+     **
+     **  SOFA release 2010-12-01
+     **
+     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     */
+    double jauTf2d(int s, int ihour, int imin, double sec)
+    {
+        double days;
+        /* Compute the interval. */
+        days  = ( s == '-' ? -1.0 : 1.0 ) *
+                ( 60.0 * ( 60.0 * ( (double) abs(ihour) ) +
+                        ( (double) abs(imin) ) ) +
+                        abs(sec) ) / DAYSEC;
+
+        /* FIXME Validate arguments and return status. */
+        if ( ihour < 0 || ihour > 23 ) return 1;
+        if ( imin < 0 || imin > 59 ) return 2;
+        if ( sec < 0.0 || sec >= 60.0 ) return 3;
+        return days;
+
+    }
+
+    /**
+     **  Transpose an r-matrix.
+     **
+     **  This function is derived from the International Astronomical Union's
+     **  SOFA (Standards Of Fundamental Astronomy) software collection.
+     **
+     **  Status:  vector/matrix support function.
+     **
+     **<!-- Given: -->
+     **     @param r         double[3][3]     r-matrix
+     **
+     **<!-- Returned: -->
+     **     @return rt        double[3][3]      <u>returned</u> transpose
+     **
+     **  Note:
+     **     It is permissible for r and rt to be the same array.
+     **
+     **<p>Called:<ul>
+     **     <li>{@link #jauCr} copy r-matrix
+     ** </ul>
+     **<p>This revision:  2008 May 22
+     **
+     **  <!-- Release 2009-12-31 -->
+     **
+     **  Copyright (C) 2009 IAU JSOFA Review Board.  See notes at end.
+     */
+    public static double[][] jauTr(double r[][])
+    {
+        double wm[][]= new double[3][3];
+        int i, j;
+
+
+        for (i = 0; i < 3; i++) {
+            for (j = 0; j < 3; j++) {
+                wm[i][j] = r[j][i];
+            }
+        }
+
+
+        return wm;
+
+    }
+
+
+    /**
+     **  Multiply a p-vector by the transpose of an r-matrix.
+     **
+     **  This function is derived from the International Astronomical Union's
+     **  SOFA (Standards Of Fundamental Astronomy) software collection.
+     **
+     **  Status:  vector/matrix support function.
+     **
+     **<!-- Given: -->
+     **     @param r         double[3][3]    r-matrix
+     **     @param p         double[3]       p-vector
+     **
+     **<!-- Returned: -->
+     **     @return trp       double[3]        <u>returned</u> r * p
+     **
+     **  Note:
+     **     It is permissible for p and trp to be the same array.
+     **
+     **<p>Called:<ul>
+     **     <li>{@link #jauTr} transpose r-matrix
     **     <li>{@link #jauRxp} product of r-matrix and p-vector
     ** </ul>
     **<p>This revision:  2008 October 28
@@ -19396,7 +20081,7 @@ public static class SphericalCoordinate {
     **  Multiply a pv-vector by the transpose of an r-matrix.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -19439,7 +20124,7 @@ public static class SphericalCoordinate {
      * constant arrays set outside jauXy06 to avoid problems with 65535 byte limit on function size
      */
     static {
-        /* need to define this function because it appears that javac lumps all of the staticly defined initalizers into one function on 
+        /* need to define this function because it appears that javac lumps all of the statically defined initalizers into one function on 
          * compilation - so this will force a second function */
         init_mfals();
     }
@@ -21031,13 +21716,753 @@ public static class SphericalCoordinate {
           {  0,  0,  0,  0,  0,  0,  0,  0,  1,  0,  0,  0,  0,  0 }
        };
 
+      /**
+       **
+       **  Time scale transformation:  Terrestrial Time, TT, to International
+       **  Atomic Time, TAI.
+       **
+       **  This function is part of the International Astronomical Union's
+       **  SOFA (Standards of Fundamental Astronomy) software collection.
+       **
+       **  Status:  canonical.
+       **
+       **  Given:
+       **     tt1,tt2    double    TT as a 2-part Julian Date
+       **
+       **  Returned:
+       **     tai1,tai2  double    TAI as a 2-part Julian Date
+       **
+       **  Returned (function value):
+       **                int       status:  0 = OK
+       **
+       **  Note:
+       **
+       **     tt1+tt2 is Julian Date, apportioned in any convenient way between
+       **     the two arguments, for example where tt1 is the Julian Day Number
+       **     and tt2 is the fraction of a day.  The returned tai1,tai2 follow
+       **     suit.
+       **
+       **  References:
+       **
+       **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+       **     IERS Technical Note No. 32, BKG (2004)
+       **
+       **     Explanatory Supplement to the Astronomical Almanac,
+       **     P. Kenneth Seidelmann (ed), University Science Books (1992)
+       **
+       **  This revision:  2010 May 13
+       **
+       **  SOFA release 2010-12-01
+       **
+       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       */
+      public static JulianDate jauTttai(double tt1, double tt2)
+      {
+          double tai1, tai2;
+          /* TT minus TAI (days). */
+          final double dtat = TTMTAI / 86400.0;
+
+
+          /* Result, safeguarding precision. */
+          if ( tt1 > tt2 ) {
+              tai1 = tt1;
+              tai2 = tt2 - dtat;
+          } else {
+              tai1 = tt1 - dtat;
+              tai2 = tt2;
+          }
+
+          return new JulianDate(tai1, tai2);
+
+      };
+
+      /**
+       **
+       **  Time scale transformation:  Terrestrial Time, TT, to Geocentric
+       **  Coordinate Time, TCG.
+       **
+       **  This function is part of the International Astronomical Union's
+       **  SOFA (Standards of Fundamental Astronomy) software collection.
+       **
+       **  Status:  canonical.
+       **
+       **  Given:
+       **     tt1,tt2    double    TT as a 2-part Julian Date
+       **
+       **  Returned:
+       **     tcg1,tcg2  double    TCG as a 2-part Julian Date
+       **
+       **  Returned (function value):
+       **                int       status:  0 = OK
+       **
+       **  Note:
+       **
+       **     tt1+tt2 is Julian Date, apportioned in any convenient way between
+       **     the two arguments, for example where tt1 is the Julian Day Number
+       **     and tt2 is the fraction of a day.  The returned tcg1,tcg2 follow
+       **     suit.
+       **
+       **  References:
+       **
+       **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+       **     IERS Technical Note No. 32, BKG (2004)
+       **
+       **     IAU 2000 Resolution B1.9
+       **
+       **  This revision:  2010 May 13
+       **
+       **  SOFA release 2010-12-01
+       **
+       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       */
+      public static JulianDate jauTttcg(double tt1, double tt2)
+
+      {
+          double tcg1, tcg2;
+
+          /* 1977 Jan 1 00:00:32.184 TT, as MJD */
+          final double t77t = DJM77 + TTMTAI/DAYSEC;
+
+          /* TT to TCG rate */
+          final double elgg = ELG/(1.0-ELG);
+
+
+          /* Result, safeguarding precision. */
+          if ( tt1 > tt2 ) {
+              tcg1 = tt1;
+              tcg2 = tt2 + ( ( tt1 - DJM0 ) + ( tt2 - t77t ) ) * elgg;
+          } else {
+              tcg1 = tt1 + ( ( tt2 - DJM0 ) + ( tt1 - t77t ) ) * elgg;
+              tcg2 = tt2;
+          }
+
+          return new JulianDate(tcg1, tcg2);
+
+      };      
+
+      /**
+       **
+       **  Time scale transformation:  Terrestrial Time, TT, to Barycentric
+       **  Dynamical Time, TDB.
+       **
+       **  This function is part of the International Astronomical Union's
+       **  SOFA (Standards of Fundamental Astronomy) software collection.
+       **
+       **  Status:  canonical.
+       **
+       **  Given:
+       **     tt1,tt2    double    TT as a 2-part Julian Date
+       **     dtr        double    TDB-TT in seconds
+       **
+       **  Returned:
+       **     tdb1,tdb2  double    TDB as a 2-part Julian Date
+       **
+       **  Returned (function value):
+       **                int       status:  0 = OK
+       **
+       **  Notes:
+       **
+       **  1  tt1+tt2 is Julian Date, apportioned in any convenient way between
+       **     the two arguments, for example where tt1 is the Julian Day Number
+       **     and tt2 is the fraction of a day.  The returned tdb1,tdb2 follow
+       **     suit.
+       **
+       **  2  The argument dtr represents the quasi-periodic component of the
+       **     GR transformation between TT and TCB.  It is dependent upon the
+       **     adopted solar-system ephemeris, and can be obtained by numerical
+       **     integration, by interrogating a precomputed time ephemeris or by
+       **     evaluating a model such as that implemented in the SOFA function
+       **     jauDtdb.   The quantity is dominated by an annual term of 1.7 ms
+       **     amplitude.
+       **
+       **  3  TDB is essentially the same as Teph, the time argument for the JPL
+       **     solar system ephemerides.
+       **
+       **  References:
+       **
+       **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+       **     IERS Technical Note No. 32, BKG (2004)
+       **
+       **     IAU 2006 Resolution 3
+       **
+       **  This revision:  2010 May 13
+       **
+       **  SOFA release 2010-12-01
+       **
+       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       */
+      public static JulianDate jauTttdb(double tt1, double tt2, double dtr)
+      {
+
+          double tdb1, tdb2;
+          double dtrd;
+
+
+          /* Result, safeguarding precision. */
+          dtrd = dtr / DAYSEC;
+          if ( tt1 > tt2 ) {
+              tdb1 = tt1;
+              tdb2 = tt2 + dtrd;
+          } else {
+              tdb1 = tt1 + dtrd;
+              tdb2 = tt2;
+          }
+
+          return new JulianDate(tdb1, tdb2);
+
+      };
+
+      /**
+       **
+       **  Time scale transformation:  Terrestrial Time, TT, to Universal Time,
+       **  UT1.
+       **
+       **  This function is part of the International Astronomical Union's
+       **  SOFA (Standards of Fundamental Astronomy) software collection.
+       **
+       **  Status:  canonical.
+       **
+       **  Given:
+       **     tt1,tt2    double    TT as a 2-part Julian Date
+       **     dt         double    TT-UT1 in seconds
+       **
+       **  Returned:
+       **     ut11,ut12  double    UT1 as a 2-part Julian Date
+       **
+       **  Returned (function value):
+       **                int       status:  0 = OK
+       **
+       **  Notes:
+       **
+       **  1  tt1+tt2 is Julian Date, apportioned in any convenient way between
+       **     the two arguments, for example where tt1 is the Julian Day Number
+       **     and tt2 is the fraction of a day.  The returned ut11,ut12 follow
+       **     suit.
+       **
+       **  2  The argument dt is classical Delta T.
+       **
+       **  Reference:
+       **
+       **     Explanatory Supplement to the Astronomical Almanac,
+       **     P. Kenneth Seidelmann (ed), University Science Books (1992)
+       **
+       **  This revision:  2010 May 16
+       **
+       **  SOFA release 2010-12-01
+       **
+       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       */
+      public static JulianDate jauTtut1(double tt1, double tt2, double dt)
+
+      {
+
+          double ut11, ut12;
+          double dtd;
+
+
+          /* Result, safeguarding precision. */
+          dtd = dt / DAYSEC;
+          if ( tt1 > tt2 ) {
+              ut11 = tt1;
+              ut12 = tt2 - dtd;
+          } else {
+              ut11 = tt1 - dtd;
+              ut12 = tt2;
+          }
+
+          return new JulianDate(ut11, ut12);
+      };
+
+      /**
+       **
+       **  Time scale transformation:  Universal Time, UT1, to International
+       **  Atomic Time, TAI.
+       **
+       **  This function is part of the International Astronomical Union's
+       **  SOFA (Standards of Fundamental Astronomy) software collection.
+       **
+       **  Status:  canonical.
+       **
+       **  Given:
+       **     ut11,ut12  double    UT1 as a 2-part Julian Date
+       **     dta        double    UT1-TAI in seconds
+       **
+       **  Returned:
+       **     tai1,tai2  double    TAI as a 2-part Julian Date
+       **
+       **  Returned (function value):
+       **                int       status:  0 = OK
+       **
+       **  Notes:
+       **
+       **  1  ut11+ut12 is Julian Date, apportioned in any convenient way
+       **     between the two arguments, for example where ut11 is the Julian
+       **     Day Number and ut12 is the fraction of a day.  The returned
+       **     TAI1,TAI2 follow suit.
+       **
+       **  2  The argument dta, i.e. UT1-TAI, is an observed quantity, and is
+       **     available from IERS tabulations.
+       **
+       **  Reference:
+       **
+       **     Explanatory Supplement to the Astronomical Almanac,
+       **     P. Kenneth Seidelmann (ed), University Science Books (1992)
+       **
+       **  This revision:  2010 May 16
+       **
+       **  SOFA release 2010-12-01
+       **
+       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       */
+      public static JulianDate jauUt1tai(double ut11, double ut12, double dta )
+
+      {
+          double tai1, tai2;
+          double dtad;
+
+
+          /* Result, safeguarding precision. */
+          dtad = dta / DAYSEC;
+          if ( ut11 > ut12 ) {
+              tai1 = ut11;
+              tai2 = ut12 - dtad;
+          } else {
+              tai1 = ut11 - dtad;
+              tai2 = ut12;
+          }
+          return new JulianDate(tai1, tai2);
+
+      };
+
+      /**
+       **
+       **  Time scale transformation:  Universal Time, UT1, to Terrestrial
+       **  Time, TT.
+       **
+       **  This function is part of the International Astronomical Union's
+       **  SOFA (Standards of Fundamental Astronomy) software collection.
+       **
+       **  Status:  canonical.
+       **
+       **  Given:
+       **     ut11,ut12  double    UT1 as a 2-part Julian Date
+       **     dt         double    TT-UT1 in seconds
+       **
+       **  Returned:
+       **     tt1,tt2    double    TAI as a 2-part Julian Date
+       **
+       **  Returned (function value):
+       **                int       status:  0 = OK
+       **
+       **  Notes:
+       **
+       **  1  ut11+ut12 is Julian Date, apportioned in any convenient way
+       **     between the two arguments, for example where ut11 is the Julian
+       **     Day Number and ut12 is the fraction of a day.  The returned
+       **     tt1,tt2 follow suit.
+       **
+       **  2  The argument dt is classical Delta T.
+       **
+       **  Reference:
+       **
+       **     Explanatory Supplement to the Astronomical Almanac,
+       **     P. Kenneth Seidelmann (ed), University Science Books (1992)
+       **
+       **  This revision:  2010 May 16
+       **
+       **  SOFA release 2010-12-01
+       **
+       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       */
+      public static JulianDate jauUt1tt(double ut11, double ut12, double dt)
+      {
+
+          double tt1, tt2;
+          double dtd;
+
+
+          /* Result, safeguarding precision. */
+          dtd = dt / DAYSEC;
+          if ( ut11 > ut12 ) {
+              tt1 = ut11;
+              tt2 = ut12 + dtd;
+          } else {
+              tt1 = ut11 + dtd;
+              tt2 = ut12;
+          }
+
+          return new JulianDate(tt1, tt2);
+
+      };
+
+      /**
+       **
+       **  Time scale transformation:  Universal Time, UT1, to Coordinated
+       **  Universal Time, UTC.
+       **
+       **  This function is part of the International Astronomical Union's
+       **  SOFA (Standards of Fundamental Astronomy) software collection.
+       **
+       **  Status:  canonical.
+       **
+       **  Given:
+       **     ut11,ut12  double   UT1 as a 2-part Julian Date (Note 1)
+       **     dut1       double   Delta UT1: UT1-UTC in seconds (Note 2)
+       **
+       **  Returned:
+       **     utc1,utc2  double   UTC as a 2-part quasi Julian Date (Notes 3,4)
+       **
+       **  Returned (function value):
+       **                int      status: +1 = dubious year (Note 5)
+       **                                  0 = OK
+       **                                 -1 = unacceptable date
+       **
+       **  Notes:
+       **
+       **  1  ut11+ut12 is Julian Date, apportioned in any convenient way
+       **     between the two arguments, for example where ut11 is the Julian
+       **     Day Number and ut12 is the fraction of a day.  The returned utc1
+       **     and utc2 form an analogous pair, except that a special convention
+       **     is used, to deal with the problem of leap seconds - see Note 3.
+       **
+       **  2) Delta UT1 can be obtained from tabulations provided by the
+       **     International Earth Rotation and Reference Systems Service.  The
+       **     value changes abruptly by 1s at a leap second;  however, close to
+       **     a leap second the algorithm used here is tolerant of the "wrong"
+       **     choice of value being made.
+       **
+       **  3) JD cannot unambiguously represent UTC during a leap second unless
+       **     special measures are taken.  The convention in the present
+       **     function is that the returned quasi JD day UTC1+UTC2 represents
+       **     UTC days whether the length is 86399, 86400 or 86401 SI seconds.
+       **
+       **  4) The function jauD2dtf can be used to transform the UTC quasi-JD
+       **     into calendar date and clock time, including UTC leap second
+       **     handling.
+       **
+       **  5) The warning status "dubious year" flags UTCs that predate the
+       **     introduction of the time scale and that are too far in the future
+       **     to be trusted.  See jauDat for further details.
+       **
+       **  Called:
+       **     jauJd2cal    JD to Gregorian calendar
+       **     jauDat       delta(AT) = TAI-UTC
+       **     jauCal2jd    Gregorian calendar to JD
+       **
+       **  References:
+       **
+       **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+       **     IERS Technical Note No. 32, BKG (2004)
+       **
+       **     Explanatory Supplement to the Astronomical Almanac,
+       **     P. Kenneth Seidelmann (ed), University Science Books (1992)
+       **
+       **  This revision:  2010 May 16
+       **
+       **  SOFA release 2010-12-01
+       **
+       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAIllegalParameter 
+     * @throws JSOFAInternalError 
+       */
+      public static JulianDate jauUt1utc(double ut11, double ut12, double dut1) throws JSOFAIllegalParameter, JSOFAInternalError
+
+      {
+
+          double utc1, utc2;
+          boolean big1;
+          int i,  js;
+          double duts, u1, u2, d1, dats1, d2, fd, dats2, ddats, us1, us2, du;
+
+
+          /* UT1-UTC in seconds. */
+          duts = dut1;
+
+          /* Put the two parts of the UT1 into big-first order. */
+          big1 = ( ut11 >= ut12 );
+          if ( big1 ) {
+              u1 = ut11;
+              u2 = ut12;
+          } else {
+              u1 = ut12;
+              u2 = ut11;
+          }
+
+          /* See if the UT1 can possibly be in a leap-second day. */
+          d1 = u1;
+          dats1 = 0;
+          for ( i = -1; i <= 3; i++ ) {
+              d2 = u2 + (double) i;
+              Calendar dt = jauJd2cal(d1, d2 );
+              dats2 = jauDat(dt.iy, dt.im, dt.id, 0.0);
+              if ( i == - 1 ) dats1 = dats2;
+              ddats = dats2 - dats1;
+              if ( abs(ddats) >= 0.5 ) {
+
+                  /* Yes, leap second nearby: ensure UT1-UTC is "before" value. */
+                  if ( ddats * duts >= 0 ) duts -= ddats;
+
+                  /* UT1 for the start of the UTC day that ends in a leap. */
+                  JulianDate jd = jauCal2jd(dt.iy, dt.im, dt.id );
+                  d1 = jd.djm0; d2 = jd.djm1;
+                  us1 = d1;
+                  us2 = d2 - 1.0 + duts/DAYSEC;
+
+                  /* Is the UT1 after this point? */
+                  du = u1 - us1;
+                  du += u2 - us2;
+                  if ( du > 0 ) {
+
+                      /* Yes:  fraction of the current UTC day that has elapsed. */
+                      fd = du * DAYSEC / ( DAYSEC + ddats );
+
+                      /* Ramp UT1-UTC to bring about SOFA's JD(UTC) convention. */
+                      duts += ddats * ( fd <= 1.0 ? fd : 1.0 );
+                  }
+
+                  /* Done. */
+                  break;
+              }
+              dats1 = dats2;
+          }
+
+          /* Subtract the (possibly adjusted) UT1-UTC from UT1 to give UTC. */
+          u2 -= duts / DAYSEC;
+
+          /* Result, safeguarding precision. */
+          if ( big1 ) {
+              utc1 = u1;
+              utc2 = u2;
+          } else {
+              utc1 = u2;
+              utc2 = u1;
+          }
+
+          /* FIXME Status. */
+          return new JulianDate(utc1, utc2);
+
+      };
+
+      /**
+       **
+       **  Time scale transformation:  Coordinated Universal Time, UTC, to
+       **  International Atomic Time, TAI.
+       **
+       **  This function is part of the International Astronomical Union's
+       **  SOFA (Standards of Fundamental Astronomy) software collection.
+       **
+       **  Status:  canonical.
+       **
+       **  Given:
+       **     utc1,utc2  double   UTC as a 2-part quasi Julian Date (Notes 1-4)
+       **
+       **  Returned:
+       **     tai1,tai2  double   TAI as a 2-part Julian Date (Note 5)
+       **
+       **  Returned (function value):
+       **                int      status: +1 = dubious year (Note 3)
+       **                                  0 = OK
+       **                                 -1 = unacceptable date
+       **
+       **  Notes:
+       **
+       **  1) utc1+utc2 is quasi Julian Date (see Note 2), apportioned in any
+       **     convenient way between the two arguments, for example where utc1
+       **     is the Julian Day Number and utc2 is the fraction of a day.
+       **
+       **  2) JD cannot unambiguously represent UTC during a leap second unless
+       **     special measures are taken.  The convention in the present
+       **     function is that the JD day represents UTC days whether the
+       **     length is 86399, 86400 or 86401 SI seconds.
+       **
+       **  3) The warning status "dubious year" flags UTCs that predate the
+       **     introduction of the time scale and that are too far in the future
+       **     to be trusted.  See jauDat  for further details.
+       **
+       **  4) The function jauDtf2d converts from calendar date and time of day
+       **     into 2-part Julian Date, and in the case of UTC implements the
+       **     leap-second-ambiguity convention described above.
+       **
+       **  5) The returned TAI1,TAI2 are such that their sum is the TAI Julian
+       **     Date.
+       **
+       **  Called:
+       **     jauJd2cal    JD to Gregorian calendar
+       **     jauDat       delta(AT) = TAI-UTC
+       **     jauCal2jd    Gregorian calendar to JD
+       **
+       **  References:
+       **
+       **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+       **     IERS Technical Note No. 32, BKG (2004)
+       **
+       **     Explanatory Supplement to the Astronomical Almanac,
+       **     P. Kenneth Seidelmann (ed), University Science Books (1992)
+       **
+       **  This revision:  2010 September 10
+       **
+       **  SOFA release 2010-12-01
+       **
+       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAInternalError 
+     * @throws JSOFAIllegalParameter 
+       **
+       */
+      public static JulianDate jauUtctai(double utc1, double utc2) throws JSOFAIllegalParameter, JSOFAInternalError
+
+      {
+          double tai1, tai2;
+          boolean big1;
+          int  js;
+          double u1, u2,  dats,  datst, ddat, a2, fd;
+
+
+          /* Put the two parts of the UTC into big-first order. */
+          big1 = ( utc1 >= utc2 );
+          if ( big1 ) {
+              u1 = utc1;
+              u2 = utc2;
+          } else {
+              u1 = utc2;
+              u2 = utc1;
+          }
+
+          /* Get TAI-UTC now. */
+          Calendar dt = jauJd2cal(u1, u2 );
+          dats = jauDat(dt.iy, dt.im, dt.id, dt.fd);
+ //         if ( js < 0 ) return -1;
+          fd = dt.fd;
+          /* Get TAI-UTC tomorrow. */
+          Calendar dtt = jauJd2cal(u1+1.5, u2-fd );
+          datst = jauDat(dtt.iy, dtt.im, dtt.id, dtt.fd);
+//          if ( js < 0 ) return -1;
+
+          /* If today ends in a leap second, scale the fraction into SI days. */
+          ddat = datst - dats;
+          if ( abs(ddat) > 0.5 ) fd += fd * ddat / DAYSEC;
+
+          /* Today's calendar date to 2-part JD. */
+          JulianDate jd = jauCal2jd(dt.iy, dt.im, dt.id ) ;
+
+          /* Assemble the TAI result, preserving the UTC split and order. */
+          a2 = jd.djm0 - u1;
+          a2 += jd.djm1;
+          a2 += fd + dats / DAYSEC;
+          if ( big1 ) {
+              tai1 = u1;
+              tai2 = a2;
+          } else {
+              tai1 = a2;
+              tai2 = u1;
+          }
+
+          /* FIXME Status. */
+          return new JulianDate(tai1, tai2);
+
+      };
+
+      /**
+       **
+       **  Time scale transformation:  Coordinated Universal Time, UTC, to
+       **  Universal Time, UT1.
+       **
+       **  This function is part of the International Astronomical Union's
+       **  SOFA (Standards of Fundamental Astronomy) software collection.
+       **
+       **  Status:  canonical.
+       **
+       **  Given:
+       **     utc1,utc2  double   UTC as a 2-part quasi Julian Date (Notes 1-4)
+       **     dut1       double   Delta UT1 = UT1-UTC in seconds (Note 5)
+       **
+       **  Returned:
+       **     ut11,ut12  double   UT1 as a 2-part Julian Date (Note 6)
+       **
+       **  Returned (function value):
+       **                int      status: +1 = dubious year (Note 7)
+       **                                  0 = OK
+       **                                 -1 = unacceptable date
+       **
+       **  Notes:
+       **
+       **  1) utc1+utc2 is quasi Julian Date (see Note 2), apportioned in any
+       **     convenient way between the two arguments, for example where utc1
+       **     is the Julian Day Number and utc2 is the fraction of a day.
+       **
+       **  2) JD cannot unambiguously represent UTC during a leap second unless
+       **     special measures are taken.  The convention in the present
+       **     function is that the JD day represents UTC days whether the
+       **     length is 86399, 86400 or 86401 SI seconds.
+       **
+       **  3) The warning status "dubious year" flags UTCs that predate the
+       **     introduction of the time scale and that are too far in the future
+       **     to be trusted.  See jauDat  for further details.
+       **
+       **  4) The function jauDtf2d  converts from calendar date and time of
+       **     day into 2-part Julian Date, and in the case of UTC implements
+       **     the leap-second-ambiguity convention described above.
+       **
+       **  5) Delta UT1 can be obtained from tabulations provided by the
+       **     International Earth Rotation and Reference Systems Service.  It
+       **     It is the caller's responsibility to supply a DUT argument
+       **     containing the UT1-UTC value that matches the given UTC.
+       **
+       **  6) The returned ut11,ut12 are such that their sum is the UT1 Julian
+       **     Date.
+       **
+       **  7) The warning status "dubious year" flags UTCs that predate the
+       **     introduction of the time scale and that are too far in the future
+       **     to be trusted.  See jauDat for further details.
+       **
+       **  References:
+       **
+       **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+       **     IERS Technical Note No. 32, BKG (2004)
+       **
+       **     Explanatory Supplement to the Astronomical Almanac,
+       **     P. Kenneth Seidelmann (ed), University Science Books (1992)
+       **
+       **  Called:
+       **     jauJd2cal    JD to Gregorian calendar
+       **     jauDat       delta(AT) = TAI-UTC
+       **     jauUtctai    UTC to TAI
+       **     jauTaiut1    TAI to UT1
+       **
+       **  This revision:  2010 May 16
+       **
+       **  SOFA release 2010-12-01
+       **
+       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAInternalError 
+     * @throws JSOFAIllegalParameter 
+       */
+      public static JulianDate jauUtcut1(double utc1, double utc2, double dut1) throws JSOFAIllegalParameter, JSOFAInternalError
+      {
+
+    
+          double dta;
+          /* Look up TAI-UTC. */
+          Calendar dt = jauJd2cal(utc1, utc2) ;
+          double dat = jauDat ( dt.iy, dt.im, dt.id, 0.0 );
+     
+
+          /* Form UT1-TAI. */
+          dta = dut1 - dat;
+
+          /* UTC to TAI to UT1. */
+          JulianDate tai = jauUtctai(utc1, utc2);
+          return jauTaiut1(tai.djm0, tai.djm1, dta) ;
+
+      };
+
+      
     public static CelestialIntermediatePole jauXy06(double date1, double date2)
     /**
     **  X,Y coordinates of celestial intermediate pole from series based
     **  on IAU 2006 precession and IAU 2000A nutation.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  canonical model.
     **
@@ -22167,7 +23592,7 @@ public static class SphericalCoordinate {
     **  precession-nutation model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -22269,7 +23694,7 @@ public static class SphericalCoordinate {
     **  precession-nutation model.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -22353,7 +23778,7 @@ public static class SphericalCoordinate {
     **  precession and IAU 2000A nutation models.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  support function.
     **
@@ -22435,7 +23860,7 @@ public static class SphericalCoordinate {
     **  Zero a p-vector.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -22463,7 +23888,7 @@ public static class SphericalCoordinate {
     **  Zero a pv-vector.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **
@@ -22493,7 +23918,7 @@ public static class SphericalCoordinate {
     **  Initialize an r-matrix to the null matrix.
     **
     **  This function is derived from the International Astronomical Union's
-    **  JSOFA (Standards Of Fundamental Astronomy) software collection.
+    **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
     **  Status:  vector/matrix support function.
     **

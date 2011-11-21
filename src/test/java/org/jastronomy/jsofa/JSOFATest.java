@@ -2256,6 +2256,12 @@ public class JSOFATest {
             vvd(geo.elong, 0.98279372324732907, 1e-14, "jauGc2gd", "e2");
             vvd(geo.phi, 0.97160184820607853, 1e-14, "jauGc2gd", "p2");
             vvd(geo.height, 331.41731754844348, 1e-8, "jauGc2gd", "h2");
+            
+            geo = jauGc2gd( 3, xyz );
+            vvd(geo.elong, 0.98279372324732907, 1e-14, "iauGc2gd", "e3");
+            vvd(geo.phi, 0.97160181811015119, 1e-14, "iauGc2gd", "p3");
+            vvd(geo.height, 333.27707261303181, 1e-8, "iauGc2gd", "h3");
+            
         } catch (JSOFAIllegalParameter e1) {
             fail("jauGc2gd should not thow exception for legal parameter");
         }
@@ -2344,6 +2350,12 @@ public class JSOFATest {
             vvd(xyz[0], -5599000.5577260984, 1e-7, "jauGd2gc", "0/2");
             vvd(xyz[1], 233011.6722356703, 1e-7, "jauGd2gc", "1/2");
             vvd(xyz[2], -3040909.4706095476, 1e-7, "jauGd2gc", "2/2");
+            
+            xyz = jauGd2gc( 3, e, p, h);
+            vvd(xyz[0], -5598998.7626301490, 1e-7, "iauGd2gc", "0/3");
+            vvd(xyz[1], 233011.5975297822, 1e-7, "iauGd2gc", "1/3");
+            vvd(xyz[2], -3040908.6861467111, 1e-7, "iauGd2gc", "2/3");
+            
         } catch (JSOFAException e1) {
             fail("jauGd2gc should not thow exception ");
         }
@@ -5777,6 +5789,229 @@ public class JSOFATest {
     }
 
     @Test
+     public void t_taitt()
+    /*
+    **  - - - - - - - -
+    **   t _ t a i t t
+    **  - - - - - - - -
+    **
+    **  Test iauTaitt function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  iauTaitt, vvd, viv
+    **
+    **  This revision:  2010 September 7
+    */
+    {
+       JulianDate jd = jauTaitt(2453750.5, 0.892482639);
+
+       vvd(jd.djm0, 2453750.5, 1e-6, "iauTaitt", "t1");
+       vvd(jd.djm1, 0.892855139, 1e-12, "iauTaitt", "t2");
+
+    }
+
+     @Test
+     public void t_taiut1()
+    /*
+    **  - - - - - - - - -
+    **   t _ t a i u t 1
+    **  - - - - - - - - -
+    **
+    **  Test jauTaiut1 function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauTaiut1, vvd, viv
+    **
+    **  This revision:  2010 September 7
+    */
+    {
+       JulianDate jd = jauTaiut1(2453750.5, 0.892482639, -32.6659);
+
+       vvd(jd.djm0, 2453750.5, 1e-6, "jauTaiut1", "u1");
+       vvd(jd.djm1, 0.8921045614537037037, 1e-12, "jauTaiut1", "u2");
+
+    }
+
+     @Test
+     public void t_taiutc() throws JSOFAIllegalParameter, JSOFAInternalError
+    /*
+    **  - - - - - - - - -
+    **   t _ t a i u t c
+    **  - - - - - - - - - - - -
+    **
+    **  Test jauTaiutc function.
+    **
+    **  Returned:
+    **     status    LOGICAL     TRUE = success, FALSE = fail
+    **
+    **  Called:  jauTaiutc, vvd, viv
+    **
+    **  This revision:  2010 September 7
+    */
+    {
+       JulianDate jd = jauTaiutc(2453750.5, 0.892482639);
+
+       vvd(jd.djm0, 2453750.5, 1e-6, "jauTaiutc", "u1");
+       vvd(jd.djm1, 0.8921006945555555556, 1e-12, "jauTaiutc", "u2");
+ 
+    }
+
+     @Test
+     public void t_tcbtdb()
+    /*
+    **  - - - - - - - - -
+    **   t _ t c b t d b
+    **  - - - - - - - - -
+    **
+    **  Test jauTcbtdb function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauTcbtdb, vvd, viv
+    **
+    **  This revision:  2010 September 6
+    */
+    {
+       JulianDate jd = jauTcbtdb(2453750.5, 0.893019599);
+
+       vvd(jd.djm0, 2453750.5, 1e-6, "jauTcbtdb", "b1");
+       vvd(jd.djm1, 0.8928551362746343397, 1e-12, "jauTcbtdb", "b2");
+
+    }
+
+     @Test
+     public void t_tcgtt()
+    /*
+    **  - - - - - - - -
+    **   t _ t c g t t
+    **  - - - - - - - -
+    **
+    **  Test jauTcgtt function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauTcgtt, vvd, viv
+    **
+    **  This revision:  2010 September g
+    */
+    {
+       JulianDate jd = jauTcgtt(2453750.5, 0.892862531);
+
+       vvd(jd.djm0, 2453750.5, 1e-6, "jauTcgtt", "t1");
+       vvd(jd.djm1, 0.8928551387488816828, 1e-12, "jauTcgtt", "t2");
+
+    }
+     @Test
+     public void t_tdbtcb()
+    /*
+    **  - - - - - - - - -
+    **   t _ t d b t c b
+    **  - - - - - - - - -
+    **
+    **  Test jauTdbtcb function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauTdbtcb, vvd, viv
+    **
+    **  This revision:  2010 September 6
+    */
+    {
+       JulianDate jd = jauTdbtcb(2453750.5, 0.892855137);
+
+       vvd( jd.djm0, 2453750.5, 1e-6, "jauTdbtcb", "b1");
+       vvd( jd.djm1, 0.8930195997253656716, 1e-12, "jauTdbtcb", "b2");
+
+    }
+
+     @Test
+     public void t_tdbtt()
+    /*
+    **  - - - - - - - -
+    **   t _ t d b t t
+    **  - - - - - - - -
+    **
+    **  Test jauTdbtt function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauTdbtt, vvd, viv
+    **
+    **  This revision:  2010 September 7
+    */
+    {
+       JulianDate jd = jauTdbtt(2453750.5, 0.892855137, -0.000201);
+
+       vvd(jd.djm0, 2453750.5, 1e-6, "jauTdbtt", "t1");
+       vvd(jd.djm1, 0.8928551393263888889, 1e-12, "jauTdbtt", "t2");
+
+    }
+
+//     void t_tf2a()
+//    /*
+//    **  - - - - - - -
+//    **   t _ t f 2 a
+//    **  - - - - - - -
+//    **
+//    **  Test jauTf2a function.
+//    **
+//    **  Returned:
+//    **     status    int         TRUE = success, FALSE = fail
+//    **
+//    **  Called:  jauTf2a, vvd, viv
+//    **
+//    **  This revision:  2010 September 7
+//    */
+//    {
+//       double a;
+//       int j;
+//
+//
+//       j = jauTf2a('+', 4, 58, 20.2, a);
+//
+//       vvd(a, 1.301739278189537429, 1e-12, "jauTf2a", "a");
+//       viv(j, 0, "jauTf2a", "j");
+//
+//    }
+//
+//     void t_tf2d()
+//    /*
+//    **  - - - - - - -
+//    **   t _ t f 2 d
+//    **  - - - - - - -
+//    **
+//    **  Test jauTf2d function.
+//    **
+//    **  Returned:
+//    **     status    int         TRUE = success, FALSE = fail
+//    **
+//    **  Called:  jauTf2d, vvd, viv
+//    **
+//    **  This revision:  2010 September 7
+//    */
+//    {
+//       double d;
+//       int j;
+//
+//
+//       j = jauTf2d(' ', 23, 55, 10.9, d);
+//
+//       vvd(d, 0.9966539351851851852, 1e-12, "jauTf2d", "d");
+//       viv(j, 0, "jauTf2d", "j");
+//
+//    }
+   
+    
+    
+    @Test
     public void t_tr()
     /*
     **  - - - - -
@@ -5917,6 +6152,246 @@ public class JSOFATest {
        vvd(trpv[1][0], 3.9, 1e-12, "jauTrxpv", "v1");
        vvd(trpv[1][1], 5.3, 1e-12, "jauTrxpv", "v2");
        vvd(trpv[1][2], 4.1, 1e-12, "jauTrxpv", "v3");
+
+    }
+    
+    @Test
+    public void t_tttai()
+    /*
+    **  - - - - - - - -
+    **   t _ t t t a i
+    **  - - - - - - - -
+    **
+    **  Test jauTttai function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauTttai, vvd, viv
+    **
+    **  This revision:  2010 September 7
+    */
+    {
+
+
+
+       JulianDate jd = jauTttai(2453750.5, 0.892482639);
+
+       vvd(jd.djm0, 2453750.5, 1e-6, "jauTttai", "a1");
+       vvd(jd.djm1, 0.892110139, 1e-12, "jauTttai", "a2");
+       
+
+    }
+
+    @Test
+    public void t_tttcg()
+    /*
+    **  - - - - - - - -
+    **   t _ t t t c g
+    **  - - - - - - - -
+    **
+    **  Test jauTttcg function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauTttcg, vvd, viv
+    **
+    **  This revision:  2010 September 7
+    */
+    {
+
+       JulianDate jd = jauTttcg(2453750.5, 0.892482639);
+
+       vvd( jd.djm0, 2453750.5, 1e-6, "jauTttcg", "g1");
+       vvd( jd.djm1, 0.8924900312508587113, 1e-12, "jauTttcg", "g2");
+
+    }
+
+    @Test
+    public void t_tttdb()
+    /*
+    **  - - - - - - - -
+    **   t _ t t t d b
+    **  - - - - - - - -
+    **
+    **  Test jauTttdb function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauTttdb, vvd, viv
+    **
+    **  This revision:  2010 September 7
+    */
+    {
+
+       JulianDate jd = jauTttdb(2453750.5, 0.892855139, -0.000201);
+
+       vvd(jd.djm0, 2453750.5, 1e-6, "jauTttdb", "b1");
+       vvd(jd.djm1, 0.8928551366736111111, 1e-12, "jauTttdb", "b2");
+      
+
+    }
+
+    @Test
+    public void t_ttut1()
+    /*
+    **  - - - - - - - -
+    **   t _ t t u t 1
+    **  - - - - - - - -
+    **
+    **  Test jauTtut1 function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauTtut1, vvd, viv
+    **
+    **  This revision:  2010 September 7
+    */
+    {
+       double u1, u2;
+       int j;
+
+
+       JulianDate jd = jauTtut1(2453750.5, 0.892855139, 64.8499);
+
+       vvd(jd.djm0, 2453750.5, 1e-6, "jauTtut1", "u1");
+       vvd(jd.djm1, 0.8921045614537037037, 1e-12, "jauTtut1", "u2");
+
+    }
+
+    @Test
+    public void t_ut1tai()
+    /*
+    **  - - - - - - - - -
+    **   t _ u t 1 t a i
+    **  - - - - - - - - -
+    **
+    **  Test jauUt1tai function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauUt1tai, vvd, viv
+    **
+    **  This revision:  2010 September 7
+    */
+    {
+
+
+       JulianDate jd = jauUt1tai(2453750.5, 0.892104561, -32.6659);
+
+       vvd(jd.djm0, 2453750.5, 1e-6, "jauUt1tai", "a1");
+       vvd(jd.djm1, 0.8924826385462962963, 1e-12, "jauUt1tai", "a2");
+
+    }
+
+    @Test
+    public void t_ut1tt()
+    /*
+    **  - - - - - - - - - - -
+    **   t _ u t 1 t t
+    **  - - - - - - - - - - -
+    **
+    **  Test jauUt1tt function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauUt1tt, vvd, viv
+    **
+    **  This revision:  2010 September 7
+    */
+    {
+       double t1, t2;
+       int j;
+
+
+       JulianDate jd = jauUt1tt(2453750.5, 0.892104561, 64.8499);
+
+       vvd(jd.djm0, 2453750.5, 1e-6, "jauUt1tt", "t1");
+       vvd(jd.djm1, 0.8928551385462962963, 1e-12, "jauUt1tt", "t2");
+
+    }
+
+    @Test
+    public void t_ut1utc() throws JSOFAIllegalParameter, JSOFAInternalError
+    /*
+    **  - - - - - - - - -
+    **   t _ u t 1 u t c
+    **  - - - - - - - - -
+    **
+    **  Test jauUt1utc function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauUt1utc, vvd, viv
+    **
+    **  This revision:  2010 September 7
+    */
+    {
+       double u1, u2;
+       int j;
+
+
+       JulianDate jd = jauUt1utc(2453750.5, 0.892104561, 0.3341);
+
+       vvd(jd.djm0, 2453750.5, 1e-6, "jauUt1utc", "u1");
+       vvd(jd.djm1, 0.8921006941018518519, 1e-12, "jauUt1utc", "u2");
+      
+
+    }
+
+    @Test
+    public void t_utctai() throws JSOFAIllegalParameter, JSOFAInternalError
+    /*
+    **  - - - - - - - - -
+    **   t _ u t c t a i
+    **  - - - - - - - - -
+    **
+    **  Test jauUtctai function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauUtctai, vvd, viv
+    **
+    **  This revision:  2010 September 7
+    */
+    {
+
+
+       JulianDate jd = jauUtctai(2453750.5, 0.892100694);
+
+       vvd(jd.djm0, 2453750.5, 1e-6, "jauUtctai", "u1");
+       vvd(jd.djm1, 0.8924826384444444444, 1e-12, "jauUtctai", "u2");
+
+    }
+
+    @Test
+    public void t_utcut1() throws JSOFAIllegalParameter, JSOFAInternalError
+    /*
+    **  - - - - - - - - -
+    **   t _ u t c u t 1
+    **  - - - - - - - - -
+    **
+    **  Test jauUtcut1 function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauUtcut1, vvd, viv
+    **
+    **  This revision:  2010 September 7
+    */
+    {
+       JulianDate jd = jauUtcut1(2453750.5, 0.892100694, 0.3341);
+
+       vvd(jd.djm0, 2453750.5, 1e-6, "jauUtcut1", "u1");
+       vvd(jd.djm1, 0.8921045608981481481, 1e-12, "jauUtcut1", "u2");
 
     }
 

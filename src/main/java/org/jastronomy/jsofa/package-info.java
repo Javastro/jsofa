@@ -31,8 +31,29 @@
 
  <h3>Time scales</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauDat}       Delta(AT) (=TAI-UTC) for a given UTC date<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauDtdb}      TDB-TT<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauD2DTF}    format 2-part JD for output<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauDat}      Delta(AT) (=TAI-UTC) for a given UTC date<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauDtdb}     TDB-TT<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauDtf2d}    encode time and date fields into 2-part JD<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauTaitt}    TAI to TT<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauTaiut1}   TAI to UT1<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauTaiutc}   TAI to UTC<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauTcbtdb}   TCB to TDB<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauTcgtt}    TCG to TT<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauTdbtcb}   TDB to TCB<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauTdbtt}    TDB to TT<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauTttai}    TT to TAI<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauTttcg}    TT to TCG<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauTttdb}    TT to TDB<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauTtut1}    TT to UT1<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauUt1tai}   UT1 to TAI<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauUt1tt}    UT1 to TT<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauUt1utc}   UT1 to UTC<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauUtctai}   UTC to TAI<br/>
+     @link org.jastronomy.jsofa.JSOFA#jauUtcut1}   UTC to UT1<br/>
+
+
+
 
   <h3>Earth rotation angle and sidereal time</h3>
 
