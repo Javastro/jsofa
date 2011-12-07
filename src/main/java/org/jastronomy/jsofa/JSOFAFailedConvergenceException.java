@@ -12,6 +12,9 @@
 
 package org.jastronomy.jsofa;
 
+/**
+ * Exception reporting some form of convergence failure in an algorithm.
+ */
 public class JSOFAFailedConvergenceException extends JSOFAException {
 
     /** Comment for <code>serialVersionUID</code>

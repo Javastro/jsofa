@@ -12,6 +12,12 @@
 
 package org.jastronomy.jsofa;
 
+/**
+ * Base class for JSOFA exceptions.
+ *  .
+ * @author Paul Harrison (paul.harrison@manchester.ac.uk) 21 Nov 2011
+ * @version $Revision$ $date$
+ */
 public class JSOFAException extends Exception {
 
     /** Comment for <code>serialVersionUID</code>

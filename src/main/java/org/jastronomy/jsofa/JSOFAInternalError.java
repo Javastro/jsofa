@@ -11,7 +11,12 @@
  */ 
 
 package org.jastronomy.jsofa;
-
+/**
+ * Exception signalling a internal error.
+ *  .
+ * @author Paul Harrison (paul.harrison@manchester.ac.uk) 21 Nov 2011
+ * @version $Revision$ $date$
+ */
 public class JSOFAInternalError extends JSOFAException {
 
     /** Comment for <code>serialVersionUID</code>

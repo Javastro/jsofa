@@ -12,6 +12,12 @@
 
 package org.jastronomy.jsofa;
 
+/**
+ * Various forms of illegal parameters are reported with this execption.
+ *  .
+ * @author Paul Harrison (paul.harrison@manchester.ac.uk) 21 Nov 2011
+ * @version $Revision$ $date$
+ */
 public class JSOFAIllegalParameter extends JSOFAException {
 
     /** Comment for <code>serialVersionUID</code>

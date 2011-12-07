@@ -5,6 +5,7 @@
   <name>JSOFA</name>
   <packaging>jar</packaging>
   <version>20101201</version>
+ 
   <dependencies>
   	<dependency>
   		<groupId>junit</groupId>
@@ -151,7 +152,7 @@
  <distributionManagement>
      <downloadUrl>http://astrogrid.jb.man.ac.uk/jsofa/</downloadUrl>
      <site>
-        <id>jsofa</id>
+        <id>jastro</id>
         <name>JAstronomy Site</name>
         <url>scpexe://astrogrid.jb.man.ac.uk/local/www/root/html/jsofa/</url>
      </site>
@@ -164,4 +165,12 @@
  </distributionManagement>
   
   
+ <organization>
+    <name>JBCA, University of Manchester</name>
+    <url>http://www.jb.man.ac.uk/</url>
+ </organization>
+ <description>A pure Java translation of the SOFA library</description>
+ <licenses>
+   <license><url>${basedir}/LICENSE.txt</url></license>
+ </licenses>
 </project>

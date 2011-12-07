@@ -1,0 +1,27 @@
+ -----
+ JSOFA
+ -----
+ Paul Harrison
+ -----
+
+JSOFA
+
+   The JSOFA software is a pure Java translation of the official 2010-12-01 version of C SOFA software package at {{http://www.iausofa.org/}}.
+      
+   For more information on using please read the {{{./apidocs/}javadoc}} overview.
+   
+   A Jar of the software can be obtained from the local maven repository {{http://astrogrid.jb.man.ac.uk/maven/}} directly by clicking the links in the sidebar 
+   and if using maven as a
+   build tool by including the following in the POM
+   
+---
+<dependency>
+  <groupId>org.jastronomy</groupId>
+  <artifactId>jsofa</artifactId>
+  <version>${project.version}</version>
+</dependency>
+---
+   
+   
+   The software {{{./surefire-report.html}passes}} all its {{{./xref-test/org/jastronomy/jsofa/JSOFATest.html}unit tests}} which are based on the standard tests that come with the official C and Fortran versions from the IAU.
+  
