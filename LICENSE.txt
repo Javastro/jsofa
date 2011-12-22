@@ -1,19 +1,25 @@
 
 Copyright © 2010 Paul Harrison, University of Manchester.
 
-This JSOFA software is derived from the official C release of the "Standards Of Fundamental Astronomy" (SOFA) library 
-of the International Astronomical Union. The intention is to reproduce the functionality and algorithms of 
-the official SOFA library in a pure Java form.
+This JSOFA software is derived from the International Astronomical
+Union's (IAU) "Standards Of Fundamental Astronomy" (SOFA) library -
+official C release. The intention is to reproduce the functionality and
+algorithms of the IAU SOFA library in a pure Java form.
 
-The responsibility for the maintenance and supply of the JSOFA library lies with the author (not the IAU SOFA Board). 
-However, The JSOFA software is provided "as is" and the author makes no warranty as to its use or performance. 
-The author does not and cannot warrant the performance or results which the user may obtain by using the JSOFA software. 
-The author makes no warranties, express or implied, as to non-infringement of third party rights, merchantability,
-or fitness for any particular purpose. In no event will the author be liable to the user for any consequential, 
-incidental, or special damages, including any lost profits or lost savings, even if the author has been advised
-of such damages, or for any claim by any third party.
+The responsibility for the maintenance and supply of the JSOFA library
+lies with the author (not the IAU SOFA Board).  However, The JSOFA
+software is provided "as is" and the author makes no warranty as to
+its use or performance.  The author does not and cannot warrant the
+performance or results which the user may obtain by using the JSOFA
+software.  The author makes no warranties, express or implied, as to
+non-infringement of third party rights, merchantability, or fitness
+for any particular purpose. In no event will the author be liable to
+the user for any consequential,  incidental, or special damages,
+including any lost profits or lost savings, even if the author has
+been advised of such damages, or for any claim by any third party.
 
-Other conditions of the original license (reproduced below) are carried over as applicable.
+Other conditions of the original license (reproduced below) are
+carried over as applicable.
 
 
 ---------------------------------------------------------------------
