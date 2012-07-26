@@ -37,7 +37,6 @@ public class JSOFAException extends Exception {
     }
 }
 
-
 /*
  * $Log$
  */
