@@ -4,7 +4,7 @@
   <artifactId>jsofa</artifactId>
   <name>JSOFA</name>
   <packaging>jar</packaging>
-  <version>20120301</version>
+  <version>20120710</version>
  
   <dependencies>
   	<dependency>
