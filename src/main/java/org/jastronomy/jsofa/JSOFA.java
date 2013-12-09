@@ -21,7 +21,7 @@ import static java.lang.Math.*; //IMPL strictmath better?
  */
 public class JSOFA {
 
-    /** Seconds of time per radian {@value} */
+    /** Seconds of time to radians {@value} */
     public final static double DS2R = (7.272205216643039903848712e-5);
 
     /** Pi {@value}*/
@@ -99,7 +99,7 @@ public class JSOFA {
     private static double dnint(final double A){return ((A)<0.0?ceil((A)-0.5):floor((A)+0.5));}
 
     /** dsign(A,B) - magnitude of A with sign of B (double) */
-    private static double dsign(final double A, double B){return ((B)<0.0?-(A):(A));}
+    private static double dsign(final double A, double B){return ((B)<0.0?-abs(A):abs(A));}
 
 
     
@@ -2475,7 +2475,7 @@ public class JSOFA {
        double deltat = da = 0.0;
 
     /* If invalid fraction of a day, set error status and give up. */
-       if (fd < 0.0 || fd >= 1.0) throw new JSOFAIllegalParameter("bad day fraction", -4);
+       if (fd < 0.0 || fd > 1.0) throw new JSOFAIllegalParameter("bad day fraction", -4);
 
     /* Convert the date into an MJD. */
        JulianDate jd = jauCal2jd(iy, im, id);
@@ -19936,8 +19936,9 @@ public static class SphericalCoordinate {
      **  SOFA release 2010-12-01
      **
      **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAIllegalParameter 
      */
-    double jauTf2a(int s, int ihour, int imin, double sec )
+    public static double jauTf2a(char s, int ihour, int imin, double sec ) throws JSOFAIllegalParameter
     {
         double rad;
 
@@ -19948,9 +19949,9 @@ public static class SphericalCoordinate {
                         abs(sec) ) * DS2R;
 
         /* FIXME Validate arguments and return status. */
-        if ( ihour < 0 || ihour > 23 ) return 1;
-        if ( imin < 0 || imin > 59 ) return 2;
-        if ( sec < 0.0 || sec >= 60.0 ) return 3;
+        if ( ihour < 0 || ihour > 23 ) throw new JSOFAIllegalParameter("bad hour", 1);   
+        if ( imin < 0 || imin > 59 )   throw new JSOFAIllegalParameter("bad minute", 2); 
+        if ( sec < 0.0 || sec >= 60.0 )throw new JSOFAIllegalParameter("bad second", 3); 
         return rad;
 
     };
@@ -19991,8 +19992,9 @@ public static class SphericalCoordinate {
      **  SOFA release 2010-12-01
      **
      **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAIllegalParameter 
      */
-    double jauTf2d(int s, int ihour, int imin, double sec)
+    public static double jauTf2d(char s, int ihour, int imin, double sec) throws JSOFAIllegalParameter
     {
         double days;
         /* Compute the interval. */
@@ -20002,9 +20004,9 @@ public static class SphericalCoordinate {
                         abs(sec) ) / DAYSEC;
 
         /* FIXME Validate arguments and return status. */
-        if ( ihour < 0 || ihour > 23 ) return 1;
-        if ( imin < 0 || imin > 59 ) return 2;
-        if ( sec < 0.0 || sec >= 60.0 ) return 3;
+        if ( ihour < 0 || ihour > 23 )  throw new JSOFAIllegalParameter("bad hour", 1);
+        if ( imin < 0 || imin > 59 )    throw new JSOFAIllegalParameter("bad minute", 2);
+        if ( sec < 0.0 || sec >= 60.0 ) throw new JSOFAIllegalParameter("bad second", 3);
         return days;
 
     }

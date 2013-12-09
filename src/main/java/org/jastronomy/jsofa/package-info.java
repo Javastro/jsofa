@@ -7,7 +7,7 @@
  * should be made by looking for incremental changes in the original source.
  * 
  * This javadoc provides a detailed manual on how to use each function - there are also some <a href="http://www.iausofa.org/cookbooks.html">cookbooks on the IAU SOFA site</a> which can 
- * also be used to discover how to use the library beaing in mind the changes outlined below.
+ * also be used to discover how to use the library bearing in mind the changes outlined below.
  * 
  *<p> Notable changes from the original include:
  * <ul>
