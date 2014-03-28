@@ -17,6 +17,12 @@ package org.jastronomy.jsofa;
 import static org.jastronomy.jsofa.JSOFA.*;
 import static org.junit.Assert.*;
 
+import org.jastronomy.jsofa.JSOFA.CalendarHMS;
+import org.jastronomy.jsofa.JSOFA.ObservedPosition;
+import org.jastronomy.jsofa.JSOFA.ObservedPositionEO;
+import org.jastronomy.jsofa.JSOFA.RefCos;
+import org.jastronomy.jsofa.JSOFA.SphericalCoordinateEO;
+import org.jastronomy.jsofa.JSOFA.jauASTROM;
 import org.jastronomy.jsofa.JSOFAException;
 import org.jastronomy.jsofa.JSOFAIllegalParameter;
 import org.jastronomy.jsofa.JSOFAInternalError;
@@ -108,7 +114,7 @@ public class JSOFATest {
           System.out.printf("%s passed: %s want %d got %d\n",
                         func, test, ivalok, ival);
        }
-       assertEquals(func+" "+test, ival, ivalok);
+       assertEquals(func+" "+test, ivalok, ival);
        return;
     }
 
@@ -6619,10 +6625,1898 @@ public class JSOFATest {
 
     }
 
-     
     
+    // additions for 20131202
+    
+    @Test
+public void t_apcg()
+    /*
+    **  - - - - - - -
+    **   t _ a p c g
+    **  - - - - - - -
+    **
+    **  Test iauApcg function.
+    **
+    **  Returned:
+    **     status    int         FALSE = success, TRUE = fail
+    **
+    **  Called:  iauApcg, vvd
+    **
+    **  This revision:  2013 October 3
+    */
+    {
+       double date1, date2, ebpv[][] = new double[2][3], ehp[] = new double[3];
+       jauASTROM astrom = new jauASTROM();
+
+
+       date1 = 2456165.5;
+       date2 = 0.401182685;
+       ebpv[0][0] =  0.901310875;
+       ebpv[0][1] = -0.417402664;
+       ebpv[0][2] = -0.180982288;
+       ebpv[1][0] =  0.00742727954;
+       ebpv[1][1] =  0.0140507459;
+       ebpv[1][2] =  0.00609045792;
+       ehp[0] =  0.903358544;
+       ehp[1] = -0.415395237;
+       ehp[2] = -0.180084014;
+
+       jauApcg(date1, date2, ebpv, ehp, astrom);
+
+       vvd(astrom.pmt, 12.65133794027378508, 1e-11,
+                       "iauApcg", "pmt");
+       vvd(astrom.eb[0], 0.901310875, 1e-12,
+                         "iauApcg", "eb(1)");
+       vvd(astrom.eb[1], -0.417402664, 1e-12,
+                         "iauApcg", "eb(2)");
+       vvd(astrom.eb[2], -0.180982288, 1e-12,
+                         "iauApcg", "eb(3)");
+       vvd(astrom.eh[0], 0.8940025429324143045, 1e-12,
+                         "iauApcg", "eh(1)");
+       vvd(astrom.eh[1], -0.4110930268679817955, 1e-12,
+                         "iauApcg", "eh(2)");
+       vvd(astrom.eh[2], -0.1782189004872870264, 1e-12,
+                         "iauApcg", "eh(3)");
+       vvd(astrom.em, 1.010465295811013146, 1e-12,
+                      "iauApcg", "em");
+       vvd(astrom.v[0], 0.4289638897813379954e-4, 1e-16,
+                        "iauApcg", "v(1_");
+       vvd(astrom.v[1], 0.8115034021720941898e-4, 1e-16,
+                        "iauApcg", "v(2)");
+       vvd(astrom.v[2], 0.3517555123437237778e-4, 1e-16,
+                        "iauApcg", "v(3)");
+       vvd(astrom.bm1, 0.9999999951686013336, 1e-12,
+                       "iauApcg", "bm1");
+       vvd(astrom.bpn[0][0], 1.0, 0.0,
+                             "iauApcg", "bpn(1,1)");
+       vvd(astrom.bpn[1][0], 0.0, 0.0,
+                             "iauApcg", "bpn(2,1)");
+       vvd(astrom.bpn[2][0], 0.0, 0.0,
+                             "iauApcg", "bpn(3,1)");
+       vvd(astrom.bpn[0][1], 0.0, 0.0,
+                             "iauApcg", "bpn(1,2)");
+       vvd(astrom.bpn[1][1], 1.0, 0.0,
+                             "iauApcg", "bpn(2,2)");
+       vvd(astrom.bpn[2][1], 0.0, 0.0,
+                             "iauApcg", "bpn(3,2)");
+       vvd(astrom.bpn[0][2], 0.0, 0.0,
+                             "iauApcg", "bpn(1,3)");
+       vvd(astrom.bpn[1][2], 0.0, 0.0,
+                             "iauApcg", "bpn(2,3)");
+       vvd(astrom.bpn[2][2], 1.0, 0.0,
+                             "iauApcg", "bpn(3,3)");
+
+    }
+
+    @Test
+    public void t_ab()
+    /*
+    **  - - - - -
+    **   t _ a b
+    **  - - - - -
+    **
+    **  Test iauAb function.
+    **
+    **  Returned:
+    **     status    int         FALSE = success, TRUE = fail
+    **
+    **  Called:  iauAb, vvd
+    **
+    **  This revision:  2013 October 1
+    */
+    {
+       double pnat[] = new double[3], v[] = new double[3], s, bm1, ppr[];
+
+
+       pnat[0] = -0.76321968546737951;
+       pnat[1] = -0.60869453983060384;
+       pnat[2] = -0.21676408580639883;
+       v[0] =  2.1044018893653786e-5;
+       v[1] = -8.9108923304429319e-5;
+       v[2] = -3.8633714797716569e-5;
+       s = 0.99980921395708788;
+       bm1 = 0.99999999506209258;
+
+       ppr = jauAb(pnat, v, s, bm1);
+
+       vvd(ppr[0], -0.7631631094219556269, 1e-12, "iauAb", "1");
+       vvd(ppr[1], -0.6087553082505590832, 1e-12, "iauAb", "2");
+       vvd(ppr[2], -0.2167926269368471279, 1e-12, "iauAb", "3");
+
+    }
+
+    @Test
+    public void t_apcg13()
+    /*
+    **  - - - - - - - - -
+    **   t _ a p c g 1 3
+    **  - - - - - - - - -
+    **
+    **  Test iauApcg13 function.
+    **
+    **  Returned:
+    **     status    int         FALSE = success, TRUE = fail
+    **
+    **  Called:  iauApcg13, vvd
+    **
+    **  This revision:  2013 October 3
+    */
+    {
+       double date1, date2;
+       jauASTROM astrom = new jauASTROM();
+
+
+       date1 = 2456165.5;
+       date2 = 0.401182685;
+
+       jauApcg13(date1, date2, astrom);
+
+       vvd(astrom.pmt, 12.65133794027378508, 1e-11,
+                       "iauApcg13", "pmt");
+       vvd(astrom.eb[0], 0.9013108747340644755, 1e-12,
+                       "iauApcg13", "eb(1)");
+       vvd(astrom.eb[1], -0.4174026640406119957, 1e-12,
+                       "iauApcg13", "eb(2)");
+       vvd(astrom.eb[2], -0.1809822877867817771, 1e-12,
+                       "iauApcg13", "eb(3)");
+       vvd(astrom.eh[0], 0.8940025429255499549, 1e-12,
+                       "iauApcg13", "eh(1)");
+       vvd(astrom.eh[1], -0.4110930268331896318, 1e-12,
+                       "iauApcg13", "eh(2)");
+       vvd(astrom.eh[2], -0.1782189006019749850, 1e-12,
+                       "iauApcg13", "eh(3)");
+       vvd(astrom.em, 1.010465295964664178, 1e-12,
+                       "iauApcg13", "em");
+       vvd(astrom.v[0], 0.4289638897157027528e-4, 1e-16,
+                       "iauApcg13", "v(1)");
+       vvd(astrom.v[1], 0.8115034002544663526e-4, 1e-16,
+                       "iauApcg13", "v(2)");
+       vvd(astrom.v[2], 0.3517555122593144633e-4, 1e-16,
+                       "iauApcg13", "v(3)");
+       vvd(astrom.bm1, 0.9999999951686013498, 1e-12,
+                       "iauApcg13", "bm1");
+       vvd(astrom.bpn[0][0], 1.0, 0.0,
+                             "iauApcg13", "bpn(1,1)");
+       vvd(astrom.bpn[1][0], 0.0, 0.0,
+                             "iauApcg13", "bpn(2,1)");
+       vvd(astrom.bpn[2][0], 0.0, 0.0,
+                             "iauApcg13", "bpn(3,1)");
+       vvd(astrom.bpn[0][1], 0.0, 0.0,
+                             "iauApcg13", "bpn(1,2)");
+       vvd(astrom.bpn[1][1], 1.0, 0.0,
+                             "iauApcg13", "bpn(2,2)");
+       vvd(astrom.bpn[2][1], 0.0, 0.0,
+                             "iauApcg13", "bpn(3,2)");
+       vvd(astrom.bpn[0][2], 0.0, 0.0,
+                             "iauApcg13", "bpn(1,3)");
+       vvd(astrom.bpn[1][2], 0.0, 0.0,
+                             "iauApcg13", "bpn(2,3)");
+       vvd(astrom.bpn[2][2], 1.0, 0.0,
+                             "iauApcg13", "bpn(3,3)");
+
+    }
+    @Test
+    public void t_apci()
+    /*
+    **  - - - - - - -
+    **   t _ a p c i
+    **  - - - - - - -
+    **
+    **  Test iauApci function.
+    **
+    **  Returned:
+    **     status    int         FALSE = success, TRUE = fail
+    **
+    **  Called:  iauApci, vvd
+    **
+    **  This revision:  2013 October 3
+    */
+    {
+       double date1, date2, ebpv[][] = new double[2][3], ehp[] = new double[3], x, y, s;
+       jauASTROM astrom = new jauASTROM() ;
+
+
+       date1 = 2456165.5;
+       date2 = 0.401182685;
+       ebpv[0][0] =  0.901310875;
+       ebpv[0][1] = -0.417402664;
+       ebpv[0][2] = -0.180982288;
+       ebpv[1][0] =  0.00742727954;
+       ebpv[1][1] =  0.0140507459;
+       ebpv[1][2] =  0.00609045792;
+       ehp[0] =  0.903358544;
+       ehp[1] = -0.415395237;
+       ehp[2] = -0.180084014;
+       x =  0.0013122272;
+       y = -2.92808623e-5;
+       s =  3.05749468e-8;
+
+       jauApci(date1, date2, ebpv, ehp, x, y, s, astrom);
+
+       vvd(astrom.pmt, 12.65133794027378508, 1e-11,
+                       "iauApci", "pmt");
+       vvd(astrom.eb[0], 0.901310875, 1e-12,
+                         "iauApci", "eb(1)");
+       vvd(astrom.eb[1], -0.417402664, 1e-12,
+                         "iauApci", "eb(2)");
+       vvd(astrom.eb[2], -0.180982288, 1e-12,
+                         "iauApci", "eb(3)");
+       vvd(astrom.eh[0], 0.8940025429324143045, 1e-12,
+                         "iauApci", "eh(1)");
+       vvd(astrom.eh[1], -0.4110930268679817955, 1e-12,
+                         "iauApci", "eh(2)");
+       vvd(astrom.eh[2], -0.1782189004872870264, 1e-12,
+                         "iauApci", "eh(3)");
+       vvd(astrom.em, 1.010465295811013146, 1e-12,
+                      "iauApci", "em");
+       vvd(astrom.v[0], 0.4289638897813379954e-4, 1e-16,
+                        "iauApci", "v(1)");
+       vvd(astrom.v[1], 0.8115034021720941898e-4, 1e-16,
+                        "iauApci", "v(2)");
+       vvd(astrom.v[2], 0.3517555123437237778e-4, 1e-16,
+                        "iauApci", "v(3)");
+       vvd(astrom.bm1, 0.9999999951686013336, 1e-12,
+                       "iauApci", "bm1");
+       vvd(astrom.bpn[0][0], 0.9999991390295159156, 1e-12,
+                             "iauApci", "bpn(1,1)");
+       vvd(astrom.bpn[1][0], 0.4978650072505016932e-7, 1e-12,
+                             "iauApci", "bpn(2,1)");
+       vvd(astrom.bpn[2][0], 0.1312227200000000000e-2, 1e-12,
+                             "iauApci", "bpn(3,1)");
+       vvd(astrom.bpn[0][1], -0.1136336653771609630e-7, 1e-12,
+                             "iauApci", "bpn(1,2)");
+       vvd(astrom.bpn[1][1], 0.9999999995713154868, 1e-12,
+                             "iauApci", "bpn(2,2)");
+       vvd(astrom.bpn[2][1], -0.2928086230000000000e-4, 1e-12,
+                             "iauApci", "bpn(3,2)");
+       vvd(astrom.bpn[0][2], -0.1312227200895260194e-2, 1e-12,
+                             "iauApci", "bpn(1,3)");
+       vvd(astrom.bpn[1][2], 0.2928082217872315680e-4, 1e-12,
+                             "iauApci", "bpn(2,3)");
+       vvd(astrom.bpn[2][2], 0.9999991386008323373, 1e-12,
+                             "iauApci", "bpn(3,3)");
+
+    }
+    
+    @Test
+    public void t_apci13()
+    /*
+    **  - - - - - - - - -
+    **   t _ a p c i 1 3
+    **  - - - - - - - - -
+    **
+    **  Test iauApci13 function.
+    **
+    **  Returned:
+    **     status    int         FALSE = success, TRUE = fail
+    **
+    **  Called:  iauApci13, vvd
+    **
+    **  This revision:  2013 October 3
+    */
+    {
+       double date1, date2, eo;
+       jauASTROM astrom = new jauASTROM() ;
+
+
+       date1 = 2456165.5;
+       date2 = 0.401182685;
+
+       eo = jauApci13(date1, date2, astrom);
+
+       vvd(astrom.pmt, 12.65133794027378508, 1e-11,
+                       "iauApci13", "pmt");
+       vvd(astrom.eb[0], 0.9013108747340644755, 1e-12,
+                         "iauApci13", "eb(1)");
+       vvd(astrom.eb[1], -0.4174026640406119957, 1e-12,
+                         "iauApci13", "eb(2)");
+       vvd(astrom.eb[2], -0.1809822877867817771, 1e-12,
+                         "iauApci13", "eb(3)");
+       vvd(astrom.eh[0], 0.8940025429255499549, 1e-12,
+                         "iauApci13", "eh(1)");
+       vvd(astrom.eh[1], -0.4110930268331896318, 1e-12,
+                         "iauApci13", "eh(2)");
+       vvd(astrom.eh[2], -0.1782189006019749850, 1e-12,
+                         "iauApci13", "eh(3)");
+       vvd(astrom.em, 1.010465295964664178, 1e-12,
+                      "iauApci13", "em");
+       vvd(astrom.v[0], 0.4289638897157027528e-4, 1e-16,
+                        "iauApci13", "v(1)");
+       vvd(astrom.v[1], 0.8115034002544663526e-4, 1e-16,
+                        "iauApci13", "v(2)");
+       vvd(astrom.v[2], 0.3517555122593144633e-4, 1e-16,
+                        "iauApci13", "v(3)");
+       vvd(astrom.bm1, 0.9999999951686013498, 1e-12,
+                       "iauApci13", "bm1");
+       vvd(astrom.bpn[0][0], 0.9999992060376761710, 1e-12,
+                             "iauApci13", "bpn(1,1)");
+       vvd(astrom.bpn[1][0], 0.4124244860106037157e-7, 1e-12,
+                             "iauApci13", "bpn(2,1)");
+       vvd(astrom.bpn[2][0], 0.1260128571051709670e-2, 1e-12,
+                             "iauApci13", "bpn(3,1)");
+       vvd(astrom.bpn[0][1], -0.1282291987222130690e-7, 1e-12,
+                             "iauApci13", "bpn(1,2)");
+       vvd(astrom.bpn[1][1], 0.9999999997456835325, 1e-12,
+                             "iauApci13", "bpn(2,2)");
+       vvd(astrom.bpn[2][1], -0.2255288829420524935e-4, 1e-12,
+                             "iauApci13", "bpn(3,2)");
+       vvd(astrom.bpn[0][2], -0.1260128571661374559e-2, 1e-12,
+                             "iauApci13", "bpn(1,3)");
+       vvd(astrom.bpn[1][2], 0.2255285422953395494e-4, 1e-12,
+                             "iauApci13", "bpn(2,3)");
+       vvd(astrom.bpn[2][2], 0.9999992057833604343, 1e-12,
+                             "iauApci13", "bpn(3,3)");
+       vvd(eo, -0.2900618712657375647e-2, 1e-12,
+               "iauApci13", "eo");
+
+    } 
+    
+    @Test
+    public void t_apco() throws JSOFAIllegalParameter, JSOFAInternalError
+    /*
+    **  - - - - - - -
+    **   t _ a p c o
+    **  - - - - - - -
+    **
+    **  Test iauApco function.
+    **
+    **  Returned:
+    **     status    int         FALSE = success, TRUE = fail
+    **
+    **  Called:  iauApco, vvd
+    **
+    **  This revision:  2013 October 3
+    */
+    {
+       double date1, date2, ebpv[][] = new double[2][3], ehp[] = new double[3], x, y, s,
+              theta, elong, phi, hm, xp, yp, sp, refa, refb;
+       jauASTROM astrom = new jauASTROM() ;
+
+
+       date1 = 2456384.5;
+       date2 = 0.970031644;
+       ebpv[0][0] = -0.974170438;
+       ebpv[0][1] = -0.211520082;
+       ebpv[0][2] = -0.0917583024;
+       ebpv[1][0] = 0.00364365824;
+       ebpv[1][1] = -0.0154287319;
+       ebpv[1][2] = -0.00668922024;
+       ehp[0] = -0.973458265;
+       ehp[1] = -0.209215307;
+       ehp[2] = -0.0906996477;
+       x = 0.0013122272;
+       y = -2.92808623e-5;
+       s = 3.05749468e-8;
+       theta = 3.14540971;
+       elong = -0.527800806;
+       phi = -1.2345856;
+       hm = 2738.0;
+       xp = 2.47230737e-7;
+       yp = 1.82640464e-6;
+       sp = -3.01974337e-11;
+       refa = 0.000201418779;
+       refb = -2.36140831e-7;
+
+       jauApco(date1, date2, ebpv, ehp, x, y, s,
+               theta, elong, phi, hm, xp, yp, sp,
+               refa, refb, astrom);
+
+       vvd(astrom.pmt, 13.25248468622587269, 1e-11,
+                       "iauApco", "pmt");
+       vvd(astrom.eb[0], -0.9741827110630897003, 1e-12,
+                         "iauApco", "eb(1)");
+       vvd(astrom.eb[1], -0.2115130190135014340, 1e-12,
+                         "iauApco", "eb(2)");
+       vvd(astrom.eb[2], -0.09179840186968295686, 1e-12,
+                         "iauApco", "eb(3)");
+       vvd(astrom.eh[0], -0.9736425571689670428, 1e-12,
+                         "iauApco", "eh(1)");
+       vvd(astrom.eh[1], -0.2092452125848862201, 1e-12,
+                         "iauApco", "eh(2)");
+       vvd(astrom.eh[2], -0.09075578152261439954, 1e-12,
+                         "iauApco", "eh(3)");
+       vvd(astrom.em, 0.9998233241710617934, 1e-12,
+                      "iauApco", "em");
+       vvd(astrom.v[0], 0.2078704985147609823e-4, 1e-16,
+                        "iauApco", "v(1)");
+       vvd(astrom.v[1], -0.8955360074407552709e-4, 1e-16,
+                        "iauApco", "v(2)");
+       vvd(astrom.v[2], -0.3863338980073114703e-4, 1e-16,
+                        "iauApco", "v(3)");
+       vvd(astrom.bm1, 0.9999999950277561600, 1e-12,
+                       "iauApco", "bm1");
+       vvd(astrom.bpn[0][0], 0.9999991390295159156, 1e-12,
+                             "iauApco", "bpn(1,1)");
+       vvd(astrom.bpn[1][0], 0.4978650072505016932e-7, 1e-12,
+                             "iauApco", "bpn(2,1)");
+       vvd(astrom.bpn[2][0], 0.1312227200000000000e-2, 1e-12,
+                             "iauApco", "bpn(3,1)");
+       vvd(astrom.bpn[0][1], -0.1136336653771609630e-7, 1e-12,
+                             "iauApco", "bpn(1,2)");
+       vvd(astrom.bpn[1][1], 0.9999999995713154868, 1e-12,
+                             "iauApco", "bpn(2,2)");
+       vvd(astrom.bpn[2][1], -0.2928086230000000000e-4, 1e-12,
+                             "iauApco", "bpn(3,2)");
+       vvd(astrom.bpn[0][2], -0.1312227200895260194e-2, 1e-12,
+                             "iauApco", "bpn(1,3)");
+       vvd(astrom.bpn[1][2], 0.2928082217872315680e-4, 1e-12,
+                             "iauApco", "bpn(2,3)");
+       vvd(astrom.bpn[2][2], 0.9999991386008323373, 1e-12,
+                             "iauApco", "bpn(3,3)");
+       vvd(astrom.along, -0.5278008060301974337, 1e-12,
+                         "iauApco", "along");
+       vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
+                       "iauApco", "xpl");
+       vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
+                       "iauApco", "ypl");
+       vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
+                        "iauApco", "sphi");
+       vvd(astrom.cphi, 0.3299123514971474711, 1e-12,
+                        "iauApco", "cphi");
+       vvd(astrom.diurab, 0, 0,
+                          "iauApco", "diurab");
+       vvd(astrom.eral, 2.617608903969802566, 1e-12,
+                        "iauApco", "eral");
+       vvd(astrom.refa, 0.2014187790000000000e-3, 1e-15,
+                        "iauApco", "refa");
+       vvd(astrom.refb, -0.2361408310000000000e-6, 1e-18,
+                        "iauApco", "refb");
+
+    }
+    
+
+
+@Test
+    public void t_apco13() throws JSOFAIllegalParameter, JSOFAInternalError
+/*
+**  - - - - - - - - -
+**   t _ a p c o 1 3
+**  - - - - - - - - -
+**
+**  Test iauApco13 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauApco13, vvd, viv
+**
+**  This revision:  2013 October 4
+*/
+{
+   double utc1, utc2, dut1, elong, phi, hm, xp, yp,
+          phpa, tc, rh, wl, eo;
+   jauASTROM astrom = new jauASTROM() ;
+
+
+   utc1 = 2456384.5;
+   utc2 = 0.969254051;
+   dut1 = 0.1550675;
+   elong = -0.527800806;
+   phi = -1.2345856;
+   hm = 2738.0;
+   xp = 2.47230737e-7;
+   yp = 1.82640464e-6;
+   phpa = 731.0;
+   tc = 12.8;
+   rh = 0.59;
+   wl = 0.55;
+
+   eo = jauApco13(utc1, utc2, dut1, elong, phi, hm, xp, yp,
+                 phpa, tc, rh, wl, astrom);
+
+   vvd(astrom.pmt, 13.25248468622475727, 1e-11,
+                   "iauApco13", "pmt");
+   vvd(astrom.eb[0], -0.9741827107321449445, 1e-12,
+                   "iauApco13", "eb(1)");
+   vvd(astrom.eb[1], -0.2115130190489386190, 1e-12,
+                     "iauApco13", "eb(2)");
+   vvd(astrom.eb[2], -0.09179840189515518726, 1e-12,
+                     "iauApco13", "eb(3)");
+   vvd(astrom.eh[0], -0.9736425572586866640, 1e-12,
+                     "iauApco13", "eh(1)");
+   vvd(astrom.eh[1], -0.2092452121602867431, 1e-12,
+                     "iauApco13", "eh(2)");
+   vvd(astrom.eh[2], -0.09075578153903832650, 1e-12,
+                     "iauApco13", "eh(3)");
+   vvd(astrom.em, 0.9998233240914558422, 1e-12,
+                  "iauApco13", "em");
+   vvd(astrom.v[0], 0.2078704986751370303e-4, 1e-16,
+                    "iauApco13", "v(1)");
+   vvd(astrom.v[1], -0.8955360100494469232e-4, 1e-16,
+                    "iauApco13", "v(2)");
+   vvd(astrom.v[2], -0.3863338978840051024e-4, 1e-16,
+                    "iauApco13", "v(3)");
+   vvd(astrom.bm1, 0.9999999950277561368, 1e-12,
+                   "iauApco13", "bm1");
+   vvd(astrom.bpn[0][0], 0.9999991390295147999, 1e-12,
+                         "iauApco13", "bpn(1,1)");
+   vvd(astrom.bpn[1][0], 0.4978650075315529277e-7, 1e-12,
+                         "iauApco13", "bpn(2,1)");
+   vvd(astrom.bpn[2][0], 0.001312227200850293372, 1e-12,
+                         "iauApco13", "bpn(3,1)");
+   vvd(astrom.bpn[0][1], -0.1136336652812486604e-7, 1e-12,
+                         "iauApco13", "bpn(1,2)");
+   vvd(astrom.bpn[1][1], 0.9999999995713154865, 1e-12,
+                         "iauApco13", "bpn(2,2)");
+   vvd(astrom.bpn[2][1], -0.2928086230975367296e-4, 1e-12,
+                         "iauApco13", "bpn(3,2)");
+   vvd(astrom.bpn[0][2], -0.001312227201745553566, 1e-12,
+                         "iauApco13", "bpn(1,3)");
+   vvd(astrom.bpn[1][2], 0.2928082218847679162e-4, 1e-12,
+                         "iauApco13", "bpn(2,3)");
+   vvd(astrom.bpn[2][2], 0.9999991386008312212, 1e-12,
+                         "iauApco13", "bpn(3,3)");
+   vvd(astrom.along, -0.5278008060301974337, 1e-12,
+                     "iauApco13", "along");
+   vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
+                   "iauApco13", "xpl");
+   vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
+                   "iauApco13", "ypl");
+   vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
+                    "iauApco13", "sphi");
+   vvd(astrom.cphi, 0.3299123514971474711, 1e-12,
+                    "iauApco13", "cphi");
+   vvd(astrom.diurab, 0, 0,
+                      "iauApco13", "diurab");
+   vvd(astrom.eral, 2.617608909189066140, 1e-12,
+                    "iauApco13", "eral");
+   vvd(astrom.refa, 0.2014187785940396921e-3, 1e-15,
+                    "iauApco13", "refa");
+   vvd(astrom.refb, -0.2361408314943696227e-6, 1e-18,
+                    "iauApco13", "refb");
+   vvd(eo, -0.003020548354802412839, 1e-14,
+           "iauApco13", "eo");
+
 }
 
+@Test
+    public void t_apcs()
+/*
+**  - - - - - - -
+**   t _ a p c s
+**  - - - - - - -
+**
+**  Test iauApcs function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauApcs, vvd
+**
+**  This revision:  2013 October 3
+*/
+{
+   double date1, date2, pv[][] = new double[2][3], ebpv[][] = new double[2][3], ehp[] = new double[3];
+   jauASTROM astrom = new jauASTROM() ;
+
+
+   date1 = 2456384.5;
+   date2 = 0.970031644;
+   pv[0][0] = -1836024.09;
+   pv[0][1] = 1056607.72;
+   pv[0][2] = -5998795.26;
+   pv[1][0] = -77.0361767;
+   pv[1][1] = -133.310856;
+   pv[1][2] = 0.0971855934;
+   ebpv[0][0] = -0.974170438;
+   ebpv[0][1] = -0.211520082;
+   ebpv[0][2] = -0.0917583024;
+   ebpv[1][0] = 0.00364365824;
+   ebpv[1][1] = -0.0154287319;
+   ebpv[1][2] = -0.00668922024;
+   ehp[0] = -0.973458265;
+   ehp[1] = -0.209215307;
+   ehp[2] = -0.0906996477;
+
+   jauApcs(date1, date2, pv, ebpv, ehp, astrom);
+
+   vvd(astrom.pmt, 13.25248468622587269, 1e-11,
+                   "iauApcs", "pmt");
+   vvd(astrom.eb[0], -0.9741827110630456169, 1e-12,
+                     "iauApcs", "eb(1)");
+   vvd(astrom.eb[1], -0.2115130190136085494, 1e-12,
+                     "iauApcs", "eb(2)");
+   vvd(astrom.eb[2], -0.09179840186973175487, 1e-12,
+                     "iauApcs", "eb(3)");
+   vvd(astrom.eh[0], -0.9736425571689386099, 1e-12,
+                     "iauApcs", "eh(1)");
+   vvd(astrom.eh[1], -0.2092452125849967195, 1e-12,
+                     "iauApcs", "eh(2)");
+   vvd(astrom.eh[2], -0.09075578152266466572, 1e-12,
+                     "iauApcs", "eh(3)");
+   vvd(astrom.em, 0.9998233241710457140, 1e-12,
+                  "iauApcs", "em");
+   vvd(astrom.v[0], 0.2078704985513566571e-4, 1e-16,
+                    "iauApcs", "v(1)");
+   vvd(astrom.v[1], -0.8955360074245006073e-4, 1e-16,
+                    "iauApcs", "v(2)");
+   vvd(astrom.v[2], -0.3863338980073572719e-4, 1e-16,
+                    "iauApcs", "v(3)");
+   vvd(astrom.bm1, 0.9999999950277561601, 1e-12,
+                   "iauApcs", "bm1");
+   vvd(astrom.bpn[0][0], 1, 0,
+                         "iauApcs", "bpn(1,1)");
+   vvd(astrom.bpn[1][0], 0, 0,
+                         "iauApcs", "bpn(2,1)");
+   vvd(astrom.bpn[2][0], 0, 0,
+                         "iauApcs", "bpn(3,1)");
+   vvd(astrom.bpn[0][1], 0, 0,
+                         "iauApcs", "bpn(1,2)");
+   vvd(astrom.bpn[1][1], 1, 0,
+                         "iauApcs", "bpn(2,2)");
+   vvd(astrom.bpn[2][1], 0, 0,
+                         "iauApcs", "bpn(3,2)");
+   vvd(astrom.bpn[0][2], 0, 0,
+                         "iauApcs", "bpn(1,3)");
+   vvd(astrom.bpn[1][2], 0, 0,
+                         "iauApcs", "bpn(2,3)");
+   vvd(astrom.bpn[2][2], 1, 0,
+                         "iauApcs", "bpn(3,3)");
+
+}
+
+@Test
+    public void t_apcs13()
+/*
+**  - - - - - - - - -
+**   t _ a p c s 1 3
+**  - - - - - - - - -
+**
+**  Test iauApcs13 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauApcs13, vvd
+**
+**  This revision:  2013 October 3
+*/
+{
+   double date1, date2, pv[][] = new double[2][3];
+   jauASTROM astrom = new jauASTROM() ;
+
+
+   date1 = 2456165.5;
+   date2 = 0.401182685;
+   pv[0][0] = -6241497.16;
+   pv[0][1] = 401346.896;
+   pv[0][2] = -1251136.04;
+   pv[1][0] = -29.264597;
+   pv[1][1] = -455.021831;
+   pv[1][2] = 0.0266151194;
+
+   jauApcs13(date1, date2, pv, astrom);
+
+   vvd(astrom.pmt, 12.65133794027378508, 1e-11,
+                   "iauApcs13", "pmt");
+   vvd(astrom.eb[0], 0.9012691529023298391, 1e-12,
+                     "iauApcs13", "eb(1)");
+   vvd(astrom.eb[1], -0.4173999812023068781, 1e-12,
+                     "iauApcs13", "eb(2)");
+   vvd(astrom.eb[2], -0.1809906511146821008, 1e-12,
+                     "iauApcs13", "eb(3)");
+   vvd(astrom.eh[0], 0.8939939101759726824, 1e-12,
+                     "iauApcs13", "eh(1)");
+   vvd(astrom.eh[1], -0.4111053891734599955, 1e-12,
+                     "iauApcs13", "eh(2)");
+   vvd(astrom.eh[2], -0.1782336880637689334, 1e-12,
+                     "iauApcs13", "eh(3)");
+   vvd(astrom.em, 1.010428384373318379, 1e-12,
+                  "iauApcs13", "em");
+   vvd(astrom.v[0], 0.4279877278327626511e-4, 1e-16,
+                    "iauApcs13", "v(1)");
+   vvd(astrom.v[1], 0.7963255057040027770e-4, 1e-16,
+                    "iauApcs13", "v(2)");
+   vvd(astrom.v[2], 0.3517564000441374759e-4, 1e-16,
+                    "iauApcs13", "v(3)");
+   vvd(astrom.bm1, 0.9999999952947981330, 1e-12,
+                   "iauApcs13", "bm1");
+   vvd(astrom.bpn[0][0], 1, 0,
+                         "iauApcs13", "bpn(1,1)");
+   vvd(astrom.bpn[1][0], 0, 0,
+                         "iauApcs13", "bpn(2,1)");
+   vvd(astrom.bpn[2][0], 0, 0,
+                         "iauApcs13", "bpn(3,1)");
+   vvd(astrom.bpn[0][1], 0, 0,
+                         "iauApcs13", "bpn(1,2)");
+   vvd(astrom.bpn[1][1], 1, 0,
+                         "iauApcs13", "bpn(2,2)");
+   vvd(astrom.bpn[2][1], 0, 0,
+                         "iauApcs13", "bpn(3,2)");
+   vvd(astrom.bpn[0][2], 0, 0,
+                         "iauApcs13", "bpn(1,3)");
+   vvd(astrom.bpn[1][2], 0, 0,
+                         "iauApcs13", "bpn(2,3)");
+   vvd(astrom.bpn[2][2], 1, 0,
+                         "iauApcs13", "bpn(3,3)");
+
+}
+@Test
+    public void t_aper()
+/*
+**  - - - - - - -
+**   t _ a p e r
+**  - - - - - - -
+*
+**  Test iauAper function.
+*
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+*
+**  Called:  iauAper, vvd
+*
+**  This revision:  2013 October 3
+*/
+{
+   double theta;
+   jauASTROM astrom = new jauASTROM() ;
+
+
+   astrom.along = 1.234;
+   theta = 5.678;
+
+   jauAper(theta, astrom);
+
+   vvd(astrom.eral, 6.912000000000000000, 1e-12,
+                    "iauAper", "pmt");
+
+}
+@Test
+    public void t_aper13()
+/*
+**  - - - - - - - - -
+**   t _ a p e r 1 3
+**  - - - - - - - - -
+**
+**  Test iauAper13 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauAper13, vvd
+**
+**  This revision:  2013 October 3
+*/
+{
+   double ut11, ut12;
+   jauASTROM astrom = new jauASTROM() ;
+
+
+   astrom.along = 1.234;
+   ut11 = 2456165.5;
+   ut12 = 0.401182685;
+
+   jauAper13(ut11, ut12, astrom);
+
+   vvd(astrom.eral, 3.316236661789694933, 1e-12,
+                    "iauAper13", "pmt");
+
+}
+@Test
+    public void t_apio() throws JSOFAIllegalParameter, JSOFAInternalError
+/*
+**  - - - - - - -
+**   t _ a p i o
+**  - - - - - - -
+**
+**  Test iauApio function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauApio, vvd
+**
+**  This revision:  2013 October 3
+*/
+{
+   double sp, theta, elong, phi, hm, xp, yp, refa, refb;
+   jauASTROM astrom = new jauASTROM() ;
+
+
+   sp = -3.01974337e-11;
+   theta = 3.14540971;
+   elong = -0.527800806;
+   phi = -1.2345856;
+   hm = 2738.0;
+   xp = 2.47230737e-7;
+   yp = 1.82640464e-6;
+   refa = 0.000201418779;
+   refb = -2.36140831e-7;
+
+   jauApio(sp, theta, elong, phi, hm, xp, yp, refa, refb, astrom);
+
+   vvd(astrom.along, -0.5278008060301974337, 1e-12,
+                     "iauApio", "along");
+   vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
+                   "iauApio", "xpl");
+   vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
+                   "iauApio", "ypl");
+   vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
+                    "iauApio", "sphi");
+   vvd(astrom.cphi, 0.3299123514971474711, 1e-12,
+                    "iauApio", "cphi");
+   vvd(astrom.diurab, 0.5135843661699913529e-6, 1e-12,
+                      "iauApio", "diurab");
+   vvd(astrom.eral, 2.617608903969802566, 1e-12,
+                    "iauApio", "eral");
+   vvd(astrom.refa, 0.2014187790000000000e-3, 1e-15,
+                    "iauApio", "refa");
+   vvd(astrom.refb, -0.2361408310000000000e-6, 1e-18,
+                    "iauApio", "refb");
+
+}
+
+@Test
+    public void t_apio13() throws JSOFAIllegalParameter, JSOFAInternalError
+/*
+**  - - - - - - - - -
+**   t _ a p i o 1 3
+**  - - - - - - - - -
+**
+**  Test iauApio13 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauApio13, vvd, viv
+**
+**  This revision:  2013 October 4
+*/
+{
+   double utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl;
+   int j;
+   jauASTROM astrom = new jauASTROM() ;
+
+
+   utc1 = 2456384.5;
+   utc2 = 0.969254051;
+   dut1 = 0.1550675;
+   elong = -0.527800806;
+   phi = -1.2345856;
+   hm = 2738.0;
+   xp = 2.47230737e-7;
+   yp = 1.82640464e-6;
+   phpa = 731.0;
+   tc = 12.8;
+   rh = 0.59;
+   wl = 0.55;
+
+   jauApio13(utc1, utc2, dut1, elong, phi, hm, xp, yp,
+                 phpa, tc, rh, wl, astrom);
+
+   vvd(astrom.along, -0.5278008060301974337, 1e-12,
+                     "iauApio13", "along");
+   vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
+                   "iauApio13", "xpl");
+   vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
+                   "iauApio13", "ypl");
+   vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
+                    "iauApio13", "sphi");
+   vvd(astrom.cphi, 0.3299123514971474711, 1e-12,
+                    "iauApio13", "cphi");
+   vvd(astrom.diurab, 0.5135843661699913529e-6, 1e-12,
+                      "iauApio13", "diurab");
+   vvd(astrom.eral, 2.617608909189066140, 1e-12,
+                    "iauApio13", "eral");
+   vvd(astrom.refa, 0.2014187785940396921e-3, 1e-15,
+                    "iauApio13", "refa");
+   vvd(astrom.refb, -0.2361408314943696227e-6, 1e-18,
+                    "iauApio13", "refb");
+
+}
+
+@Test
+    public void t_atci13()
+/*
+**  - - - - - - - - -
+**   t _ a t c i 1 3
+**  - - - - - - - - -
+**
+**  Test iauAtci13 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauAtci13, vvd
+**
+**  This revision:  2013 October 3
+*/
+{
+   double rc, dc, pr, pd, px, rv, date1, date2, ri, di, eo;
+
+
+   rc = 2.71;
+   dc = 0.174;
+   pr = 1e-5;
+   pd = 5e-6;
+   px = 0.1;
+   rv = 55.0;
+   date1 = 2456165.5;
+   date2 = 0.401182685;
+
+   SphericalCoordinateEO coe = jauAtci13(rc, dc, pr, pd, px, rv, date1, date2);
+
+   vvd(coe.pos.alpha, 2.710121572969038991, 1e-12,
+           "iauAtci13", "ri");
+   vvd(coe.pos.delta, 0.1729371367218230438, 1e-12,
+           "iauAtci13", "di");
+   vvd(coe.eo, -0.002900618712657375647, 1e-14,
+           "iauAtci13", "eo");
+
+}
+
+@Test
+    public void t_atciq()
+/*
+**  - - - - - - - -
+**   t _ a t c i q
+**  - - - - - - - -
+**
+**  Test iauAtciq function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauApci13, iauAtciq, vvd
+**
+**  This revision:  2013 October 3
+*/
+{
+   double date1, date2, eo, rc, dc, pr, pd, px, rv, ri, di;
+   jauASTROM astrom = new jauASTROM() ;
+
+   date1 = 2456165.5;
+   date2 = 0.401182685;
+   eo = jauApci13(date1, date2, astrom);
+   rc = 2.71;
+   dc = 0.174;
+   pr = 1e-5;
+   pd = 5e-6;
+   px = 0.1;
+   rv = 55.0;
+
+   SphericalCoordinate co = jauAtciq(rc, dc, pr, pd, px, rv, astrom);
+
+   vvd(co.alpha, 2.710121572969038991, 1e-12, "iauAtciq", "ri");
+   vvd(co.delta, 0.1729371367218230438, 1e-12, "iauAtciq", "di");
+
+}
+
+
+
+@Test
+    public void t_atciqn()
+/*
+**  - - - - - - - - -
+**   t _ a t c i q n
+**  - - - - - - - - -
+**
+**  Test iauAtciqn function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauApci13, iauAtciqn, vvd
+**
+**  This revision:  2013 October 3
+*/
+{
+   jauLDBODY b[] = {new jauLDBODY(),new jauLDBODY(),new jauLDBODY()};
+   double date1, date2, eo, rc, dc, pr, pd, px, rv, ri, di;
+   jauASTROM astrom = new jauASTROM() ;
+
+   date1 = 2456165.5;
+   date2 = 0.401182685;
+   eo = jauApci13(date1, date2, astrom);
+   rc = 2.71;
+   dc = 0.174;
+   pr = 1e-5;
+   pd = 5e-6;
+   px = 0.1;
+   rv = 55.0;
+   b[0].bm = 0.00028574;
+   b[0].dl = 3e-10;
+   b[0].pv[0][0] = -7.81014427;
+   b[0].pv[0][1] = -5.60956681;
+   b[0].pv[0][2] = -1.98079819;
+   b[0].pv[1][0] =  0.0030723249;
+   b[0].pv[1][1] = -0.00406995477;
+   b[0].pv[1][2] = -0.00181335842;
+   b[1].bm = 0.00095435;
+   b[1].dl = 3e-9;
+   b[1].pv[0][0] =  0.738098796;
+   b[1].pv[0][1] =  4.63658692;
+   b[1].pv[0][2] =  1.9693136;
+   b[1].pv[1][0] = -0.00755816922;
+   b[1].pv[1][1] =  0.00126913722;
+   b[1].pv[1][2] =  0.000727999001;
+   b[2].bm = 1.0;
+   b[2].dl = 6e-6;
+   b[2].pv[0][0] = -0.000712174377;
+   b[2].pv[0][1] = -0.00230478303;
+   b[2].pv[0][2] = -0.00105865966;
+   b[2].pv[1][0] =  6.29235213e-6;
+   b[2].pv[1][1] = -3.30888387e-7;
+   b[2].pv[1][2] = -2.96486623e-7;
+
+   SphericalCoordinate co = jauAtciqn( rc, dc, pr, pd, px, rv, astrom, 3, b);
+
+   vvd(co.alpha, 2.710122008105325582, 1e-12, "iauAtciqn", "ri");
+   vvd(co.delta, 0.1729371916491459122, 1e-12, "iauAtciqn", "di");
+
+}
+@Test
+    public void t_atciqz()
+/*
+**  - - - - - - - - -
+**   t _ a t c i q z
+**  - - - - - - - - -
+**
+**  Test iauAtciqz function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauApci13, iauAtciqz, vvd
+**
+**  This revision:  2013 October 3
+*/
+{
+   double date1, date2, eo, rc, dc, ri, di;
+   jauASTROM astrom = new jauASTROM() ;
+
+
+   date1 = 2456165.5;
+   date2 = 0.401182685;
+   eo = jauApci13(date1, date2, astrom);
+   rc = 2.71;
+   dc = 0.174;
+
+   SphericalCoordinate co = jauAtciqz(rc, dc, astrom);
+
+   vvd(co.alpha, 2.709994899247599271, 1e-12, "iauAtciqz", "ri");
+   vvd(co.delta, 0.1728740720983623469, 1e-12, "iauAtciqz", "di");
+
+}
+
+@Test
+    public void t_atco13() throws JSOFAIllegalParameter, JSOFAInternalError
+/*
+**  - - - - - - - - -
+**   t _ a t c o 1 3
+**  - - - - - - - - -
+**
+**  Test iauAtco13 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauAtco13, vvd, viv
+**
+**  This revision:  2013 October 4
+*/
+{
+   double rc, dc, pr, pd, px, rv, utc1, utc2, dut1,
+          elong, phi, hm, xp, yp, phpa, tc, rh, wl,
+          aob, zob, hob, dob, rob, eo;
+   int j;
+
+
+   rc = 2.71;
+   dc = 0.174;
+   pr = 1e-5;
+   pd = 5e-6;
+   px = 0.1;
+   rv = 55.0;
+   utc1 = 2456384.5;
+   utc2 = 0.969254051;
+   dut1 = 0.1550675;
+   elong = -0.527800806;
+   phi = -1.2345856;
+   hm = 2738.0;
+   xp = 2.47230737e-7;
+   yp = 1.82640464e-6;
+   phpa = 731.0;
+   tc = 12.8;
+   rh = 0.59;
+   wl = 0.55;
+
+   ObservedPositionEO ope = jauAtco13(rc, dc, pr, pd, px, rv,
+                 utc1, utc2, dut1, elong, phi, hm, xp, yp,
+                 phpa, tc, rh, wl);
+
+   vvd(ope.op.aob, 0.09251774485358230653, 1e-12, "iauAtco13", "aob");
+   vvd(ope.op.zob, 1.407661405256767021, 1e-12, "iauAtco13", "zob");
+   vvd(ope.op.hob, -0.09265154431403157925, 1e-12, "iauAtco13", "hob");
+   vvd(ope.op.dob, 0.1716626560075591655, 1e-12, "iauAtco13", "dob");
+   vvd(ope.op.rob, 2.710260453503097719, 1e-12, "iauAtco13", "rob");
+   vvd(ope.eo, -0.003020548354802412839, 1e-14, "iauAtco13", "eo");
+
+}
+
+@Test
+    public void t_atic13()
+/*
+**  - - - - - - - - -
+**   t _ a t i c 1 3
+**  - - - - - - - - -
+**
+**  Test iauAtic13 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauAtic13, vvd
+**
+**  This revision:  2013 October 3
+*/
+{
+   double ri, di, date1, date2, rc, dc, eo;
+
+
+   ri = 2.710121572969038991;
+   di = 0.1729371367218230438;
+   date1 = 2456165.5;
+   date2 = 0.401182685;
+
+   SphericalCoordinateEO oe = jauAtic13(ri, di, date1, date2);
+
+   vvd(oe.pos.alpha, 2.710126504531374930, 1e-12, "iauAtic13", "rc");
+   vvd(oe.pos.delta, 0.1740632537628342320, 1e-12, "iauAtic13", "dc");
+   vvd(oe.eo, -0.002900618712657375647, 1e-14, "iauAtic13", "eo");
+
+}
+
+@Test
+    public void t_aticq()
+/*
+**  - - - - - - - -
+**   t _ a t i c q
+**  - - - - - - - -
+**
+**  Test iauAticq function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauApci13, iauAticq, vvd
+**
+**  This revision:  2013 October 3
+*/
+{
+   double date1, date2, eo, ri, di, rc, dc;
+   jauASTROM astrom = new jauASTROM() ;
+
+
+   date1 = 2456165.5;
+   date2 = 0.401182685;
+   eo = jauApci13(date1, date2, astrom);
+   ri = 2.710121572969038991;
+   di = 0.1729371367218230438;
+
+   SphericalCoordinate co = jauAticq(ri, di, astrom);
+
+   vvd(co.alpha, 2.710126504531374930, 1e-12, "iauAticq", "rc");
+   vvd(co.delta, 0.1740632537628342320, 1e-12, "iauAticq", "dc");
+
+}
+
+@Test
+    public void t_aticqn()
+/*
+**  - - - - - - - - -
+**   t _ a t i c q n
+**  - - - - - - - - -
+**
+**  Test iauAticqn function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauApci13, iauAticqn, vvd
+**
+**  This revision:  2013 October 3
+*/
+{
+   double date1, date2, eo, ri, di, rc, dc;
+   jauLDBODY b[] = {new jauLDBODY(),new jauLDBODY(),new jauLDBODY()};
+   jauASTROM astrom = new jauASTROM() ;
+
+
+   date1 = 2456165.5;
+   date2 = 0.401182685;
+   eo = jauApci13(date1, date2, astrom);
+   ri = 2.709994899247599271;
+   di = 0.1728740720983623469;
+   b[0].bm = 0.00028574;
+   b[0].dl = 3e-10;
+   b[0].pv[0][0] = -7.81014427;
+   b[0].pv[0][1] = -5.60956681;
+   b[0].pv[0][2] = -1.98079819;
+   b[0].pv[1][0] =  0.0030723249;
+   b[0].pv[1][1] = -0.00406995477;
+   b[0].pv[1][2] = -0.00181335842;
+   b[1].bm = 0.00095435;
+   b[1].dl = 3e-9;
+   b[1].pv[0][0] =  0.738098796;
+   b[1].pv[0][1] =  4.63658692;
+   b[1].pv[0][2] =  1.9693136;
+   b[1].pv[1][0] = -0.00755816922;
+   b[1].pv[1][1] =  0.00126913722;
+   b[1].pv[1][2] =  0.000727999001;
+   b[2].bm = 1.0;
+   b[2].dl = 6e-6;
+   b[2].pv[0][0] = -0.000712174377;
+   b[2].pv[0][1] = -0.00230478303;
+   b[2].pv[0][2] = -0.00105865966;
+   b[2].pv[1][0] =  6.29235213e-6;
+   b[2].pv[1][1] = -3.30888387e-7;
+   b[2].pv[1][2] = -2.96486623e-7;
+
+   SphericalCoordinate co = jauAticqn(ri, di, astrom, 3, b);
+
+   vvd(co.alpha, 2.709999575032685412, 1e-12, "iauAtciqn", "rc");
+   vvd(co.delta, 0.1739999656317778034, 1e-12, "iauAtciqn", "dc");
+
+}
+
+@Test
+    public void t_atio13() throws JSOFAIllegalParameter, JSOFAInternalError
+/*
+**  - - - - - - - - -
+**   t _ a t i o 1 3
+**  - - - - - - - - -
+**
+**  Test iauAtio13 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauAtio13, vvd, viv
+**
+**  This revision:  2013 October 3
+*/
+{
+   double ri, di, utc1, utc2, dut1, elong, phi, hm, xp, yp,
+          phpa, tc, rh, wl, aob, zob, hob, dob, rob;
+   int j;
+
+
+   ri = 2.710121572969038991;
+   di = 0.1729371367218230438;
+   utc1 = 2456384.5;
+   utc2 = 0.969254051;
+   dut1 = 0.1550675;
+   elong = -0.527800806;
+   phi = -1.2345856;
+   hm = 2738.0;
+   xp = 2.47230737e-7;
+   yp = 1.82640464e-6;
+   phpa = 731.0;
+   tc = 12.8;
+   rh = 0.59;
+   wl = 0.55;
+
+   ObservedPosition o = jauAtio13(ri, di, utc1, utc2, dut1, elong, phi, hm,
+                 xp, yp, phpa, tc, rh, wl
+                 );
+
+   vvd(o.aob, 0.09233952224794989993, 1e-12, "iauAtio13", "aob");
+   vvd(o.zob, 1.407758704513722461, 1e-12, "iauAtio13", "zob");
+   vvd(o.hob, -0.09247619879782006106, 1e-12, "iauAtio13", "hob");
+   vvd(o.dob, 0.1717653435758265198, 1e-12, "iauAtio13", "dob");
+   vvd(o.rob, 2.710085107986886201, 1e-12, "iauAtio13", "rob");
+
+}
+
+@Test
+    public void t_atioq() throws JSOFAIllegalParameter, JSOFAInternalError
+/*
+**  - - - - - - - -
+**   t _ a t i o q
+**  - - - - - - - -
+**
+**  Test iauAtioq function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauApio13, iauAtioq, vvd, viv
+**
+**  This revision:  2013 October 4
+*/
+{
+   double utc1, utc2, dut1, elong, phi, hm, xp, yp,
+          phpa, tc, rh, wl, ri, di, aob, zob, hob, dob, rob;
+   jauASTROM astrom = new jauASTROM() ;
+
+
+   utc1 = 2456384.5;
+   utc2 = 0.969254051;
+   dut1 = 0.1550675;
+   elong = -0.527800806;
+   phi = -1.2345856;
+   hm = 2738.0;
+   xp = 2.47230737e-7;
+   yp = 1.82640464e-6;
+   phpa = 731.0;
+   tc = 12.8;
+   rh = 0.59;
+   wl = 0.55;
+   jauApio13(utc1, utc2, dut1, elong, phi, hm, xp, yp,
+                    phpa, tc, rh, wl, astrom);
+   ri = 2.710121572969038991;
+   di = 0.1729371367218230438;
+
+   ObservedPosition o = jauAtioq(ri, di, astrom);
+
+   vvd(o.aob, 0.09233952224794989993, 1e-12, "iauAtioq", "aob");
+   vvd(o.zob, 1.407758704513722461, 1e-12, "iauAtioq", "zob");
+   vvd(o.hob, -0.09247619879782006106, 1e-12, "iauAtioq", "hob");
+   vvd(o.dob, 0.1717653435758265198, 1e-12, "iauAtioq", "dob");
+   vvd(o.rob, 2.710085107986886201, 1e-12, "iauAtioq", "rob");
+
+}
+
+@Test
+    public void t_atoc13() throws JSOFAIllegalParameter, JSOFAInternalError
+/*
+**  - - - - - - - - -
+**   t _ a t o c 1 3
+**  - - - - - - - - -
+**
+**  Test jauAtoc13 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauAtoc13, vvd, viv
+**
+**  This revision:  2013 October 3
+*/
+{
+   double utc1, utc2, dut1,
+          elong, phi, hm, xp, yp, phpa, tc, rh, wl,
+          ob1, ob2, rc, dc;
+
+
+   utc1 = 2456384.5;
+   utc2 = 0.969254051;
+   dut1 = 0.1550675;
+   elong = -0.527800806;
+   phi = -1.2345856;
+   hm = 2738.0;
+   xp = 2.47230737e-7;
+   yp = 1.82640464e-6;
+   phpa = 731.0;
+   tc = 12.8;
+   rh = 0.59;
+   wl = 0.55;
+
+   ob1 = 2.710085107986886201;
+   ob2 = 0.1717653435758265198;
+   SphericalCoordinate oc = jauAtoc13 ( "R", ob1, ob2, utc1, utc2, dut1,
+                   elong, phi, hm, xp, yp, phpa, tc, rh, wl
+                   );
+   vvd(oc.alpha, 2.709956744661000609, 1e-12, "jauAtoc13", "R/rc");
+   vvd(oc.delta, 0.1741696500895398562, 1e-12, "jauAtoc13", "R/dc");
+
+   ob1 = -0.09247619879782006106;
+   ob2 = 0.1717653435758265198;
+   oc = jauAtoc13 ( "H", ob1, ob2, utc1, utc2, dut1,
+                   elong, phi, hm, xp, yp, phpa, tc, rh, wl);
+   vvd(oc.alpha, 2.709956744661000609, 1e-12, "jauAtoc13", "H/rc");
+   vvd(oc.delta, 0.1741696500895398562, 1e-12, "jauAtoc13", "H/dc");
+
+   ob1 = 0.09233952224794989993;
+   ob2 = 1.407758704513722461;
+   oc = jauAtoc13 ( "A", ob1, ob2, utc1, utc2, dut1,
+                   elong, phi, hm, xp, yp, phpa, tc, rh, wl);
+   vvd(oc.alpha, 2.709956744661000609, 1e-12, "jauAtoc13", "A/rc");
+   vvd(oc.delta, 0.1741696500895398565, 1e-12, "jauAtoc13", "A/dc");
+
+}
+
+@Test
+    public void t_atoi13() throws JSOFAIllegalParameter, JSOFAInternalError
+/*
+**  - - - - - - - - -
+**   t _ a t o i 1 3
+**  - - - - - - - - -
+**
+**  Test iauAtoi13 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauAtoi13, vvd, viv
+**
+**  This revision:  2013 October 3
+*/
+{
+   double utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl,
+          ob1, ob2, ri, di;
+   int j;
+
+
+   utc1 = 2456384.5;
+   utc2 = 0.969254051;
+   dut1 = 0.1550675;
+   elong = -0.527800806;
+   phi = -1.2345856;
+   hm = 2738.0;
+   xp = 2.47230737e-7;
+   yp = 1.82640464e-6;
+   phpa = 731.0;
+   tc = 12.8;
+   rh = 0.59;
+   wl = 0.55;
+
+   ob1 = 2.710085107986886201;
+   ob2 = 0.1717653435758265198;
+   SphericalCoordinate co = jauAtoi13( "R", ob1, ob2, utc1, utc2, dut1,
+                   elong, phi, hm, xp, yp, phpa, tc, rh, wl);
+   vvd(co.alpha, 2.710121574449135955, 1e-12, "iauAtoi13", "R/ri");
+   vvd(co.delta, 0.1729371839114567725, 1e-12, "iauAtoi13", "R/di");
+
+   ob1 = -0.09247619879782006106;
+   ob2 = 0.1717653435758265198;
+   co = jauAtoi13( "H", ob1, ob2, utc1, utc2, dut1,
+                   elong, phi, hm, xp, yp, phpa, tc, rh, wl);
+   vvd(co.alpha, 2.710121574449135955, 1e-12, "iauAtoi13", "H/ri");
+   vvd(co.delta, 0.1729371839114567725, 1e-12, "iauAtoi13", "H/di");
+
+   ob1 = 0.09233952224794989993;
+   ob2 = 1.407758704513722461;
+   co = jauAtoi13( "A", ob1, ob2, utc1, utc2, dut1,
+                   elong, phi, hm, xp, yp, phpa, tc, rh, wl);
+   vvd(co.alpha, 2.710121574449135955, 1e-12, "iauAtoi13", "A/ri");
+   vvd(co.delta, 0.1729371839114567728, 1e-12, "iauAtoi13", "A/di");
+
+}
+
+@Test
+    public void t_atoiq() throws JSOFAIllegalParameter, JSOFAInternalError
+/*
+**  - - - - - - - -
+**   t _ a t o i q
+**  - - - - - - - -
+*
+**  Test iauAtoiq function.
+*
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+*
+**  Called:  iauApio13, iauAtoiq, vvd
+*
+**  This revision:  2013 October 4
+*/
+{
+   double utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl,
+          ob1, ob2;
+   jauASTROM astrom = new jauASTROM() ;
+
+
+   utc1 = 2456384.5;
+   utc2 = 0.969254051;
+   dut1 = 0.1550675;
+   elong = -0.527800806;
+   phi = -1.2345856;
+   hm = 2738.0;
+   xp = 2.47230737e-7;
+   yp = 1.82640464e-6;
+   phpa = 731.0;
+   tc = 12.8;
+   rh = 0.59;
+   wl = 0.55;
+   jauApio13(utc1, utc2, dut1, elong, phi, hm, xp, yp,
+                    phpa, tc, rh, wl, astrom);
+
+   ob1 = 2.710085107986886201;
+   ob2 = 0.1717653435758265198;
+   SphericalCoordinate co = jauAtoiq("R", ob1, ob2, astrom);
+   vvd(co.alpha, 2.710121574449135955, 1e-12,
+           "iauAtoiq", "R/ri");
+   vvd(co.delta, 0.1729371839114567725, 1e-12,
+           "iauAtoiq", "R/di");
+
+   ob1 = -0.09247619879782006106;
+   ob2 = 0.1717653435758265198;
+   co = jauAtoiq("H", ob1, ob2, astrom);
+   vvd(co.alpha, 2.710121574449135955, 1e-12,
+           "iauAtoiq", "H/ri");
+   vvd(co.delta, 0.1729371839114567725, 1e-12,
+           "iauAtoiq", "H/di");
+
+   ob1 = 0.09233952224794989993;
+   ob2 = 1.407758704513722461;
+   co = jauAtoiq("A", ob1, ob2, astrom);
+   vvd(co.alpha, 2.710121574449135955, 1e-12,
+           "iauAtoiq", "A/ri");
+   vvd(co.delta, 0.1729371839114567728, 1e-12,
+           "iauAtoiq", "A/di");
+
+}
+
+@Test
+    public void t_ld()
+/*
+**  - - - - -
+**   t _ l d
+**  - - - - -
+**
+**  Test iauLd function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauLd, vvd
+*
+**  This revision:  2013 October 2
+*/
+{
+   double bm, p[] = new double[3], q[] = new double[3], e[] = new double[3], em, dlim, p1[];
+
+
+   bm = 0.00028574;
+   p[0] = -0.763276255;
+   p[1] = -0.608633767;
+   p[2] = -0.216735543;
+   q[0] = -0.763276255;
+   q[1] = -0.608633767;
+   q[2] = -0.216735543;
+   e[0] = 0.76700421;
+   e[1] = 0.605629598;
+   e[2] = 0.211937094;
+   em = 8.91276983;
+   dlim = 3e-10;
+
+   p1 = jauLd(bm, p, q, e, em, dlim);
+
+   vvd(p1[0], -0.7632762548968159627, 1e-12,
+               "iauLd", "1");
+   vvd(p1[1], -0.6086337670823762701, 1e-12,
+               "iauLd", "2");
+   vvd(p1[2], -0.2167355431320546947, 1e-12,
+               "iauLd", "3");
+
+}
+
+@Test
+    public void t_ldn()
+/*
+**  - - - - - -
+**   t _ l d n
+**  - - - - - -
+**
+**  Test iauLdn function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauLdn, vvd
+**
+**  This revision:  2013 October 2
+*/
+{
+   int n;
+   jauLDBODY b[] = {new jauLDBODY(),new jauLDBODY(),new jauLDBODY()};
+   double ob[] = new double[3], sc[] = new double[3], sn[];
+
+
+   n = 3;
+   b[0].bm = 0.00028574;
+   b[0].dl = 3e-10;
+   b[0].pv[0][0] = -7.81014427;
+   b[0].pv[0][1] = -5.60956681;
+   b[0].pv[0][2] = -1.98079819;
+   b[0].pv[1][0] =  0.0030723249;
+   b[0].pv[1][1] = -0.00406995477;
+   b[0].pv[1][2] = -0.00181335842;
+   b[1].bm = 0.00095435;
+   b[1].dl = 3e-9;
+   b[1].pv[0][0] =  0.738098796;
+   b[1].pv[0][1] =  4.63658692;
+   b[1].pv[0][2] =  1.9693136;
+   b[1].pv[1][0] = -0.00755816922;
+   b[1].pv[1][1] =  0.00126913722;
+   b[1].pv[1][2] =  0.000727999001;
+   b[2].bm = 1.0;
+   b[2].dl = 6e-6;
+   b[2].pv[0][0] = -0.000712174377;
+   b[2].pv[0][1] = -0.00230478303;
+   b[2].pv[0][2] = -0.00105865966;
+   b[2].pv[1][0] =  6.29235213e-6;
+   b[2].pv[1][1] = -3.30888387e-7;
+   b[2].pv[1][2] = -2.96486623e-7;
+   ob[0] =  -0.974170437;
+   ob[1] =  -0.2115201;
+   ob[2] =  -0.0917583114;
+   sc[0] =  -0.763276255;
+   sc[1] =  -0.608633767;
+   sc[2] =  -0.216735543;
+
+   sn = jauLdn(n, b, ob, sc);
+
+   vvd(sn[0], -0.7632762579693333866, 1e-12,
+               "iauLdn", "1");
+   vvd(sn[1], -0.6086337636093002660, 1e-12,
+               "iauLdn", "2");
+   vvd(sn[2], -0.2167355420646328159, 1e-12,
+               "iauLdn", "3");
+
+}
+
+@Test
+    public void t_ldsun()
+/*
+**  - - - - - - - -
+**   t _ l d s u n
+**  - - - - - - - -
+**
+**  Test iauLdsun function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauLdsun, vvd
+**
+**  This revision:  2013 October 2
+*/
+{
+   double p[] = new double[3], e[] = new double[3], em, p1[];
+
+
+   p[0] = -0.763276255;
+   p[1] = -0.608633767;
+   p[2] = -0.216735543;
+   e[0] = -0.973644023;
+   e[1] = -0.20925523;
+   e[2] = -0.0907169552;
+   em = 0.999809214;
+
+   p1 = jauLdsun(p, e, em);
+
+   vvd(p1[0], -0.7632762580731413169, 1e-12,
+               "iauLdsun", "1");
+   vvd(p1[1], -0.6086337635262647900, 1e-12,
+               "iauLdsun", "2");
+   vvd(p1[2], -0.2167355419322321302, 1e-12,
+               "iauLdsun", "3");
+
+}
+@Test
+    public void t_pmpx()
+/*
+**  - - - - - - -
+**   t _ p m p x
+**  - - - - - - -
+**
+**  Test iauPmpx function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauPmpx, vvd
+**
+**  This revision:  2013 October 2
+*/
+{
+   double rc, dc, pr, pd, px, rv, pmt, pob[] = new double[3], pco[];
+
+
+   rc = 1.234;
+   dc = 0.789;
+   pr = 1e-5;
+   pd = -2e-5;
+   px = 1e-2;
+   rv = 10.0;
+   pmt = 8.75;
+   pob[0] = 0.9;
+   pob[1] = 0.4;
+   pob[2] = 0.1;
+
+   pco = jauPmpx(rc, dc, pr, pd, px, rv, pmt, pob);
+
+   vvd(pco[0], 0.2328137623960308440, 1e-12,
+               "iauPmpx", "1");
+   vvd(pco[1], 0.6651097085397855317, 1e-12,
+               "iauPmpx", "2");
+   vvd(pco[2], 0.7095257765896359847, 1e-12,
+               "iauPmpx", "3");
+
+}
+
+@Test
+    public void t_pmsafe() throws JSOFAInternalError
+/*
+**  - - - - - - - - -
+**   t _ p m s a f e
+**  - - - - - - - - -
+**
+**  Test iauPmsafe function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauPmsafe, vvd, viv
+**
+**  This revision:  2013 October 2
+*/
+{
+   double ra1, dec1, pmr1, pmd1, px1, rv1, ep1a, ep1b, ep2a, ep2b,
+          ra2, dec2, pmr2, pmd2, px2, rv2;
+
+
+   ra1 = 1.234;
+   dec1 = 0.789;
+   pmr1 = 1e-5;
+   pmd1 = -2e-5;
+   px1 = 1e-2;
+   rv1 = 10.0;
+   ep1a = 2400000.5;
+   ep1b = 48348.5625;
+   ep2a = 2400000.5;
+   ep2b = 51544.5;
+
+   CatalogCoords cc = jauPmsafe(ra1, dec1, pmr1, pmd1, px1, rv1,
+                 ep1a, ep1b, ep2a, ep2b
+                 );
+
+   vvd(cc.pos.alpha, 1.234087484501017061, 1e-12,
+            "iauPmsafe", "ra2");
+   vvd(cc.pos.delta, 0.7888249982450468574, 1e-12,
+            "iauPmsafe", "dec2");
+   vvd(cc.pm.alpha, 0.9996457663586073988e-5, 1e-12,
+             "iauPmsafe", "pmr2");
+   vvd(cc.pm.delta, -0.2000040085106737816e-4, 1e-16,
+             "iauPmsafe", "pmd2");
+   vvd(cc.px, 0.9999997295356765185e-2, 1e-12,
+            "iauPmsafe", "px2");
+   vvd(cc.rv, 10.38468380113917014, 1e-10,
+            "iauPmsafe", "rv2");
+
+}
+
+
+@Test
+    public void t_pvtob() throws JSOFAIllegalParameter, JSOFAInternalError
+/*
+**  - - - - - - - -
+**   t _ p v t o b
+**  - - - - - - - -
+**
+**  Test iauPvtob function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauPvtob, vvd
+**
+**  This revision:  2013 October 2
+*/
+{
+   double elong, phi, hm, xp, yp, sp, theta, pv[][];
+
+
+   elong = 2.0;
+   phi = 0.5;
+   hm = 3000.0;
+   xp = 1e-6;
+   yp = -0.5e-6;
+   sp = 1e-8;
+   theta = 5.0;
+
+   pv = jauPvtob(elong, phi, hm, xp, yp, sp, theta);
+
+   vvd(pv[0][0], 4225081.367071159207, 1e-5,
+                 "iauPvtob", "p(1)");
+   vvd(pv[0][1], 3681943.215856198144, 1e-5,
+                 "iauPvtob", "p(2)");
+   vvd(pv[0][2], 3041149.399241260785, 1e-5,
+                 "iauPvtob", "p(3)");
+   vvd(pv[1][0], -268.4915389365998787, 1e-9,
+                 "iauPvtob", "v(1)");
+   vvd(pv[1][1], 308.0977983288903123, 1e-9,
+                 "iauPvtob", "v(2)");
+   vvd(pv[1][2], 0, 0,
+                 "iauPvtob", "v(3)");
+
+}
+
+@Test
+    public void t_refco()
+/*
+**  - - - - - - - -
+**   t _ r e f c o
+**  - - - - - - - -
+**
+**  Test iauRefco function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauRefco, vvd
+**
+**  This revision:  2013 October 2
+*/
+{
+   double phpa, tc, rh, wl, refa, refb;
+
+
+   phpa = 800.0;
+   tc = 10.0;
+   rh = 0.9;
+   wl = 0.4;
+
+   RefCos ref = jauRefco(phpa, tc, rh, wl);
+
+   vvd(ref.a, 0.2264949956241415009e-3, 1e-15,
+             "iauRefco", "refa");
+   vvd(ref.b, -0.2598658261729343970e-6, 1e-18,
+             "iauRefco", "refb");
+
+}
+
+
+@Test
+public void t_d2dtf() throws JSOFAIllegalParameter, JSOFAInternalError
+/*
+**  - - - - - - - -
+**   t _ d 2 d t f
+**  - - - - - - - -
+**
+**  Test iauD2dtf function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauD2dtf, viv
+**
+**  This revision:  2013 August 7
+*/
+{
+
+   CalendarHMS c = jauD2dtf("UTC", 5, 2400000.5, 49533.99999);
+
+   viv(c.iy, 1994, "iauD2dtf", "y");
+   viv(c.im, 6, "iauD2dtf", "mo");
+   viv(c.id, 30, "iauD2dtf", "d");
+   viv(c.ihmsf[0], 23, "iauD2dtf", "h");
+   viv(c.ihmsf[1], 59, "iauD2dtf", "m");
+   viv(c.ihmsf[2], 60, "iauD2dtf", "s");
+   viv(c.ihmsf[3], 13599, "iauD2dtf", "f");
+
+}
+
+
+
+
+
+
+
+//end of tests
+}
 
 /*
  * Copyright © 2010 Paul Harrison, University of Manchester.

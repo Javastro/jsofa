@@ -4,7 +4,7 @@
   <artifactId>jsofa</artifactId>
   <name>JSOFA</name>
   <packaging>jar</packaging>
-  <version>20131202</version>
+  <version>20131202-rc1</version>
  
   <dependencies>
   	<dependency>
@@ -43,8 +43,8 @@
             <artifactId>maven-compiler-plugin</artifactId>
             <configuration>
                <showDeprecation>true</showDeprecation>
-               <source>1.5</source>
-               <target>1.5</target>
+               <source>1.7</source>
+               <target>1.7</target>
                <verbose>false</verbose>
             </configuration>
          </plugin>

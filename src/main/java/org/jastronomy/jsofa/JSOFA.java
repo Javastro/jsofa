@@ -8,7 +8,7 @@
 
 package org.jastronomy.jsofa;
 
-import static java.lang.Math.*; //IMPL strictmath better?
+import static java.lang.StrictMath.*; //IMPL strictmath better?
 
 /**
  * Java implementation of Standards of Fundamental Astronomy. <a href="http://www.iausofa.org/">http://www.iausofa.org/</a>
@@ -29,6 +29,9 @@ public class JSOFA {
 
     /** 2Pi {@value}*/
     public final static double D2PI = (6.283185307179586476925287);
+
+    /** Radians to degrees {@value} */
+    public final static double DR2D = (57.29577951308232087679815);
 
     /** Degrees to radians {@value}*/
     public final static double DD2R = (1.745329251994329576923691e-2);
@@ -76,17 +79,29 @@ public class JSOFA {
     public final static double TTMTAI = (32.184);
 
 
-    /** AU (m) {@value} */
+    /**  Astronomical unit (m) {@value} */
     public final static double DAU = (149597870e3);
+    
+    /** Speed of light (m/s) */
+    public final static double CMPS = 299792458.0;
+
+    /** Light time for 1 au (s) */
+    public final static double AULT = 499.004782;
+
 
     /** Speed of light (AU per day) {@value} */
-    public final static double DC = (DAYSEC / 499.004782);
+    public final static double DC = (DAYSEC / AULT);
     
     /** L_G = 1 - d(TT)/d(TCG) */
     public final static double ELG = (6.969290134e-10);
 
     /** L_B = 1 - d(TDB)/d(TCB) at TAI 1977/1/1.0 */
     public final static double ELB = (1.550519768e-8);
+    
+    /** Schwarzschild radius of the Sun (au) {@value}
+     = 2 * 1.32712440041e20 / (2.99792458e8)^2 / 1.49597870700e11 */
+    public final static double SRS = 1.97412574336e-8;
+
     
     /** TDB (s) at TAI 1977/1/1.0 */
     public final static double TDB0 = (-6.55e-5);
@@ -601,6 +616,9 @@ public class JSOFA {
     **
     ** <li> The matrix rbp transforms vectors from GCRS to mean of date by
     **     applying frame bias then precession.  It is the product rp x rb.
+    * 
+    *  <li> It is permissible to re-use the same array in the returned
+    *        arguments.  The arrays are filled in the order given.
     **<ol>
     **<p>Called:<ul>
     **     <li>{@link #jauPfw06} bias-precession F-W angles, IAU 2006
@@ -1600,7 +1618,7 @@ public class JSOFA {
     **
     **<!-- Given: -->
     **     @param rc2i      double[3][3]     celestial-to-intermediate matrix
-    **     @param era       double           Earth rotation angle
+    **     @param era       double           Earth rotation angle (radians)
     **     @param rpom      double[3][3]     polar-motion matrix
     **
     **<!-- Returned: -->
@@ -1673,7 +1691,7 @@ public class JSOFA {
     **
     **<!-- Given: -->
     **     @param rbpn      double[3][3]     celestial-to-true matrix
-    **     @param gst       double           Greenwich (apparent) Sidereal Time
+    **     @param gst       double           Greenwich (apparent) Sidereal Time (radians)
     **     @param rpom      double[3][3]     polar-motion matrix
     **
     **<!-- Returned: -->
@@ -2039,7 +2057,7 @@ public class JSOFA {
     /* Return result. */
        my = (im - 14) / 12;
        iypmy = (long) (iy + my);
-       djm0 = 2400000.5;
+       djm0 = DJM0;
        djm = (double)((1461L * (iypmy + 4800L)) / 4L
                      + (367L * (long) (im - 2 - 12 * my)) / 12L
                      - (3L * ((iypmy + 4900L) / 100L)) / 4L
@@ -2262,9 +2280,232 @@ public class JSOFA {
        return sign;
 
         }
-    
-    
  
+   /**
+    * Representation of Gregorian Calendar with fractional day.
+    * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
+    * @version $Name$
+    * @since AIDA Stage 1
+    */
+   public static class Calendar {
+       public final int iy;
+       public final int im;
+       public final int id;
+       public final double fd;
+       public Calendar (int iy, int im, int id, double fd)
+       {
+           this.iy = iy;
+           this.im = im;
+           this.id = id;
+           this.fd = fd;
+       }
+   }
+
+   /**
+    * Representation of Gregorian Calendar with integer hours minutes and seconds.
+    * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
+    * @version $Name$
+    * @since AIDA Stage 1
+    */
+   public static class CalendarHMS {
+       public final int iy;
+       public final int im;
+       public final int id;
+       public final int ihmsf[];
+       public CalendarHMS (int iy, int im, int id, int hmsf[]){
+           this.iy = iy;
+           this.im = im;
+           this.id = id;
+           this.ihmsf = hmsf;
+       }
+   }
+   
+/**
+**
+**  Format for output a 2-part Julian Date (or in the case of UTC a
+**  quasi-JD form that includes special provision for leap seconds).
+**
+**  This function is derived from the International Astronomical Union's
+**  SOFA (Standards of Fundamental Astronomy) software collection.
+**
+**  Status:  support function.
+**
+**  Given:
+**     scale     char[]  time scale ID (Note 1)
+**     ndp       int     resolution (Note 2)
+**     d1,d2     double  time as a 2-part Julian Date (Notes 3,4)
+**
+**  Returned:
+**     iy,im,id  int     year, month, day in Gregorian calendar (Note 5)
+**     ihmsf     int[4]  hours, minutes, seconds, fraction (Note 1)
+**
+**  Returned (function value):
+**               int     status: +1 = dubious year (Note 5)
+**                                0 = OK
+**                               -1 = unacceptable date (Note 6)
+**
+**  Notes:
+**
+**  1) scale identifies the time scale.  Only the value "UTC" (in upper
+**     case) is significant, and enables handling of leap seconds (see
+**     Note 4).
+**
+**  2) ndp is the number of decimal places in the seconds field, and can
+**     have negative as well as positive values, such as:
+**
+**     ndp         resolution
+**     -4            1 00 00
+**     -3            0 10 00
+**     -2            0 01 00
+**     -1            0 00 10
+**      0            0 00 01
+**      1            0 00 00.1
+**      2            0 00 00.01
+**      3            0 00 00.001
+**
+**     The limits are platform dependent, but a safe range is -5 to +9.
+**
+**  3) d1+d2 is Julian Date, apportioned in any convenient way between
+**     the two arguments, for example where d1 is the Julian Day Number
+**     and d2 is the fraction of a day.  In the case of UTC, where the
+**     use of JD is problematical, special conventions apply:  see the
+**     next note.
+**
+**  4) JD cannot unambiguously represent UTC during a leap second unless
+**     special measures are taken.  The SOFA internal convention is that
+**     the quasi-JD day represents UTC days whether the length is 86399,
+**     86400 or 86401 SI seconds.  In the 1960-1972 era there were
+**     smaller jumps (in either direction) each time the linear UTC(TAI)
+**     expression was changed, and these "mini-leaps" are also included
+**     in the SOFA convention.
+**
+**  5) The warning status "dubious year" flags UTCs that predate the
+**     introduction of the time scale or that are too far in the future
+**     to be trusted.  See iauDat for further details.
+**
+**  6) For calendar conventions and limitations, see iauCal2jd.
+**
+**  Called:
+**     iauJd2cal    JD to Gregorian calendar
+**     iauD2tf      decompose days to hms
+**     iauDat       delta(AT) = TAI-UTC
+**
+**  This revision:  2014 February 15
+**
+**  SOFA release 2013-12-02
+**
+**  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+ * @throws JSOFAInternalError 
+ * @throws JSOFAIllegalParameter 
+*/
+public static CalendarHMS jauD2dtf(final String scale, int ndp, double d1, double d2 ) throws JSOFAIllegalParameter, JSOFAInternalError
+{
+ boolean leap;
+ char s;
+ int iy1, im1, id1, js, iy2, im2, id2, ihmsf1[] = new int[4], i;
+ double a1, b1, fd, dat0, dat12, w, dat24, dleap;
+
+
+/* The two-part JD. */
+ a1 = d1;
+ b1 = d2;
+
+/* Provisional calendar date. */
+ Calendar cal = jauJd2cal(a1, b1);
+ iy1 = cal.iy;
+ im1 = cal.im;
+ id1 = cal.id;
+ fd = cal.fd;
+
+/* Is this a leap second day? */
+ leap = false;
+ if ( scale.equalsIgnoreCase("UTC") ) {
+
+ /* TAI-UTC at 0h today. */
+     dat0 = jauDat(iy1, im1, id1, 0.0 );
+
+ /* TAI-UTC at 12h today (to detect drift). */
+     dat12 = jauDat(iy1, im1, id1, 0.5);
+
+ /* TAI-UTC at 0h tomorrow (to detect jumps). */
+    cal = jauJd2cal(a1+1.5, b1-fd);
+    iy2 = cal.iy;
+    im2 = cal.im;
+    id2 = cal.id;
+    w = cal.fd;
+    dat24 = jauDat(iy2, im2, id2, 0.0);
+
+ /* Any sudden change in TAI-UTC (seconds). */
+    dleap = dat24 - (2.0*dat12 - dat0);
+
+ /* If leap second day, scale the fraction of a day into SI. */
+    leap = (dleap != 0.0);
+    if (leap) fd += fd * dleap/DAYSEC;
+ }
+
+/* Provisional time of day. */
+ s = jauD2tf ( ndp, fd, ihmsf1 );
+
+/* Has the (rounded) time gone past 24h? */
+ if ( ihmsf1[0] > 23 ) {
+
+ /* Yes.  We probably need tomorrow's calendar date. */
+    cal = jauJd2cal(a1+1.5, b1-fd);
+    iy2 = cal.iy; im2 = cal.im; id2 = cal.id; w = cal.fd;
+    
+ /* Is today a leap second day? */
+    if ( ! leap ) {
+
+    /* No.  Use 0h tomorrow. */
+       iy1 = iy2;
+       im1 = im2;
+       id1 = id2;
+       ihmsf1[0] = 0;
+       ihmsf1[1] = 0;
+       ihmsf1[2] = 0;
+
+    } else {
+
+    /* Yes.  Are we past the leap second itself? */
+       if ( ihmsf1[2] > 0 ) {
+
+       /* Yes.  Use tomorrow but allow for the leap second. */
+          iy1 = iy2;
+          im1 = im2;
+          id1 = id2;
+          ihmsf1[0] = 0;
+          ihmsf1[1] = 0;
+          ihmsf1[2] = 0;
+
+       } else {
+
+       /* No.  Use 23 59 60... today. */
+          ihmsf1[0] = 23;
+          ihmsf1[1] = 59;
+          ihmsf1[2] = 60;
+       }
+
+    /* If rounding to 10s or coarser always go up to new day. */
+       if ( ndp < 0 && ihmsf1[2] == 60 ) {
+          iy1 = iy2;
+          im1 = im2;
+          id1 = id2;
+          ihmsf1[0] = 0;
+          ihmsf1[1] = 0;
+          ihmsf1[2] = 0;
+       }
+    }
+ }
+
+/* Results. */
+ 
+ return new CalendarHMS(iy1, im1, id1, ihmsf1);
+
+}    
+ 
+/** Release year for this version of jauDat {@value} */
+public final static int IYV = 2013;
+
     /**
     **  For a given UTC date, calculate delta(AT) = TAI-UTC.
     **<pre>
@@ -2386,8 +2627,6 @@ public class JSOFA {
     */
     public static double jauDat(int iy, int im, int id, double fd ) throws JSOFAIllegalParameter, JSOFAInternalError
     {
-    /* Release year for this version of jauDat */
-     final int IYV = 2012;
 
     /* Reference dates (MJD) and drift rates (s/day), pre leap seconds */
       final double drift[][] = {
@@ -4553,12 +4792,7 @@ public class JSOFA {
     /* J2000.0 minus B1900.0 (2415019.81352) in Julian days */
        final double D1900 = 36524.68648;
 
-       double epb;
-
-
-       epb = 1900.0 + ((dj1 - DJ00) + (dj2 + D1900)) / DTY;
-
-       return epb;
+       return 1900.0 + ((dj1 - DJ00) + (dj2 + D1900)) / DTY;
 
         }
     
@@ -4639,14 +4873,9 @@ public class JSOFA {
     */
     public static double jauEpj(double dj1, double dj2)
     {
-       double epj;
+       return 2000.0 + ((dj1 - DJ00) + dj2) / DJY;
 
-
-       epj = 2000.0 + ((dj1 - DJ00) + dj2) / DJY;
-
-       return epj;
-
-        }
+     }
     
 
     /**
@@ -8365,6 +8594,26 @@ public static class SphericalCoordinate {
           this.delta = delta;
       }
   }
+
+/**
+ * Spherical coordinate with equation of origins .
+ * @author Paul Harrison (paul.harrison@manchester.ac.uk) 28 Mar 2014
+ * @version $Revision$ $date$
+ */
+public static class SphericalCoordinateEO {
+    SphericalCoordinate pos;
+    double eo;
+    /**
+     * @param pos
+     * @param eo
+     */
+    public SphericalCoordinateEO(SphericalCoordinate pos, double eo) {
+        this.pos = pos;
+        this.eo = eo;
+    }
+    
+    
+}
     /**
     **  Transform an FK5 (J2000.0) star position into the system of the
     **  Hipparcos catalogue, assuming zero Hipparcos proper motion.
@@ -8579,7 +8828,7 @@ public static class SphericalCoordinate {
     **     @param eps       double     F-W angle epsilon (radians)
     **
     **<!-- Returned: -->
-    **     @param x,y       double      <u>returned</u> CIP X,Y ("radians")
+    **     @param x,y       double      <u>returned</u> CIP unit vector X,Y
     **
     ** <p>Notes:
     ** <ol>
@@ -8603,6 +8852,9 @@ public static class SphericalCoordinate {
     **
     **        NxPxB = R_1(-epsA).R_3(-psi).R_1(phib).R_3(gamb)
     **
+    *       The returned values x,y are elements [2][0] and [2][1] of the
+    *       matrix.  Near J2000.0, they are essentially angles in radians
+    *       
     **     X,Y are elements (3,1) and (3,2) of the matrix.
     **</ol>
     **<p>Called:<ul>
@@ -10041,24 +10293,6 @@ public static class SphericalCoordinate {
         }
     
 
-    /**
-     * Representation of Gregorian Calendar.
-     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
-     * @version $Name$
-     * @since AIDA Stage 1
-     */
-    public static class Calendar {
-        public final int iy;
-        public final int im;
-        public final int id;
-        public final double fd;
-        public Calendar (int iy, int im, int id, double fd){
-            this.iy = iy;
-            this.im = im;
-            this.id = id;
-            this.fd = fd;
-        }
-    }
     /**
     **  Julian Date to Gregorian year, month, day, and fraction of a day.
     **
@@ -15464,8 +15698,9 @@ public static class SphericalCoordinate {
     **      equinox of date.  It is the product rn x rbp, applying frame
     **      bias, precession and nutation in that order.
     **
-    ** <li>  The X,Y,Z coordinates of the IAU 2000B Celestial Intermediate
-    **      Pole are elements (3,1-3) of the matrix rbpn.
+    ** <li>  The X,Y,Z coordinates of the IAU 2000A Celestial Intermediate
+    **      Pole are elements (3,1-3) of the GCRS-to-true matrix,
+    *       i.e. rbpn[2][0-2].
     **
     **  <li> It is permissible to re-use the same array in the returned
     **      arguments.  The arrays are filled in the order given.
@@ -23968,10 +24203,6 @@ public static class SphericalCoordinate {
 
         }
     
-    
-    
-    
-
 
     /**
      * returns the first argument modulo the second.
@@ -23984,11 +24215,4928 @@ public static class SphericalCoordinate {
     private static double fmod(double d, double d2) {
         return d % d2;
     }
+ // new 20131202 routines after here
+
+    /**
+     *  Star-independent astrometry parameters.
+     * 
+     *  (Vectors eb, eh, em and v are all with respect to BCRS axes.)
+     *  
+     *  @author Paul Harrison (paul.harrison@manchester.ac.uk) 26 Mar 2014
+     */
+    public static class  jauASTROM {
+       public double pmt;        /** PM time interval (SSB, Julian years) */
+       public double eb[] = new double[3];      /** SSB to observer (vector, au) [3]*/
+       public double eh[] = new double[3];      /** Sun to observer (unit vector)[3] */
+       public double em;         /** distance from Sun to observer (au) */
+       public double v[] = new double[3];       /** barycentric observer velocity (vector, c)[3] */
+       public double bm1;        /** sqrt(1-|v|^2): reciprocal of Lorenz factor */
+       public double bpn[][] = new double[3][3];  /** bias-precession-nutation matrix [3][3] */
+       public double along;      /** longitude + s' + dERA(DUT) (radians) */
+       public double phi;        /** geodetic latitude (radians) */
+       public double xpl;        /** polar motion xp wrt local meridian (radians) */
+       public double ypl;        /** polar motion yp wrt local meridian (radians) */
+       public double sphi;       /** sine of geodetic latitude */
+       public double cphi;       /** cosine of geodetic latitude */
+       public double diurab;     /** magnitude of diurnal aberration vector */
+       public double eral;       /** "local" Earth rotation angle (radians) */
+       public double refa;       /** refraction constant A (radians) */
+       public double refb;       /** refraction constant B (radians) */
+       
+       /**
+        * 
+        */
+       public jauASTROM(){}
+    } ;
+
+    /**
+     *  Body parameters for light deflection.
+     *  @author Paul Harrison (paul.harrison@manchester.ac.uk) 26 Mar 2014
+     */
+    public static class jauLDBODY {
+        /** mass of the body (solar masses) */
+       public double bm;
+       /** deflection limiter (radians^2/2) */
+       public double dl; 
+       /** barycentric PV of the body (au, au/day)[2][3] */
+       public double pv[][] = new double [2][3];   
+    } ;
+
+
+    /**
+     *  Apply aberration to transform natural direction into proper
+     *  direction.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *    @param pnat     double[3]    natural direction to the source (unit vector)
+     *    @param v        double[3]    observer barycentric velocity in units of c
+     *    @param s        double       distance between the Sun and the observer (au)
+     *    @param bm1      double       sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *
+     *  Returned:
+     *    @return ppr      double[3]     <b>Returned</b> proper direction to source (unit vector)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The algorithm is based on Expr. (7.40) in the Explanatory
+     *     Supplement (Urban & Seidelmann 2013), but with the following
+     *     changes:
+     *
+     *     <p>o  Rigorous rather than approximate normalization is applied.
+     *
+     *     <p>o  The gravitational potential term from Expr. (7) in
+     *        Klioner (2003) is added, taking into account only the Sun's
+     *        contribution.  This has a maximum effect of about
+     *        0.4 microarcsecond.
+     *
+     *  <li> In almost all cases, the maximum accuracy will be limited by the
+     *     supplied velocity.  For example, if the SOFA iauEpv00 function is
+     *     used, errors of up to 5 microarcseconds could occur.
+     *
+     * </ol>
+     *  References:
+     * <ul>
+     *
+     * <li> Urban, S. & Seidelmann, P. K. (eds), Explanatory Supplement to
+     *     the Astronomical Almanac, 3rd ed., University Science Books
+     *     (2013).
+     *
+     * <li> Klioner, Sergei A., "A practical relativistic model for micro-
+     *     arcsecond astrometry in space", Astr. J. 125, 1580-1597 (2003).
+     *
+     * </ul>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauPdp} scalar product of two p-vectors
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static  double[] jauAb(double pnat[], double v[], double s, double bm1
+           )
+    {
+        int i;
+        double pdv, w1, w2, r2, w, p[] = new double[3], r;
+        double ppr[] = new double[3];
+
+        pdv = jauPdp(pnat, v);
+        w1 = 1.0 + pdv/(1.0 + bm1);
+        w2 = SRS/s;
+        r2 = 0.0;
+        for (i = 0; i < 3; i++) {
+            w = pnat[i]*bm1 + w1*v[i] + w2*(v[i] - pdv*pnat[i]);
+            p[i] = w;
+            r2 = r2 + w*w;
+        }
+        r = sqrt(r2);
+        for (i = 0; i < 3; i++) {
+            ppr[i] = p[i]/r;
+        }
+        return ppr;
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  For a geocentric observer, prepare star-independent astrometry
+     *  parameters for transformations between ICRS and GCRS coordinates.
+     *  The Earth ephemeris is supplied by the caller.
+     *
+     *  The parameters produced by this function are required in the
+     *  parallax, light deflection and aberration parts of the astrometric
+     *  transformation chain.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param date1   double        TDB as a 2-part...
+     *     @param date2   double        ...Julian Date (Note 1)
+     *     @param ebpv    double[2][3]  Earth barycentric pos/vel (au, au/day)
+     *     @param ehp     double[3]     Earth heliocentric position (au)
+     *
+     *  Returned:
+     *     @return astrom  jauASTROM*     <b>Returned</b> star-independent astrometry parameters:
+     *      @return pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
+     *      @return eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
+     *      @return eh      double[3]      <b>Returned</b> Sun to observer (unit vector)
+     *      @return em      double         <b>Returned</b> distance from Sun to observer (au)
+     *      @return v       double[3]      <b>Returned</b> barycentric observer velocity (vector, c)
+     *      @return bm1     double         <b>Returned</b> sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *      @return bpn     double[3][3]   <b>Returned</b> bias-precession-nutation matrix
+     *      @return along   double         <b>Returned</b> unchanged
+     *      @return xpl     double         <b>Returned</b> unchanged
+     *      @return ypl     double         <b>Returned</b> unchanged
+     *      @return sphi    double         <b>Returned</b> unchanged
+     *      @return cphi    double         <b>Returned</b> unchanged
+     *      @return diurab  double         <b>Returned</b> unchanged
+     *      @return eral    double         <b>Returned</b> unchanged
+     *      @return refa    double         <b>Returned</b> unchanged
+     *      @return refb    double         <b>Returned</b> unchanged
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
+     *     convenient way between the two arguments.  For example,
+     *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
+     *     others:
+     *
+     *            <p>date1          date2
+     *
+     *         <p>2450123.7           0.0       (JD method)
+     *         2451545.0       -1421.3       (J2000 method)
+     *         2400000.5       50123.2       (MJD method)
+     *         2450123.5           0.2       (date & time method)
+     *
+     *     <p>The JD method is the most natural and convenient to use in cases
+     *     where the loss of several decimal digits of resolution is
+     *     acceptable.  The J2000 method is best matched to the way the
+     *     argument is handled internally and will deliver the optimum
+     *     resolution.  The MJD method and the date & time methods are both
+     *     good compromises between resolution and convenience.  For most
+     *     applications of this function the choice will not be at all
+     *     critical.
+     *
+     *     <p>TT can be used instead of TDB without any significant impact on
+     *     accuracy.
+     *
+     *  <li> All the vectors are with respect to BCRS axes.
+     *
+     *  <li> This is one of several functions that inserts into the astrom
+     *     structure star-independent parameters needed for the chain of
+     *     astrometric transformations ICRS <-> GCRS <-> CIRS <-> observed.
+     *
+     *     <p>The various functions support different classes of observer and
+     *     portions of the transformation chain:
+     *
+     *          <p>functions         observer        transformation
+     *
+     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
+     *       iauApco iauApco13    terrestrial     ICRS <-> observed
+     *       iauApcs iauApcs13    space           ICRS <-> GCRS
+     *       iauAper iauAper13    terrestrial     update Earth rotation
+     *       iauApio iauApio13    terrestrial     CIRS <-> observed
+     *
+     *     <p>Those with names ending in "13" use contemporary SOFA models to
+     *     compute the various ephemerides.  The others accept ephemerides
+     *     supplied by the caller.
+     *
+     *     <p>The transformation from ICRS to GCRS covers space motion,
+     *     parallax, light deflection, and aberration.  From GCRS to CIRS
+     *     comprises frame bias and precession-nutation.  From CIRS to
+     *     observed takes account of Earth rotation, polar motion, diurnal
+     *     aberration and parallax (unless subsumed into the ICRS <-> GCRS
+     *     transformation), and atmospheric refraction.
+     *
+     *  <li> The context structure astrom produced by this function is used by
+     *     iauAtciq* and iauAticq*.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauApcs} astrometry parameters, ICRS-GCRS, space observer
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static void jauApcg(double date1, double date2,
+            double ebpv[][], double ehp[],
+            jauASTROM astrom)
+    {
+        /* Geocentric observer */
+        double pv[][] = { { 0.0, 0.0, 0.0 },
+            { 0.0, 0.0, 0.0 } };
+
+
+            /* Compute the star-independent astrometry parameters. */
+            jauApcs(date1, date2, pv, ebpv, ehp, astrom);
+
+            /* Finished. */
+
+
+    }
+
+    /**
+     *  For a geocentric observer, prepare star-independent astrometry
+     *  parameters for transformations between ICRS and GCRS coordinates.
+     *  The caller supplies the date, and SOFA models are used to predict
+     *  the Earth ephemeris.
+     *
+     *  The parameters produced by this function are required in the
+     *  parallax, light deflection and aberration parts of the astrometric
+     *  transformation chain.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param date1   double      TDB as a 2-part...
+     *     @param date2   double      ...Julian Date (Note 1)
+     *
+     *  Returned:
+     *     @return astrom  jauASTROM*   <b>Returned</b> star-independent astrometry parameters:
+     *      @return pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
+     *      @return eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
+     *      @return eh      double[3]      <b>Returned</b> Sun to observer (unit vector)
+     *      @return em      double         <b>Returned</b> distance from Sun to observer (au)
+     *      @return v       double[3]      <b>Returned</b> barycentric observer velocity (vector, c)
+     *      @return bm1     double         <b>Returned</b> sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *      @return bpn     double[3][3]   <b>Returned</b> bias-precession-nutation matrix
+     *      @return along   double         <b>Returned</b> unchanged
+     *      @return xpl     double         <b>Returned</b> unchanged
+     *      @return ypl     double         <b>Returned</b> unchanged
+     *      @return sphi    double         <b>Returned</b> unchanged
+     *      @return cphi    double         <b>Returned</b> unchanged
+     *      @return diurab  double         <b>Returned</b> unchanged
+     *      @return eral    double         <b>Returned</b> unchanged
+     *      @return refa    double         <b>Returned</b> unchanged
+     *      @return refb    double         <b>Returned</b> unchanged
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
+     *     convenient way between the two arguments.  For example,
+     *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
+     *     others:
+     *
+     *            <p>date1          date2
+     *
+     *         <p>2450123.7           0.0       (JD method)
+     *         2451545.0       -1421.3       (J2000 method)
+     *         2400000.5       50123.2       (MJD method)
+     *         2450123.5           0.2       (date & time method)
+     *
+     *     <p>The JD method is the most natural and convenient to use in cases
+     *     where the loss of several decimal digits of resolution is
+     *     acceptable.  The J2000 method is best matched to the way the
+     *     argument is handled internally and will deliver the optimum
+     *     resolution.  The MJD method and the date & time methods are both
+     *     good compromises between resolution and convenience.  For most
+     *     applications of this function the choice will not be at all
+     *     critical.
+     *
+     *     <p>TT can be used instead of TDB without any significant impact on
+     *     accuracy.
+     *
+     *  <li> All the vectors are with respect to BCRS axes.
+     *
+     *  <li> In cases where the caller wishes to supply his own Earth
+     *     ephemeris, the function iauApcg can be used instead of the present
+     *     function.
+     *
+     *  <li> This is one of several functions that inserts into the astrom
+     *     structure star-independent parameters needed for the chain of
+     *     astrometric transformations ICRS <-> GCRS <-> CIRS <-> observed.
+     *
+     *     <p>The various functions support different classes of observer and
+     *     portions of the transformation chain:
+     *
+     *          <p>functions         observer        transformation
+     *
+     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
+     *       iauApco iauApco13    terrestrial     ICRS <-> observed
+     *       iauApcs iauApcs13    space           ICRS <-> GCRS
+     *       iauAper iauAper13    terrestrial     update Earth rotation
+     *       iauApio iauApio13    terrestrial     CIRS <-> observed
+     *
+     *     <p>Those with names ending in "13" use contemporary SOFA models to
+     *     compute the various ephemerides.  The others accept ephemerides
+     *     supplied by the caller.
+     *
+     *     <p>The transformation from ICRS to GCRS covers space motion,
+     *     parallax, light deflection, and aberration.  From GCRS to CIRS
+     *     comprises frame bias and precession-nutation.  From CIRS to
+     *     observed takes account of Earth rotation, polar motion, diurnal
+     *     aberration and parallax (unless subsumed into the ICRS <-> GCRS
+     *     transformation), and atmospheric refraction.
+     *
+     *  <li> The context structure astrom produced by this function is used by
+     *     iauAtciq* and iauAticq*.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauEpv00} Earth position and velocity
+     *     <li>{@link #jauApcg} astrometry parameters, ICRS-GCRS, geocenter
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static void jauApcg13(double date1, double date2, jauASTROM astrom)
+    {
+        double ehpv[][] = new double[2][3], ebpv[][] = new double[2][3];
+
+
+        /* Earth barycentric & heliocentric position/velocity (au, au/d). */
+        jauEpv00(date1, date2, ehpv, ebpv);
+
+        /* Compute the star-independent astrometry parameters. */
+        jauApcg(date1, date2, ebpv, ehpv[0], astrom);
+
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  For a terrestrial observer, prepare star-independent astrometry
+     *  parameters for transformations between ICRS and geocentric CIRS
+     *  coordinates.  The Earth ephemeris and CIP/CIO are supplied by the
+     *  caller.
+     *
+     *  The parameters produced by this function are required in the
+     *  parallax, light deflection, aberration, and bias-precession-nutation
+     *  parts of the astrometric transformation chain.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param date1   double        TDB as a 2-part...
+     *     @param date2   double        ...Julian Date (Note 1)
+     *     @param ebpv    double[2][3]  Earth barycentric position/velocity (au, au/day)
+     *     @param ehp     double[3]     Earth heliocentric position (au)
+     *     @param x,y     double        CIP X,Y (components of unit vector)
+     *     @param s       double        the CIO locator s (radians)
+     *
+     *  Returned:
+     *     @return astrom  jauASTROM*     <b>Returned</b> star-independent astrometry parameters:
+     *      @return pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
+     *      @return eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
+     *      @return eh      double[3]      <b>Returned</b> Sun to observer (unit vector)
+     *      @return em      double         <b>Returned</b> distance from Sun to observer (au)
+     *      @return v       double[3]      <b>Returned</b> barycentric observer velocity (vector, c)
+     *      @return bm1     double         <b>Returned</b> sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *      @return bpn     double[3][3]   <b>Returned</b> bias-precession-nutation matrix
+     *      @return along   double         <b>Returned</b> unchanged
+     *      @return xpl     double         <b>Returned</b> unchanged
+     *      @return ypl     double         <b>Returned</b> unchanged
+     *      @return sphi    double         <b>Returned</b> unchanged
+     *      @return cphi    double         <b>Returned</b> unchanged
+     *      @return diurab  double         <b>Returned</b> unchanged
+     *      @return eral    double         <b>Returned</b> unchanged
+     *      @return refa    double         <b>Returned</b> unchanged
+     *      @return refb    double         <b>Returned</b> unchanged
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
+     *     convenient way between the two arguments.  For example,
+     *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
+     *     others:
+     *
+     *            <p>date1          date2
+     *
+     *         <p>2450123.7           0.0       (JD method)
+     *         2451545.0       -1421.3       (J2000 method)
+     *         2400000.5       50123.2       (MJD method)
+     *         2450123.5           0.2       (date & time method)
+     *
+     *     <p>The JD method is the most natural and convenient to use in cases
+     *     where the loss of several decimal digits of resolution is
+     *     acceptable.  The J2000 method is best matched to the way the
+     *     argument is handled internally and will deliver the optimum
+     *     resolution.  The MJD method and the date & time methods are both
+     *     good compromises between resolution and convenience.  For most
+     *     applications of this function the choice will not be at all
+     *     critical.
+     *
+     *     <p>TT can be used instead of TDB without any significant impact on
+     *     accuracy.
+     *
+     *  <li> All the vectors are with respect to BCRS axes.
+     *
+     *  <li> In cases where the caller does not wish to provide the Earth
+     *     ephemeris and CIP/CIO, the function iauApci13 can be used instead
+     *     of the present function.  This computes the required quantities
+     *     using other SOFA functions.
+     *
+     *  <li> This is one of several functions that inserts into the astrom
+     *     structure star-independent parameters needed for the chain of
+     *     astrometric transformations ICRS <-> GCRS <-> CIRS <-> observed.
+     *
+     *     <p>The various functions support different classes of observer and
+     *     portions of the transformation chain:
+     *
+     *          <p>functions         observer        transformation
+     *
+     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
+     *       iauApco iauApco13    terrestrial     ICRS <-> observed
+     *       iauApcs iauApcs13    space           ICRS <-> GCRS
+     *       iauAper iauAper13    terrestrial     update Earth rotation
+     *       iauApio iauApio13    terrestrial     CIRS <-> observed
+     *
+     *     <p>Those with names ending in "13" use contemporary SOFA models to
+     *     compute the various ephemerides.  The others accept ephemerides
+     *     supplied by the caller.
+     *
+     *     <p>The transformation from ICRS to GCRS covers space motion,
+     *     parallax, light deflection, and aberration.  From GCRS to CIRS
+     *     comprises frame bias and precession-nutation.  From CIRS to
+     *     observed takes account of Earth rotation, polar motion, diurnal
+     *     aberration and parallax (unless subsumed into the ICRS <-> GCRS
+     *     transformation), and atmospheric refraction.
+     *
+     *  <li> The context structure astrom produced by this function is used by
+     *     iauAtciq* and iauAticq*.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauApcg} astrometry parameters, ICRS-GCRS, geocenter
+     *     <li>{@link #jauC2ixys} celestial-to-intermediate matrix, given X,Y and s
+     *
+     * </ul>
+     *  This revision:   2013 September 25
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static void jauApci(double date1, double date2,
+            double ebpv[][], double ehp[],
+            double x, double y, double s,
+            jauASTROM astrom)
+    {
+
+        /* Star-independent astrometry parameters for geocenter. */
+        jauApcg(date1, date2, ebpv, ehp, astrom);
+
+        /* CIO based BPN matrix. */
+        astrom.bpn = jauC2ixys(x, y, s);
+
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  For a terrestrial observer, prepare star-independent astrometry
+     *  parameters for transformations between ICRS and geocentric CIRS
+     *  coordinates.  The caller supplies the date, and SOFA models are used
+     *  to predict the Earth ephemeris and CIP/CIO.
+     *
+     *  The parameters produced by this function are required in the
+     *  parallax, light deflection, aberration, and bias-precession-nutation
+     *  parts of the astrometric transformation chain.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param date1   double       TDB as a 2-part...
+     *     @param date2   double       ...Julian Date (Note 1)
+     *     
+     *  Returned:
+     *     @param astrom  jauASTROM    <b>Returned</b> star-independent astrometry parameters:
+     *                    pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
+     *                    eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
+     *                    eh      double[3]      <b>Returned</b> Sun to observer (unit vector)
+     *                    em      double         <b>Returned</b> distance from Sun to observer (au)
+     *                    v       double[3]      <b>Returned</b> barycentric observer velocity (vector, c)
+     *                    bm1     double         <b>Returned</b> sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *                    bpn     double[3][3]   <b>Returned</b> bias-precession-nutation matrix
+     *                    along   double         <b>Returned</b> unchanged
+     *                    xpl     double         <b>Returned</b> unchanged
+     *                    ypl     double         <b>Returned</b> unchanged
+     *                    sphi    double         <b>Returned</b> unchanged
+     *                    cphi    double         <b>Returned</b> unchanged
+     *                    diurab  double         <b>Returned</b> unchanged
+     *                    eral    double         <b>Returned</b> unchanged
+     *                    refa    double         <b>Returned</b> unchanged
+     *                    refb    double         <b>Returned</b> unchanged
+     *     @return eo      double*       <b>Returned</b> equation of the origins (ERA-GST)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
+     *     convenient way between the two arguments.  For example,
+     *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
+     *     others:
+     *
+     *            <p>date1          date2
+     *
+     *         <p>2450123.7           0.0       (JD method)
+     *         2451545.0       -1421.3       (J2000 method)
+     *         2400000.5       50123.2       (MJD method)
+     *         2450123.5           0.2       (date & time method)
+     *
+     *     <p>The JD method is the most natural and convenient to use in cases
+     *     where the loss of several decimal digits of resolution is
+     *     acceptable.  The J2000 method is best matched to the way the
+     *     argument is handled internally and will deliver the optimum
+     *     resolution.  The MJD method and the date & time methods are both
+     *     good compromises between resolution and convenience.  For most
+     *     applications of this function the choice will not be at all
+     *     critical.
+     *
+     *     <p>TT can be used instead of TDB without any significant impact on
+     *     accuracy.
+     *
+     *  <li> All the vectors are with respect to BCRS axes.
+     *
+     *  <li> In cases where the caller wishes to supply his own Earth
+     *     ephemeris and CIP/CIO, the function iauApci can be used instead
+     *     of the present function.
+     *
+     *  <li> This is one of several functions that inserts into the astrom
+     *     structure star-independent parameters needed for the chain of
+     *     astrometric transformations ICRS <-> GCRS <-> CIRS <-> observed.
+     *
+     *     <p>The various functions support different classes of observer and
+     *     portions of the transformation chain:
+     *
+     *          <p>functions         observer        transformation
+     *
+     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
+     *       iauApco iauApco13    terrestrial     ICRS <-> observed
+     *       iauApcs iauApcs13    space           ICRS <-> GCRS
+     *       iauAper iauAper13    terrestrial     update Earth rotation
+     *       iauApio iauApio13    terrestrial     CIRS <-> observed
+     *
+     *     <p>Those with names ending in "13" use contemporary SOFA models to
+     *     compute the various ephemerides.  The others accept ephemerides
+     *     supplied by the caller.
+     *
+     *     <p>The transformation from ICRS to GCRS covers space motion,
+     *     parallax, light deflection, and aberration.  From GCRS to CIRS
+     *     comprises frame bias and precession-nutation.  From CIRS to
+     *     observed takes account of Earth rotation, polar motion, diurnal
+     *     aberration and parallax (unless subsumed into the ICRS <-> GCRS
+     *     transformation), and atmospheric refraction.
+     *
+     *  <li> The context structure astrom produced by this function is used by
+     *     iauAtciq* and iauAticq*.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauEpv00} Earth position and velocity
+     *     <li>{@link #jauPnm06a} classical NPB matrix, IAU 2006/2000A
+     *     <li>{@link #jauBpn2xy} extract CIP X,Y coordinates from NPB matrix
+     *     <li>{@link #jauS06} the CIO locator s, given X,Y, IAU 2006
+     *     <li>{@link #jauApci} astrometry parameters, ICRS-CIRS
+     *     <li>{@link #jauEors} equation of the origins, given NPB matrix and s
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static double jauApci13(double date1, double date2,
+            jauASTROM astrom)
+    {
+        double ehpv[][] = new double[2][3], ebpv[][] = new double[2][3], r[][], s;
+
+
+        /* Earth barycentric & heliocentric position/velocity (au, au/d). */
+        jauEpv00(date1, date2, ehpv, ebpv);
+
+        /* Form the equinox based BPN matrix, IAU 2006/2000A. */
+        r = jauPnm06a(date1, date2);
+
+        /* Extract CIP X,Y. */
+        CelestialIntermediatePole cip = jauBpn2xy(r);
+
+        /* Obtain CIO locator s. */
+        s = jauS06(date1, date2, cip.x, cip.y);
+
+        /* Compute the star-independent astrometry parameters. */
+        jauApci(date1, date2, ebpv, ehpv[0], cip.x, cip.y, s, astrom);
+
+        /* Equation of the origins. */
+        return jauEors(r, s);
+
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  For a terrestrial observer, prepare star-independent astrometry
+     *  parameters for transformations between ICRS and observed
+     *  coordinates.  The caller supplies the Earth ephemeris, the Earth
+     *  rotation information and the refraction constants as well as the
+     *  site coordinates.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param date1   double        TDB as a 2-part...
+     *     @param date2   double        ...Julian Date (Note 1)
+     *     @param ebpv    double[2][3]  Earth barycentric PV (au, au/day, Note 2)
+     *     @param ehp     double[3]     Earth heliocentric P (au, Note 2)
+     *     @param x,y     double        CIP X,Y (components of unit vector)
+     *     @param s       double        the CIO locator s (radians)
+     *     @param theta   double        Earth rotation angle (radians)
+     *     @param elong   double        longitude (radians, east +ve, Note 3)
+     *     @param phi     double        latitude (geodetic, radians, Note 3)
+     *     @param hm      double        height above ellipsoid (m, geodetic, Note 3)
+     *     @param xp,yp   double        polar motion coordinates (radians, Note 4)
+     *     @param sp      double        the TIO locator s' (radians, Note 4)
+     *     @param refa    double        refraction constant A (radians, Note 5)
+     *     @param refb    double        refraction constant B (radians, Note 5)
+     *
+     *  Returned:
+     *     @return astrom  jauASTROM*     <b>Returned</b> star-independent astrometry parameters:
+     *      @return pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
+     *      @return eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
+     *      @return eh      double[3]      <b>Returned</b> Sun to observer (unit vector)
+     *      @return em      double         <b>Returned</b> distance from Sun to observer (au)
+     *      @return v       double[3]      <b>Returned</b> barycentric observer velocity (vector, c)
+     *      @return bm1     double         <b>Returned</b> sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *      @return bpn     double[3][3]   <b>Returned</b> bias-precession-nutation matrix
+     *      @return along   double         <b>Returned</b> longitude + s' (radians)
+     *      @return xpl     double         <b>Returned</b> polar motion xp wrt local meridian (radians)
+     *      @return ypl     double         <b>Returned</b> polar motion yp wrt local meridian (radians)
+     *      @return sphi    double         <b>Returned</b> sine of geodetic latitude
+     *      @return cphi    double         <b>Returned</b> cosine of geodetic latitude
+     *      @return diurab  double         <b>Returned</b> magnitude of diurnal aberration vector
+     *      @return eral    double         <b>Returned</b> "local" Earth rotation angle (radians)
+     *      @return refa    double         <b>Returned</b> refraction constant A (radians)
+     *      @return refb    double         <b>Returned</b> refraction constant B (radians)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
+     *     convenient way between the two arguments.  For example,
+     *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
+     *     others:
+     *
+     *            <p>date1          date2
+     *
+     *         <p>2450123.7           0.0       (JD method)
+     *         2451545.0       -1421.3       (J2000 method)
+     *         2400000.5       50123.2       (MJD method)
+     *         2450123.5           0.2       (date & time method)
+     *
+     *     <p>The JD method is the most natural and convenient to use in cases
+     *     where the loss of several decimal digits of resolution is
+     *     acceptable.  The J2000 method is best matched to the way the
+     *     argument is handled internally and will deliver the optimum
+     *     resolution.  The MJD method and the date & time methods are both
+     *     good compromises between resolution and convenience.  For most
+     *     applications of this function the choice will not be at all
+     *     critical.
+     *
+     *     <p>TT can be used instead of TDB without any significant impact on
+     *     accuracy.
+     *
+     *  <li> The vectors eb, eh, and all the astrom vectors, are with respect
+     *     to BCRS axes.
+     *
+     *  <li> The geographical coordinates are with respect to the WGS84
+     *     reference ellipsoid.  TAKE CARE WITH THE LONGITUDE SIGN
+     *     CONVENTION:  the longitude required by the present function is
+     *     right-handed, i.e. east-positive, in accordance with geographical
+     *     convention.
+     *
+     *  <li> xp and yp are the coordinates (in radians) of the Celestial
+     *     Intermediate Pole with respect to the International Terrestrial
+     *     Reference System (see IERS Conventions), measured along the
+     *     meridians 0 and 90 deg west respectively.  sp is the TIO locator
+     *     s', in radians, which positions the Terrestrial Intermediate
+     *     Origin on the equator.  For many applications, xp, yp and
+     *     (especially) sp can be set to zero.
+     *
+     *     <p>Internally, the polar motion is stored in a form rotated onto the
+     *     local meridian.
+     *
+     *  <li> The refraction constants refa and refb are for use in a
+     *     dZ = A*tan(Z)+B*tan^3(Z) model, where Z is the observed
+     *     (i.e. refracted) zenith distance and dZ is the amount of
+     *     refraction.
+     *
+     *  <li> It is advisable to take great care with units, as even unlikely
+     *     values of the input parameters are accepted and processed in
+     *     accordance with the models used.
+     *
+     *  <li> In cases where the caller does not wish to provide the Earth
+     *     Ephemeris, the Earth rotation information and refraction
+     *     constants, the function iauApco13 can be used instead of the
+     *     present function.  This starts from UTC and weather readings etc.
+     *     and computes suitable values using other SOFA functions.
+     *
+     *  <li> This is one of several functions that inserts into the astrom
+     *     structure star-independent parameters needed for the chain of
+     *     astrometric transformations ICRS <-> GCRS <-> CIRS <-> observed.
+     *
+     *     <p>The various functions support different classes of observer and
+     *     portions of the transformation chain:
+     *
+     *          <p>functions         observer        transformation
+     *
+     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
+     *       iauApco iauApco13    terrestrial     ICRS <-> observed
+     *       iauApcs iauApcs13    space           ICRS <-> GCRS
+     *       iauAper iauAper13    terrestrial     update Earth rotation
+     *       iauApio iauApio13    terrestrial     CIRS <-> observed
+     *
+     *     <p>Those with names ending in "13" use contemporary SOFA models to
+     *     compute the various ephemerides.  The others accept ephemerides
+     *     supplied by the caller.
+     *
+     *     <p>The transformation from ICRS to GCRS covers space motion,
+     *     parallax, light deflection, and aberration.  From GCRS to CIRS
+     *     comprises frame bias and precession-nutation.  From CIRS to
+     *     observed takes account of Earth rotation, polar motion, diurnal
+     *     aberration and parallax (unless subsumed into the ICRS <-> GCRS
+     *     transformation), and atmospheric refraction.
+     *
+     *  <li> The context structure astrom produced by this function is used by
+     *     iauAtioq, iauAtoiq, iauAtciq* and iauAticq*.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauAper} astrometry parameters: update ERA
+     *     <li>{@link #jauC2ixys} celestial-to-intermediate matrix, given X,Y and s
+     *     <li>{@link #jauPvtob} position/velocity of terrestrial station
+     *     <li>{@link #jauTrxpv} product of transpose of r-matrix and pv-vector
+     *     <li>{@link #jauApcs} astrometry parameters, ICRS-GCRS, space observer
+     *     <li>{@link #jauCr} copy r-matrix
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAInternalError 
+     * @throws JSOFAIllegalParameter 
+     */
+    public static void jauApco(double date1, double date2,
+            double ebpv[][], double ehp[],
+            double x, double y, double s, double theta,
+            double elong, double phi, double hm,
+            double xp, double yp, double sp,
+            double refa, double refb,
+            jauASTROM astrom) throws JSOFAIllegalParameter, JSOFAInternalError
+    {
+        double sl, cl, r[][], pvc[][], pv[][];
+
+
+        /* Longitude with adjustment for TIO locator s'. */
+        astrom.along = elong + sp;
+
+        /* Polar motion, rotated onto the local meridian. */
+        sl = sin(astrom.along);
+        cl = cos(astrom.along);
+        astrom.xpl = xp*cl - yp*sl;
+        astrom.ypl = xp*sl + yp*cl;
+
+        /* Functions of latitude. */
+        astrom.sphi = sin(phi);
+        astrom.cphi = cos(phi);
+
+        /* Refraction constants. */
+        astrom.refa = refa;
+        astrom.refb = refb;
+
+        /* Local Earth rotation angle. */
+        jauAper(theta, astrom);
+
+        /* Disable the (redundant) diurnal aberration step. */
+        astrom.diurab = 0.0;
+
+        /* CIO based BPN matrix. */
+        r = jauC2ixys(x, y, s);
+
+        /* Observer's geocentric position and velocity (m, m/s, CIRS). */
+        pvc = jauPvtob(elong, phi, hm, xp, yp, sp, theta);
+
+        /* Rotate into GCRS. */
+        pv = jauTrxpv(r, pvc);
+
+        /* ICRS <-> GCRS parameters. */
+        jauApcs(date1, date2, pv, ebpv, ehp, astrom);
+
+        /* Store the CIO based BPN matrix. */
+        jauCr(r, astrom.bpn );
+
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  For a terrestrial observer, prepare star-independent astrometry
+     *  parameters for transformations between ICRS and observed
+     *  coordinates.  The caller supplies UTC, site coordinates, ambient air
+     *  conditions and observing wavelength, and SOFA models are used to
+     *  obtain the Earth ephemeris, CIP/CIO and refraction constants.
+     *
+     *  The parameters produced by this function are required in the
+     *  parallax, light deflection, aberration, and bias-precession-nutation
+     *  parts of the ICRS/CIRS transformations.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param utc1    double      UTC as a 2-part...
+     *     @param utc2    double      ...quasi Julian Date (Notes 1,2)
+     *     @param dut1    double      UT1-UTC (seconds, Note 3)
+     *     @param elong   double      longitude (radians, east +ve, Note 4)
+     *     @param phi     double      latitude (geodetic, radians, Note 4)
+     *     @param hm      double      height above ellipsoid (m, geodetic, Notes 4,6)
+     *     @param xp,yp   double      polar motion coordinates (radians, Note 5)
+     *     @param phpa    double      pressure at the observer (hPa = mB, Note 6)
+     *     @param tc      double      ambient temperature at the observer (deg C)
+     *     @param rh      double      relative humidity at the observer (range 0-1)
+     *     @param wl      double      wavelength (micrometers, Note 7)
+     *
+     *  Returned:
+     *     @param astrom  jauASTROM*   <b>Returned</b> star-independent astrometry parameters:
+     *         
+     *     
+     *     @return eo      double      <b>Returned</b> equation of the origins (ERA-GST)
+     *
+     *  @Throws Returned  (function   <b>Returned</b> value):
+     *            @return int         status:   <b>Returned</b> +1 = dubious year (Note 2)
+     *                                @return 0  =   <b>Returned</b> OK
+     *                               @return -1  =   <b>Returned</b> unacceptable date
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> utc1+utc2 is quasi Julian Date (see Note 2), apportioned in any
+     *      convenient way between the two arguments, for example where utc1
+     *      is the Julian Day Number and utc2 is the fraction of a day.
+     *
+     *      <p>However, JD cannot unambiguously represent UTC during a leap
+     *      second unless special measures are taken.  The convention in the
+     *      present function is that the JD day represents UTC days whether
+     *      the length is 86399, 86400 or 86401 SI seconds.
+     *
+     *      <p>Applications should use the function iauDtf2d to convert from
+     *      calendar date and time of day into 2-part quasi Julian Date, as
+     *      it implements the leap-second-ambiguity convention just
+     *      described.
+     *
+     *  <li> The warning status "dubious year" flags UTCs that predate the
+     *      introduction of the time scale or that are too far in the
+     *      future to be trusted.  See iauDat for further details.
+     *
+     *  <li> UT1-UTC is tabulated in IERS bulletins.  It increases by exactly
+     *      one second at the end of each positive UTC leap second,
+     *      introduced in order to keep UT1-UTC within +/- 0.9s.  n.b. This
+     *      practice is under review, and in the future UT1-UTC may grow
+     *      essentially without limit.
+     *
+     *  <li> The geographical coordinates are with respect to the WGS84
+     *      reference ellipsoid.  TAKE CARE WITH THE LONGITUDE SIGN:  the
+     *      longitude required by the present function is east-positive
+     *      (i.e. right-handed), in accordance with geographical convention.
+     *
+     *  <li> The polar motion xp,yp can be obtained from IERS bulletins.  The
+     *      values are the coordinates (in radians) of the Celestial
+     *      Intermediate Pole with respect to the International Terrestrial
+     *      Reference System (see IERS Conventions 2003), measured along the
+     *      meridians 0 and 90 deg west respectively.  For many
+     *      applications, xp and yp can be set to zero.
+     *
+     *      <p>Internally, the polar motion is stored in a form rotated onto
+     *      the local meridian.
+     *
+     *  <li> If hm, the height above the ellipsoid of the observing station
+     *      in meters, is not known but phpa, the pressure in hPa (=mB), is
+     *      available, an adequate estimate of hm can be obtained from the
+     *      expression
+     *
+     *            <p>hm = -29.3 * tsl * log ( phpa / 1013.25 );
+     *
+     *      <p>where tsl is the approximate sea-level air temperature in K
+     *      (See Astrophysical Quantities, C.W.Allen, 3rd edition, section
+     *      52).  Similarly, if the pressure phpa is not known, it can be
+     *      estimated from the height of the observing station, hm, as
+     *      follows:
+     *
+     *            <p>phpa = 1013.25 * exp ( -hm / ( 29.3 * tsl ) );
+     *
+     *      <p>Note, however, that the refraction is nearly proportional to
+     *      the pressure and that an accurate phpa value is important for
+     *      precise work.
+     *
+     *  <li> The argument wl specifies the observing wavelength in
+     *      micrometers.  The transition from optical to radio is assumed to
+     *      occur at 100 micrometers (about 3000 GHz).
+     *
+     *  <li> It is advisable to take great care with units, as even unlikely
+     *      values of the input parameters are accepted and processed in
+     *      accordance with the models used.
+     *
+     *  <li> In cases where the caller wishes to supply his own Earth
+     *      ephemeris, Earth rotation information and refraction constants,
+     *      the function iauApco can be used instead of the present function.
+     *
+     *  <li> This is one of several functions that inserts into the astrom
+     *      structure star-independent parameters needed for the chain of
+     *      astrometric transformations ICRS <-> GCRS <-> CIRS <-> observed.
+     *
+     *      <p>The various functions support different classes of observer and
+     *      portions of the transformation chain:
+     *
+     *          <p>functions         observer        transformation
+     *
+     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
+     *       iauApco iauApco13    terrestrial     ICRS <-> observed
+     *       iauApcs iauApcs13    space           ICRS <-> GCRS
+     *       iauAper iauAper13    terrestrial     update Earth rotation
+     *       iauApio iauApio13    terrestrial     CIRS <-> observed
+     *
+     *      <p>Those with names ending in "13" use contemporary SOFA models to
+     *      compute the various ephemerides.  The others accept ephemerides
+     *      supplied by the caller.
+     *
+     *      <p>The transformation from ICRS to GCRS covers space motion,
+     *      parallax, light deflection, and aberration.  From GCRS to CIRS
+     *      comprises frame bias and precession-nutation.  From CIRS to
+     *      observed takes account of Earth rotation, polar motion, diurnal
+     *      aberration and parallax (unless subsumed into the ICRS <-> GCRS
+     *      transformation), and atmospheric refraction.
+     *
+     *  <li> The context structure astrom produced by this function is used
+     *      by iauAtioq, iauAtoiq, iauAtciq* and iauAticq*.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauUtctai} UTC to TAI
+     *     <li>{@link #jauTaitt} TAI to TT
+     *     <li>{@link #jauUtcut1} UTC to UT1
+     *     <li>{@link #jauEpv00} Earth position and velocity
+     *     <li>{@link #jauPnm06a} classical NPB matrix, IAU 2006/2000A
+     *     <li>{@link #jauBpn2xy} extract CIP X,Y coordinates from NPB matrix
+     *     <li>{@link #jauS06} the CIO locator s, given X,Y, IAU 2006
+     *     <li>{@link #jauEra00} Earth rotation angle, IAU 2000
+     *     <li>{@link #jauSp00} the TIO locator s', IERS 2000
+     *     <li>{@link #jauRefco} refraction constants for given ambient conditions
+     *     <li>{@link #jauApco} astrometry parameters, ICRS-observed
+     *     <li>{@link #jauEors} equation of the origins, given NPB matrix and s
+     *
+     * </ul>
+     *  This revision:   2013 December 5
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAInternalError 
+     * @throws JSOFAIllegalParameter 
+     */
+    public static double jauApco13(double utc1, double utc2, double dut1,
+            double elong, double phi, double hm, double xp, double yp,
+            double phpa, double tc, double rh, double wl,
+            jauASTROM astrom ) throws JSOFAIllegalParameter, JSOFAInternalError
+    {
+        double ehpv[][] = new double[2][3], ebpv[][] = new double[2][3],
+        r[][], s, theta, sp;
+        double eo;
+
+
+        /* UTC to other time scales. */
+        JulianDate tai = jauUtctai(utc1, utc2);
+        JulianDate tt = jauTaitt(tai.djm0, tai.djm1);
+        JulianDate ut1 = jauUtcut1(utc1, utc2, dut1);
+
+        /* Earth barycentric & heliocentric position/velocity (au, au/d). */
+        jauEpv00(tt.djm0, tt.djm1, ehpv, ebpv);
+
+        /* Form the equinox based BPN matrix, IAU 2006/2000A. */
+        r = jauPnm06a(tt.djm0, tt.djm1);
+
+        /* Extract CIP X,Y. */
+        CelestialIntermediatePole cip = jauBpn2xy(r);
+
+        /* Obtain CIO locator s. */
+        s = jauS06(tt.djm0, tt.djm1, cip.x, cip.y);
+
+        /* Earth rotation angle. */
+        theta = jauEra00(ut1.djm0, ut1.djm1);
+
+        /* TIO locator s'. */
+        sp = jauSp00(tt.djm0, tt.djm1);
+
+        /* Refraction constants A and B. */
+        RefCos ref = jauRefco(phpa, tc, rh, wl);
+
+        /* Compute the star-independent astrometry parameters. */
+        jauApco(tt.djm0, tt.djm1, ebpv, ehpv[0], cip.x, cip.y, s, theta,
+                elong, phi, hm, xp, yp, sp, ref.a, ref.b, astrom);
+
+        /* Equation of the origins. */
+        eo = jauEors(r, s);
+
+        return eo;
+
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  For an observer whose geocentric position and velocity are known,
+     *  prepare star-independent astrometry parameters for transformations
+     *  between ICRS and GCRS.  The Earth ephemeris is supplied by the
+     *  caller.
+     *
+     *  The parameters produced by this function are required in the space
+     *  motion, parallax, light deflection and aberration parts of the
+     *  astrometric transformation chain.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param date1   double        TDB as a 2-part...
+     *     @param date2   double        ...Julian Date (Note 1)
+     *     @param pv      double[2][3]  observer's geocentric pos/vel (m, m/s)
+     *     @param ebpv    double[2][3]  Earth barycentric PV (au, au/day)
+     *     @param ehp     double[3]     Earth heliocentric P (au)
+     *
+     *  Returned:
+     *     @return astrom  jauASTROM*     <b>Returned</b> star-independent astrometry parameters:
+     *      @return pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
+     *      @return eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
+     *      @return eh      double[3]      <b>Returned</b> Sun to observer (unit vector)
+     *      @return em      double         <b>Returned</b> distance from Sun to observer (au)
+     *      @return v       double[3]      <b>Returned</b> barycentric observer velocity (vector, c)
+     *      @return bm1     double         <b>Returned</b> sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *      @return bpn     double[3][3]   <b>Returned</b> bias-precession-nutation matrix
+     *      @return along   double         <b>Returned</b> unchanged
+     *      @return xpl     double         <b>Returned</b> unchanged
+     *      @return ypl     double         <b>Returned</b> unchanged
+     *      @return sphi    double         <b>Returned</b> unchanged
+     *      @return cphi    double         <b>Returned</b> unchanged
+     *      @return diurab  double         <b>Returned</b> unchanged
+     *      @return eral    double         <b>Returned</b> unchanged
+     *      @return refa    double         <b>Returned</b> unchanged
+     *      @return refb    double         <b>Returned</b> unchanged
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
+     *     convenient way between the two arguments.  For example,
+     *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
+     *     others:
+     *
+     *            <p>date1          date2
+     *
+     *         <p>2450123.7           0.0       (JD method)
+     *         2451545.0       -1421.3       (J2000 method)
+     *         2400000.5       50123.2       (MJD method)
+     *         2450123.5           0.2       (date & time method)
+     *
+     *     <p>The JD method is the most natural and convenient to use in cases
+     *     where the loss of several decimal digits of resolution is
+     *     acceptable.  The J2000 method is best matched to the way the
+     *     argument is handled internally and will deliver the optimum
+     *     resolution.  The MJD method and the date & time methods are both
+     *     good compromises between resolution and convenience.  For most
+     *     applications of this function the choice will not be at all
+     *     critical.
+     *
+     *     <p>TT can be used instead of TDB without any significant impact on
+     *     accuracy.
+     *
+     *  <li> All the vectors are with respect to BCRS axes.
+     *
+     *  <li> Providing separate arguments for (i) the observer's geocentric
+     *     position and velocity and (ii) the Earth ephemeris is done for
+     *     convenience in the geocentric, terrestrial and Earth orbit cases.
+     *     For deep space applications it maybe more convenient to specify
+     *     zero geocentric position and velocity and to supply the
+     *     observer's position and velocity information directly instead of
+     *     with respect to the Earth.  However, note the different units:
+     *     m and m/s for the geocentric vectors, au and au/day for the
+     *     heliocentric and barycentric vectors.
+     *
+     *  <li> In cases where the caller does not wish to provide the Earth
+     *     ephemeris, the function iauApcs13 can be used instead of the
+     *     present function.  This computes the Earth ephemeris using the
+     *     SOFA function iauEpv00.
+     *
+     *  <li> This is one of several functions that inserts into the astrom
+     *     structure star-independent parameters needed for the chain of
+     *     astrometric transformations ICRS <-> GCRS <-> CIRS <-> observed.
+     *
+     *     <p>The various functions support different classes of observer and
+     *     portions of the transformation chain:
+     *
+     *          <p>functions         observer        transformation
+     *
+     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
+     *       iauApco iauApco13    terrestrial     ICRS <-> observed
+     *       iauApcs iauApcs13    space           ICRS <-> GCRS
+     *       iauAper iauAper13    terrestrial     update Earth rotation
+     *       iauApio iauApio13    terrestrial     CIRS <-> observed
+     *
+     *     <p>Those with names ending in "13" use contemporary SOFA models to
+     *     compute the various ephemerides.  The others accept ephemerides
+     *     supplied by the caller.
+     *
+     *     <p>The transformation from ICRS to GCRS covers space motion,
+     *     parallax, light deflection, and aberration.  From GCRS to CIRS
+     *     comprises frame bias and precession-nutation.  From CIRS to
+     *     observed takes account of Earth rotation, polar motion, diurnal
+     *     aberration and parallax (unless subsumed into the ICRS <-> GCRS
+     *     transformation), and atmospheric refraction.
+     *
+     *  <li> The context structure astrom produced by this function is used by
+     *     iauAtciq* and iauAticq*.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauCp} copy p-vector
+     *     <li>{@link #jauPm} modulus of p-vector
+     *     <li>{@link #jauPn} decompose p-vector into modulus and direction
+     *     <li>{@link #jauIr} initialize r-matrix to identity
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static void jauApcs(double date1, double date2, double pv[][],
+            double ebpv[][], double ehp[],
+            jauASTROM astrom)
+    {
+        /* au/d to m/s */
+        final double AUDMS = DAU/DAYSEC;
+
+        /* Light time for 1 AU (day) */
+        final double CR = AULT/DAYSEC;
+
+        int i;
+        double dp, dv, pb[] = new double[3], vb[] = new double[3], ph[] = new double[3], v2, w;
+
+
+        /* Time since reference epoch, years (for proper motion calculation). */
+        astrom.pmt = ( (date1 - DJ00) + date2 ) / DJY;
+
+        /* Adjust Earth ephemeris to observer. */
+        for (i = 0; i < 3; i++) {
+            dp = pv[0][i] / DAU;
+            dv = pv[1][i] / AUDMS;
+            pb[i] = ebpv[0][i] + dp;
+            vb[i] = ebpv[1][i] + dv;
+            ph[i] = ehp[i] + dp;
+        }
+
+        /* Barycentric position of observer (au). */
+        jauCp(pb, astrom.eb);
+
+        /* Heliocentric direction and distance (unit vector and au). */
+        NormalizedVector nv = jauPn(ph);
+        
+        astrom.em = nv.r;
+        astrom.eh = nv.u;
+
+        /* Barycentric vel. in units of c, and reciprocal of Lorenz factor. */
+        v2 = 0.0;
+        for (i = 0; i < 3; i++) {
+            w = vb[i] * CR;
+            astrom.v[i] = w;
+            v2 += w*w;
+        }
+        astrom.bm1 = sqrt(1.0 - v2);
+
+        /* Reset the NPB matrix. */
+        jauIr(astrom.bpn);
+
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  For an observer whose geocentric position and velocity are known,
+     *  prepare star-independent astrometry parameters for transformations
+     *  between ICRS and GCRS.  The Earth ephemeris is from SOFA models.
+     *
+     *  The parameters produced by this function are required in the space
+     *  motion, parallax, light deflection and aberration parts of the
+     *  astrometric transformation chain.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param date1   double        TDB as a 2-part...
+     *     @param date2   double        ...Julian Date (Note 1)
+     *     @param pv      double[2][3]  observer's geocentric pos/vel (Note 3)
+     *
+     *  Returned:
+     *     @return astrom  jauASTROM*     <b>Returned</b> star-independent astrometry parameters:
+     *      @return pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
+     *      @return eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
+     *      @return eh      double[3]      <b>Returned</b> Sun to observer (unit vector)
+     *      @return em      double         <b>Returned</b> distance from Sun to observer (au)
+     *      @return v       double[3]      <b>Returned</b> barycentric observer velocity (vector, c)
+     *      @return bm1     double         <b>Returned</b> sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *      @return bpn     double[3][3]   <b>Returned</b> bias-precession-nutation matrix
+     *      @return along   double         <b>Returned</b> unchanged
+     *      @return xpl     double         <b>Returned</b> unchanged
+     *      @return ypl     double         <b>Returned</b> unchanged
+     *      @return sphi    double         <b>Returned</b> unchanged
+     *      @return cphi    double         <b>Returned</b> unchanged
+     *      @return diurab  double         <b>Returned</b> unchanged
+     *      @return eral    double         <b>Returned</b> unchanged
+     *      @return refa    double         <b>Returned</b> unchanged
+     *      @return refb    double         <b>Returned</b> unchanged
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
+     *     convenient way between the two arguments.  For example,
+     *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
+     *     others:
+     *
+     *            <p>date1          date2
+     *
+     *         <p>2450123.7           0.0       (JD method)
+     *         2451545.0       -1421.3       (J2000 method)
+     *         2400000.5       50123.2       (MJD method)
+     *         2450123.5           0.2       (date & time method)
+     *
+     *     <p>The JD method is the most natural and convenient to use in cases
+     *     where the loss of several decimal digits of resolution is
+     *     acceptable.  The J2000 method is best matched to the way the
+     *     argument is handled internally and will deliver the optimum
+     *     resolution.  The MJD method and the date & time methods are both
+     *     good compromises between resolution and convenience.  For most
+     *     applications of this function the choice will not be at all
+     *     critical.
+     *
+     *     <p>TT can be used instead of TDB without any significant impact on
+     *     accuracy.
+     *
+     *  <li> All the vectors are with respect to BCRS axes.
+     *
+     *  <li> The observer's position and velocity pv are geocentric but with
+     *     respect to BCRS axes, and in units of m and m/s.  No assumptions
+     *     are made about proximity to the Earth, and the function can be
+     *     used for deep space applications as well as Earth orbit and
+     *     terrestrial.
+     *
+     *  <li> In cases where the caller wishes to supply his own Earth
+     *     ephemeris, the function iauApcs can be used instead of the present
+     *     function.
+     *
+     *  <li> This is one of several functions that inserts into the astrom
+     *     structure star-independent parameters needed for the chain of
+     *     astrometric transformations ICRS <-> GCRS <-> CIRS <-> observed.
+     *
+     *     <p>The various functions support different classes of observer and
+     *     portions of the transformation chain:
+     *
+     *          <p>functions         observer        transformation
+     *
+     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
+     *       iauApco iauApco13    terrestrial     ICRS <-> observed
+     *       iauApcs iauApcs13    space           ICRS <-> GCRS
+     *       iauAper iauAper13    terrestrial     update Earth rotation
+     *       iauApio iauApio13    terrestrial     CIRS <-> observed
+     *
+     *     <p>Those with names ending in "13" use contemporary SOFA models to
+     *     compute the various ephemerides.  The others accept ephemerides
+     *     supplied by the caller.
+     *
+     *     <p>The transformation from ICRS to GCRS covers space motion,
+     *     parallax, light deflection, and aberration.  From GCRS to CIRS
+     *     comprises frame bias and precession-nutation.  From CIRS to
+     *     observed takes account of Earth rotation, polar motion, diurnal
+     *     aberration and parallax (unless subsumed into the ICRS <-> GCRS
+     *     transformation), and atmospheric refraction.
+     *
+     *  <li> The context structure astrom produced by this function is used by
+     *     iauAtciq* and iauAticq*.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauEpv00} Earth position and velocity
+     *     <li>{@link #jauApcs} astrometry parameters, ICRS-GCRS, space observer
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static void jauApcs13(double date1, double date2, double pv[][],
+            jauASTROM astrom)
+    {
+        double ehpv[][] = new double[2][3], ebpv[][] = new double[2][3];
+
+
+        /* Earth barycentric & heliocentric position/velocity (au, au/d). */
+        jauEpv00(date1, date2, ehpv, ebpv);
+
+        /* Compute the star-independent astrometry parameters. */
+        jauApcs(date1, date2, pv, ebpv, ehpv[0], astrom);
+
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  In the star-independent astrometry parameters, update only the
+     *  Earth rotation angle, supplied by the caller explicitly.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param theta    double       Earth rotation angle (radians, Note 2)
+     *     @param astrom   jauASTROM*   star-independent astrometry parameters:
+     *      @param pmt     double        not used
+     *      @param eb      double[3]     not used
+     *      @param eh      double[3]     not used
+     *      @param em      double        not used
+     *      @param v       double[3]     not used
+     *      @param bm1     double        not used
+     *      @param bpn     double[3][3]  not used
+     *      @param along   double        longitude + s' (radians)
+     *      @param xpl     double        not used
+     *      @param ypl     double        not used
+     *      @param sphi    double        not used
+     *      @param cphi    double        not used
+     *      @param diurab  double        not used
+     *      @param eral    double        not used
+     *      @param refa    double        not used
+     *      @param refb    double        not used
+     *
+     *  Returned:
+     *     @return astrom   jauASTROM*    <b>Returned</b> star-independent astrometry parameters:
+     *      @return pmt     double         <b>Returned</b> unchanged
+     *      @return eb      double[3]      <b>Returned</b> unchanged
+     *      @return eh      double[3]      <b>Returned</b> unchanged
+     *      @return em      double         <b>Returned</b> unchanged
+     *      @return v       double[3]      <b>Returned</b> unchanged
+     *      @return bm1     double         <b>Returned</b> unchanged
+     *      @return bpn     double[3][3]   <b>Returned</b> unchanged
+     *      @return along   double         <b>Returned</b> unchanged
+     *      @return xpl     double         <b>Returned</b> unchanged
+     *      @return ypl     double         <b>Returned</b> unchanged
+     *      @return sphi    double         <b>Returned</b> unchanged
+     *      @return cphi    double         <b>Returned</b> unchanged
+     *      @return diurab  double         <b>Returned</b> unchanged
+     *      @return eral    double         <b>Returned</b> "local" Earth rotation angle (radians)
+     *      @return refa    double         <b>Returned</b> unchanged
+     *      @return refb    double         <b>Returned</b> unchanged
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> This function exists to enable sidereal-tracking applications to
+     *     avoid wasteful recomputation of the bulk of the astrometry
+     *     parameters:  only the Earth rotation is updated.
+     *
+     *  <li> For targets expressed as equinox based positions, such as
+     *     classical geocentric apparent (RA,Dec), the supplied theta can be
+     *     Greenwich apparent sidereal time rather than Earth rotation
+     *     angle.
+     *
+     *  <li> The function iauAper13 can be used instead of the present
+     *     function, and starts from UT1 rather than ERA itself.
+     *
+     *  <li> This is one of several functions that inserts into the astrom
+     *     structure star-independent parameters needed for the chain of
+     *     astrometric transformations ICRS <-> GCRS <-> CIRS <-> observed.
+     *
+     *     <p>The various functions support different classes of observer and
+     *     portions of the transformation chain:
+     *
+     *          <p>functions         observer        transformation
+     *
+     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
+     *       iauApco iauApco13    terrestrial     ICRS <-> observed
+     *       iauApcs iauApcs13    space           ICRS <-> GCRS
+     *       iauAper iauAper13    terrestrial     update Earth rotation
+     *       iauApio iauApio13    terrestrial     CIRS <-> observed
+     *
+     *     <p>Those with names ending in "13" use contemporary SOFA models to
+     *     compute the various ephemerides.  The others accept ephemerides
+     *     supplied by the caller.
+     *
+     *     <p>The transformation from ICRS to GCRS covers space motion,
+     *     parallax, light deflection, and aberration.  From GCRS to CIRS
+     *     comprises frame bias and precession-nutation.  From CIRS to
+     *     observed takes account of Earth rotation, polar motion, diurnal
+     *     aberration and parallax (unless subsumed into the ICRS <-> GCRS
+     *     transformation), and atmospheric refraction.
+     *
+     * </ol>
+     *  This revision:   2013 September 25
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static void jauAper(double theta, jauASTROM astrom)
+    {
+        astrom.eral = theta + astrom.along;
+
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  In the star-independent astrometry parameters, update only the
+     *  Earth rotation angle.  The caller provides UT1, (n.b. not UTC).
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param ut11     double       UT1 as a 2-part...
+     *     @param ut12     double       ...Julian Date (Note 1)
+     *     @param astrom   jauASTROM*   star-independent astrometry parameters:
+     *      @param pmt     double        not used
+     *      @param eb      double[3]     not used
+     *      @param eh      double[3]     not used
+     *      @param em      double        not used
+     *      @param v       double[3]     not used
+     *      @param bm1     double        not used
+     *      @param bpn     double[3][3]  not used
+     *      @param along   double        longitude + s' (radians)
+     *      @param xpl     double        not used
+     *      @param ypl     double        not used
+     *      @param sphi    double        not used
+     *      @param cphi    double        not used
+     *      @param diurab  double        not used
+     *      @param eral    double        not used
+     *      @param refa    double        not used
+     *      @param refb    double        not used
+     *
+     *  Returned:
+     *     @return astrom   jauASTROM*    <b>Returned</b> star-independent astrometry parameters:
+     *      @return pmt     double         <b>Returned</b> unchanged
+     *      @return eb      double[3]      <b>Returned</b> unchanged
+     *      @return eh      double[3]      <b>Returned</b> unchanged
+     *      @return em      double         <b>Returned</b> unchanged
+     *      @return v       double[3]      <b>Returned</b> unchanged
+     *      @return bm1     double         <b>Returned</b> unchanged
+     *      @return bpn     double[3][3]   <b>Returned</b> unchanged
+     *      @return along   double         <b>Returned</b> unchanged
+     *      @return xpl     double         <b>Returned</b> unchanged
+     *      @return ypl     double         <b>Returned</b> unchanged
+     *      @return sphi    double         <b>Returned</b> unchanged
+     *      @return cphi    double         <b>Returned</b> unchanged
+     *      @return diurab  double         <b>Returned</b> unchanged
+     *      @return eral    double         <b>Returned</b> "local" Earth rotation angle (radians)
+     *      @return refa    double         <b>Returned</b> unchanged
+     *      @return refb    double         <b>Returned</b> unchanged
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The UT1 date (n.b. not UTC) ut11+ut12 is a Julian Date,
+     *     apportioned in any convenient way between the arguments ut11 and
+     *     ut12.  For example, JD(UT1)=2450123.7 could be expressed in any
+     *     of these ways, among others:
+     *
+     *            <p>ut11           ut12
+     *
+     *         <p>2450123.7           0.0       (JD method)
+     *         2451545.0       -1421.3       (J2000 method)
+     *         2400000.5       50123.2       (MJD method)
+     *         2450123.5           0.2       (date & time method)
+     *
+     *     <p>The JD method is the most natural and convenient to use in cases
+     *     where the loss of several decimal digits of resolution is
+     *     acceptable.  The J2000 and MJD methods are good compromises
+     *     between resolution and convenience.  The date & time method is
+     *     best matched to the algorithm used:  maximum precision is
+     *     delivered when the ut11 argument is for 0hrs UT1 on the day in
+     *     question and the ut12 argument lies in the range 0 to 1, or vice
+     *     versa.
+     *
+     *  <li> If the caller wishes to provide the Earth rotation angle itself,
+     *     the function iauAper can be used instead.  One use of this
+     *     technique is to substitute Greenwich apparent sidereal time and
+     *     thereby to support equinox based transformations directly.
+     *
+     *  <li> This is one of several functions that inserts into the astrom
+     *     structure star-independent parameters needed for the chain of
+     *     astrometric transformations ICRS <-> GCRS <-> CIRS <-> observed.
+     *
+     *     <p>The various functions support different classes of observer and
+     *     portions of the transformation chain:
+     *
+     *          <p>functions         observer        transformation
+     *
+     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
+     *       iauApco iauApco13    terrestrial     ICRS <-> observed
+     *       iauApcs iauApcs13    space           ICRS <-> GCRS
+     *       iauAper iauAper13    terrestrial     update Earth rotation
+     *       iauApio iauApio13    terrestrial     CIRS <-> observed
+     *
+     *     <p>Those with names ending in "13" use contemporary SOFA models to
+     *     compute the various ephemerides.  The others accept ephemerides
+     *     supplied by the caller.
+     *
+     *     <p>The transformation from ICRS to GCRS covers space motion,
+     *     parallax, light deflection, and aberration.  From GCRS to CIRS
+     *     comprises frame bias and precession-nutation.  From CIRS to
+     *     observed takes account of Earth rotation, polar motion, diurnal
+     *     aberration and parallax (unless subsumed into the ICRS <-> GCRS
+     *     transformation), and atmospheric refraction.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauAper} astrometry parameters: update ERA
+     *     <li>{@link #jauEra00} Earth rotation angle, IAU 2000
+     *
+     * </ul>
+     *  This revision:   2013 September 25
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static void jauAper13(double ut11, double ut12, jauASTROM astrom)
+    {
+        jauAper(jauEra00(ut11,ut12), astrom);
+
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  For a terrestrial observer, prepare star-independent astrometry
+     *  parameters for transformations between CIRS and observed
+     *  coordinates.  The caller supplies the Earth orientation information
+     *  and the refraction constants as well as the site coordinates.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param sp      double       the TIO locator s' (radians, Note 1)
+     *     @param theta   double       Earth rotation angle (radians)
+     *     @param elong   double       longitude (radians, east +ve, Note 2)
+     *     @param phi     double       geodetic latitude (radians, Note 2)
+     *     @param hm      double       height above ellipsoid (m, geodetic Note 2)
+     *     @param xp,yp   double       polar motion coordinates (radians, Note 3)
+     *     @param refa    double       refraction constant A (radians, Note 4)
+     *     @param refb    double       refraction constant B (radians, Note 4)
+     *
+     *  Returned:
+     *     @return astrom  jauASTROM*    <b>Returned</b> star-independent astrometry parameters:
+     *      @return pmt     double         <b>Returned</b> unchanged
+     *      @return eb      double[3]      <b>Returned</b> unchanged
+     *      @return eh      double[3]      <b>Returned</b> unchanged
+     *      @return em      double         <b>Returned</b> unchanged
+     *      @return v       double[3]      <b>Returned</b> unchanged
+     *      @return bm1     double         <b>Returned</b> unchanged
+     *      @return bpn     double[3][3]   <b>Returned</b> unchanged
+     *      @return along   double         <b>Returned</b> longitude + s' (radians)
+     *      @return xpl     double         <b>Returned</b> polar motion xp wrt local meridian (radians)
+     *      @return ypl     double         <b>Returned</b> polar motion yp wrt local meridian (radians)
+     *      @return sphi    double         <b>Returned</b> sine of geodetic latitude
+     *      @return cphi    double         <b>Returned</b> cosine of geodetic latitude
+     *      @return diurab  double         <b>Returned</b> magnitude of diurnal aberration vector
+     *      @return eral    double         <b>Returned</b> "local" Earth rotation angle (radians)
+     *      @return refa    double         <b>Returned</b> refraction constant A (radians)
+     *      @return refb    double         <b>Returned</b> refraction constant B (radians)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> sp, the TIO locator s', is a tiny quantity needed only by the
+     *     most precise applications.  It can either be set to zero or
+     *     predicted using the SOFA function iauSp00.
+     *
+     *  <li> The geographical coordinates are with respect to the WGS84
+     *     reference ellipsoid.  TAKE CARE WITH THE LONGITUDE SIGN:  the
+     *     longitude required by the present function is east-positive
+     *     (i.e. right-handed), in accordance with geographical convention.
+     *
+     *  <li> The polar motion xp,yp can be obtained from IERS bulletins.  The
+     *     values are the coordinates (in radians) of the Celestial
+     *     Intermediate Pole with respect to the International Terrestrial
+     *     Reference System (see IERS Conventions 2003), measured along the
+     *     meridians 0 and 90 deg west respectively.  For many applications,
+     *     xp and yp can be set to zero.
+     *
+     *     <p>Internally, the polar motion is stored in a form rotated onto the
+     *     local meridian.
+     *
+     *  <li> The refraction constants refa and refb are for use in a
+     *     dZ = A*tan(Z)+B*tan^3(Z) model, where Z is the observed
+     *     (i.e. refracted) zenith distance and dZ is the amount of
+     *     refraction.
+     *
+     *  <li> It is advisable to take great care with units, as even unlikely
+     *     values of the input parameters are accepted and processed in
+     *     accordance with the models used.
+     *
+     *  <li> In cases where the caller does not wish to provide the Earth
+     *     rotation information and refraction constants, the function
+     *     iauApio13 can be used instead of the present function.  This
+     *     starts from UTC and weather readings etc. and computes suitable
+     *     values using other SOFA functions.
+     *
+     *  <li> This is one of several functions that inserts into the astrom
+     *     structure star-independent parameters needed for the chain of
+     *     astrometric transformations ICRS <-> GCRS <-> CIRS <-> observed.
+     *
+     *     <p>The various functions support different classes of observer and
+     *     portions of the transformation chain:
+     *
+     *          <p>functions         observer        transformation
+     *
+     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
+     *       iauApco iauApco13    terrestrial     ICRS <-> observed
+     *       iauApcs iauApcs13    space           ICRS <-> GCRS
+     *       iauAper iauAper13    terrestrial     update Earth rotation
+     *       iauApio iauApio13    terrestrial     CIRS <-> observed
+     *
+     *     <p>Those with names ending in "13" use contemporary SOFA models to
+     *     compute the various ephemerides.  The others accept ephemerides
+     *     supplied by the caller.
+     *
+     *     <p>The transformation from ICRS to GCRS covers space motion,
+     *     parallax, light deflection, and aberration.  From GCRS to CIRS
+     *     comprises frame bias and precession-nutation.  From CIRS to
+     *     observed takes account of Earth rotation, polar motion, diurnal
+     *     aberration and parallax (unless subsumed into the ICRS <-> GCRS
+     *     transformation), and atmospheric refraction.
+     *
+     *  <li> The context structure astrom produced by this function is used by
+     *     iauAtioq and iauAtoiq.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauPvtob} position/velocity of terrestrial station
+     *     <li>{@link #jauAper} astrometry parameters: update ERA
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAInternalError 
+     * @throws JSOFAIllegalParameter 
+     */
+    public static void jauApio(double sp, double theta,
+            double elong, double phi, double hm, double xp, double yp,
+            double refa, double refb,
+            jauASTROM astrom) throws JSOFAIllegalParameter, JSOFAInternalError
+    {
+        double sl, cl, pv[][];
+
+
+        /* Longitude with adjustment for TIO locator s'. */
+        astrom.along = elong + sp;
+
+        /* Polar motion, rotated onto the local meridian. */
+        sl = sin(astrom.along);
+        cl = cos(astrom.along);
+        astrom.xpl = xp*cl - yp*sl;
+        astrom.ypl = xp*sl + yp*cl;
+
+        /* Functions of latitude. */
+        astrom.sphi = sin(phi);
+        astrom.cphi = cos(phi);
+
+        /* Observer's geocentric position and velocity (m, m/s, CIRS). */
+        pv = jauPvtob(elong, phi, hm, xp, yp, sp, theta);
+
+        /* Magnitude of diurnal aberration vector. */
+        astrom.diurab = sqrt(pv[1][0]*pv[1][0]+pv[1][1]*pv[1][1]) / CMPS;
+
+        /* Refraction constants. */
+        astrom.refa = refa;
+        astrom.refb = refb;
+
+        /* Local Earth rotation angle. */
+        jauAper(theta, astrom);
+
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  For a terrestrial observer, prepare star-independent astrometry
+     *  parameters for transformations between CIRS and observed
+     *  coordinates.  The caller supplies UTC, site coordinates, ambient air
+     *  conditions and observing wavelength.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param utc1    double       UTC as a 2-part...
+     *     @param utc2    double       ...quasi Julian Date (Notes 1,2)
+     *     @param dut1    double       UT1-UTC (seconds)
+     *     @param elong   double       longitude (radians, east +ve, Note 3)
+     *     @param phi     double       geodetic latitude (radians, Note 3)
+     *     @param hm      double       height above ellipsoid (m, geodetic Notes 4,6)
+     *     @param xp,yp   double       polar motion coordinates (radians, Note 5)
+     *     @param phpa    double       pressure at the observer (hPa = mB, Note 6)
+     *     @param tc      double       ambient temperature at the observer (deg C)
+     *     @param rh      double       relative humidity at the observer (range 0-1)
+     *     @param wl      double       wavelength (micrometers, Note 7)
+     *
+     *  Returned:
+     *     @return astrom  jauASTROM*    <b>Returned</b> star-independent astrometry parameters:
+     *      @return pmt     double         <b>Returned</b> unchanged
+     *      @return eb      double[3]      <b>Returned</b> unchanged
+     *      @return eh      double[3]      <b>Returned</b> unchanged
+     *      @return em      double         <b>Returned</b> unchanged
+     *      @return v       double[3]      <b>Returned</b> unchanged
+     *      @return bm1     double         <b>Returned</b> unchanged
+     *      @return bpn     double[3][3]   <b>Returned</b> unchanged
+     *      @return along   double         <b>Returned</b> longitude + s' (radians)
+     *      @return xpl     double         <b>Returned</b> polar motion xp wrt local meridian (radians)
+     *      @return ypl     double         <b>Returned</b> polar motion yp wrt local meridian (radians)
+     *      @return sphi    double         <b>Returned</b> sine of geodetic latitude
+     *      @return cphi    double         <b>Returned</b> cosine of geodetic latitude
+     *      @return diurab  double         <b>Returned</b> magnitude of diurnal aberration vector
+     *      @return eral    double         <b>Returned</b> "local" Earth rotation angle (radians)
+     *      @return refa    double         <b>Returned</b> refraction constant A (radians)
+     *      @return refb    double         <b>Returned</b> refraction constant B (radians)
+     *
+     *  @return Returned  (function   <b>Returned</b> value):
+     *            @return int          status:   <b>Returned</b> +1 = dubious year (Note 2)
+     *                                 @return 0  =   <b>Returned</b> OK
+     *                                @return -1  =   <b>Returned</b> unacceptable date
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> utc1+utc2 is quasi Julian Date (see Note 2), apportioned in any
+     *      convenient way between the two arguments, for example where utc1
+     *      is the Julian Day Number and utc2 is the fraction of a day.
+     *
+     *      <p>However, JD cannot unambiguously represent UTC during a leap
+     *      second unless special measures are taken.  The convention in the
+     *      present function is that the JD day represents UTC days whether
+     *      the length is 86399, 86400 or 86401 SI seconds.
+     *
+     *      <p>Applications should use the function iauDtf2d to convert from
+     *      calendar date and time of day into 2-part quasi Julian Date, as
+     *      it implements the leap-second-ambiguity convention just
+     *      described.
+     *
+     *  <li> The warning status "dubious year" flags UTCs that predate the
+     *      introduction of the time scale or that are too far in the future
+     *      to be trusted.  See iauDat for further details.
+     *
+     *  <li> UT1-UTC is tabulated in IERS bulletins.  It increases by exactly
+     *      one second at the end of each positive UTC leap second,
+     *      introduced in order to keep UT1-UTC within +/- 0.9s.  n.b. This
+     *      practice is under review, and in the future UT1-UTC may grow
+     *      essentially without limit.
+     *
+     *  <li> The geographical coordinates are with respect to the WGS84
+     *      reference ellipsoid.  TAKE CARE WITH THE LONGITUDE SIGN:  the
+     *      longitude required by the present function is east-positive
+     *      (i.e. right-handed), in accordance with geographical convention.
+     *
+     *  <li> The polar motion xp,yp can be obtained from IERS bulletins.  The
+     *      values are the coordinates (in radians) of the Celestial
+     *      Intermediate Pole with respect to the International Terrestrial
+     *      Reference System (see IERS Conventions 2003), measured along the
+     *      meridians 0 and 90 deg west respectively.  For many applications,
+     *      xp and yp can be set to zero.
+     *
+     *      <p>Internally, the polar motion is stored in a form rotated onto
+     *      the local meridian.
+     *
+     *  <li> If hm, the height above the ellipsoid of the observing station
+     *      in meters, is not known but phpa, the pressure in hPa (=mB), is
+     *      available, an adequate estimate of hm can be obtained from the
+     *      expression
+     *
+     *            <p>hm = -29.3 * tsl * log ( phpa / 1013.25 );
+     *
+     *      <p>where tsl is the approximate sea-level air temperature in K
+     *      (See Astrophysical Quantities, C.W.Allen, 3rd edition, section
+     *      52).  Similarly, if the pressure phpa is not known, it can be
+     *      estimated from the height of the observing station, hm, as
+     *      follows:
+     *
+     *            <p>phpa = 1013.25 * exp ( -hm / ( 29.3 * tsl ) );
+     *
+     *      <p>Note, however, that the refraction is nearly proportional to the
+     *      pressure and that an accurate phpa value is important for
+     *      precise work.
+     *
+     *  <li> The argument wl specifies the observing wavelength in
+     *      micrometers.  The transition from optical to radio is assumed to
+     *      occur at 100 micrometers (about 3000 GHz).
+     *
+     *  <li> It is advisable to take great care with units, as even unlikely
+     *      values of the input parameters are accepted and processed in
+     *      accordance with the models used.
+     *
+     *  <li> In cases where the caller wishes to supply his own Earth
+     *      rotation information and refraction constants, the function
+     *      iauApc can be used instead of the present function.
+     *
+     *  <li> This is one of several functions that inserts into the astrom
+     *      structure star-independent parameters needed for the chain of
+     *      astrometric transformations ICRS <-> GCRS <-> CIRS <-> observed.
+     *
+     *      <p>The various functions support different classes of observer and
+     *      portions of the transformation chain:
+     *
+     *          <p>functions         observer        transformation
+     *
+     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
+     *       iauApco iauApco13    terrestrial     ICRS <-> observed
+     *       iauApcs iauApcs13    space           ICRS <-> GCRS
+     *       iauAper iauAper13    terrestrial     update Earth rotation
+     *       iauApio iauApio13    terrestrial     CIRS <-> observed
+     *
+     *      <p>Those with names ending in "13" use contemporary SOFA models to
+     *      compute the various ephemerides.  The others accept ephemerides
+     *      supplied by the caller.
+     *
+     *      <p>The transformation from ICRS to GCRS covers space motion,
+     *      parallax, light deflection, and aberration.  From GCRS to CIRS
+     *      comprises frame bias and precession-nutation.  From CIRS to
+     *      observed takes account of Earth rotation, polar motion, diurnal
+     *      aberration and parallax (unless subsumed into the ICRS <-> GCRS
+     *      transformation), and atmospheric refraction.
+     *
+     *  <li> The context structure astrom produced by this function is used
+     *      by iauAtioq and iauAtoiq.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauUtctai} UTC to TAI
+     *     <li>{@link #jauTaitt} TAI to TT
+     *     <li>{@link #jauUtcut1} UTC to UT1
+     *     <li>{@link #jauSp00} the TIO locator s', IERS 2000
+     *     <li>{@link #jauEra00} Earth rotation angle, IAU 2000
+     *     <li>{@link #jauRefco} refraction constants for given ambient conditions
+     *     <li>{@link #jauApio} astrometry parameters, CIRS-observed
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAInternalError 
+     * @throws JSOFAIllegalParameter 
+     */
+    public static void jauApio13(double utc1, double utc2, double dut1,
+            double elong, double phi, double hm, double xp, double yp,
+            double phpa, double tc, double rh, double wl,
+            jauASTROM astrom) throws JSOFAIllegalParameter, JSOFAInternalError
+    {
+        double sp, theta;
+
+
+        /* UTC to other time scales. */
+        JulianDate tai = jauUtctai(utc1, utc2);
+        JulianDate tt = jauTaitt(tai.djm0, tai.djm1);
+        JulianDate ut1 = jauUtcut1(utc1, utc2, dut1);
+
+        /* TIO locator s'. */
+        sp = jauSp00(tt.djm0, tt.djm1);
+
+        /* Earth rotation angle. */
+        theta = jauEra00(ut1.djm0, ut1.djm1);
+
+        /* Refraction constants A and B. */
+        RefCos refco = jauRefco(phpa, tc, rh, wl);
+
+        /* CIRS <-> observed astrometry parameters. */
+        jauApio(sp, theta, elong, phi, hm, xp, yp, refco.a, refco.b, astrom);
+
+       
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  Transform ICRS star data, epoch J2000.0, to CIRS.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param rc      double    ICRS right ascension at J2000.0 (radians, Note 1)
+     *     @param dc      double    ICRS declination at J2000.0 (radians, Note 1)
+     *     @param pr      double    RA proper motion (radians/year; Note 2)
+     *     @param pd      double    Dec proper motion (radians/year)
+     *     @param px      double    parallax (arcsec)
+     *     @param rv      double    radial velocity (km/s, +ve if receding)
+     *     @param date1   double    TDB as a 2-part...
+     *     @param date2   double    ...Julian Date (Note 3)
+     *
+     *  Returned:
+     *     @return ri,di   double*    <b>Returned</b> CIRS geocentric RA,Dec (radians)
+     *     @return eo      double*    <b>Returned</b> equation of the origins (ERA-GST, Note 5)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> Star data for an epoch other than J2000.0 (for example from the
+     *     Hipparcos catalog, which has an epoch of J1991.25) will require a
+     *     preliminary call to iauPmsafe before use.
+     *
+     *  <li> The proper motion in RA is dRA/dt rather than cos(Dec)*dRA/dt.
+     *
+     *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
+     *     convenient way between the two arguments.  For example,
+     *     JD(TDB)=2450123.8g could be expressed in any of these ways, among
+     *     others:
+     *
+     *            <p>date1          date2
+     *
+     *         <p>2450123.8g           0.0       (JD method)
+     *         2451545.0       -1421.3       (J2000 method)
+     *         2400000.5       50123.2       (MJD method)
+     *         2450123.5           0.2       (date & time method)
+     *
+     *     <p>The JD method is the most natural and convenient to use in cases
+     *     where the loss of several decimal digits of resolution is
+     *     acceptable.  The J2000 method is best matched to the way the
+     *     argument is handled internally and will deliver the optimum
+     *     resolution.  The MJD method and the date & time methods are both
+     *     good compromises between resolution and convenience.  For most
+     *     applications of this function the choice will not be at all
+     *     critical.
+     *
+     *     <p>TT can be used instead of TDB without any significant impact on
+     *     accuracy.
+     *
+     *  <li> The available accuracy is better than 1 milliarcsecond, limited
+     *     mainly by the precession-nutation model that is used, namely
+     *     IAU 2000A/2006.  Very close to solar system bodies, additional
+     *     errors of up to several milliarcseconds can occur because of
+     *     unmodeled light deflection;  however, the Sun's contribution is
+     *     taken into account, to first order.  The accuracy limitations of
+     *     the SOFA function iauEpv00 (used to compute Earth position and
+     *     velocity) can contribute aberration errors of up to
+     *     5 microarcseconds.  Light deflection at the Sun's limb is
+     *     uncertain at the 0.4 mas level.
+     *
+     *  <li> Should the transformation to (equinox based) apparent place be
+     *     required rather than (CIO based) intermediate place, subtract the
+     *     equation of the origins from the returned right ascension:
+     *     RA = RI - EO. (The iauAnp function can then be applied, as
+     *     required, to keep the result in the conventional 0-2pi range.)
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauApci13} astrometry parameters, ICRS-CIRS, 2013
+     *     <li>{@link #jauAtciq} quick ICRS to CIRS
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static SphericalCoordinateEO jauAtci13(double rc, double dc,
+            double pr, double pd, double px, double rv,
+            double date1, double date2)
+    {
+        /* Star-independent astrometry parameters */
+        jauASTROM astrom = new jauASTROM();
+
+
+        /* The transformation parameters. */
+        double eo = jauApci13(date1, date2, astrom);
+
+        /* ICRS (epoch J2000.0) to CIRS. */
+        SphericalCoordinate co = jauAtciq(rc, dc, pr, pd, px, rv, astrom);
+        
+        return new SphericalCoordinateEO(co, eo);
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  Quick ICRS, epoch J2000.0, to CIRS transformation, given precomputed
+     *  star-independent astrometry parameters.
+     *
+     *  Use of this function is appropriate when efficiency is important and
+     *  where many star positions are to be transformed for one date.  The
+     *  star-independent parameters can be obtained by calling one of the
+     *  functions iauApci[13], iauApcg[13], iauApco[13] or iauApcs[13].
+     *
+     *  If the parallax and proper motions are zero the iauAtciqz function
+     *  can be used instead.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param rc,dc   double      ICRS RA,Dec at J2000.0 (radians)
+     *     @param pr      double      RA proper motion (radians/year; Note 3)
+     *     @param pd      double      Dec proper motion (radians/year)
+     *     @param px      double      parallax (arcsec)
+     *     @param rv      double      radial velocity (km/s, +ve if receding)
+     *     @param astrom  jauASTROM*  star-independent astrometry parameters:
+     *      @param pmt     double        PM time interval (SSB, Julian years)
+     *      @param eb      double[3]     SSB to observer (vector, au)
+     *      @param eh      double[3]     Sun to observer (unit vector)
+     *      @param em      double        distance from Sun to observer (au)
+     *      @param v       double[3]     barycentric observer velocity (vector, c)
+     *      @param bm1     double        sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *      @param bpn     double[3][3]  bias-precession-nutation matrix
+     *      @param along   double        longitude + s' (radians)
+     *      @param xpl     double        polar motion xp wrt local meridian (radians)
+     *      @param ypl     double        polar motion yp wrt local meridian (radians)
+     *      @param sphi    double        sine of geodetic latitude
+     *      @param cphi    double        cosine of geodetic latitude
+     *      @param diurab  double        magnitude of diurnal aberration vector
+     *      @param eral    double        "local" Earth rotation angle (radians)
+     *      @param refa    double        refraction constant A (radians)
+     *      @param refb    double        refraction constant B (radians)
+     *
+     *  Returned:
+     *     @return     double      <b>Returned</b> CIRS RA,Dec (radians)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> All the vectors are with respect to BCRS axes.
+     *
+     *  <li> Star data for an epoch other than J2000.0 (for example from the
+     *     Hipparcos catalog, which has an epoch of J1991.25) will require a
+     *     preliminary call to iauPmsafe before use.
+     *
+     *  <li> The proper motion in RA is dRA/dt rather than cos(Dec)*dRA/dt.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauPmpx} proper motion and parallax
+     *     <li>{@link #jauLdsun} light deflection by the Sun
+     *     <li>{@link #jauAb} stellar aberration
+     *     <li>{@link #jauRxp} product of r-matrix and pv-vector
+     *     <li>{@link #jauC2s} p-vector to spherical
+     *     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static SphericalCoordinate jauAtciq(double rc, double dc,
+            double pr, double pd, double px, double rv,
+            jauASTROM astrom)
+    {
+        double pco[], pnat[], ppr[], pi[], w;
+
+
+        /* Proper motion and parallax, giving BCRS coordinate direction. */
+        pco = jauPmpx(rc, dc, pr, pd, px, rv, astrom.pmt, astrom.eb);
+
+        /* Light deflection by the Sun, giving BCRS natural direction. */
+        pnat = jauLdsun(pco, astrom.eh, astrom.em);
+
+        /* Aberration, giving GCRS proper direction. */
+        ppr = jauAb(pnat, astrom.v, astrom.em, astrom.bm1);
+
+        /* Bias-precession-nutation, giving CIRS proper direction. */
+        pi = jauRxp(astrom.bpn, ppr);
+
+        /* CIRS RA,Dec. */
+        SphericalCoordinate co = jauC2s(pi);
+        co.alpha = jauAnp(co.alpha);
+
+        return co;
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  Quick ICRS, epoch J2000.0, to CIRS transformation, given precomputed
+     *  star-independent astrometry parameters plus a list of light-
+     *  deflecting bodies.
+     *
+     *  Use of this function is appropriate when efficiency is important and
+     *  where many star positions are to be transformed for one date.  The
+     *  star-independent parameters can be obtained by calling one of the
+     *  functions iauApci[13], iauApcg[13], iauApco[13] or iauApcs[13].
+     *
+     *
+     *  If the only light-deflecting body to be taken into account is the
+     *  Sun, the iauAtciq function can be used instead.  If in addition the
+     *  parallax and proper motions are zero, the iauAtciqz function can be
+     *  used.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param rc,dc   double        ICRS RA,Dec at J2000.0 (radians)
+     *     @param pr      double        RA proper motion (radians/year; Note 3)
+     *     @param pd      double        Dec proper motion (radians/year)
+     *     @param px      double        parallax (arcsec)
+     *     @param rv      double        radial velocity (km/s, +ve if receding)
+     *     @param astrom  jauASTROM*    star-independent astrometry parameters:
+     *      @param pmt     double        PM time interval (SSB, Julian years)
+     *      @param eb      double[3]     SSB to observer (vector, au)
+     *      @param eh      double[3]     Sun to observer (unit vector)
+     *      @param em      double        distance from Sun to observer (au)
+     *      @param v       double[3]     barycentric observer velocity (vector, c)
+     *      @param bm1     double        sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *      @param bpn     double[3][3]  bias-precession-nutation matrix
+     *      @param along   double        longitude + s' (radians)
+     *      @param xpl     double        polar motion xp wrt local meridian (radians)
+     *      @param ypl     double        polar motion yp wrt local meridian (radians)
+     *      @param sphi    double        sine of geodetic latitude
+     *      @param cphi    double        cosine of geodetic latitude
+     *      @param diurab  double        magnitude of diurnal aberration vector
+     *      @param eral    double        "local" Earth rotation angle (radians)
+     *      @param refa    double        refraction constant A (radians)
+     *      @param refb    double        refraction constant B (radians)
+     *      @param n      int            number of bodies (Note 3)
+     *      @param b      jauLDBODY[n]  data for each of the n bodies (Notes 3,4):
+     *       @param bm     double         mass of the body (solar masses, Note 5)
+     *       @param dl     double         deflection limiter (Note 6)
+     *       @param pv     [2][3]         barycentric PV of the body (au, au/day)
+     *
+     *  Returned:
+     *     @return ri,di    double      <b>Returned</b> CIRS RA,Dec (radians)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> Star data for an epoch other than J2000.0 (for example from the
+     *     Hipparcos catalog, which has an epoch of J1991.25) will require a
+     *     preliminary call to iauPmsafe before use.
+     *
+     *  <li> The proper motion in RA is dRA/dt rather than cos(Dec)*dRA/dt.
+     *
+     *  <li> The struct b contains n entries, one for each body to be
+     *     considered.  If n = 0, no gravitational light deflection will be
+     *     applied, not even for the Sun.
+     *
+     *  <li> The struct b should include an entry for the Sun as well as for
+     *     any planet or other body to be taken into account.  The entries
+     *     should be in the order in which the light passes the body.
+     *
+     *  <li> In the entry in the b struct for body i, the mass parameter
+     *     b[i].bm can, as required, be adjusted in order to allow for such
+     *     effects as quadrupole field.
+     *
+     *  <li> The deflection limiter parameter b[i].dl is phi^2/2, where phi is
+     *     the angular separation (in radians) between star and body at
+     *     which limiting is applied.  As phi shrinks below the chosen
+     *     threshold, the deflection is artificially reduced, reaching zero
+     *     for phi = 0.   Example values suitable for a terrestrial
+     *     observer, together with masses, are as follows:
+     *
+     *        <p>body i     b[i].bm        b[i].dl
+     *
+     *        <p>Sun        1.0            6e-6
+     *        Jupiter    0.00095435     3e-9
+     *        Saturn     0.00028574     3e-10
+     *
+     *  <li> For efficiency, validation of the contents of the b array is
+     *     omitted.  The supplied masses must be greater than zero, the
+     *     position and velocity vectors must be right, and the deflection
+     *     limiter greater than zero.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauPmpx} proper motion and parallax
+     *     <li>{@link #jauLdn} light deflection by n bodies
+     *     <li>{@link #jauAb} stellar aberration
+     *     <li>{@link #jauRxp} product of r-matrix and pv-vector
+     *     <li>{@link #jauC2s} p-vector to spherical
+     *     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static SphericalCoordinate jauAtciqn(double rc, double dc, double pr, double pd,
+            double px, double rv, jauASTROM astrom,
+            int n, jauLDBODY b[])
+    {
+        double pco[], pnat[], ppr[] = new double[3], pi[] = new double[3], w;
+
+
+        /* Proper motion and parallax, giving BCRS coordinate direction. */
+        pco = jauPmpx(rc, dc, pr, pd, px, rv, astrom.pmt, astrom.eb);
+
+        /* Light deflection, giving BCRS natural direction. */
+        pnat = jauLdn(n, b, astrom.eb, pco);
+
+        /* Aberration, giving GCRS proper direction. */
+        ppr = jauAb(pnat, astrom.v, astrom.em, astrom.bm1);
+
+        /* Bias-precession-nutation, giving CIRS proper direction. */
+        pi = jauRxp(astrom.bpn, ppr);
+
+        /* CIRS RA,Dec. */
+        SphericalCoordinate co = jauC2s(pi);
+        co.alpha = jauAnp(co.alpha);
+
+        return co;
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  Quick ICRS to CIRS transformation, given precomputed star-
+     *  independent astrometry parameters, and assuming zero parallax and
+     *  proper motion.
+     *
+     *  Use of this function is appropriate when efficiency is important and
+     *  where many star positions are to be transformed for one date.  The
+     *  star-independent parameters can be obtained by calling one of the
+     *  functions iauApci[13], iauApcg[13], iauApco[13] or iauApcs[13].
+     *
+     *  The corresponding function for the case of non-zero parallax and
+     *  proper motion is iauAtciq.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param rc,dc   double      ICRS astrometric RA,Dec (radians)
+     *     @param astrom  jauASTROM*  star-independent astrometry parameters:
+     *      @param pmt     double        PM time interval (SSB, Julian years)
+     *      @param eb      double[3]     SSB to observer (vector, au)
+     *      @param eh      double[3]     Sun to observer (unit vector)
+     *      @param em      double        distance from Sun to observer (au)
+     *      @param v       double[3]     barycentric observer velocity (vector, c)
+     *      @param bm1     double        sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *      @param bpn     double[3][3]  bias-precession-nutation matrix
+     *      @param along   double        longitude + s' (radians)
+     *      @param xpl     double        polar motion xp wrt local meridian (radians)
+     *      @param ypl     double        polar motion yp wrt local meridian (radians)
+     *      @param sphi    double        sine of geodetic latitude
+     *      @param cphi    double        cosine of geodetic latitude
+     *      @param diurab  double        magnitude of diurnal aberration vector
+     *      @param eral    double        "local" Earth rotation angle (radians)
+     *      @param refa    double        refraction constant A (radians)
+     *      @param refb    double        refraction constant B (radians)
+     *
+     *  Returned:
+     *     @return ri,di   double       <b>Returned</b> CIRS RA,Dec (radians)
+     *
+     *  Note:
+     *
+     *     @return All  the   <b>Returned</b> vectors are with respect to BCRS axes.
+     *
+     *  References:
+     * <ul>
+     *
+     * <li> Urban, S. & Seidelmann, P. K. (eds), Explanatory Supplement to
+     *     the Astronomical Almanac, 3rd ed., University Science Books
+     *     (2013).
+     *
+     * <li> Klioner, Sergei A., "A practical relativistic model for micro-
+     *     arcsecond astrometry in space", Astr. J. 125, 1580-1597 (2003).
+     *
+     * </ul>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauS2c} spherical coordinates to unit vector
+     *     <li>{@link #jauLdsun} light deflection due to Sun
+     *     <li>{@link #jauAb} stellar aberration
+     *     <li>{@link #jauRxp} product of r-matrix and p-vector
+     *     <li>{@link #jauC2s} p-vector to spherical
+     *     <li>{@link #jauAnp} normalize angle into range +/- pi
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static SphericalCoordinate jauAtciqz(double rc, double dc, jauASTROM astrom)
+    {
+        double pco[], pnat[], ppr[] = new double[3], pi[] , w;
+
+
+        /* BCRS coordinate direction (unit vector). */
+        pco = jauS2c(rc, dc);
+
+        /* Light deflection by the Sun, giving BCRS natural direction. */
+        pnat = jauLdsun(pco, astrom.eh, astrom.em);
+
+        /* Aberration, giving GCRS proper direction. */
+        ppr = jauAb(pnat, astrom.v, astrom.em, astrom.bm1);
+
+        /* Bias-precession-nutation, giving CIRS proper direction. */
+        pi = jauRxp(astrom.bpn, ppr);
+
+        /* CIRS RA,Dec. */
+        SphericalCoordinate co = jauC2s(pi);
+        co.alpha = jauAnp(co.alpha);
+
+        return co;
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  ICRS RA,Dec to observed place.  The caller supplies UTC, site
+     *  coordinates, ambient air conditions and observing wavelength.
+     *
+     *  SOFA models are used for the Earth ephemeris, bias-precession-
+     *  nutation, Earth orientation and refraction.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param rc,dc   double    ICRS right ascension at J2000.0 (radians, Note 1)
+     *     @param pr      double    RA proper motion (radians/year; Note 2)
+     *     @param pd      double    Dec proper motion (radians/year)
+     *     @param px      double    parallax (arcsec)
+     *     @param rv      double    radial velocity (km/s, +ve if receding)
+     *     @param utc1    double    UTC as a 2-part...
+     *     @param utc2    double    ...quasi Julian Date (Notes 3-4)
+     *     @param dut1    double    UT1-UTC (seconds, Note 5)
+     *     @param elong   double    longitude (radians, east +ve, Note 6)
+     *     @param phi     double    latitude (geodetic, radians, Note 6)
+     *     @param hm      double    height above ellipsoid (m, geodetic, Notes 6,8)
+     *     @param xp,yp   double    polar motion coordinates (radians, Note 7)
+     *     @param phpa    double    pressure at the observer (hPa = mB, Note 8)
+     *     @param tc      double    ambient temperature at the observer (deg C)
+     *     @param rh      double    relative humidity at the observer (range 0-1)
+     *     @param wl      double    wavelength (micrometers, Note 9)
+     *
+     *  Returned:
+     *     @return aob     double*    <b>Returned</b> observed azimuth (radians: N=0,E=90)
+     *     @return zob     double*    <b>Returned</b> observed zenith distance (radians)
+     *     @return hob     double*    <b>Returned</b> observed hour angle (radians)
+     *     @return dob     double*    <b>Returned</b> observed declination (radians)
+     *     @return rob     double*    <b>Returned</b> observed right ascension (CIO-based, radians)
+     *     @return eo      double*    <b>Returned</b> equation of the origins (ERA-GST)
+     *
+     *  @return Returned  (function   <b>Returned</b> value):
+     *            @return int       status:   <b>Returned</b> +1 = dubious year (Note 4)
+     *                              @return 0  =   <b>Returned</b> OK
+     *                             @return -1  =   <b>Returned</b> unacceptable date
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> Star data for an epoch other than J2000.0 (for example from the
+     *      Hipparcos catalog, which has an epoch of J1991.25) will require
+     *      a preliminary call to iauPmsafe before use.
+     *
+     *  <li> The proper motion in RA is dRA/dt rather than cos(Dec)*dRA/dt.
+     *
+     *  <li> utc1+utc2 is quasi Julian Date (see Note 2), apportioned in any
+     *      convenient way between the two arguments, for example where utc1
+     *      is the Julian Day Number and utc2 is the fraction of a day.
+     *
+     *      <p>However, JD cannot unambiguously represent UTC during a leap
+     *      second unless special measures are taken.  The convention in the
+     *      present function is that the JD day represents UTC days whether
+     *      the length is 86399, 86400 or 86401 SI seconds.
+     *
+     *      <p>Applications should use the function iauDtf2d to convert from
+     *      calendar date and time of day into 2-part quasi Julian Date, as
+     *      it implements the leap-second-ambiguity convention just
+     *      described.
+     *
+     *  <li> The warning status "dubious year" flags UTCs that predate the
+     *      introduction of the time scale or that are too far in the
+     *      future to be trusted.  See iauDat for further details.
+     *
+     *  <li> UT1-UTC is tabulated in IERS bulletins.  It increases by exactly
+     *      one second at the end of each positive UTC leap second,
+     *      introduced in order to keep UT1-UTC within +/- 0.9s.  n.b. This
+     *      practice is under review, and in the future UT1-UTC may grow
+     *      essentially without limit.
+     *
+     *  <li> The geographical coordinates are with respect to the WGS84
+     *      reference ellipsoid.  TAKE CARE WITH THE LONGITUDE SIGN:  the
+     *      longitude required by the present function is east-positive
+     *      (i.e. right-handed), in accordance with geographical convention.
+     *
+     *  <li> The polar motion xp,yp can be obtained from IERS bulletins.  The
+     *      values are the coordinates (in radians) of the Celestial
+     *      Intermediate Pole with respect to the International Terrestrial
+     *      Reference System (see IERS Conventions 2003), measured along the
+     *      meridians 0 and 90 deg west respectively.  For many
+     *      applications, xp and yp can be set to zero.
+     *
+     *  <li> If hm, the height above the ellipsoid of the observing station
+     *      in meters, is not known but phpa, the pressure in hPa (=mB),
+     *      is available, an adequate estimate of hm can be obtained from
+     *      the expression
+     *
+     *            <p>hm = -29.3 * tsl * log ( phpa / 1013.25 );
+     *
+     *      <p>where tsl is the approximate sea-level air temperature in K
+     *      (See Astrophysical Quantities, C.W.Allen, 3rd edition, section
+     *      52).  Similarly, if the pressure phpa is not known, it can be
+     *      estimated from the height of the observing station, hm, as
+     *      follows:
+     *
+     *            <p>phpa = 1013.25 * exp ( -hm / ( 29.3 * tsl ) );
+     *
+     *      <p>Note, however, that the refraction is nearly proportional to
+     *      the pressure and that an accurate phpa value is important for
+     *      precise work.
+     *
+     *  <li> The argument wl specifies the observing wavelength in
+     *      micrometers.  The transition from optical to radio is assumed to
+     *      occur at 100 micrometers (about 3000 GHz).
+     *
+     *  <li> The accuracy of the result is limited by the corrections for
+     *      refraction, which use a simple A*tan(z) + B*tan^3(z) model.
+     *      Providing the meteorological parameters are known accurately and
+     *      there are no gross local effects, the predicted observed
+     *      coordinates should be within 0.05 arcsec (optical) or 1 arcsec
+     *      (radio) for a zenith distance of less than 70 degrees, better
+     *      than 30 arcsec (optical or radio) at 85 degrees and better
+     *      than 20 arcmin (optical) or 30 arcmin (radio) at the horizon.
+     *
+     *      <p>Without refraction, the complementary functions iauAtco13 and
+     *      iauAtoc13 are self-consistent to better than 1 microarcsecond
+     *      all over the celestial sphere.  With refraction included,
+     *      consistency falls off at high zenith distances, but is still
+     *      better than 0.05 arcsec at 85 degrees.
+     *
+     *  <li> "Observed" Az,ZD means the position that would be seen by a
+     *      perfect geodetically aligned theodolite.  (Zenith distance is
+     *      used rather than altitude in order to reflect the fact that no
+     *      allowance is made for depression of the horizon.)  This is
+     *      related to the observed HA,Dec via the standard rotation, using
+     *      the geodetic latitude (corrected for polar motion), while the
+     *      observed HA and RA are related simply through the Earth rotation
+     *      angle and the site longitude.  "Observed" RA,Dec or HA,Dec thus
+     *      means the position that would be seen by a perfect equatorial
+     *      with its polar axis aligned to the Earth's axis of rotation.
+     *
+     *  <li> It is advisable to take great care with units, as even unlikely
+     *      values of the input parameters are accepted and processed in
+     *      accordance with the models used.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauApco13} astrometry parameters, ICRS-observed, 2013
+     *     <li>{@link #jauAtciq} quick ICRS to CIRS
+     *     <li>{@link #jauAtioq} quick ICRS to observed
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAInternalError 
+     * @throws JSOFAIllegalParameter 
+     */
+    public static ObservedPositionEO jauAtco13(double rc, double dc,
+            double pr, double pd, double px, double rv,
+            double utc1, double utc2, double dut1,
+            double elong, double phi, double hm, double xp, double yp,
+            double phpa, double tc, double rh, double wl) throws JSOFAIllegalParameter, JSOFAInternalError
+    {
+        int j;
+        jauASTROM astrom = new jauASTROM();
+
+
+        /* Star-independent astrometry parameters. */
+        double eo = jauApco13(utc1, utc2, dut1, elong, phi, hm, xp, yp,
+                phpa, tc, rh, wl, astrom);
+
+        /* Transform ICRS to CIRS. */
+        SphericalCoordinate co = jauAtciq(rc, dc, pr, pd, px, rv, astrom);
+
+        /* Transform CIRS to observed. */
+        ObservedPosition obs = jauAtioq(co.alpha, co.delta, astrom);
+
+      
+        return new ObservedPositionEO(obs, eo);
+        
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  Transform star RA,Dec from geocentric CIRS to ICRS astrometric.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param ri,di   double   CIRS geocentric RA,Dec (radians)
+     *     @param date1   double   TDB as a 2-part...
+     *     @param date2   double   ...Julian Date (Note 1)
+     *
+     *  Returned:
+     *     @return rc,dc   double    <b>Returned</b> ICRS astrometric RA,Dec (radians)
+     *     @return eo      double    <b>Returned</b> equation of the origins (ERA-GST, Note 4)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
+     *     convenient way between the two arguments.  For example,
+     *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
+     *     others:
+     *
+     *            <p>date1          date2
+     *
+     *         <p>2450123.7           0.0       (JD method)
+     *         2451545.0       -1421.3       (J2000 method)
+     *         2400000.5       50123.2       (MJD method)
+     *         2450123.5           0.2       (date & time method)
+     *
+     *     <p>The JD method is the most natural and convenient to use in cases
+     *     where the loss of several decimal digits of resolution is
+     *     acceptable.  The J2000 method is best matched to the way the
+     *     argument is handled internally and will deliver the optimum
+     *     resolution.  The MJD method and the date & time methods are both
+     *     good compromises between resolution and convenience.  For most
+     *     applications of this function the choice will not be at all
+     *     critical.
+     *
+     *     <p>TT can be used instead of TDB without any significant impact on
+     *     accuracy.
+     *
+     *  <li> Iterative techniques are used for the aberration and light
+     *     deflection corrections so that the functions iauAtic13 (or
+     *     iauAticq) and iauAtci13 (or iauAtciq) are accurate inverses;
+     *     even at the edge of the Sun's disk the discrepancy is only about
+     *     1 nanoarcsecond.
+     *
+     *  <li> The available accuracy is better than 1 milliarcsecond, limited
+     *     mainly by the precession-nutation model that is used, namely
+     *     IAU 2000A/2006.  Very close to solar system bodies, additional
+     *     errors of up to several milliarcseconds can occur because of
+     *     unmodeled light deflection;  however, the Sun's contribution is
+     *     taken into account, to first order.  The accuracy limitations of
+     *     the SOFA function iauEpv00 (used to compute Earth position and
+     *     velocity) can contribute aberration errors of up to
+     *     5 microarcseconds.  Light deflection at the Sun's limb is
+     *     uncertain at the 0.4 mas level.
+     *
+     *  <li> Should the transformation to (equinox based) J2000.0 mean place
+     *     be required rather than (CIO based) ICRS coordinates, subtract the
+     *     equation of the origins from the returned right ascension:
+     *     RA = RI - EO.  (The iauAnp function can then be applied, as
+     *     required, to keep the result in the conventional 0-2pi range.)
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauApci13} astrometry parameters, ICRS-CIRS, 2013
+     *     <li>{@link #jauAticq} quick CIRS to ICRS astrometric
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static SphericalCoordinateEO jauAtic13(double ri, double di, double date1, double date2)
+    {
+        /* Star-independent astrometry parameters */
+        jauASTROM astrom = new jauASTROM();
+
+
+        /* Star-independent astrometry parameters. */
+        double eo = jauApci13(date1, date2, astrom);
+
+        /* CIRS to ICRS astrometric. */
+        SphericalCoordinate co = jauAticq(ri, di, astrom);
+
+        return new SphericalCoordinateEO(co,eo);
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  Quick CIRS RA,Dec to ICRS astrometric place, given the star-
+     *  independent astrometry parameters.
+     *
+     *  Use of this function is appropriate when efficiency is important and
+     *  where many star positions are all to be transformed for one date.
+     *  The star-independent astrometry parameters can be obtained by
+     *  calling one of the functions iauApci[13], iauApcg[13], iauApco[13]
+     *  or iauApcs[13].
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param ri,di   double      CIRS RA,Dec (radians)
+     *     @param astrom  jauASTROM*  star-independent astrometry parameters:
+     *      @param pmt     double        PM time interval (SSB, Julian years)
+     *      @param eb      double[3]     SSB to observer (vector, au)
+     *      @param eh      double[3]     Sun to observer (unit vector)
+     *      @param em      double        distance from Sun to observer (au)
+     *      @param v       double[3]     barycentric observer velocity (vector, c)
+     *      @param bm1     double        sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *      @param bpn     double[3][3]  bias-precession-nutation matrix
+     *      @param along   double        longitude + s' (radians)
+     *      @param xpl     double        polar motion xp wrt local meridian (radians)
+     *      @param ypl     double        polar motion yp wrt local meridian (radians)
+     *      @param sphi    double        sine of geodetic latitude
+     *      @param cphi    double        cosine of geodetic latitude
+     *      @param diurab  double        magnitude of diurnal aberration vector
+     *      @param eral    double        "local" Earth rotation angle (radians)
+     *      @param refa    double        refraction constant A (radians)
+     *      @param refb    double        refraction constant B (radians)
+     *
+     *  Returned:
+     *     @return rc,dc   double       <b>Returned</b> ICRS astrometric RA,Dec (radians)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> Only the Sun is taken into account in the light deflection
+     *     correction.
+     *
+     *  <li> Iterative techniques are used for the aberration and light
+     *     deflection corrections so that the functions iauAtic13 (or
+     *     iauAticq) and iauAtci13 (or iauAtciq) are accurate inverses;
+     *     even at the edge of the Sun's disk the discrepancy is only about
+     *     1 nanoarcsecond.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauS2c} spherical coordinates to unit vector
+     *     <li>{@link #jauTrxp} product of transpose of r-matrix and p-vector
+     *     <li>{@link #jauZp} zero p-vector
+     *     <li>{@link #jauAb} stellar aberration
+     *     <li>{@link #jauLdsun} light deflection by the Sun
+     *     <li>{@link #jauC2s} p-vector to spherical
+     *     <li>{@link #jauAnp} normalize angle into range +/- pi
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static SphericalCoordinate  jauAticq(double ri, double di, jauASTROM astrom )
+    {
+        int j, i;
+        double pi[] , ppr[], pnat[] = new double[3], pco[] = new double[3], w, d[] = new double[3], 
+                before[] = new double[3], r2, r,
+                after[];
+
+
+        /* CIRS RA,Dec to Cartesian. */
+        pi = jauS2c(ri, di);
+
+        /* Bias-precession-nutation, giving GCRS proper direction. */
+        ppr = jauTrxp(astrom.bpn, pi);
+
+        /* Aberration, giving GCRS natural direction. */
+        jauZp(d);
+        for (j = 0; j < 2; j++) {
+            r2 = 0.0;
+            for (i = 0; i < 3; i++) {
+                w = ppr[i] - d[i];
+                before[i] = w;
+                r2 += w*w;
+            }
+            r = sqrt(r2);
+            for (i = 0; i < 3; i++) {
+                before[i] /= r;
+            }
+            after = jauAb(before, astrom.v, astrom.em, astrom.bm1);
+            r2 = 0.0;
+            for (i = 0; i < 3; i++) {
+                d[i] = after[i] - before[i];
+                w = ppr[i] - d[i];
+                pnat[i] = w;
+                r2 += w*w;
+            }
+            r = sqrt(r2);
+            for (i = 0; i < 3; i++) {
+                pnat[i] /= r;
+            }
+        }
+
+        /* Light deflection by the Sun, giving BCRS coordinate direction. */
+        jauZp(d);
+        for (j = 0; j < 5; j++) {
+            r2 = 0.0;
+            for (i = 0; i < 3; i++) {
+                w = pnat[i] - d[i];
+                before[i] = w;
+                r2 += w*w;
+            }
+            r = sqrt(r2);
+            for (i = 0; i < 3; i++) {
+                before[i] /= r;
+            }
+            after = jauLdsun(before, astrom.eh, astrom.em);
+            r2 = 0.0;
+            for (i = 0; i < 3; i++) {
+                d[i] = after[i] - before[i];
+                w = pnat[i] - d[i];
+                pco[i] = w;
+                r2 += w*w;
+            }
+            r = sqrt(r2);
+            for (i = 0; i < 3; i++) {
+                pco[i] /= r;
+            }
+        }
+
+        /* ICRS astrometric RA,Dec. */
+        SphericalCoordinate co = jauC2s(pco);
+        co.alpha = jauAnp(co.alpha);
+
+        return co;
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  Quick CIRS to ICRS astrometric place transformation, given the star-
+     *  independent astrometry parameters plus a list of light-deflecting
+     *  bodies.
+     *
+     *  Use of this function is appropriate when efficiency is important and
+     *  where many star positions are all to be transformed for one date.
+     *  The star-independent astrometry parameters can be obtained by
+     *  calling one of the functions iauApci[13], iauApcg[13], iauApco[13]
+     *  or iauApcs[13].
+     *
+     *  If the only light-deflecting body to be taken into account is the
+     *  Sun, the iauAticq function can be used instead.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param ri,di   double       CIRS RA,Dec (radians)
+     *     @param astrom  jauASTROM*   star-independent astrometry parameters:
+     *      @param pmt     double        PM time interval (SSB, Julian years)
+     *      @param eb      double[3]     SSB to observer (vector, au)
+     *      @param eh      double[3]     Sun to observer (unit vector)
+     *      @param em      double        distance from Sun to observer (au)
+     *      @param v       double[3]     barycentric observer velocity (vector, c)
+     *      @param bm1     double        sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *      @param bpn     double[3][3]  bias-precession-nutation matrix
+     *      @param along   double        longitude + s' (radians)
+     *      @param xpl     double        polar motion xp wrt local meridian (radians)
+     *      @param ypl     double        polar motion yp wrt local meridian (radians)
+     *      @param sphi    double        sine of geodetic latitude
+     *      @param cphi    double        cosine of geodetic latitude
+     *      @param diurab  double        magnitude of diurnal aberration vector
+     *      @param eral    double        "local" Earth rotation angle (radians)
+     *      @param refa    double        refraction constant A (radians)
+     *      @param refb    double        refraction constant B (radians)
+     *      @param n      int            number of bodies (Note 3)
+     *      @param b      jauLDBODY[n]  data for each of the n bodies (Notes 3,4):
+     *       @param bm     double        mass of the body (solar masses, Note 5)
+     *       @param dl     double        deflection limiter (Note 6)
+     *       @param pv     [2][3]        barycentric PV of the body (au, au/day)
+     *
+     *  Returned:
+     *     @return rc,dc   double       <b>Returned</b> ICRS astrometric RA,Dec (radians)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> Iterative techniques are used for the aberration and light
+     *     deflection corrections so that the functions iauAticqn and
+     *     iauAtciqn are accurate inverses; even at the edge of the Sun's
+     *     disk the discrepancy is only about 1 nanoarcsecond.
+     *
+     *  <li> If the only light-deflecting body to be taken into account is the
+     *     Sun, the iauAticq function can be used instead.
+     *
+     *  <li> The struct b contains n entries, one for each body to be
+     *     considered.  If n = 0, no gravitational light deflection will be
+     *     applied, not even for the Sun.
+     *
+     *  <li> The struct b should include an entry for the Sun as well as for
+     *     any planet or other body to be taken into account.  The entries
+     *     should be in the order in which the light passes the body.
+     *
+     *  <li> In the entry in the b struct for body i, the mass parameter
+     *     b[i].bm can, as required, be adjusted in order to allow for such
+     *     effects as quadrupole field.
+     *
+     *  <li> The deflection limiter parameter b[i].dl is phi^2/2, where phi is
+     *     the angular separation (in radians) between star and body at
+     *     which limiting is applied.  As phi shrinks below the chosen
+     *     threshold, the deflection is artificially reduced, reaching zero
+     *     for phi = 0.   Example values suitable for a terrestrial
+     *     observer, together with masses, are as follows:
+     *
+     *        <p>body i     b[i].bm        b[i].dl
+     *
+     *        <p>Sun        1.0            6e-6
+     *        Jupiter    0.00095435     3e-9
+     *        Saturn     0.00028574     3e-10
+     *
+     *  <li> For efficiency, validation of the contents of the b array is
+     *     omitted.  The supplied masses must be greater than zero, the
+     *     position and velocity vectors must be right, and the deflection
+     *     limiter greater than zero.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauS2c} spherical coordinates to unit vector
+     *     <li>{@link #jauTrxp} product of transpose of r-matrix and p-vector
+     *     <li>{@link #jauZp} zero p-vector
+     *     <li>{@link #jauAb} stellar aberration
+     *     <li>{@link #jauLdn} light deflection by n bodies
+     *     <li>{@link #jauC2s} p-vector to spherical
+     *     <li>{@link #jauAnp} normalize angle into range +/- pi
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static SphericalCoordinate jauAticqn(double ri, double di, jauASTROM astrom,
+            int n, jauLDBODY b[])
+    {
+        int j, i;
+        double pi[], ppr[], pnat[] = new double[3], pco[] = new double[3], w, d[] = new double[3], before[] = new double[3], r2, r,
+                after[];
+
+
+        /* CIRS RA,Dec to Cartesian. */
+        pi = jauS2c(ri, di);
+
+        /* Bias-precession-nutation, giving GCRS proper direction. */
+        ppr = jauTrxp(astrom.bpn, pi);
+
+        /* Aberration, giving GCRS natural direction. */
+        jauZp(d);
+        for (j = 0; j < 2; j++) {
+            r2 = 0.0;
+            for (i = 0; i < 3; i++) {
+                w = ppr[i] - d[i];
+                before[i] = w;
+                r2 += w*w;
+            }
+            r = sqrt(r2);
+            for (i = 0; i < 3; i++) {
+                before[i] /= r;
+            }
+            after = jauAb(before, astrom.v, astrom.em, astrom.bm1);
+            r2 = 0.0;
+            for (i = 0; i < 3; i++) {
+                d[i] = after[i] - before[i];
+                w = ppr[i] - d[i];
+                pnat[i] = w;
+                r2 += w*w;
+            }
+            r = sqrt(r2);
+            for (i = 0; i < 3; i++) {
+                pnat[i] /= r;
+            }
+        }
+
+        /* Light deflection, giving BCRS coordinate direction. */
+        jauZp(d);
+        for (j = 0; j < 5; j++) {
+            r2 = 0.0;
+            for (i = 0; i < 3; i++) {
+                w = pnat[i] - d[i];
+                before[i] = w;
+                r2 += w*w;
+            }
+            r = sqrt(r2);
+            for (i = 0; i < 3; i++) {
+                before[i] /= r;
+            }
+            after = jauLdn(n, b, astrom.eb, before);
+            r2 = 0.0;
+            for (i = 0; i < 3; i++) {
+                d[i] = after[i] - before[i];
+                w = pnat[i] - d[i];
+                pco[i] = w;
+                r2 += w*w;
+            }
+            r = sqrt(r2);
+            for (i = 0; i < 3; i++) {
+                pco[i] /= r;
+            }
+        }
+
+        /* ICRS astrometric RA,Dec. */
+        SphericalCoordinate co = jauC2s(pco);
+        co.alpha = jauAnp(co.alpha);
+
+        return co;
+        /* Finished. */
+
+
+    }
+    
+    /**
+     *  .
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 28 Mar 2014
+     * @version $Revision$ $date$
+     */
+    public static class ObservedPosition{
+        /**    observed azimuth (radians: N=0,E=90) */
+        double   aob;
+
+        /**    observed zenith distance (radians)   */
+        double   zob;
+
+        /**    observed Hour Angle (radians)        */
+        double   hob;
+
+        /**    observed Declination (radians)       */
+        double   dob;
+
+        /**    observed Right Ascension (radians)   */
+        double   rob;
+        public ObservedPosition(double   aob,
+                double   zob,
+                double   hob,
+                double   dob,
+                double   rob
+        ) {
+            this.aob =  aob;
+            this.zob =  zob;
+            this.hob =  hob;
+            this.dob =  dob;
+            this.rob =  rob;  
+        }
+    }
+    
+    public static class ObservedPositionEO {
+       /**
+        * observed position
+        */
+        ObservedPosition op;
+        /**
+         * The equation of the origins.    The equation of the origins is the distance between the true
+         *  equinox and the celestial intermediate origin and, equivalently,
+         *  the difference between Earth rotation angle and Greenwich
+         *  apparent sidereal time (ERA-GST).  It comprises the precession
+         *  (since J2000.0) in right ascension plus the equation of the
+         *  equinoxes (including the small correction terms).   
+         */
+        double eo;
+        /**
+         * @param op
+         * @param eo
+         */
+        public ObservedPositionEO(ObservedPosition op, double eo) {
+            this.op = op;
+            this.eo = eo;
+        }
+        
+    }
+
+    
+    
+    
+    /**
+     *  CIRS RA,Dec to observed place.  The caller supplies UTC, site
+     *  coordinates, ambient air conditions and observing wavelength.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param ri      double    CIRS right ascension (CIO-based, radians)
+     *     @param di      double    CIRS declination (radians)
+     *     @param utc1    double    UTC as a 2-part...
+     *     @param utc2    double    ...quasi Julian Date (Notes 1,2)
+     *     @param dut1    double    UT1-UTC (seconds, Note 3)
+     *     @param elong   double    longitude (radians, east +ve, Note 4)
+     *     @param phi     double    geodetic latitude (radians, Note 4)
+     *     @param hm      double    height above ellipsoid (m, geodetic Notes 4,6)
+     *     @param xp,yp   double    polar motion coordinates (radians, Note 5)
+     *     @param phpa    double    pressure at the observer (hPa = mB, Note 6)
+     *     @param tc      double    ambient temperature at the observer (deg C)
+     *     @param rh      double    relative humidity at the observer (range 0-1)
+     *     @param wl      double    wavelength (micrometers, Note 7)
+     *
+     *  Returned:
+     *     @return aob     double*    <b>Returned</b> observed azimuth (radians: N=0,E=90)
+     *             zob     double*    <b>Returned</b> observed zenith distance (radians)
+     *             hob     double*    <b>Returned</b> observed hour angle (radians)
+     *             dob     double*    <b>Returned</b> observed declination (radians)
+     *             rob     double*    <b>Returned</b> observed right ascension (CIO-based, radians)
+     *
+     *  @Throws Returned  (function   <b>Returned</b> value):
+     *            @return int       status:   <b>Returned</b> +1 = dubious year (Note 2)
+     *                              @return 0  =   <b>Returned</b> OK
+     *                             @return -1  =   <b>Returned</b> unacceptable date
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> utc1+utc2 is quasi Julian Date (see Note 2), apportioned in any
+     *      convenient way between the two arguments, for example where utc1
+     *      is the Julian Day Number and utc2 is the fraction of a day.
+     *
+     *      <p>However, JD cannot unambiguously represent UTC during a leap
+     *      second unless special measures are taken.  The convention in the
+     *      present function is that the JD day represents UTC days whether
+     *      the length is 86399, 86400 or 86401 SI seconds.
+     *
+     *      <p>Applications should use the function iauDtf2d to convert from
+     *      calendar date and time of day into 2-part quasi Julian Date, as
+     *      it implements the leap-second-ambiguity convention just
+     *      described.
+     *
+     *  <li> The warning status "dubious year" flags UTCs that predate the
+     *      introduction of the time scale or that are too far in the
+     *      future to be trusted.  See iauDat for further details.
+     *
+     *  <li> UT1-UTC is tabulated in IERS bulletins.  It increases by exactly
+     *      one second at the end of each positive UTC leap second,
+     *      introduced in order to keep UT1-UTC within +/- 0.9s.  n.b. This
+     *      practice is under review, and in the future UT1-UTC may grow
+     *      essentially without limit.
+     *
+     *  <li> The geographical coordinates are with respect to the WGS84
+     *      reference ellipsoid.  TAKE CARE WITH THE LONGITUDE SIGN:  the
+     *      longitude required by the present function is east-positive
+     *      (i.e. right-handed), in accordance with geographical convention.
+     *
+     *  <li> The polar motion xp,yp can be obtained from IERS bulletins.  The
+     *      values are the coordinates (in radians) of the Celestial
+     *      Intermediate Pole with respect to the International Terrestrial
+     *      Reference System (see IERS Conventions 2003), measured along the
+     *      meridians 0 and 90 deg west respectively.  For many
+     *      applications, xp and yp can be set to zero.
+     *
+     *  <li> If hm, the height above the ellipsoid of the observing station
+     *      in meters, is not known but phpa, the pressure in hPa (=mB), is
+     *      available, an adequate estimate of hm can be obtained from the
+     *      expression
+     *
+     *            <p>hm = -29.3 * tsl * log ( phpa / 1013.25 );
+     *
+     *      <p>where tsl is the approximate sea-level air temperature in K
+     *      (See Astrophysical Quantities, C.W.Allen, 3rd edition, section
+     *      52).  Similarly, if the pressure phpa is not known, it can be
+     *      estimated from the height of the observing station, hm, as
+     *      follows:
+     *
+     *            <p>phpa = 1013.25 * exp ( -hm / ( 29.3 * tsl ) );
+     *
+     *      <p>Note, however, that the refraction is nearly proportional to
+     *      the pressure and that an accurate phpa value is important for
+     *      precise work.
+     *
+     *  <li> The argument wl specifies the observing wavelength in
+     *      micrometers.  The transition from optical to radio is assumed to
+     *      occur at 100 micrometers (about 3000 GHz).
+     *
+     *  <li> "Observed" Az,ZD means the position that would be seen by a
+     *      perfect geodetically aligned theodolite.  (Zenith distance is
+     *      used rather than altitude in order to reflect the fact that no
+     *      allowance is made for depression of the horizon.)  This is
+     *      related to the observed HA,Dec via the standard rotation, using
+     *      the geodetic latitude (corrected for polar motion), while the
+     *      observed HA and RA are related simply through the Earth rotation
+     *      angle and the site longitude.  "Observed" RA,Dec or HA,Dec thus
+     *      means the position that would be seen by a perfect equatorial
+     *      with its polar axis aligned to the Earth's axis of rotation.
+     *
+     *  <li> The accuracy of the result is limited by the corrections for
+     *      refraction, which use a simple A*tan(z) + B*tan^3(z) model.
+     *      Providing the meteorological parameters are known accurately and
+     *      there are no gross local effects, the predicted astrometric
+     *      coordinates should be within 0.05 arcsec (optical) or 1 arcsec
+     *      (radio) for a zenith distance of less than 70 degrees, better
+     *      than 30 arcsec (optical or radio) at 85 degrees and better
+     *      than 20 arcmin (optical) or 30 arcmin (radio) at the horizon.
+     *
+     *  <li> The complementary functions iauAtio13 and iauAtoi13 are self-
+     *      consistent to better than 1 microarcsecond all over the
+     *      celestial sphere.
+     *
+     *  <li> It is advisable to take great care with units, as even unlikely
+     *      values of the input parameters are accepted and processed in
+     *      accordance with the models used.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauApio13} astrometry parameters, CIRS-observed, 2013
+     *     <li>{@link #jauAtioq} quick ICRS to observed
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAInternalError 
+     * @throws JSOFAIllegalParameter 
+     */
+    public static ObservedPosition jauAtio13(double ri, double di,
+            double utc1, double utc2, double dut1,
+            double elong, double phi, double hm, double xp, double yp,
+            double phpa, double tc, double rh, double wl) throws JSOFAIllegalParameter, JSOFAInternalError
+    {
+        int j;
+        jauASTROM astrom = new jauASTROM();
+
+
+        /* Star-independent astrometry parameters for CIRS->observed. */
+        jauApio13(utc1, utc2, dut1, elong, phi, hm, xp, yp,
+                phpa, tc, rh, wl, astrom);
+
+        /* Transform CIRS to observed. */
+        return jauAtioq(ri, di, astrom);
+
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  Quick CIRS to observed place transformation.
+     *
+     *  Use of this function is appropriate when efficiency is important and
+     *  where many star positions are all to be transformed for one date.
+     *  The star-independent astrometry parameters can be obtained by
+     *  calling iauApio[13] or iauApco[13].
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param ri      double      CIRS right ascension
+     *     @param di      double      CIRS declination
+     *     @param astrom  jauASTROM*  star-independent astrometry parameters:
+     *      @param pmt     double        PM time interval (SSB, Julian years)
+     *      @param eb      double[3]     SSB to observer (vector, au)
+     *      @param eh      double[3]     Sun to observer (unit vector)
+     *      @param em      double        distance from Sun to observer (au)
+     *      @param v       double[3]     barycentric observer velocity (vector, c)
+     *      @param bm1     double        sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *      @param bpn     double[3][3]  bias-precession-nutation matrix
+     *      @param along   double        longitude + s' (radians)
+     *      @param xpl     double        polar motion xp wrt local meridian (radians)
+     *      @param ypl     double        polar motion yp wrt local meridian (radians)
+     *      @param sphi    double        sine of geodetic latitude
+     *      @param cphi    double        cosine of geodetic latitude
+     *      @param diurab  double        magnitude of diurnal aberration vector
+     *      @param eral    double        "local" Earth rotation angle (radians)
+     *      @param refa    double        refraction constant A (radians)
+     *      @param refb    double        refraction constant B (radians)
+     *
+     *  Returned:
+     *     @return aob     double*      <b>Returned</b> observed azimuth (radians: N=0,E=90)
+     *     @return zob     double*      <b>Returned</b> observed zenith distance (radians)
+     *     @return hob     double*      <b>Returned</b> observed hour angle (radians)
+     *     @return dob     double*      <b>Returned</b> observed declination (radians)
+     *     @return rob     double*      <b>Returned</b> observed right ascension (CIO-based, radians)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> This function returns zenith distance rather than altitude in
+     *     order to reflect the fact that no allowance is made for
+     *     depression of the horizon.
+     *
+     *  <li> The accuracy of the result is limited by the corrections for
+     *     refraction, which use a simple A*tan(z) + B*tan^3(z) model.
+     *     Providing the meteorological parameters are known accurately and
+     *     there are no gross local effects, the predicted observed
+     *     coordinates should be within 0.05 arcsec (optical) or 1 arcsec
+     *     (radio) for a zenith distance of less than 70 degrees, better
+     *     than 30 arcsec (optical or radio) at 85 degrees and better
+     *     than 20 arcmin (optical) or 30 arcmin (radio) at the horizon.
+     *
+     *     <p>Without refraction, the complementary functions iauAtioq and
+     *     iauAtoiq are self-consistent to better than 1 microarcsecond all
+     *     over the celestial sphere.  With refraction included, consistency
+     *     falls off at high zenith distances, but is still better than
+     *     0.05 arcsec at 85 degrees.
+     *
+     *  <li> It is advisable to take great care with units, as even unlikely
+     *     values of the input parameters are accepted and processed in
+     *     accordance with the models used.
+     *
+     *  <li> The CIRS RA,Dec is obtained from a star catalog mean place by
+     *     allowing for space motion, parallax, the Sun's gravitational lens
+     *     effect, annual aberration and precession-nutation.  For star
+     *     positions in the ICRS, these effects can be applied by means of
+     *     the iauAtci13 (etc.) functions.  Starting from classical "mean
+     *     place" systems, additional transformations will be needed first.
+     *
+     *  <li> "Observed" Az,El means the position that would be seen by a
+     *     perfect geodetically aligned theodolite.  This is obtained from
+     *     the CIRS RA,Dec by allowing for Earth orientation and diurnal
+     *     aberration, rotating from equator to horizon coordinates, and
+     *     then adjusting for refraction.  The HA,Dec is obtained by
+     *     rotating back into equatorial coordinates, and is the position
+     *     that would be seen by a perfect equatorial with its polar axis
+     *     aligned to the Earth's axis of rotation.  Finally, the RA is
+     *     obtained by subtracting the HA from the local ERA.
+     *
+     *  <li> The star-independent CIRS-to-observed-place parameters in ASTROM
+     *     may be computed with iauApio[13] or iauApco[13].  If nothing has
+     *     changed significantly except the time, iauAper[13] may be used to
+     *     perform the requisite adjustment to the astrom structure.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauS2c} spherical coordinates to unit vector
+     *     <li>{@link #jauC2s} p-vector to spherical
+     *     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+     *
+     * </ul>
+     *  This revision:   2013 December 5
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static ObservedPosition jauAtioq(double ri, double di, jauASTROM astrom)
+    {
+        /* Minimum cos(alt) and sin(alt) for refraction purposes */
+        final double CELMIN = 1e-6;
+        final double SELMIN = 0.05;
+
+        double v[] = new double[3], x, y, z, xhd, yhd, zhd, f, xhdt, yhdt, zhdt,
+                xaet, yaet, zaet, azobs, r, tz, w, del, cosdel,
+                xaeo, yaeo, zaeo, zdobs, hmobs, dcobs, raobs;
+
+        /*--------------------------------------------------------------------*/
+
+        /* CIRS RA,Dec to Cartesian -HA,Dec. */
+        v = jauS2c(ri-astrom.eral, di);
+        x = v[0];
+        y = v[1];
+        z = v[2];
+
+        /* Polar motion. */
+        xhd = x + astrom.xpl*z;
+        yhd = y - astrom.ypl*z;
+        zhd = z - astrom.xpl*x + astrom.ypl*y;
+
+        /* Diurnal aberration. */
+        f = ( 1.0 - astrom.diurab*yhd );
+        xhdt = f * xhd;
+        yhdt = f * ( yhd + astrom.diurab );
+        zhdt = f * zhd;
+
+        /* Cartesian -HA,Dec to Cartesian Az,El (S=0,E=90). */
+        xaet = astrom.sphi*xhdt - astrom.cphi*zhdt;
+        yaet = yhdt;
+        zaet = astrom.cphi*xhdt + astrom.sphi*zhdt;
+
+        /* Azimuth (N=0,E=90). */
+        azobs = ( xaet != 0.0 || yaet != 0.0 ) ? atan2(yaet,-xaet) : 0.0;
+
+        /* ---------- */
+        /* Refraction */
+        /* ---------- */
+
+        /* Cosine and sine of altitude, with precautions. */
+        r = sqrt(xaet*xaet + yaet*yaet);
+        r = r > CELMIN ? r : CELMIN;
+        z = zaet > SELMIN ? zaet : SELMIN;
+
+        /* A*tan(z)+B*tan^3(z) model, with Newton-Raphson correction. */
+        tz = r/z;
+        w = astrom.refb*tz*tz;
+        del = ( astrom.refa + w ) * tz /
+                ( 1.0 + ( astrom.refa + 3.0*w ) / ( z*z ) );
+
+        /* Apply the change, giving observed vector. */
+        cosdel = 1.0 - del*del/2.0;
+        f = cosdel - del*z/r;
+        xaeo = xaet*f;
+        yaeo = yaet*f;
+        zaeo = cosdel*zaet + del*r;
+
+        /* Observed ZD. */
+        zdobs = atan2(sqrt(xaeo*xaeo+yaeo*yaeo), zaeo);
+
+        /* Az/El vector to HA,Dec vector (both right-handed). */
+        v[0] = astrom.sphi*xaeo + astrom.cphi*zaeo;
+        v[1] = yaeo;
+        v[2] = - astrom.cphi*xaeo + astrom.sphi*zaeo;
+
+        /* To spherical -HA,Dec. */
+        SphericalCoordinate co = jauC2s ( v);
+        hmobs = co.alpha;
+        dcobs = co.delta;
+        /* Right ascension (with respect to CIO). */
+        raobs = astrom.eral + hmobs;
+
+        /* Return the results. */
+        return new ObservedPosition(
+        jauAnp(azobs),
+        zdobs,
+        -hmobs,
+        dcobs,
+        jauAnp(raobs));
+
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  Observed place at a groundbased site to to ICRS astrometric RA,Dec.
+     *  The caller supplies UTC, site coordinates, ambient air conditions
+     *  and observing wavelength.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param type    char[]    type of coordinates - "R", "H" or "A" (Notes 1,2)
+     *     @param ob1     double    observed Az, HA or RA (radians; Az is N=0,E=90)
+     *     @param ob2     double    observed ZD or Dec (radians)
+     *     @param utc1    double    UTC as a 2-part...
+     *     @param utc2    double    ...quasi Julian Date (Notes 3,4)
+     *     @param dut1    double    UT1-UTC (seconds, Note 5)
+     *     @param elong   double    longitude (radians, east +ve, Note 6)
+     *     @param phi     double    geodetic latitude (radians, Note 6)
+     *     @param hm      double    height above ellipsoid (m, geodetic Notes 6,8)
+     *     @param xp,yp   double    polar motion coordinates (radians, Note 7)
+     *     @param phpa    double    pressure at the observer (hPa = mB, Note 8)
+     *     @param tc      double    ambient temperature at the observer (deg C)
+     *     @param rh      double    relative humidity at the observer (range 0-1)
+     *     @param wl      double    wavelength (micrometers, Note 9)
+     *
+     *  Returned:
+     *     @return rc,dc   double     <b>Returned</b> ICRS astrometric RA,Dec (radians)
+     *
+     *  @return Returned  (function   <b>Returned</b> value):
+     *            @return int       status:   <b>Returned</b> +1 = dubious year (Note 4)
+     *                              @return 0  =   <b>Returned</b> OK
+     *                             @return -1  =   <b>Returned</b> unacceptable date
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> "Observed" Az,ZD means the position that would be seen by a
+     *      perfect geodetically aligned theodolite.  (Zenith distance is
+     *      used rather than altitude in order to reflect the fact that no
+     *      allowance is made for depression of the horizon.)  This is
+     *      related to the observed HA,Dec via the standard rotation, using
+     *      the geodetic latitude (corrected for polar motion), while the
+     *      observed HA and RA are related simply through the Earth rotation
+     *      angle and the site longitude.  "Observed" RA,Dec or HA,Dec thus
+     *      means the position that would be seen by a perfect equatorial
+     *      with its polar axis aligned to the Earth's axis of rotation.
+     *
+     *  <li> Only the first character of the type argument is significant.
+     *      "R" or "r" indicates that ob1 and ob2 are the observed right
+     *      ascension and declination;  "H" or "h" indicates that they are
+     *      hour angle (west +ve) and declination;  anything else ("A" or
+     *      "a" is recommended) indicates that ob1 and ob2 are azimuth
+     *      (north zero, east 90 deg) and zenith distance.
+     *
+     *  <li> utc1+utc2 is quasi Julian Date (see Note 2), apportioned in any
+     *      convenient way between the two arguments, for example where utc1
+     *      is the Julian Day Number and utc2 is the fraction of a day.
+     *
+     *      <p>However, JD cannot unambiguously represent UTC during a leap
+     *      second unless special measures are taken.  The convention in the
+     *      present function is that the JD day represents UTC days whether
+     *      the length is 86399, 86400 or 86401 SI seconds.
+     *
+     *      <p>Applications should use the function iauDtf2d to convert from
+     *      calendar date and time of day into 2-part quasi Julian Date, as
+     *      it implements the leap-second-ambiguity convention just
+     *      described.
+     *
+     *  <li> The warning status "dubious year" flags UTCs that predate the
+     *      introduction of the time scale or that are too far in the
+     *      future to be trusted.  See iauDat for further details.
+     *
+     *  <li> UT1-UTC is tabulated in IERS bulletins.  It increases by exactly
+     *      one second at the end of each positive UTC leap second,
+     *      introduced in order to keep UT1-UTC within +/- 0.9s.  n.b. This
+     *      practice is under review, and in the future UT1-UTC may grow
+     *      essentially without limit.
+     *
+     *  <li> The geographical coordinates are with respect to the WGS84
+     *      reference ellipsoid.  TAKE CARE WITH THE LONGITUDE SIGN:  the
+     *      longitude required by the present function is east-positive
+     *      (i.e. right-handed), in accordance with geographical convention.
+     *
+     *  <li> The polar motion xp,yp can be obtained from IERS bulletins.  The
+     *      values are the coordinates (in radians) of the Celestial
+     *      Intermediate Pole with respect to the International Terrestrial
+     *      Reference System (see IERS Conventions 2003), measured along the
+     *      meridians 0 and 90 deg west respectively.  For many
+     *      applications, xp and yp can be set to zero.
+     *
+     *  <li> If hm, the height above the ellipsoid of the observing station
+     *      in meters, is not known but phpa, the pressure in hPa (=mB), is
+     *      available, an adequate estimate of hm can be obtained from the
+     *      expression
+     *
+     *            <p>hm = -29.3 * tsl * log ( phpa / 1013.25 );
+     *
+     *      <p>where tsl is the approximate sea-level air temperature in K
+     *      (See Astrophysical Quantities, C.W.Allen, 3rd edition, section
+     *      52).  Similarly, if the pressure phpa is not known, it can be
+     *      estimated from the height of the observing station, hm, as
+     *      follows:
+     *
+     *            <p>phpa = 1013.25 * exp ( -hm / ( 29.3 * tsl ) );
+     *
+     *      <p>Note, however, that the refraction is nearly proportional to
+     *      the pressure and that an accurate phpa value is important for
+     *      precise work.
+     *
+     *  <li> The argument wl specifies the observing wavelength in
+     *      micrometers.  The transition from optical to radio is assumed to
+     *      occur at 100 micrometers (about 3000 GHz).
+     *
+     *  <li> The accuracy of the result is limited by the corrections for
+     *      refraction, which use a simple A*tan(z) + B*tan^3(z) model.
+     *      Providing the meteorological parameters are known accurately and
+     *      there are no gross local effects, the predicted astrometric
+     *      coordinates should be within 0.05 arcsec (optical) or 1 arcsec
+     *      (radio) for a zenith distance of less than 70 degrees, better
+     *      than 30 arcsec (optical or radio) at 85 degrees and better
+     *      than 20 arcmin (optical) or 30 arcmin (radio) at the horizon.
+     *
+     *      <p>Without refraction, the complementary functions iauAtco13 and
+     *      iauAtoc13 are self-consistent to better than 1 microarcsecond
+     *      all over the celestial sphere.  With refraction included,
+     *      consistency falls off at high zenith distances, but is still
+     *      better than 0.05 arcsec at 85 degrees.
+     *
+     *  <li> It is advisable to take great care with units, as even unlikely
+     *      values of the input parameters are accepted and processed in
+     *      accordance with the models used.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauApco13} astrometry parameters, ICRS-observed
+     *     <li>{@link #jauAtoiq} quick observed to CIRS
+     *     <li>{@link #jauAticq} quick CIRS to ICRS
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAInternalError 
+     * @throws JSOFAIllegalParameter 
+     */
+    public static SphericalCoordinate jauAtoc13(String type, double ob1, double ob2,
+            double utc1, double utc2, double dut1,
+            double elong, double phi, double hm, double xp, double yp,
+            double phpa, double tc, double rh, double wl
+            ) throws JSOFAIllegalParameter, JSOFAInternalError
+    {
+        jauASTROM astrom = new jauASTROM();
+        double eo;
+
+        /* Star-independent astrometry parameters. */
+        eo = jauApco13(utc1, utc2, dut1, elong, phi, hm, xp, yp,
+                phpa, tc, rh, wl, astrom);
+
+        /* Transform observed to CIRS. */
+        SphericalCoordinate co = jauAtoiq(type, ob1, ob2, astrom);
+
+        /* Transform CIRS to ICRS. */
+        SphericalCoordinate icrs = jauAticq(co.alpha, co.delta, astrom);
+        return icrs;
+       
+
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  Observed place to CIRS.  The caller supplies UTC, site coordinates,
+     *  ambient air conditions and observing wavelength.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param type    char[]    type of coordinates - "R", "H" or "A" (Notes 1,2)
+     *     @param ob1     double    observed Az, HA or RA (radians; Az is N=0,E=90)
+     *     @param ob2     double    observed ZD or Dec (radians)
+     *     @param utc1    double    UTC as a 2-part...
+     *     @param utc2    double    ...quasi Julian Date (Notes 3,4)
+     *     @param dut1    double    UT1-UTC (seconds, Note 5)
+     *     @param elong   double    longitude (radians, east +ve, Note 6)
+     *     @param phi     double    geodetic latitude (radians, Note 6)
+     *     @param hm      double    height above the ellipsoid (meters, Notes 6,8)
+     *     @param xp,yp   double    polar motion coordinates (radians, Note 7)
+     *     @param phpa    double    pressure at the observer (hPa = mB, Note 8)
+     *     @param tc      double    ambient temperature at the observer (deg C)
+     *     @param rh      double    relative humidity at the observer (range 0-1)
+     *     @param wl      double    wavelength (micrometers, Note 9)
+     *
+     *  Returned:
+     *     @return ri      double*    <b>Returned</b> CIRS right ascension (CIO-based, radians)
+     *     @return di      double*    <b>Returned</b> CIRS declination (radians)
+     *
+     *  @return Returned  (function   <b>Returned</b> value):
+     *            @return int       status:   <b>Returned</b> +1 = dubious year (Note 2)
+     *                              @return 0  =   <b>Returned</b> OK
+     *                             @return -1  =   <b>Returned</b> unacceptable date
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> "Observed" Az,ZD means the position that would be seen by a
+     *      perfect geodetically aligned theodolite.  (Zenith distance is
+     *      used rather than altitude in order to reflect the fact that no
+     *      allowance is made for depression of the horizon.)  This is
+     *      related to the observed HA,Dec via the standard rotation, using
+     *      the geodetic latitude (corrected for polar motion), while the
+     *      observed HA and RA are related simply through the Earth rotation
+     *      angle and the site longitude.  "Observed" RA,Dec or HA,Dec thus
+     *      means the position that would be seen by a perfect equatorial
+     *      with its polar axis aligned to the Earth's axis of rotation.
+     *
+     *  <li> Only the first character of the type argument is significant.
+     *      "R" or "r" indicates that ob1 and ob2 are the observed right
+     *      ascension and declination;  "H" or "h" indicates that they are
+     *      hour angle (west +ve) and declination;  anything else ("A" or
+     *      "a" is recommended) indicates that ob1 and ob2 are azimuth
+     *      (north zero, east 90 deg) and zenith distance.
+     *
+     *  <li> utc1+utc2 is quasi Julian Date (see Note 2), apportioned in any
+     *      convenient way between the two arguments, for example where utc1
+     *      is the Julian Day Number and utc2 is the fraction of a day.
+     *
+     *      <p>However, JD cannot unambiguously represent UTC during a leap
+     *      second unless special measures are taken.  The convention in the
+     *      present function is that the JD day represents UTC days whether
+     *      the length is 86399, 86400 or 86401 SI seconds.
+     *
+     *      <p>Applications should use the function iauDtf2d to convert from
+     *      calendar date and time of day into 2-part quasi Julian Date, as
+     *      it implements the leap-second-ambiguity convention just
+     *      described.
+     *
+     *  <li> The warning status "dubious year" flags UTCs that predate the
+     *      introduction of the time scale or that are too far in the
+     *      future to be trusted.  See iauDat for further details.
+     *
+     *  <li> UT1-UTC is tabulated in IERS bulletins.  It increases by exactly
+     *      one second at the end of each positive UTC leap second,
+     *      introduced in order to keep UT1-UTC within +/- 0.9s.  n.b. This
+     *      practice is under review, and in the future UT1-UTC may grow
+     *      essentially without limit.
+     *
+     *  <li> The geographical coordinates are with respect to the WGS84
+     *      reference ellipsoid.  TAKE CARE WITH THE LONGITUDE SIGN:  the
+     *      longitude required by the present function is east-positive
+     *      (i.e. right-handed), in accordance with geographical convention.
+     *
+     *  <li> The polar motion xp,yp can be obtained from IERS bulletins.  The
+     *      values are the coordinates (in radians) of the Celestial
+     *      Intermediate Pole with respect to the International Terrestrial
+     *      Reference System (see IERS Conventions 2003), measured along the
+     *      meridians 0 and 90 deg west respectively.  For many
+     *      applications, xp and yp can be set to zero.
+     *
+     *  <li> If hm, the height above the ellipsoid of the observing station
+     *      in meters, is not known but phpa, the pressure in hPa (=mB), is
+     *      available, an adequate estimate of hm can be obtained from the
+     *      expression
+     *
+     *            <p>hm = -29.3 * tsl * log ( phpa / 1013.25 );
+     *
+     *      <p>where tsl is the approximate sea-level air temperature in K
+     *      (See Astrophysical Quantities, C.W.Allen, 3rd edition, section
+     *      52).  Similarly, if the pressure phpa is not known, it can be
+     *      estimated from the height of the observing station, hm, as
+     *      follows:
+     *
+     *            <p>phpa = 1013.25 * exp ( -hm / ( 29.3 * tsl ) );
+     *
+     *      <p>Note, however, that the refraction is nearly proportional to
+     *      the pressure and that an accurate phpa value is important for
+     *      precise work.
+     *
+     *  <li> The argument wl specifies the observing wavelength in
+     *      micrometers.  The transition from optical to radio is assumed to
+     *      occur at 100 micrometers (about 3000 GHz).
+     *
+     *  <li> The accuracy of the result is limited by the corrections for
+     *      refraction, which use a simple A*tan(z) + B*tan^3(z) model.
+     *      Providing the meteorological parameters are known accurately and
+     *      there are no gross local effects, the predicted astrometric
+     *      coordinates should be within 0.05 arcsec (optical) or 1 arcsec
+     *      (radio) for a zenith distance of less than 70 degrees, better
+     *      than 30 arcsec (optical or radio) at 85 degrees and better
+     *      than 20 arcmin (optical) or 30 arcmin (radio) at the horizon.
+     *
+     *      <p>Without refraction, the complementary functions iauAtio13 and
+     *      iauAtoi13 are self-consistent to better than 1 microarcsecond
+     *      all over the celestial sphere.  With refraction included,
+     *      consistency falls off at high zenith distances, but is still
+     *      better than 0.05 arcsec at 85 degrees.
+     *
+     *  <li> It is advisable to take great care with units, as even unlikely
+     *      values of the input parameters are accepted and processed in
+     *      accordance with the models used.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauApio13} astrometry parameters, CIRS-observed, 2013
+     *     <li>{@link #jauAtoiq} quick observed to CIRS
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAInternalError 
+     * @throws JSOFAIllegalParameter 
+     */
+    public static SphericalCoordinate jauAtoi13(String type, double ob1, double ob2,
+            double utc1, double utc2, double dut1,
+            double elong, double phi, double hm, double xp, double yp,
+            double phpa, double tc, double rh, double wl
+            ) throws JSOFAIllegalParameter, JSOFAInternalError
+    {
+        jauASTROM astrom = new jauASTROM();
+
+
+        /* Star-independent astrometry parameters for CIRS->observed. */
+        jauApio13(utc1, utc2, dut1, elong, phi, hm, xp, yp,
+                phpa, tc, rh, wl, astrom);
+
+        /* Transform observed to CIRS. */
+        SphericalCoordinate co = jauAtoiq(type, ob1, ob2, astrom);
+        return co;
+        
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  Quick observed place to CIRS, given the star-independent astrometry
+     *  parameters.
+     * 
+     *  Use of this function is appropriate when efficiency is important and
+     *  where many star positions are all to be transformed for one date.
+     *  The star-independent astrometry parameters can be obtained by
+     *  calling iauApio[13] or iauApco[13].
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param type    char[]      type of coordinates: "R", "H" or "A" (Note 1)
+     *     @param ob1     double      observed Az, HA or RA (radians; Az is N=0,E=90)
+     *     @param ob2     double      observed ZD or Dec (radians)
+     *     @param astrom  jauASTROM*  star-independent astrometry parameters:
+     *      @param pmt     double        PM time interval (SSB, Julian years)
+     *      @param eb      double[3]     SSB to observer (vector, au)
+     *      @param eh      double[3]     Sun to observer (unit vector)
+     *      @param em      double        distance from Sun to observer (au)
+     *      @param v       double[3]     barycentric observer velocity (vector, c)
+     *      @param bm1     double        sqrt(1-|v|^2): reciprocal of Lorenz factor
+     *      @param bpn     double[3][3]  bias-precession-nutation matrix
+     *      @param along   double        longitude + s' (radians)
+     *      @param xpl     double        polar motion xp wrt local meridian (radians)
+     *      @param ypl     double        polar motion yp wrt local meridian (radians)
+     *      @param sphi    double        sine of geodetic latitude
+     *      @param cphi    double        cosine of geodetic latitude
+     *      @param diurab  double        magnitude of diurnal aberration vector
+     *      @param eral    double        "local" Earth rotation angle (radians)
+     *      @param refa    double        refraction constant A (radians)
+     *      @param refb    double        refraction constant B (radians)
+     *
+     *  Returned:
+     *     @return ri      double*      <b>Returned</b> CIRS right ascension (CIO-based, radians)
+     *     @return di      double*      <b>Returned</b> CIRS declination (radians)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> "Observed" Az,El means the position that would be seen by a
+     *     perfect geodetically aligned theodolite.  This is related to
+     *     the observed HA,Dec via the standard rotation, using the geodetic
+     *     latitude (corrected for polar motion), while the observed HA and
+     *     RA are related simply through the Earth rotation angle and the
+     *     site longitude.  "Observed" RA,Dec or HA,Dec thus means the
+     *     position that would be seen by a perfect equatorial with its
+     *     polar axis aligned to the Earth's axis of rotation.  By removing
+     *     from the observed place the effects of atmospheric refraction and
+     *     diurnal aberration, the CIRS RA,Dec is obtained.
+     *
+     *  <li> Only the first character of the type argument is significant.
+     *     "R" or "r" indicates that ob1 and ob2 are the observed right
+     *     ascension and declination;  "H" or "h" indicates that they are
+     *     hour angle (west +ve) and declination;  anything else ("A" or
+     *     "a" is recommended) indicates that ob1 and ob2 are azimuth (north
+     *     zero, east 90 deg) and zenith distance.  (Zenith distance is used
+     *     rather than altitude in order to reflect the fact that no
+     *     allowance is made for depression of the horizon.)
+     *
+     *  <li> The accuracy of the result is limited by the corrections for
+     *     refraction, which use a simple A*tan(z) + B*tan^3(z) model.
+     *     Providing the meteorological parameters are known accurately and
+     *     there are no gross local effects, the predicted observed
+     *     coordinates should be within 0.05 arcsec (optical) or 1 arcsec
+     *     (radio) for a zenith distance of less than 70 degrees, better
+     *     than 30 arcsec (optical or radio) at 85 degrees and better than
+     *     20 arcmin (optical) or 30 arcmin (radio) at the horizon.
+     *
+     *     <p>Without refraction, the complementary functions iauAtioq and
+     *     iauAtoiq are self-consistent to better than 1 microarcsecond all
+     *     over the celestial sphere.  With refraction included, consistency
+     *     falls off at high zenith distances, but is still better than
+     *     0.05 arcsec at 85 degrees.
+     *
+     *  <li> It is advisable to take great care with units, as even unlikely
+     *     values of the input parameters are accepted and processed in
+     *     accordance with the models used.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauS2c} spherical coordinates to unit vector
+     *     <li>{@link #jauC2s} p-vector to spherical
+     *     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static SphericalCoordinate jauAtoiq(String type,
+            double ob1, double ob2, jauASTROM astrom
+            )
+    {
+        char c;
+        double c1, c2, sphi, cphi, ce, xaeo, yaeo, zaeo, v[] = new double[3],
+        xmhdo, ymhdo, zmhdo, az, sz, zdo, refa, refb, tz, dref,
+        zdt, xaet, yaet, zaet, xmhda, ymhda, zmhda,
+        f, xhd, yhd, zhd, xpl, ypl, w, hma;
+
+
+        /* Coordinate type. */
+        c = type.charAt(0);
+
+        /* Coordinates. */
+        c1 = ob1;
+        c2 = ob2;
+
+        /* Sin, cos of latitude. */
+        sphi = astrom.sphi;
+        cphi = astrom.cphi;
+
+        /* Standardize coordinate type. */
+        if ( c == 'r' || c == 'R' ) {
+            c = 'R';
+        } else if ( c == 'h' || c == 'H' ) {
+            c = 'H';
+        } else {
+            c = 'A';
+        }
+
+        /* If Az,ZD, convert to Cartesian (S=0,E=90). */
+        if ( c == 'A' ) {
+            ce = sin(c2);
+            xaeo = - cos(c1) * ce;
+            yaeo = sin(c1) * ce;
+            zaeo = cos(c2);
+
+        } else {
+
+            /* If RA,Dec, convert to HA,Dec. */
+            if ( c == 'R' ) c1 = astrom.eral - c1;
+
+            /* To Cartesian -HA,Dec. */
+            v = jauS2c ( -c1, c2 );
+            xmhdo = v[0];
+            ymhdo = v[1];
+            zmhdo = v[2];
+
+            /* To Cartesian Az,El (S=0,E=90). */
+            xaeo = sphi*xmhdo - cphi*zmhdo;
+            yaeo = ymhdo;
+            zaeo = cphi*xmhdo + sphi*zmhdo;
+        }
+
+        /* Azimuth (S=0,E=90). */
+        az = ( xaeo != 0.0 || yaeo != 0.0 ) ? atan2(yaeo,xaeo) : 0.0;
+
+        /* Sine of observed ZD, and observed ZD. */
+        sz = sqrt ( xaeo*xaeo + yaeo*yaeo );
+        zdo = atan2 ( sz, zaeo );
+
+        /*
+         * Refraction
+         * ----------
+         */
+
+        /* Fast algorithm using two constant model. */
+        refa = astrom.refa;
+        refb = astrom.refb;
+        tz = sz / zaeo;
+        dref = ( refa + refb*tz*tz ) * tz;
+        zdt = zdo + dref;
+
+        /* To Cartesian Az,ZD. */
+        ce = sin(zdt);
+        xaet = cos(az) * ce;
+        yaet = sin(az) * ce;
+        zaet = cos(zdt);
+
+        /* Cartesian Az,ZD to Cartesian -HA,Dec. */
+        xmhda = sphi*xaet + cphi*zaet;
+        ymhda = yaet;
+        zmhda = - cphi*xaet + sphi*zaet;
+
+        /* Diurnal aberration. */
+        f = ( 1.0 + astrom.diurab*ymhda );
+        xhd = f * xmhda;
+        yhd = f * ( ymhda - astrom.diurab );
+        zhd = f * zmhda;
+
+        /* Polar motion. */
+        xpl = astrom.xpl;
+        ypl = astrom.ypl;
+        w = xpl*xhd - ypl*yhd + zhd;
+        v[0] = xhd - xpl*w;
+        v[1] = yhd + ypl*w;
+        v[2] = w - ( xpl*xpl + ypl*ypl ) * zhd;
+
+        /* To spherical -HA,Dec. */
+        SphericalCoordinate co = jauC2s(v);
+
+        /* Right ascension. */
+        co.alpha = jauAnp(astrom.eral + co.alpha);
+
+        return co;
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  Apply light deflection by a solar-system body, as part of
+     *  transforming coordinate direction into natural direction.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param bm      double      mass of the gravitating body (solar masses)
+     *     @param p       double[3]   direction from observer to source (unit vector)
+     *     @param q       double[3]   direction from body to source (unit vector)
+     *     @param e       double[3]   direction from body to observer (unit vector)
+     *     @param em      double      distance from body to observer (au)
+     *     @param dlim    double      deflection limiter (Note 4)
+     *
+     *  Returned:
+     *     @return p1      double[3]    <b>Returned</b> observer to deflected source (unit vector)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The algorithm is based on Expr. (70) in Klioner (2003) and
+     *     Expr. (7.63) in the Explanatory Supplement (Urban & Seidelmann
+     *     2013), with some rearrangement to minimize the effects of machine
+     *     precision.
+     *
+     *  <li> The mass parameter bm can, as required, be adjusted in order to
+     *     allow for such effects as quadrupole field.
+     *
+     *  <li> The barycentric position of the deflecting body should ideally
+     *     correspond to the time of closest approach of the light ray to
+     *     the body.
+     *
+     *  <li> The deflection limiter parameter dlim is phi^2/2, where phi is
+     *     the angular separation (in radians) between source and body at
+     *     which limiting is applied.  As phi shrinks below the chosen
+     *     threshold, the deflection is artificially reduced, reaching zero
+     *     for phi = 0.
+     *
+     *  <li> The returned vector p1 is not normalized, but the consequential
+     *     departure from unit magnitude is always negligible.
+     *
+     *  <li> The arguments p and p1 can be the same array.
+     *
+     *  <li> To accumulate total light deflection taking into account the
+     *     contributions from several bodies, call the present function for
+     *     each body in succession, in decreasing order of distance from the
+     *     observer.
+     *
+     *  <li> For efficiency, validation is omitted.  The supplied vectors must
+     *     be of unit magnitude, and the deflection limiter non-zero and
+     *     positive.
+     *
+     * </ol>
+     *  References:
+     * <ul>
+     *
+     * <li> Urban, S. & Seidelmann, P. K. (eds), Explanatory Supplement to
+     *     the Astronomical Almanac, 3rd ed., University Science Books
+     *     (2013).
+     *
+     * <li> Klioner, Sergei A., "A practical relativistic model for micro-
+     *     arcsecond astrometry in space", Astr. J. 125, 1580-1597 (2003).
+     *
+     * </ul>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauPdp} scalar product of two p-vectors
+     *     <li>{@link #jauPxp} vector product of two p-vectors
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static double[] jauLd(double bm, double p[], double q[], double e[],
+            double em, double dlim)
+    {
+        int i;
+        double qpe[] = new double[3], qdqpe, w, eq[], peq[] ;
+
+        double p1[] = new double[3];
+
+        /* q . (q + e). */
+        for (i = 0; i < 3; i++) {
+            qpe[i] = q[i] + e[i];
+        }
+        qdqpe = jauPdp(q, qpe);
+
+        /* 2 x G x bm / ( em x c^2 x ( q . (q + e) ) ). */
+        w = bm * SRS / em / max(qdqpe,dlim);
+
+        /* p x (e x q). */
+        eq = jauPxp(e, q);
+        peq = jauPxp(p, eq);
+
+        /* Apply the deflection. */
+        for (i = 0; i < 3; i++) {
+            p1[i] = p[i] + w*peq[i];
+        }
+
+        return p1;
+        /* Finished. */
+
+
+    }
+
+    /*+
+     *  - - - - - - -
+     *   i a u L d n
+     *  - - - - - - -
+     *
+     *  For a star, apply light deflection by multiple solar-system bodies,
+     *  as part of transforming coordinate direction into natural direction.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     n    int           number of bodies (note 1)
+     *     b    jauLDBODY[n]  data for each of the n bodies (Notes 1,2):
+     *      bm   double         mass of the body (solar masses, Note 3)
+     *      dl   double         deflection limiter (Note 4)
+     *      pv   [2][3]         barycentric PV of the body (au, au/day)
+     *     ob   double[3]     barycentric position of the observer (au)
+     *     sc   double[3]     observer to star coord direction (unit vector)
+     *
+     *  Returned:
+     *     sn    double[3]      observer to deflected star (unit vector)
+     *
+     *  1) The array b contains n entries, one for each body to be
+     *     considered.  If n = 0, no gravitational light deflection will be
+     *     applied, not even for the Sun.
+     *
+     *  2) The array b should include an entry for the Sun as well as for
+     *     any planet or other body to be taken into account.  The entries
+     *     should be in the order in which the light passes the body.
+     *
+     *  3) In the entry in the b array for body i, the mass parameter
+     *     b[i].bm can, as required, be adjusted in order to allow for such
+     *     effects as quadrupole field.
+     *
+     *  4) The deflection limiter parameter b[i].dl is phi^2/2, where phi is
+     *     the angular separation (in radians) between star and body at
+     *     which limiting is applied.  As phi shrinks below the chosen
+     *     threshold, the deflection is artificially reduced, reaching zero
+     *     for phi = 0.   Example values suitable for a terrestrial
+     *     observer, together with masses, are as follows:
+     *
+     *        body i     b[i].bm        b[i].dl
+     *
+     *        Sun        1.0            6e-6
+     *        Jupiter    0.00095435     3e-9
+     *        Saturn     0.00028574     3e-10
+     *
+     *  5) For cases where the starlight passes the body before reaching the
+     *     observer, the body is placed back along its barycentric track by
+     *     the light time from that point to the observer.  For cases where
+     *     the body is "behind" the observer no such shift is applied.  If
+     *     a different treatment is preferred, the user has the option of
+     *     instead using the iauLd function.  Similarly, iauLd can be used
+     *     for cases where the source is nearby, not a star.
+     *
+     *  6) The returned vector sn is not normalized, but the consequential
+     *     departure from unit magnitude is always negligible.
+     *
+     *  7) The arguments sc and sn can be the same array.
+     *
+     *  8) For efficiency, validation is omitted.  The supplied masses must
+     *     be greater than zero, the position and velocity vectors must be
+     *     right, and the deflection limiter greater than zero.
+     *
+     *  Reference:
+     *
+     *     Urban, S. & Seidelmann, P. K. (eds), Explanatory Supplement to
+     *     the Astronomical Almanac, 3rd ed., University Science Books
+     *     (2013), Section 7.2.4.
+     *
+     *  Called:
+     *     iauCp        copy p-vector
+     *     iauPdp       scalar product of two p-vectors
+     *     iauPmp       p-vector minus p-vector
+     *     iauPpsp      p-vector plus scaled p-vector
+     *     iauPn        decompose p-vector into modulus and direction
+     *     iauLd        light deflection by a solar-system body
+     *
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static double[] jauLdn(int n, jauLDBODY b[], double ob[], double sc[])
+    {
+        /* Light time for 1 AU (days) */
+        final double CR = AULT/DAYSEC;
+
+        int i;
+        double v[] , dt, ev[], em, e[], sn[] = new double[3];
+
+
+        /* Star direction prior to deflection. */
+        jauCp(sc, sn);
+
+        /* Body by body. */
+        for ( i = 0; i < n; i++ ) {
+
+            /* Body to observer vector at epoch of observation (au). */
+            v = jauPmp( ob, b[i].pv[0]);
+
+            /* Minus the time since the light passed the body (days). */
+            dt = jauPdp(sn,v) * CR;
+
+            /* Neutralize if the star is "behind" the observer. */
+            dt = min(dt, 0.0);
+
+            /* Backtrack the body to the time the light was passing the body. */
+            ev = jauPpsp(v, -dt, b[i].pv[1]);
+
+            /* Body to observer vector as magnitude and direction. */
+            NormalizedVector nv = jauPn(ev);
+            
+            /* Apply light deflection for this body. */
+            sn = jauLd( b[i].bm, sn, sn, nv.u, nv.r, b[i].dl );
+
+            /* Next body. */
+        }
+        return sn;
+
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  Light deflection by the Sun.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param p       double[3]   direction from observer to source (unit vector)
+     *     @param e       double[3]   direction from Sun to observer (unit vector)
+     *     @param em      double      distance from Sun to observer (au)
+     *
+     *  Returned:
+     *     @return p1      double[3]    <b>Returned</b> observer to deflected source (unit vector)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The source is presumed to be sufficiently distant that its
+     *     directions seen from the Sun and the observer are essentially
+     *     the same.
+     *
+     *  <li> The deflection is restrained when the angle between the star and
+     *     the center of the Sun is less than about 9 arcsec, falling to
+     *     zero for zero separation. (The chosen threshold is within the
+     *     solar limb for all solar-system applications.)
+     *
+     *  <li> The arguments p and p1 can be the same array.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauLd} light deflection by a solar-system body
+     *
+     * </ul>
+     *  This revision:   2013 August 30
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static double[] jauLdsun(double p[], double e[], double em)
+    {
+        return jauLd(1.0, p, p, e, em, 1e-9);
+
+        /* Finished. */
+    }
+
+    /**
+     *  Proper motion and parallax.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param rc,dc   double      ICRS RA,Dec at catalog epoch (radians)
+     *     @param pr      double      RA proper motion (radians/year; Note 1)
+     *     @param pd      double      Dec proper motion (radians/year)
+     *     @param px      double      parallax (arcsec)
+     *     @param rv      double      radial velocity (km/s, +ve if receding)
+     *     @param pmt     double      proper motion time interval (SSB, Julian years)
+     *     @param pob     double[3]   SSB to observer vector (au)
+     *
+     *  Returned:
+     *     @return pco     double[3]    <b>Returned</b> coordinate direction (BCRS unit vector)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The proper motion in RA is dRA/dt rather than cos(Dec)*dRA/dt.
+     *
+     *  <li> The proper motion time interval is for when the starlight
+     *     reaches the solar system barycenter.
+     *
+     *  <li> To avoid the need for iteration, the Roemer effect (i.e. the
+     *     small annual modulation of the proper motion coming from the
+     *     changing light time) is applied approximately, using the
+     *     direction of the star at the catalog epoch.
+     *
+     * </ol>
+     *  References:
+     * <ul>
+     *
+     * <li> 1984 Astronomical Almanac, pp B39-B41.
+     *
+     * <li> Urban, S. & Seidelmann, P. K. (eds), Explanatory Supplement to
+     *     the Astronomical Almanac, 3rd ed., University Science Books
+     *     (2013), Section 7.2.
+     *
+     * </ul>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauPdp} scalar product of two p-vectors
+     *     <li>{@link #jauPn} decompose p-vector into modulus and direction
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static double[] jauPmpx(double rc, double dc, double pr, double pd,
+            double px, double rv, double pmt, double pob[]
+            )
+    {
+        /* Km/s to au/year */
+        final double VF = DAYSEC*DJM/DAU;
+
+        /* Light time for 1 au, Julian years */
+        final double AULTY = AULT/DAYSEC/DJY;
+
+        int i;
+        double sr, cr, sd, cd, x, y, z, p[] = new double[3], dt, pxr, w, pdz, pm[] = new double[3];
+
+
+        /* Spherical coordinates to unit vector (and useful functions). */
+        sr = sin(rc);
+        cr = cos(rc);
+        sd = sin(dc);
+        cd = cos(dc);
+        p[0] = x = cr*cd;
+        p[1] = y = sr*cd;
+        p[2] = z = sd;
+
+        /* Proper motion time interval (y) including Roemer effect. */
+        dt = pmt + jauPdp(p,pob)*AULTY;
+
+        /* Space motion (radians per year). */
+        pxr = px * DAS2R;
+        w = VF * rv * pxr;
+        pdz = pd * z;
+        pm[0] = - pr*y - pdz*cr + w*x;
+        pm[1] =   pr*x - pdz*sr + w*y;
+        pm[2] =   pd*cd + w*z;
+
+        /* Coordinate direction of star (unit vector, BCRS). */
+        for (i = 0; i < 3; i++) {
+            p[i] += dt*pm[i] - pxr*pob[i];
+        }
+        NormalizedVector pco = jauPn(p);
+
+        return pco.u;
+        /* Finished. */
+
+
+    }
+
+    /**
+     *  Star proper motion:  update star catalog data for space motion, with
+     *  special handling to handle the zero parallax case.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param ra1     double       right ascension (radians), before
+     *     @param dec1    double       declination (radians), before
+     *     @param pmr1    double       RA proper motion (radians/year), before
+     *     @param pmd1    double       Dec proper motion (radians/year), before
+     *     @param px1     double       parallax (arcseconds), before
+     *     @param rv1     double       radial velocity (km/s, +ve = receding), before
+     *     @param ep1a    double       "before" epoch, part A (Note 1)
+     *     @param ep1b    double       "before" epoch, part B (Note 1)
+     *     @param ep2a    double       "after" epoch, part A (Note 1)
+     *     @param ep2b    double       "after" epoch, part B (Note 1)
+     *
+     *  Returned:
+     *     @return ra2     double        <b>Returned</b> right ascension (radians), after
+     *     @return dec2    double        <b>Returned</b> declination (radians), after
+     *     @return pmr2    double        <b>Returned</b> RA proper motion (radians/year), after
+     *     @return pmd2    double        <b>Returned</b> Dec proper motion (radians/year), after
+     *     @return px2     double        <b>Returned</b> parallax (arcseconds), after
+     *     @return rv2     double        <b>Returned</b> radial velocity (km/s, +ve = receding), after
+     *
+     *  @Throws Returned  (function   <b>Returned</b> value):
+     *            int         status:
+     *                         @return -1  =   <b>Returned</b> system error (should not occur)
+     *                          @return 0  =   <b>Returned</b> no warnings or errors
+     *                          @return 1  =   <b>Returned</b> distance overridden (Note 6)
+     *                          @return 2  =   <b>Returned</b> excessive velocity (Note 7)
+     *                          @return 4  =   <b>Returned</b> solution didn't converge (Note 8)
+     *                       @return else  =   <b>Returned</b> binary logical OR of the above warnings
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The starting and ending TDB epochs ep1a+ep1b and ep2a+ep2b are
+     *     Julian Dates, apportioned in any convenient way between the two
+     *     parts (A and B).  For example, JD(TDB)=2450123.7 could be
+     *     expressed in any of these ways, among others:
+     *
+     *            <p>epNa            epNb
+     *
+     *         <p>2450123.7           0.0       (JD method)
+     *         2451545.0       -1421.3       (J2000 method)
+     *         2400000.5       50123.2       (MJD method)
+     *         2450123.5           0.2       (date & time method)
+     *
+     *     <p>The JD method is the most natural and convenient to use in cases
+     *     where the loss of several decimal digits of resolution is
+     *     acceptable.  The J2000 method is best matched to the way the
+     *     argument is handled internally and will deliver the optimum
+     *     resolution.  The MJD method and the date & time methods are both
+     *     good compromises between resolution and convenience.
+     *
+     *  <li> In accordance with normal star-catalog conventions, the object's
+     *     right ascension and declination are freed from the effects of
+     *     secular aberration.  The frame, which is aligned to the catalog
+     *     equator and equinox, is Lorentzian and centered on the SSB.
+     *
+     *     <p>The proper motions are the rate of change of the right ascension
+     *     and declination at the catalog epoch and are in radians per TDB
+     *     Julian year.
+     *
+     *     <p>The parallax and radial velocity are in the same frame.
+     *
+     *  <li> Care is needed with units.  The star coordinates are in radians
+     *     and the proper motions in radians per Julian year, but the
+     *     parallax is in arcseconds.
+     *
+     *  <li> The RA proper motion is in terms of coordinate angle, not true
+     *     angle.  If the catalog uses arcseconds for both RA and Dec proper
+     *     motions, the RA proper motion will need to be divided by cos(Dec)
+     *     before use.
+     *
+     *  <li> Straight-line motion at constant speed, in the inertial frame, is
+     *     assumed.
+     *
+     *  <li> An extremely small (or zero or negative) parallax is overridden
+     *     to ensure that the object is at a finite but very large distance,
+     *     but not so large that the proper motion is equivalent to a large
+     *     but safe speed (about 0.1c using the chosen constant).  A warning
+     *     status of 1 is added to the status if this action has been taken.
+     *
+     *  <li> If the space velocity is a significant fraction of c (see the
+     *     constant VMAX in the function iauStarpv), it is arbitrarily set
+     *     to zero.  When this action occurs, 2 is added to the status.
+     *
+     *  <li> The relativistic adjustment carried out in the iauStarpv function
+     *     involves an iterative calculation.  If the process fails to
+     *     converge within a set number of iterations, 4 is added to the
+     *     status.
+     *
+     * </ol>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauSeps} angle between two points
+     *     <li>{@link #jauStarpm} update star catalog data for space motion
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAInternalError 
+     */
+    public static CatalogCoords jauPmsafe(double ra1, double dec1, double pmr1, double pmd1,
+            double px1, double rv1,
+            double ep1a, double ep1b, double ep2a, double ep2b) throws JSOFAInternalError
+    {
+
+        /* Minimum allowed parallax (arcsec) */
+        final double PXMIN = 5e-7;
+
+        /* Factor giving maximum allowed transverse speed of about 1% c */
+        final double F = 326.0;
+
+        int jpx, j;
+        double pm, px1a;
+
+
+        /* Proper motion in one year (radians). */
+        pm = jauSeps(ra1, dec1, ra1+pmr1, dec1+pmd1);
+
+        
+        //FIXME - need to doe something about warning status.
+        /* Override the parallax to reduce the chances of a warning status. */
+        jpx = 0;
+        px1a = px1;
+        pm *= F;
+        if (px1a < pm) {jpx = 1; px1a = pm;}
+        if (px1a < PXMIN) {jpx = 1; px1a = PXMIN;}
+
+        /* Carry out the transformation using the modified parallax. */
+        return jauStarpm(ra1, dec1, pmr1, pmd1, px1a, rv1,
+                ep1a, ep1b, ep2a, ep2b);
+
+         /* Finished. */
+
+
+    }
+
+    /**
+     *  Position and velocity of a terrestrial observing station.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *     @param elong    double        longitude (radians, east +ve, Note 1)
+     *     @param phi      double        latitude (geodetic, radians, Note 1)
+     *     @param hm       double        height above ref. ellipsoid (geodetic, m)
+     *     @param xp,yp    double        coordinates of the pole (radians, Note 2)
+     *     @param sp       double        the TIO locator s' (radians, Note 2)
+     *     @param theta    double        Earth rotation angle (radians, Note 3)
+     *
+     *  Returned:
+     *     @return pv       double[2][3]   <b>Returned</b> position/velocity vector (m, m/s, CIRS)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The terrestrial coordinates are with respect to the WGS84
+     *     reference ellipsoid.
+     *
+     *  <li> xp and yp are the coordinates (in radians) of the Celestial
+     *     Intermediate Pole with respect to the International Terrestrial
+     *     Reference System (see IERS Conventions), measured along the
+     *     meridians 0 and 90 deg west respectively.  sp is the TIO locator
+     *     s', in radians, which positions the Terrestrial Intermediate
+     *     Origin on the equator.  For many applications, xp, yp and
+     *     (especially) sp can be set to zero.
+     *
+     *  <li> If theta is Greenwich apparent sidereal time instead of Earth
+     *     rotation angle, the result is with respect to the true equator
+     *     and equinox of date, i.e. with the x-axis at the equinox rather
+     *     than the celestial intermediate origin.
+     *
+     *  <li> The velocity units are meters per UT1 second, not per SI second.
+     *     This is unlikely to have any practical consequences in the modern
+     *     era.
+     *
+     *  <li> No validation is performed on the arguments.  Error cases that
+     *     could lead to arithmetic exceptions are trapped by the iauGd2gc
+     *     function, and the result set to zeros.
+     *
+     * </ol>
+     *  References:
+     * <ul>
+     *
+     * <li> McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
+     *     IERS Technical Note No. 32, BKG (2004)
+     *
+     * <li> Urban, S. & Seidelmann, P. K. (eds), Explanatory Supplement to
+     *     the Astronomical Almanac, 3rd ed., University Science Books
+     *     (2013), Section 7.4.3.3.
+     *
+     * </ul>
+     *  Called:
+     * <ul>
+     *     <li>{@link #jauGd2gc} geodetic to geocentric transformation
+     *     <li>{@link #jauPom00} polar motion matrix
+     *     <li>{@link #jauTrxp} product of transpose of r-matrix and p-vector
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     * @throws JSOFAInternalError 
+     * @throws JSOFAIllegalParameter 
+     */
+    public static double [][] jauPvtob(double elong, double phi, double hm,
+            double xp, double yp, double sp, double theta
+            ) throws JSOFAIllegalParameter, JSOFAInternalError
+    {
+        /* Earth rotation rate in radians per UT1 second */
+        final double OM = 1.00273781191135448 * D2PI / DAYSEC;
+
+        double xyzm[],rpm[][], xyz[], x, y, z, s, c;
+        double pv[][] = new double[2][3];
+
+        /* Geodetic to geocentric transformation (WGS84). */
+        xyzm = jauGd2gc(1, elong, phi, hm);
+
+        /* Polar motion and TIO position. */
+        rpm = jauPom00(xp, yp, sp);
+        xyz = jauTrxp(rpm, xyzm);
+        x = xyz[0];
+        y = xyz[1];
+        z = xyz[2];
+
+        /* Functions of ERA. */
+        s = sin(theta);
+        c = cos(theta);
+
+        /* Position. */
+        pv[0][0] = c*x - s*y;
+        pv[0][1] = s*x + c*y;
+        pv[0][2] = z;
+
+        /* Velocity. */
+        pv[1][0] = OM * ( -s*x - c*y );
+        pv[1][1] = OM * (  c*x - s*y );
+        pv[1][2] = 0.0;
+
+        return pv;
+        /* Finished. */
+
+
+    }
+
+    /**
+     * constants A and B in the atmospheric refraction model
+     *  dZ = A tan Z + B tan^3 Z.
+     *  .
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 28 Mar 2014
+     * @version $Revision$ $date$
+     */
+    public static class RefCos {
+        /**    refraction coefficient A  */
+        double    a ;
+
+        /**    refraction coefficient B  */
+        double    b ;
+        public RefCos(double a, double b) {
+          this.a = a;
+          this.b = b;
+       }
+       
+   }
+
+    /**
+     *  Determine the constants A and B in the atmospheric refraction model
+     *  dZ = A tan Z + B tan^3 Z.
+     *
+     *  Z is the "observed" zenith distance (i.e. affected by refraction)
+     *  and dZ is what to add to Z to give the "topocentric" (i.e. in vacuo)
+     *  zenith distance.
+     *
+     *  This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  Status:  support function.
+     *
+     *  Given:
+     *    @param phpa    double     pressure at the observer (hPa = millibar)
+     *    @param tc      double     ambient temperature at the observer (deg C)
+     *    @param rh      double     relative humidity at the observer (range 0-1)
+     *    @param wl      double     wavelength (micrometers)
+     *
+     *  Returned:
+     *    @return      <b>Returned</b> tan Z coefficient (radians)
+     *                 <b>Returned</b> tan^3 Z coefficient (radians)
+     *
+     *  Notes:
+     * <ol>
+     *
+     *  <li> The model balances speed and accuracy to give good results in
+     *     applications where performance at low altitudes is not paramount.
+     *     Performance is maintained across a range of conditions, and
+     *     applies to both optical/IR and radio.
+     *
+     *  <li> The model omits the effects of (i) height above sea level (apart
+     *     from the reduced pressure itself), (ii) latitude (i.e. the
+     *     flattening of the Earth), (iii) variations in tropospheric lapse
+     *     rate and (iv) dispersive effects in the radio.
+     *
+     *     <p>The model was tested using the following range of conditions:
+     *
+     *       <p>lapse rates 0.0055, 0.0065, 0.0075 deg/meter
+     *       latitudes 0, 25, 50, 75 degrees
+     *       heights 0, 2500, 5000 meters ASL
+     *       pressures mean for height -10% to +5% in steps of 5%
+     *       temperatures -10 deg to +20 deg with respect to 280 deg at SL
+     *       relative humidity 0, 0.5, 1
+     *       wavelengths 0.4, 0.6, ... 2 micron, + radio
+     *       zenith distances 15, 45, 75 degrees
+     *
+     *     <p>The accuracy with respect to raytracing through a model
+     *     atmosphere was as follows:
+     *
+     *                            <p>worst         RMS
+     *
+     *       <p>optical/IR           62 mas       8 mas
+     *       radio               319 mas      49 mas
+     *
+     *     <p>For this particular set of conditions:
+     *
+     *       <p>lapse rate 0.0065 K/meter
+     *       latitude 50 degrees
+     *       sea level
+     *       pressure 1005 mb
+     *       temperature 280.15 K
+     *       humidity 80%
+     *       wavelength 5740 Angstroms
+     *
+     *     <p>the results were as follows:
+     *
+     *       <p>ZD       raytrace     iauRefco   Saastamoinen
+     *
+     *       <p>10         10.27        10.27        10.27
+     *       20         21.19        21.20        21.19
+     *       30         33.61        33.61        33.60
+     *       40         48.82        48.83        48.81
+     *       45         58.16        58.18        58.16
+     *       50         69.28        69.30        69.27
+     *       55         82.97        82.99        82.95
+     *       60        100.51       100.54       100.50
+     *       65        124.23       124.26       124.20
+     *       70        158.63       158.68       158.61
+     *       72        177.32       177.37       177.31
+     *       74        200.35       200.38       200.32
+     *       76        229.45       229.43       229.42
+     *       78        267.44       267.29       267.41
+     *       80        319.13       318.55       319.10
+     *
+     *      <p>deg        arcsec       arcsec       arcsec
+     *
+     *     <p>The values for Saastamoinen's formula (which includes terms
+     *     up to tan^5) are taken from Hohenkerk and Sinclair (1985).
+     *
+     *  <li> A wl value in the range 0-100 selects the optical/IR case and is
+     *     wavelength in micrometers.  Any value outside this range selects
+     *     the radio case.
+     *
+     *  <li> Outlandish input parameters are silently limited to
+     *     mathematically safe values.  Zero pressure is permissible, and
+     *     causes zeroes to be returned.
+     *
+     *  <li> The algorithm draws on several sources, as follows:
+     *
+     *     <p>a) The formula for the saturation vapour pressure of water as
+     *        a function of temperature and temperature is taken from
+     *        Equations (A4.5-A4.7) of Gill (1982).
+     *
+     *     <p>b) The formula for the water vapour pressure, given the
+     *        saturation pressure and the relative humidity, is from
+     *        Crane (1976), Equation (2.5.5).
+     *
+     *     <p>c) The refractivity of air is a function of temperature,
+     *        total pressure, water-vapour pressure and, in the case
+     *        of optical/IR, wavelength.  The formulae for the two cases are
+     *        developed from Hohenkerk & Sinclair (1985) and Rueger (2002).
+     *
+     *     <p>d) The formula for beta, the ratio of the scale height of the
+     *        atmosphere to the geocentric distance of the observer, is
+     *        an adaption of Equation (9) from Stone (1996).  The
+     *        adaptations, arrived at empirically, consist of (i) a small
+     *        adjustment to the coefficient and (ii) a humidity term for the
+     *        radio case only.
+     *
+     *     <p>e) The formulae for the refraction constants as a function of
+     *        n-1 and beta are from Green (1987), Equation (4.31).
+     *
+     * </ol>
+     *  References:
+     * <ul>
+     *
+     * <li> Crane, R.K., Meeks, M.L. (ed), "Refraction Effects in the Neutral
+     *     Atmosphere", Methods of Experimental Physics: Astrophysics 12B,
+     *     Academic Press, 1976.
+     *
+     * <li> Gill, Adrian E., "Atmosphere-Ocean Dynamics", Academic Press,
+     *     1982.
+     *
+     * <li> Green, R.M., "Spherical Astronomy", Cambridge University Press,
+     *     1987.
+     *
+     * <li> Hohenkerk, C.Y., & Sinclair, A.T., NAO Technical Note No. 63,
+     *     1985.
+     *
+     * <li> Rueger, J.M., "Refractive Index Formulae for Electronic Distance
+     *     Measurement with Radio and Millimetre Waves", in Unisurv Report
+     *     S-68, School of Surveying and Spatial Information Systems,
+     *     University of New South Wales, Sydney, Australia, 2002.
+     *
+     * <li> Stone, Ronald C., P.A.S.P. 108, 1051-1058, 1996.
+     *
+     * </ul>
+     *  This revision:   2013 October 9
+     *
+     *  SOFA release 2013-12-02
+     *
+     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     */
+    public static RefCos jauRefco(double phpa, double tc, double rh, double wl )
+    {
+        boolean optic;
+        double p, t, r, w, ps, pw, tk, wlsq, gamma, beta;
+
+
+        /* Decide whether optical/IR or radio case:  switch at 100 microns. */
+        optic = ( wl <= 100.0 );
+
+        /* Restrict parameters to safe values. */
+        t = max ( tc, -150.0 );
+        t = min ( t, 200.0 );
+        p = max ( phpa, 0.0 );
+        p = min ( p, 10000.0 );
+        r = max ( rh, 0.0 );
+        r = min ( r, 1.0 );
+        w = max ( wl, 0.1 );
+        w = min ( w, 1e6 );
+
+        /* Water vapour pressure at the observer. */
+        if ( p > 0.0 ) {
+            ps = pow ( 10.0, ( 0.7859 + 0.03477*t ) /
+                    ( 1.0 + 0.00412*t ) ) *
+                    ( 1.0 + p * ( 4.5e-6 + 6e-10*t*t )  );
+            pw = r * ps / ( 1.0 - (1.0-r)*ps/p );
+        } else {
+            pw = 0.0;
+        }
+
+        /* Refractive index minus 1 at the observer. */
+        tk = t + 273.15;
+        if ( optic ) {
+            wlsq = w * w;
+            gamma = ( ( 77.53484e-6 +
+                    ( 4.39108e-7 + 3.666e-9/wlsq ) / wlsq ) * p
+                    - 11.2684e-6*pw ) / tk;
+        } else {
+            gamma = ( 77.6890e-6*p - ( 6.3938e-6 - 0.375463/tk ) * pw ) / tk;
+        }
+
+        /* Formula for beta from Stone, with empirical adjustments. */
+        beta = 4.4474e-6 * tk;
+        if ( ! optic ) beta -= 0.0074 * pw * beta;
+
+        /* Refraction constants from Green. */
+        return new RefCos( gamma * ( 1.0 - beta ),
+               - gamma * ( beta - gamma / 2.0 ));
+
+        /* Finished. */
+
+
+    }
+    
 
 }
 
 /*
- * Copyright © 2012 Paul Harrison, University of Manchester.
+ * Copyright © 2014 Paul Harrison, University of Manchester.
  * 
  * This JSOFA software is derived from the official C release of the "Standards Of Fundamental Astronomy" (SOFA) library 
  * of the International Astronomical Union. The intention is to reproduce the functionality and algorithms of 
@@ -24007,7 +29155,7 @@ public static class SphericalCoordinate {
 
 /*----------------------------------------------------------------------
 **
-**  Copyright (C) 2012
+**  Copyright (C) 2013
 **  Standards Of Fundamental Astronomy Board
 **  of the International Astronomical Union.
 **
