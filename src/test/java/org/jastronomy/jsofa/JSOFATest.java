@@ -22,7 +22,7 @@ import org.jastronomy.jsofa.JSOFA.ObservedPosition;
 import org.jastronomy.jsofa.JSOFA.ObservedPositionEO;
 import org.jastronomy.jsofa.JSOFA.RefCos;
 import org.jastronomy.jsofa.JSOFA.SphericalCoordinateEO;
-import org.jastronomy.jsofa.JSOFA.jauASTROM;
+import org.jastronomy.jsofa.JSOFA.Astrom;
 import org.jastronomy.jsofa.JSOFAException;
 import org.jastronomy.jsofa.JSOFAIllegalParameter;
 import org.jastronomy.jsofa.JSOFAInternalError;
@@ -6646,7 +6646,7 @@ public void t_apcg()
     */
     {
        double date1, date2, ebpv[][] = new double[2][3], ehp[] = new double[3];
-       jauASTROM astrom = new jauASTROM();
+       Astrom astrom = new Astrom();
 
 
        date1 = 2456165.5;
@@ -6763,7 +6763,7 @@ public void t_apcg()
     */
     {
        double date1, date2;
-       jauASTROM astrom = new jauASTROM();
+       Astrom astrom = new Astrom();
 
 
        date1 = 2456165.5;
@@ -6833,7 +6833,7 @@ public void t_apcg()
     */
     {
        double date1, date2, ebpv[][] = new double[2][3], ehp[] = new double[3], x, y, s;
-       jauASTROM astrom = new jauASTROM() ;
+       Astrom astrom = new Astrom() ;
 
 
        date1 = 2456165.5;
@@ -6916,7 +6916,7 @@ public void t_apcg()
     */
     {
        double date1, date2, eo;
-       jauASTROM astrom = new jauASTROM() ;
+       Astrom astrom = new Astrom() ;
 
 
        date1 = 2456165.5;
@@ -6990,7 +6990,7 @@ public void t_apcg()
     {
        double date1, date2, ebpv[][] = new double[2][3], ehp[] = new double[3], x, y, s,
               theta, elong, phi, hm, xp, yp, sp, refa, refb;
-       jauASTROM astrom = new jauASTROM() ;
+       Astrom astrom = new Astrom() ;
 
 
        date1 = 2456384.5;
@@ -7105,7 +7105,7 @@ public void t_apcg()
 {
    double utc1, utc2, dut1, elong, phi, hm, xp, yp,
           phpa, tc, rh, wl, eo;
-   jauASTROM astrom = new jauASTROM() ;
+   Astrom astrom = new Astrom() ;
 
 
    utc1 = 2456384.5;
@@ -7207,7 +7207,7 @@ public void t_apcg()
 */
 {
    double date1, date2, pv[][] = new double[2][3], ebpv[][] = new double[2][3], ehp[] = new double[3];
-   jauASTROM astrom = new jauASTROM() ;
+   Astrom astrom = new Astrom() ;
 
 
    date1 = 2456384.5;
@@ -7293,7 +7293,7 @@ public void t_apcg()
 */
 {
    double date1, date2, pv[][] = new double[2][3];
-   jauASTROM astrom = new jauASTROM() ;
+   Astrom astrom = new Astrom() ;
 
 
    date1 = 2456165.5;
@@ -7369,7 +7369,7 @@ public void t_apcg()
 */
 {
    double theta;
-   jauASTROM astrom = new jauASTROM() ;
+   Astrom astrom = new Astrom() ;
 
 
    astrom.along = 1.234;
@@ -7399,7 +7399,7 @@ public void t_apcg()
 */
 {
    double ut11, ut12;
-   jauASTROM astrom = new jauASTROM() ;
+   Astrom astrom = new Astrom() ;
 
 
    astrom.along = 1.234;
@@ -7430,7 +7430,7 @@ public void t_apcg()
 */
 {
    double sp, theta, elong, phi, hm, xp, yp, refa, refb;
-   jauASTROM astrom = new jauASTROM() ;
+   Astrom astrom = new Astrom() ;
 
 
    sp = -3.01974337e-11;
@@ -7485,7 +7485,7 @@ public void t_apcg()
 {
    double utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl;
    int j;
-   jauASTROM astrom = new jauASTROM() ;
+   Astrom astrom = new Astrom() ;
 
 
    utc1 = 2456384.5;
@@ -7583,7 +7583,7 @@ public void t_apcg()
 */
 {
    double date1, date2, eo, rc, dc, pr, pd, px, rv, ri, di;
-   jauASTROM astrom = new jauASTROM() ;
+   Astrom astrom = new Astrom() ;
 
    date1 = 2456165.5;
    date2 = 0.401182685;
@@ -7621,9 +7621,9 @@ public void t_apcg()
 **  This revision:  2013 October 3
 */
 {
-   jauLDBODY b[] = {new jauLDBODY(),new jauLDBODY(),new jauLDBODY()};
+   Ldbody b[] = {new Ldbody(),new Ldbody(),new Ldbody()};
    double date1, date2, eo, rc, dc, pr, pd, px, rv, ri, di;
-   jauASTROM astrom = new jauASTROM() ;
+   Astrom astrom = new Astrom() ;
 
    date1 = 2456165.5;
    date2 = 0.401182685;
@@ -7683,7 +7683,7 @@ public void t_apcg()
 */
 {
    double date1, date2, eo, rc, dc, ri, di;
-   jauASTROM astrom = new jauASTROM() ;
+   Astrom astrom = new Astrom() ;
 
 
    date1 = 2456165.5;
@@ -7805,7 +7805,7 @@ public void t_apcg()
 */
 {
    double date1, date2, eo, ri, di, rc, dc;
-   jauASTROM astrom = new jauASTROM() ;
+   Astrom astrom = new Astrom() ;
 
 
    date1 = 2456165.5;
@@ -7839,8 +7839,8 @@ public void t_apcg()
 */
 {
    double date1, date2, eo, ri, di, rc, dc;
-   jauLDBODY b[] = {new jauLDBODY(),new jauLDBODY(),new jauLDBODY()};
-   jauASTROM astrom = new jauASTROM() ;
+   Ldbody b[] = {new Ldbody(),new Ldbody(),new Ldbody()};
+   Astrom astrom = new Astrom() ;
 
 
    date1 = 2456165.5;
@@ -7948,7 +7948,7 @@ public void t_apcg()
 {
    double utc1, utc2, dut1, elong, phi, hm, xp, yp,
           phpa, tc, rh, wl, ri, di, aob, zob, hob, dob, rob;
-   jauASTROM astrom = new jauASTROM() ;
+   Astrom astrom = new Astrom() ;
 
 
    utc1 = 2456384.5;
@@ -8114,7 +8114,7 @@ public void t_apcg()
 {
    double utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl,
           ob1, ob2;
-   jauASTROM astrom = new jauASTROM() ;
+   Astrom astrom = new Astrom() ;
 
 
    utc1 = 2456384.5;
@@ -8204,7 +8204,7 @@ public void t_apcg()
 
 @Test
     public void t_ldn()
-/*
+/**
 **  - - - - - -
 **   t _ l d n
 **  - - - - - -
@@ -8220,7 +8220,7 @@ public void t_apcg()
 */
 {
    int n;
-   jauLDBODY b[] = {new jauLDBODY(),new jauLDBODY(),new jauLDBODY()};
+   Ldbody b[] = {new Ldbody(),new Ldbody(),new Ldbody()};
    double ob[] = new double[3], sc[] = new double[3], sn[];
 
 
@@ -8511,8 +8511,31 @@ public void t_d2dtf() throws JSOFAIllegalParameter, JSOFAInternalError
 
 
 
+/**
+**  - - - - - - - -
+**   t _ d t f 2 d
+**  - - - - - - - -
+**
+**  Test iauDtf2d function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauDtf2d, vvd, viv
+**
+**  This revision:  2013 August 7
+ * @throws JSOFAInternalError 
+ * @throws JSOFAIllegalParameter 
+*/
+@Test
+public void t_dtf2d() throws JSOFAIllegalParameter, JSOFAInternalError
+{
 
+   JulianDate jd = jauDtf2d("UTC", 1994, 6, 30, 23, 59, 60.13599);
 
+   vvd(jd.djm0+jd.djm1, 2449534.49999, 1e-6, "iauDtf2d", "u");
+
+}
 
 
 //end of tests

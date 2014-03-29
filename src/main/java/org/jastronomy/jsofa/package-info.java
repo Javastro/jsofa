@@ -3,13 +3,15 @@
  * by hand with the intention of retaining the structure of the original software as far as possible. This means that the original JSOFA C functions are translated to static member functions of
  * the main {@link org.jastronomy.jsofa.JSOFA} class.
  * 
- * The translation was made from the 2010-12-01 release of the JSOFA Library for ANSI C. Any updates to this software
- * should be made by looking for incremental changes in the original source.
+ * The translation was originally made from the 2010-12-01 release of the JSOFA Library for ANSI C. Any updates to this software
+ * have been be made by incremental changes in the original source.
+ * 
+ * The current software is base on SOFA version {@value org.jastronomy.jsofa.JSOFA#SOFA_RELEASE} revision {@value org.jastronomy.jsofa.JSOFA#SOFA_REVISION}
  * 
  * This javadoc provides a detailed manual on how to use each function - there are also some <a href="http://www.iausofa.org/cookbooks.html">cookbooks on the IAU SOFA site</a> which can 
  * also be used to discover how to use the library bearing in mind the changes outlined below.
  * 
- *<p> Notable changes from the original include:
+ *<p> Notable API changes from the original include:
  * <ul>
  * <li> function names begin with the prefix "jau" rather than "iau"</li>
  * <li> many of the original SOFA routines return multiple values via pointers - the java translation achieves this by returning composite objects 
@@ -23,7 +25,7 @@
  *<p>There are a number of features of the java translation
  *   <ul>
  *     <li>The "functions" of the library are all static member functions of {@link org.jastronomy.jsofa.JSOFA}</li>
- *     <li>Class members are typically publicly visible and no accessors are used - This makes the library code more "C"-like</li>
+ *     <li>Class data members are typically publicly visible and no accessors are used - This makes the library code more "C"-like</li>
  *   </ul>
  *</p>
  * 
@@ -38,9 +40,45 @@
      {@link org.jastronomy.jsofa.JSOFA#jauJd2cal}    Julian Date to Gregorian year, month, day, fraction<br/>
      {@link org.jastronomy.jsofa.JSOFA#jauJdcalf}    Julian Date to Gregorian date for formatted output<br/>
 
+  <h3>Astrometry</h3>
+
+     {@link org.jastronomy.jsofa.JSOFA#jauAb}       Apply stellar aberration<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauApcg}     prepare for ICRS &lt;-&gt; GCRS, geocentric, special<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauApcg13}   prepare for ICRS &lt;-&gt; GCRS, geocentric<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauApci}     prepare for ICRS &lt;-&gt; CIRS, terrestrial, special<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauApci13}   prepare for ICRS &lt;-&gt; CIRS, terrestrial<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauApco}     prepare for ICRS &lt;-&gt; observed, terrestrial, special<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauApco13}   prepare for ICRS &lt;-&gt; observed, terrestrial<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauApcs}     prepare for ICRS &lt;-&gt; CIRS, space, special<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauApcs13}   prepare for ICRS &lt;-&gt; CIRS, space<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAper}     insert ERA into context<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAper13}   update context for Earth rotation<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauApio}     prepare for CIRS &lt;-&gt; observed, terrestrial, special<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauApio13}   prepare for CIRS &lt;-&gt; observed, terrestrial<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtci13}   catalog -&gt; CIRS<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtciq}    quick ICRS -&gt; CIRS<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtciqn}   quick ICRS -&gt; CIRS, multiple deflections<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtciqz}   quick astrometric ICRS -&gt; CIRS<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtco13}   ICRS -&gt; observed<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtic13}   CIRS -&gt; ICRS<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAticq}    quick CIRS -&gt; ICRS<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtciqn}   quick CIRS -&gt; ICRS, multiple deflections<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtio13}   CIRS -&gt; observed<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtioq}    quick CIRS -&gt; observed<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtoc13}   observed -&gt; astrometric ICRS<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtoi13}   observed -&gt; CIRS<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtoiq}    quick observed -&gt; CIRS<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauLd}       light deflection by a single solar-system body<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauLdn}      light deflection by multiple solar-system bodies<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauLdsun}    light deflection by the Sun<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauPmpx}     apply proper motion and parallax<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauPvtob}    observatory position and velocity<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauRefco}    refraction constants<br/>
+
+
  <h3>Time scales</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauD2DTF}    format 2-part JD for output<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauD2dtf}    format 2-part JD for output<br/>
      {@link org.jastronomy.jsofa.JSOFA#jauDat}      Delta(AT) (=TAI-UTC) for a given UTC date<br/>
      {@link org.jastronomy.jsofa.JSOFA#jauDtdb}     TDB-TT<br/>
      {@link org.jastronomy.jsofa.JSOFA#jauDtf2d}    encode time and date fields into 2-part JD<br/>
@@ -300,11 +338,8 @@
  * 
  * @since February 2010
  * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
- */
-package org.jastronomy.jsofa;
-
-/*
- * Copyright © 2010 Paul Harrison, University of Manchester.
+ * <pre>
+ * Copyright © 2014 Paul Harrison, University of Manchester.
  * 
  * This JSOFA software is derived from the official C release of the "Standards Of Fundamental Astronomy" (SOFA) library 
  * of the International Astronomical Union. The intention is to reproduce the functionality and algorithms of 
@@ -319,102 +354,105 @@ package org.jastronomy.jsofa;
  * of such damages, or for any claim by any third party.
  * 
  * Other conditions of the original license (reproduced below) are carried over as applicable.
- */
+ * 
+ * ----------------------------------------------------------------------
+ *
+ *  Copyright (C) 2013
+ *  Standards Of Fundamental Astronomy Board
+ *  of the International Astronomical Union.
+ *
+ *  =====================
+ *  SOFA Software License
+ *  =====================
+ *
+ *  NOTICE TO USER:
+ *
+ *  BY USING THIS SOFTWARE YOU ACCEPT THE FOLLOWING SIX TERMS AND
+ *  CONDITIONS WHICH APPLY TO ITS USE.
+ *
+ *  1. The Software is owned by the IAU SOFA Board ("SOFA").
+ *
+ *  2. Permission is granted to anyone to use the SOFA software for any
+ *     purpose, including commercial applications, free of charge and
+ *     without payment of royalties, subject to the conditions and
+ *     restrictions listed below.
+ *
+ *  3. You (the user) may copy and distribute SOFA source code to others,
+ *     and use and adapt its code and algorithms in your own software,
+ *     on a world-wide, royalty-free basis.  That portion of your
+ *     distribution that does not consist of intact and unchanged copies
+ *     of SOFA source code files is a "derived work" that must comply
+ *     with the following requirements:
+ *
+ *     a) Your work shall be marked or carry a statement that it
+ *        (i) uses routines and computations derived by you from
+ *        software provided by SOFA under license to you; and
+ *        (ii) does not itself constitute software provided by and/or
+ *        endorsed by SOFA.
+ *
+ *     b) The source code of your derived work must contain descriptions
+ *        of how the derived work is based upon, contains and/or differs
+ *        from the original SOFA software.
+ *
+ *     c) The names of all routines in your derived work shall not
+ *        include the prefix "iau" or "sofa" or trivial modifications
+ *        thereof such as changes of case.
+ *
+ *     d) The origin of the SOFA components of your derived work must
+ *        not be misrepresented;  you must not claim that you wrote the
+ *        original software, nor file a patent application for SOFA
+ *        software or algorithms embedded in the SOFA software.
+ *
+ *     e) These requirements must be reproduced intact in any source
+ *        distribution and shall apply to anyone to whom you have
+ *        granted a further right to modify the source code of your
+ *        derived work.
+ *
+ *     Note that, as originally distributed, the SOFA software is
+ *     intended to be a definitive implementation of the IAU standards,
+ *     and consequently third-party modifications are discouraged.  All
+ *     variations, no matter how minor, must be explicitly marked as
+ *     such, as explained above.
+ *
+ *  4. You shall not cause the SOFA software to be brought into
+ *     disrepute, either by misuse, or use for inappropriate tasks, or
+ *     by inappropriate modification.
+ *
+ *  5. The SOFA software is provided "as is" and SOFA makes no warranty
+ *     as to its use or performance.   SOFA does not and cannot warrant
+ *     the performance or results which the user may obtain by using the
+ *     SOFA software.  SOFA makes no warranties, express or implied, as
+ *     to non-infringement of third party rights, merchantability, or
+ *     fitness for any particular purpose.  In no event will SOFA be
+ *     liable to the user for any consequential, incidental, or special
+ *     damages, including any lost profits or lost savings, even if a
+ *     SOFA representative has been advised of such damages, or for any
+ *     claim by any third party.
+ *
+ *  6. The provision of any version of the SOFA software under the terms
+ *     and conditions specified herein does not imply that future
+ *     versions will also be made available under the same terms and
+ *     conditions.
+ 
+ *  In any published work or commercial product which uses the SOFA
+ *  software directly, acknowledgement (see www.iausofa.org) is
+ *  appreciated.
+ *
+ *  Correspondence concerning SOFA software should be addressed as
+ *  follows:
+ *
+ *      By email:  sofa@ukho.gov.uk
+ *      By post:   IAU SOFA Center
+ *                 HM Nautical Almanac Office
+ *                 UK Hydrographic Office
+ *                 Admiralty Way, Taunton
+ *                 Somerset, TA1 2DN
+ *                 United Kingdom
+ *
+ *--------------------------------------------------------------------
+ *</pre>
+ **/
+package org.jastronomy.jsofa;
 
-/*----------------------------------------------------------------------
-**
-**  Copyright (C) 2012
-**  Standards Of Fundamental Astronomy Board
-**  of the International Astronomical Union.
-**
-**  =====================
-**  SOFA Software License
-**  =====================
-**
-**  NOTICE TO USER:
-**
-**  BY USING THIS SOFTWARE YOU ACCEPT THE FOLLOWING SIX TERMS AND
-**  CONDITIONS WHICH APPLY TO ITS USE.
-**
-**  1. The Software is owned by the IAU SOFA Board ("SOFA").
-**
-**  2. Permission is granted to anyone to use the SOFA software for any
-**     purpose, including commercial applications, free of charge and
-**     without payment of royalties, subject to the conditions and
-**     restrictions listed below.
-**
-**  3. You (the user) may copy and distribute SOFA source code to others,
-**     and use and adapt its code and algorithms in your own software,
-**     on a world-wide, royalty-free basis.  That portion of your
-**     distribution that does not consist of intact and unchanged copies
-**     of SOFA source code files is a "derived work" that must comply
-**     with the following requirements:
-**
-**     a) Your work shall be marked or carry a statement that it
-**        (i) uses routines and computations derived by you from
-**        software provided by SOFA under license to you; and
-**        (ii) does not itself constitute software provided by and/or
-**        endorsed by SOFA.
-**
-**     b) The source code of your derived work must contain descriptions
-**        of how the derived work is based upon, contains and/or differs
-**        from the original SOFA software.
-**
-**     c) The names of all routines in your derived work shall not
-**        include the prefix "iau" or "sofa" or trivial modifications
-**        thereof such as changes of case.
-**
-**     d) The origin of the SOFA components of your derived work must
-**        not be misrepresented;  you must not claim that you wrote the
-**        original software, nor file a patent application for SOFA
-**        software or algorithms embedded in the SOFA software.
-**
-**     e) These requirements must be reproduced intact in any source
-**        distribution and shall apply to anyone to whom you have
-**        granted a further right to modify the source code of your
-**        derived work.
-**
-**     Note that, as originally distributed, the SOFA software is
-**     intended to be a definitive implementation of the IAU standards,
-**     and consequently third-party modifications are discouraged.  All
-**     variations, no matter how minor, must be explicitly marked as
-**     such, as explained above.
-**
-**  4. You shall not cause the SOFA software to be brought into
-**     disrepute, either by misuse, or use for inappropriate tasks, or
-**     by inappropriate modification.
-**
-**  5. The SOFA software is provided "as is" and SOFA makes no warranty
-**     as to its use or performance.   SOFA does not and cannot warrant
-**     the performance or results which the user may obtain by using the
-**     SOFA software.  SOFA makes no warranties, express or implied, as
-**     to non-infringement of third party rights, merchantability, or
-**     fitness for any particular purpose.  In no event will SOFA be
-**     liable to the user for any consequential, incidental, or special
-**     damages, including any lost profits or lost savings, even if a
-**     SOFA representative has been advised of such damages, or for any
-**     claim by any third party.
-**
-**  6. The provision of any version of the SOFA software under the terms
-**     and conditions specified herein does not imply that future
-**     versions will also be made available under the same terms and
-**     conditions.
-*
-**  In any published work or commercial product which uses the SOFA
-**  software directly, acknowledgement (see www.iausofa.org) is
-**  appreciated.
-**
-**  Correspondence concerning SOFA software should be addressed as
-**  follows:
-**
-**      By email:  sofa@ukho.gov.uk
-**      By post:   IAU SOFA Center
-**                 HM Nautical Almanac Office
-**                 UK Hydrographic Office
-**                 Admiralty Way, Taunton
-**                 Somerset, TA1 2DN
-**                 United Kingdom
-**
-**--------------------------------------------------------------------*/
 
 

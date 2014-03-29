@@ -8,18 +8,25 @@
 
 package org.jastronomy.jsofa;
 
-import static java.lang.StrictMath.*; //IMPL strictmath better?
+import static java.lang.StrictMath.*; 
 
 /**
  * Java implementation of Standards of Fundamental Astronomy. <a href="http://www.iausofa.org/">http://www.iausofa.org/</a>
  * 
  * This code has been created by hand translating the official C version.
  * 
- * @author Paul Harrison (paul.harrison@manchester.ac.uk) 26 Jan 2010
- * @version JSOFA Release 2010-12-01
+ * @author Paul Harrison (paul.harrison@manchester.ac.uk) 02 Apr 2014
+ * @version JSOFA Release 20131202b
  * @since 26 Jan 2010
  */
 public class JSOFA {
+    /** tracked IAU SOFA release {@value}. */
+    public final static String SOFA_RELEASE = "2013-12-02";
+
+    /** tracked IAU SOFA revision {@value}. */
+    public final static String SOFA_REVISION = "b";
+
+    
 
     /** Seconds of time to radians {@value} */
     public final static double DS2R = (7.272205216643039903848712e-5);
@@ -140,7 +147,7 @@ public class JSOFA {
      *     are both good compromises between resolution and convenience.
      * 
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 28 Jan 2010
-     * @version $Name$
+     * 
      * 
      */
     public static class JulianDate {
@@ -163,13 +170,7 @@ public class JSOFA {
     **
     **  <p>Status:  vector/matrix support function.
     **  
-    ** <!-- Given: -->
-    **    @param ndp     int     resolution (Note 1)
-    **    @param angle   double  angle in radians
     **
-    ** <!-- Returned: -->
-    **    @return sign    char    '+' or '-'
-    **    @param idmsf   int[4] <u>returned</u> degrees, arcminutes, arcseconds, fraction
     **
     **<p>Called:<ul>
     **     <li>{@link #jauD2tf}      decompose days to hms
@@ -209,17 +210,23 @@ public class JSOFA {
     **</ol>
     **<p>This revision:  2008 May 27
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
+    ** <!-- Given: -->
+    **    @param ndp     int     resolution (Note 1)
+    **    @param angle   double  angle in radians
+    **    @param idmsf   int[4] <u>returned</u> degrees, arcminutes, arcseconds, fraction
+    ** <!-- Returned: -->
+    **    @return sign    char    '+' or '-'
     */
-    public static char jauA2af(final int ndp, final double angle,  int idsf[] ){
+    public static char jauA2af(final int ndp, final double angle,  int idmsf[] ){
         /* Hours to degrees * radians to turns */
         final double F = 15.0 / D2PI;
 
 
      /* Scale then use days to h,m,s function. */
-        char retval = jauD2tf(ndp, angle*F, idsf);
+        char retval = jauD2tf(ndp, angle*F, idmsf);
 
         return retval;
 
@@ -231,18 +238,18 @@ public class JSOFA {
     /**
     **  Decompose radians into hours, minutes, seconds, fraction.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param ndp      int      resolution (Note 1)
     **     @param angle    double   angle in radians
     **
     **<!-- Returned: -->
-    **     @param sign     char      <u>returned</u> '+' or '-'
     **     @param ihmsf    int[4]    <u>returned</u> hours, minutes, seconds, fraction
+    **     @return sign     char      <u>returned</u> '+' or '-'
     **
     **<p>Called:<ul>
     **     <li>{@link #jauD2tf} decompose days to hms
@@ -282,9 +289,9 @@ public class JSOFA {
     **
     **  <p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static char jauA2tf(final int ndp, final double angle, int ihmsf[])
     {
@@ -297,10 +304,10 @@ public class JSOFA {
     /**
     **  Normalize angle into the range 0 <= a < 2pi.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param a         double      angle (radians)
@@ -310,9 +317,9 @@ public class JSOFA {
     **
     **<p>This revision:  2008 May 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauAnp(final double a)
    {
@@ -330,10 +337,10 @@ public class JSOFA {
     /**
     **  Normalize angle into the range -pi <= a < +pi.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param a         double      angle (radians)
@@ -343,9 +350,9 @@ public class JSOFA {
     **
     **<p>This revision:  2008 May 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauAnpm(final double a)
     {
@@ -361,7 +368,7 @@ public class JSOFA {
     /**
      * Frame bias components of IAU 2000 precession-nutation models.
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 2 Feb 2010
-     * @version $Name$
+     * 
      * @since AIDA Stage 1
      */
     public static class FrameBias {
@@ -377,14 +384,14 @@ public class JSOFA {
     **  Frame bias components of IAU 2000 precession-nutation models (part
     **  of MHB2000 with additions).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Returned: -->
-    **     @param dpsibi,depsbi   double    <u>returned</u> longitude and obliquity corrections
-    **     @param dra             double    <u>returned</u> the ICRS RA of the J2000.0 mean equinox
+    **     @return dpsibi,depsbi   double    <u>returned</u> longitude and obliquity corrections
+    **             dra             double    <u>returned</u> the ICRS RA of the J2000.0 mean equinox
     **
     ** <p>Notes:
     ** <ol>
@@ -417,9 +424,9 @@ public class JSOFA {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static FrameBias jauBi00()
    {
@@ -445,13 +452,14 @@ public class JSOFA {
     /**
     **  Frame bias and precession, IAU 2000.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
-    **     @param date1,date2   double          TT as a 2-part Julian Date (Note 1)
+    **     @param date1
+    *      @param date2   double          TT as a 2-part Julian Date (Note 1)
     **
     **<!-- Returned: -->
     **     @param rb            double[3][3]     <u>returned</u> frame bias matrix (Note 2)
@@ -514,9 +522,9 @@ public class JSOFA {
     **
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static void jauBp00(final double  date1, final double date2,
             double rb[][], double rp[][], double rbp[][])
@@ -573,10 +581,10 @@ public class JSOFA {
     /**
     **  Frame bias and precession, IAU 2006.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double          TT as a 2-part Julian Date (Note 1)
@@ -635,9 +643,9 @@ public class JSOFA {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
         public static void jauBp06(final double date1, final double date2,
                  double rb[][], double rp[][], double rbp[][])
@@ -668,7 +676,7 @@ public class JSOFA {
      *     Pole unit vector in the Geocentric Celestial Reference System.
      *     
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 29 Jan 2010
-     * @version $Name$
+     * 
      * @since AIDA Stage 1
      */
     public static class CelestialIntermediatePole {
@@ -683,10 +691,10 @@ public class JSOFA {
     **  Extract from the bias-precession-nutation matrix the X,Y coordinates
     **  of the Celestial Intermediate Pole.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param rbpn       double[3][3]   celestial-to-true matrix (Note 1)
@@ -716,9 +724,9 @@ public class JSOFA {
     **
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
         public static CelestialIntermediatePole  jauBpn2xy(double rbpn[][])
     {
@@ -733,10 +741,10 @@ public class JSOFA {
     **  Form the celestial-to-intermediate matrix for a given date using the
     **  IAU 2000A precession-nutation model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2  double        TT as a 2-part Julian Date (Note 1)
@@ -800,9 +808,9 @@ public class JSOFA {
     **
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauC2i00a(double date1, double date2)
     {
@@ -823,10 +831,10 @@ public class JSOFA {
     **  Form the celestial-to-intermediate matrix for a given date using the
     **  IAU 2000B precession-nutation model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2  double        TT as a 2-part Julian Date (Note 1)
@@ -890,9 +898,9 @@ public class JSOFA {
     **
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauC2i00b(double date1, double date2)
     {
@@ -914,10 +922,10 @@ public class JSOFA {
     **  Form the celestial-to-intermediate matrix for a given date using the
     **  IAU 2006 precession and IAU 2000A nutation models.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2  double        TT as a 2-part Julian Date (Note 1)
@@ -972,9 +980,9 @@ public class JSOFA {
     **
     **<p>This revision:  2008 May 13
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauC2i06a(double date1, double date2)
     {
@@ -1002,10 +1010,10 @@ public class JSOFA {
     **  Form the celestial-to-intermediate matrix for a given date given
     **  the bias-precession-nutation matrix.  IAU 2000.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2  double        TT as a 2-part Julian Date (Note 1)
@@ -1071,9 +1079,9 @@ public class JSOFA {
     **
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauC2ibpn(double date1, double date2, double rbpn[][])
     {
@@ -1094,10 +1102,10 @@ public class JSOFA {
     **  Form the celestial to intermediate-frame-of-date matrix for a given
     **  date when the CIP X,Y coordinates are known.  IAU 2000.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2  double        TT as a 2-part Julian Date (Note 1)
@@ -1157,9 +1165,9 @@ public class JSOFA {
     **
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
 
     public static  double[][] jauC2ixy(double date1, double date2, double x, double y)
@@ -1176,17 +1184,17 @@ public class JSOFA {
     **  Form the celestial to intermediate-frame-of-date matrix given the CIP
     **  X,Y and the CIO locator s.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param x,y       double          Celestial Intermediate Pole (Note 1)
     **     @param s         double          the CIO locator s (Note 2)
     **
     **<!-- Returned: -->
-    **     @param rc2i      double[3][3]     <u>returned</u> celestial-to-intermediate matrix (Note 3)
+    **     @return rc2i      double[3][3]     <u>returned</u> celestial-to-intermediate matrix (Note 3)
     **
     ** <p>Notes:
     ** <ol>
@@ -1222,9 +1230,9 @@ public class JSOFA {
     **
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauC2ixys(double x, double y, double s)
     {
@@ -1249,17 +1257,17 @@ public class JSOFA {
     /**
     **  P-vector to spherical coordinates.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param p       double[3]     p-vector
     **
     **<!-- Returned: -->
-    **     @param theta   double         <u>returned</u> longitude angle (radians)
-    **     @param phi     double         <u>returned</u> latitude angle (radians)
+    **     @return theta   double         <u>returned</u> longitude angle (radians)
+    **             phi     double         <u>returned</u> latitude angle (radians)
     **
     ** <p>Notes:
     ** <ol>
@@ -1272,9 +1280,9 @@ public class JSOFA {
     **</ol>
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static SphericalCoordinate jauC2s(double p[])
     {
@@ -1298,10 +1306,10 @@ public class JSOFA {
     **  Form the celestial to terrestrial matrix given the date, the UT1 and
     **  the polar motion, using the IAU 2000A nutation model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param tta,ttb   double          TT as a 2-part Julian Date (Note 1)
@@ -1370,9 +1378,9 @@ public class JSOFA {
     **
     **<p>This revision:  2009 April 1
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static  double[][] jauC2t00a(final double tta, final double ttb, final double uta, final double utb,
                    final double xp, final double yp)
@@ -1404,10 +1412,10 @@ public class JSOFA {
     **  Form the celestial to terrestrial matrix given the date, the UT1 and
     **  the polar motion, using the IAU 2000B nutation model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param tta,ttb   double          TT as a 2-part Julian Date (Note 1)
@@ -1475,9 +1483,9 @@ public class JSOFA {
     **
     **<p>This revision:  2009 April 1
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauC2t00b(final double tta, final double ttb, final double uta, final double utb,
                    final double xp, final double yp )
@@ -1507,10 +1515,10 @@ public class JSOFA {
     **  the polar motion, using the IAU 2006 precession and IAU 2000A
     **  nutation models.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param tta,ttb   double          TT as a 2-part Julian Date (Note 1)
@@ -1576,9 +1584,9 @@ public class JSOFA {
     **
     **<p>This revision:  2009 April 1
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauC2t06a(final double tta, final double ttb, final double uta, final double utb,
                   final double xp, final double yp)
@@ -1611,10 +1619,10 @@ public class JSOFA {
     **  components (the celestial-to-intermediate matrix, the Earth Rotation
     **  Angle and the polar motion matrix).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param rc2i      double[3][3]     celestial-to-intermediate matrix
@@ -1660,9 +1668,9 @@ public class JSOFA {
     **
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauC2tcio(final double rc2i[][], final double era, final double rpom[][])
     {
@@ -1684,10 +1692,10 @@ public class JSOFA {
     **  components (the celestial-to-true matrix, the Greenwich Apparent
     **  Sidereal Time and the polar motion matrix).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param rbpn      double[3][3]     celestial-to-true matrix
@@ -1733,9 +1741,9 @@ public class JSOFA {
     **
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauC2teqx(final double rbpn[][], final double gst, final double rpom[][] )
     {
@@ -1756,10 +1764,10 @@ public class JSOFA {
     **  Form the celestial to terrestrial matrix given the date, the UT1,
     **  the nutation and the polar motion.  IAU 2000.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param tta,ttb     double         TT as a 2-part Julian Date (Note 1)
@@ -1836,9 +1844,9 @@ public class JSOFA {
     **
     **<p>This revision:  2009 April 1
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauC2tpe(final double tta, final double ttb, final double uta, final double utb,
             final double dpsi, final double deps, final double xp, final double yp)
@@ -1872,10 +1880,10 @@ public class JSOFA {
     **  Form the celestial to terrestrial matrix given the date, the UT1,
     **  the CIP coordinates and the polar motion.  IAU 2000.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param tta,ttb   double          TT as a 2-part Julian Date (Note 1)
@@ -1948,9 +1956,9 @@ public class JSOFA {
     **
     **<p>This revision:  2009 April 1
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauC2txy(double tta, double ttb, double uta, double utb,
                   double x, double y, double xp, double yp)
@@ -1980,10 +1988,10 @@ public class JSOFA {
     /**
     **  Gregorian Calendar to Julian Date.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param iy,im,id   int      year, month, day in Gregorian calendar (Note 1)
@@ -2023,9 +2031,9 @@ public class JSOFA {
     **
     **<p>This revision:  2009 October 19
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static JulianDate jauCal2jd(int iy, int im, int id) throws JSOFAIllegalParameter
     {
@@ -2072,10 +2080,10 @@ public class JSOFA {
     /**
     **  Copy a p-vector.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param p         double[3]      p-vector to be copied
@@ -2085,9 +2093,9 @@ public class JSOFA {
     **
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[] jauCp(double p[], double c[])
     {
@@ -2104,10 +2112,10 @@ public class JSOFA {
     /**
     **  Copy a position/velocity vector.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param pv      double[2][3]     position/velocity vector to be copied
@@ -2120,9 +2128,9 @@ public class JSOFA {
     ** </ul>
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauCpv(double pv[][],  double c[][])
     {
@@ -2138,25 +2146,25 @@ public class JSOFA {
     /**
     **  Copy an r-matrix.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param r         double[3][3]     r-matrix to be copied.
     **
     **<!-- Returned: -->
-    **   @param char[]      double[3][3]      <u>given and returned</u> the elements of r are copied into this.
+    **   @param c      double[3][3]      <u>given and returned</u> the elements of r are copied into this.
     **
     **<p>Called:<ul>
     **     <li>{@link #jauCp} copy p-vector
     ** </ul>
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static void jauCr(double r[][], double c[][] )
     {
@@ -2173,18 +2181,18 @@ public class JSOFA {
     /**
     **  Decompose days to hours, minutes, seconds, fraction.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param ndp      int      resolution (Note 1)
     **     @param days     double   interval in days
     **
     **<!-- Returned: -->
-    **     @param sign     char      <u>returned</u> '+' or '-'
     **     @param ihmsf    int[4]    <u>returned</u> hours, minutes, seconds, fraction
+    **     @return sign     char      <u>returned</u> '+' or '-'
     **
     ** <p>Notes:
     ** <ol>
@@ -2221,9 +2229,9 @@ public class JSOFA {
     **
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
    public static char jauD2tf(final int ndp, final double days, int ihmsf[])
     {
@@ -2284,7 +2292,7 @@ public class JSOFA {
    /**
     * Representation of Gregorian Calendar with fractional day.
     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
-    * @version $Name$
+    * 
     * @since AIDA Stage 1
     */
    public static class Calendar {
@@ -2304,7 +2312,7 @@ public class JSOFA {
    /**
     * Representation of Gregorian Calendar with integer hours minutes and seconds.
     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
-    * @version $Name$
+    * 
     * @since AIDA Stage 1
     */
    public static class CalendarHMS {
@@ -2325,17 +2333,17 @@ public class JSOFA {
 **  Format for output a 2-part Julian Date (or in the case of UTC a
 **  quasi-JD form that includes special provision for leap seconds).
 **
-**  This function is derived from the International Astronomical Union's
+**<p>This function is derived from the International Astronomical Union's
 **  SOFA (Standards of Fundamental Astronomy) software collection.
 **
-**  Status:  support function.
+**<p>Status:  support function.
 **
-**  Given:
+**<!-- Given: -->
 **     scale     char[]  time scale ID (Note 1)
 **     ndp       int     resolution (Note 2)
 **     d1,d2     double  time as a 2-part Julian Date (Notes 3,4)
 **
-**  Returned:
+**<!-- Returned:-->
 **     iy,im,id  int     year, month, day in Gregorian calendar (Note 5)
 **     ihmsf     int[4]  hours, minutes, seconds, fraction (Note 1)
 **
@@ -2344,7 +2352,7 @@ public class JSOFA {
 **                                0 = OK
 **                               -1 = unacceptable date (Note 6)
 **
-**  Notes:
+**<p>Notes:
 **
 **  1) scale identifies the time scale.  Only the value "UTC" (in upper
 **     case) is significant, and enables handling of leap seconds (see
@@ -2390,11 +2398,11 @@ public class JSOFA {
 **     iauD2tf      decompose days to hms
 **     iauDat       delta(AT) = TAI-UTC
 **
-**  This revision:  2014 February 15
+**<p>This revision:  2014 February 15
 **
-**  SOFA release 2013-12-02
+**@since JSOFA release 20131202
 **
-**  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+**  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
  * @throws JSOFAInternalError 
  * @throws JSOFAIllegalParameter 
 */
@@ -2501,7 +2509,157 @@ public static CalendarHMS jauD2dtf(final String scale, int ndp, double d1, doubl
  
  return new CalendarHMS(iy1, im1, id1, ihmsf1);
 
-}    
+}   
+
+/**
+**  Encode date and time fields into 2-part Julian Date (or in the case
+**  of UTC a quasi-JD form that includes special provision for leap
+**  seconds).
+**
+**<p>This function is derived from the International Astronomical Union's
+**  SOFA (Standards of Fundamental Astronomy) software collection.
+**
+**  Status:  support function.
+**
+**  Given:
+**    @param scale     char  time scale ID (Note 1)
+**    @param iy,im,id  int     year, month, day in Gregorian calendar (Note 2)
+**    @param ihr,imn   int     hour, minute
+**    @param sec       double  seconds
+**
+**  Returned:
+**     @return     double  2-part Julian Date (Notes 3,4)
+**
+**  Returned (function value):
+**               int     status: +3 = both of next two
+**                               +2 = time is after end of day (Note 5)
+**                               +1 = dubious year (Note 6)
+**                                0 = OK
+**                               -1 = bad year
+**                               -2 = bad month
+**                               -3 = bad day
+**                               -4 = bad hour
+**                               -5 = bad minute
+**                               -6 = bad second (<0)
+**
+**<p>Notes:
+**
+**  1) scale identifies the time scale.  Only the value "UTC" (in upper
+**     case) is significant, and enables handling of leap seconds (see
+**     Note 4).
+**
+**  2) For calendar conventions and limitations, see iauCal2jd.
+**
+**  3) The sum of the results, d1+d2, is Julian Date, where normally d1
+**     is the Julian Day Number and d2 is the fraction of a day.  In the
+**     case of UTC, where the use of JD is problematical, special
+**     conventions apply:  see the next note.
+**
+**  4) JD cannot unambiguously represent UTC during a leap second unless
+**     special measures are taken.  The SOFA internal convention is that
+**     the quasi-JD day represents UTC days whether the length is 86399,
+**     86400 or 86401 SI seconds.  In the 1960-1972 era there were
+**     smaller jumps (in either direction) each time the linear UTC(TAI)
+**     expression was changed, and these "mini-leaps" are also included
+**     in the SOFA convention.
+**
+**  5) The warning status "time is after end of day" usually means that
+**     the sec argument is greater than 60.0.  However, in a day ending
+**     in a leap second the limit changes to 61.0 (or 59.0 in the case
+**     of a negative leap second).
+**
+**  6) The warning status "dubious year" flags UTCs that predate the
+**     introduction of the time scale or that are too far in the future
+**     to be trusted.  See iauDat for further details.
+**
+**  7) Only in the case of continuous and regular time scales (TAI, TT,
+**     TCG, TCB and TDB) is the result d1+d2 a Julian Date, strictly
+**     speaking.  In the other cases (UT1 and UTC) the result must be
+**     used with circumspection;  in particular the difference between
+**     two such results cannot be interpreted as a precise time
+**     interval.
+**
+**  Called:
+**     iauCal2jd    Gregorian calendar to JD
+**     iauDat       delta(AT) = TAI-UTC
+**     iauJd2cal    JD to Gregorian calendar
+**
+**<p>This revision:  2013 July 26
+**
+**@since JSOFA release 20131202
+**
+**  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
+ * @throws JSOFAIllegalParameter 
+ * @throws JSOFAInternalError 
+*/
+public static JulianDate jauDtf2d(final String scale, int iy, int im, int id,
+        int ihr, int imn, double sec) throws JSOFAIllegalParameter, JSOFAInternalError
+{
+int js = 0, iy2, im2, id2;
+double dj, w, day, seclim, dat0, dat12, dat24, dleap, time;
+
+
+/* Today's Julian Day Number. */
+JulianDate jd = jauCal2jd(iy, im, id);
+dj = jd.djm0; w = jd.djm1;
+dj += w;
+
+/* Day length and final minute length in seconds (provisional). */
+day = DAYSEC;
+seclim = 60.0;
+
+/* Deal with the UTC leap second case. */
+if (  scale.equals("UTC") ) {
+
+/* TAI-UTC at 0h today. */
+    dat0 = jauDat(iy, im, id, 0.0);
+
+/* TAI-UTC at 12h today (to detect drift). */
+    dat12 = jauDat(iy, im, id, 0.5);
+
+/* TAI-UTC at 0h tomorrow (to detect jumps). */
+ Calendar cal = jauJd2cal ( dj, 1.5);
+ iy2 = cal.iy; im2 = cal.im; id2 = cal.id; w = cal.fd;
+ 
+ dat24 = jauDat(iy2, im2, id2, 0.0);
+
+/* Any sudden change in TAI-UTC between today and tomorrow. */
+ dleap = dat24 - (2.0*dat12 - dat0);
+
+/* If leap second day, correct the day and final minute lengths. */
+ day += dleap;
+ if ( ihr == 23 && imn == 59 ) seclim += dleap;
+
+/* End of UTC-specific actions. */
+}
+
+/* Validate the time. */
+if ( ihr >= 0 && ihr <= 23 ) {
+ if ( imn >= 0 && imn <= 59 ) {
+    if ( sec >= 0 ) {
+       if ( sec >= seclim ) {
+          js += 2;
+       }
+    } else {
+       js = -6;
+    }
+ } else {
+    js = -5;
+ }
+} else {
+ js = -4;
+}
+if ( js < 0 ) throw new JSOFAInternalError("problem with time", js);
+
+/* The time in days. */
+time  = ( 60.0 * ( (double) ( 60 * ihr + imn ) ) + sec ) / day;
+
+/* Return the date and time. */
+return new JulianDate(dj, time) ;
+
+}
+
+
  
 /** Release year for this version of jauDat {@value} */
 public final static int IYV = 2013;
@@ -2541,10 +2699,10 @@ public final static int IYV = 2013;
     **     :                                          :
     **     :__________________________________________:
     **</pre>
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param iy      int       UTC:  year (Notes 1 and 2)
@@ -2553,10 +2711,10 @@ public final static int IYV = 2013;
     **     @param fd      double          fraction of day (Note 4)
     **
     **<!-- Returned: -->
-    **     @param deltat  double     <u>returned</u> TAI minus UTC, seconds
+    **     @return deltat  double     <u>returned</u> TAI minus UTC, seconds
     **
     ** <!-- Returned (function value): -->
-    **  @return int      status (Note 5):
+    **  @throws     status (Note 5):
     **                       1 = dubious year (Note 1)
     **                       0 = OK
     **                      -1 = bad year
@@ -2621,9 +2779,9 @@ public final static int IYV = 2013;
     ** </ul>
     **<p>This revision:  2012 June 03
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauDat(int iy, int im, int id, double fd ) throws JSOFAIllegalParameter, JSOFAInternalError
     {
@@ -2783,10 +2941,10 @@ public final static int IYV = 2013;
     **  Adopted values for the various constants can be found in the IERS
     **  Conventions (McCarthy & Petit 2003).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2    double   date, TDB (Notes 1-3)
@@ -2908,9 +3066,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static  double jauDtdb(double date1, double date2,
                    double ut, double elong, double u, double v)
@@ -3918,10 +4076,10 @@ public final static int IYV = 2013;
     **  The equation of the equinoxes, compatible with IAU 2000 resolutions,
     **  given the nutation in longitude and the mean obliquity.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
@@ -3977,9 +4135,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2008 May 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauEe00(double date1, double date2, double epsa, double dpsi)
     {
@@ -3997,10 +4155,10 @@ public final static int IYV = 2013;
     /**
     **  Equation of the equinoxes, compatible with IAU 2000 resolutions.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
@@ -4055,9 +4213,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2008 May 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauEe00a(double date1, double date2)
     {
@@ -4085,10 +4243,10 @@ public final static int IYV = 2013;
     **  Equation of the equinoxes, compatible with IAU 2000 resolutions but
     **  using the truncated nutation model IAU 2000B.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
@@ -4148,9 +4306,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2008 May 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static  double jauEe00b(double date1, double date2)
     {
@@ -4177,10 +4335,10 @@ public final static int IYV = 2013;
     **  Equation of the equinoxes, compatible with IAU 2000 resolutions and
     **  IAU 2006/2000A precession-nutation.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
@@ -4226,9 +4384,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2008 May 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauEe06a(double date1, double date2)
     {
@@ -4262,10 +4420,10 @@ public final static int IYV = 2013;
     **  Equation of the equinoxes complementary terms, consistent with
     **  IAU 2000 resolutions.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2   double    TT as a 2-part Julian Date (Note 1)
@@ -4352,9 +4510,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauEect00(double date1, double date2)
     {
@@ -4495,7 +4653,7 @@ public final static int IYV = 2013;
     **     around 0.00335, i.e. around 1/298.
     *
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
-     * @version $Name$
+     * 
      * @since AIDA Stage 1
      */
     public static class ReferenceEllipsoid{
@@ -4511,20 +4669,21 @@ public final static int IYV = 2013;
     /**
     **  Earth reference ellipsoids.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  JSOFA (Standards of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical.
+    **<p>Status:  canonical.
     **
     **<!-- Given: -->
     **     @param n        int       ellipsoid identifier (Note 1)
     **
     **<!-- Returned: -->
-    **     @param a        double     <u>returned</u> equatorial radius (meters, Note 2)
-    **     @param f        double     <u>returned</u> flattening (Note 2)
+    **     @return  a        double     <u>returned</u> equatorial radius (meters, Note 2)
+    **              f        double     <u>returned</u> flattening (Note 2)
     **
     ** <!-- Returned (function value): -->
-    **  @return int       status:
+    **  @throws JSOFAIllegalParameter
+    *                     int       status:
     **                          0 = OK
     **                         -1 = illegal identifier (Note 3)
     **
@@ -4566,9 +4725,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static  ReferenceEllipsoid jauEform ( int n ) throws JSOFAIllegalParameter
     {
@@ -4615,10 +4774,10 @@ public final static int IYV = 2013;
     /**
     **  Equation of the origins, IAU 2006 precession and IAU 2000A nutation.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
@@ -4669,9 +4828,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2008 May 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauEo06a(double date1, double date2)
     {
@@ -4699,10 +4858,10 @@ public final static int IYV = 2013;
     **  Equation of the origins, given the classical NPB matrix and the
     **  quantity s.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param rnpb   double[3][3]   classical nutation x precession x bias matrix
@@ -4731,9 +4890,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2008 May 26
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauEors(double rnpb[][], double s)
     {
@@ -4758,10 +4917,10 @@ public final static int IYV = 2013;
     /**
     **  Julian Date to Besselian Epoch.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param dj1,dj2     double      Julian Date (see note)
@@ -4783,9 +4942,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauEpb(double dj1, double dj2)
     {
@@ -4799,10 +4958,10 @@ public final static int IYV = 2013;
     /**
     **  Besselian Epoch to Julian Date.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param epb       double     Besselian Epoch (e.g. 1957.3D0)
@@ -4824,9 +4983,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2008 May 24
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static JulianDate jauEpb2jd(double epb)
     {
@@ -4842,10 +5001,10 @@ public final static int IYV = 2013;
     /**
     **  Julian Date to Julian Epoch.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param dj1,dj2     double      Julian Date (see note)
@@ -4867,9 +5026,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauEpj(double dj1, double dj2)
     {
@@ -4881,10 +5040,10 @@ public final static int IYV = 2013;
     /**
     **  Julian Epoch to Julian Date.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param epj       double     Julian Epoch (e.g. 1996.8D0)
@@ -4906,9 +5065,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static JulianDate jauEpj2jd(double epj)
     {
@@ -7167,10 +7326,10 @@ public final static int IYV = 2013;
          **  Earth position and velocity, heliocentric and barycentric, with
          **  respect to the Barycentric Celestial Reference System.
          **
-         **  This function is derived from the International Astronomical Union's
+         **<p>This function is derived from the International Astronomical Union's
          **  SOFA (Standards Of Fundamental Astronomy) software collection.
          **
-         **  Status:  support function.
+         **<p>Status:  support function.
          **
          **<!-- Given: -->
          **     @param date1,date2   double         TDB date (Note 1)
@@ -7259,9 +7418,9 @@ public final static int IYV = 2013;
          **
          **<p>This revision:  2008 November 18
          **
-         **  <!-- Release 2009-12-31 -->
+         **  @since Release 20101201
          **
-         **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+         **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
          */
          public static int jauEpv00(final double date1, final double date2,
                       double pvh[][], double pvb[][])
@@ -7473,10 +7632,10 @@ public final static int IYV = 2013;
     /**
     **  Equation of the equinoxes, IAU 1994 model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2    double      TDB date (Note 1)
@@ -7523,9 +7682,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2008 May 24
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauEqeq94(double date1, double date2)
     {
@@ -7556,10 +7715,10 @@ public final static int IYV = 2013;
     /**
     **  Earth rotation angle (IAU 2000 model).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param dj1,dj2    double     UT1 as a 2-part Julian Date (see note)
@@ -7610,9 +7769,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2008 May 24
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauEra00(double dj1, double dj2)
     {
@@ -7645,10 +7804,10 @@ public final static int IYV = 2013;
     **  Fundamental argument, IERS Conventions (2003):
     **  mean elongation of the Moon from the Sun.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
@@ -7675,9 +7834,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauFad03(double t)
     {
@@ -7700,10 +7859,10 @@ public final static int IYV = 2013;
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Earth.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
@@ -7733,9 +7892,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauFae03(double t)
     {
@@ -7755,10 +7914,10 @@ public final static int IYV = 2013;
     **  mean longitude of the Moon minus mean longitude of the ascending
     **  node.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
@@ -7785,9 +7944,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauFaf03(double t)
     {
@@ -7812,10 +7971,10 @@ public final static int IYV = 2013;
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Jupiter.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
@@ -7845,9 +8004,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauFaju03(double t)
     {
@@ -7866,10 +8025,10 @@ public final static int IYV = 2013;
     **  Fundamental argument, IERS Conventions (2003):
     **  mean anomaly of the Moon.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
@@ -7896,9 +8055,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauFal03(double t)
     {
@@ -7921,10 +8080,10 @@ public final static int IYV = 2013;
     **  Fundamental argument, IERS Conventions (2003):
     **  mean anomaly of the Sun.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
@@ -7951,9 +8110,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauFalp03(double t)
     {
@@ -7976,10 +8135,10 @@ public final static int IYV = 2013;
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Mars.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
@@ -8009,9 +8168,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauFama03(double t)
     {
@@ -8030,10 +8189,10 @@ public final static int IYV = 2013;
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Mercury.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
@@ -8063,9 +8222,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauFame03(double t)
     {
@@ -8085,10 +8244,10 @@ public final static int IYV = 2013;
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Neptune.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
@@ -8115,9 +8274,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauFane03(double t)
     {
@@ -8136,10 +8295,10 @@ public final static int IYV = 2013;
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of the Moon's ascending node.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
@@ -8166,9 +8325,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauFaom03(double t)
     {
@@ -8192,10 +8351,10 @@ public final static int IYV = 2013;
     **  Fundamental argument, IERS Conventions (2003):
     **  general accumulated precession in longitude.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
@@ -8226,9 +8385,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauFapa03(double t)
     {
@@ -8247,10 +8406,10 @@ public final static int IYV = 2013;
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Saturn.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
@@ -8280,9 +8439,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauFasa03(double t)
     {
@@ -8301,10 +8460,10 @@ public final static int IYV = 2013;
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Uranus.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
@@ -8331,9 +8490,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauFaur03(double t)
     {
@@ -8352,10 +8511,10 @@ public final static int IYV = 2013;
     **  Fundamental argument, IERS Conventions (2003):
     **  mean longitude of Venus.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
@@ -8385,9 +8544,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauFave03(double t)
     {
@@ -8405,10 +8564,10 @@ public final static int IYV = 2013;
     /**
     **  Transform FK5 (J2000.0) star data into the Hipparcos system.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **  Given (all FK5, equinox J2000.0, epoch J2000.0):
     **     r5      double    RA (radians)
@@ -8455,9 +8614,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static CatalogCoords jauFk52h(double r5, double d5,
                   double dr5, double dd5, double px5, double rv5)
@@ -8504,10 +8663,10 @@ public final static int IYV = 2013;
     /**
     **  FK5 to Hipparcos rotation and spin.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Returned: -->
     **     @param r5h    double[3][3]    <u>returned</u> r-matrix: FK5 rotation wrt Hipparcos (Note 2)
@@ -8540,9 +8699,9 @@ public final static int IYV = 2013;
     **
     **<p>This revision:  2009 March 14
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static void jauFk5hip(double r5h[][], double s5h[] )
     {
@@ -8582,7 +8741,7 @@ public final static int IYV = 2013;
   /**
   * Position consisting of (&alpha;, &delta;) pairs in radians. Where &alpha; is right ascension (or longitude angle) and &delta; is declination (or latitude angle).
  * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
- * @version $Name$
+ * 
  * @since AIDA Stage 1
  * @TODO needs better name cf {@link SphericalPosition}
  */
@@ -8618,10 +8777,10 @@ public static class SphericalCoordinateEO {
     **  Transform an FK5 (J2000.0) star position into the system of the
     **  Hipparcos catalogue, assuming zero Hipparcos proper motion.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param r5            double    FK5 RA (radians), equinox J2000.0, at date
@@ -8629,8 +8788,8 @@ public static class SphericalCoordinateEO {
     **     @param date1,date2   double    TDB date (Notes 1,2)
     **
     **<!-- Returned: -->
-    **     @param rh            double     <u>returned</u> Hipparcos RA (radians)
-    **     @param dh            double     <u>returned</u> Hipparcos Dec (radians)
+    **     @return rh            double     <u>returned</u> Hipparcos RA (radians)
+    **             dh            double     <u>returned</u> Hipparcos Dec (radians)
     **
     ** <p>Notes:
     ** <ol>
@@ -8685,9 +8844,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static SphericalCoordinate jauFk5hz(double r5, double d5, double date1, double date2
                   )
@@ -8730,10 +8889,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Form rotation matrix given the Fukushima-Williams angles.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param gamb      double          F-W angle gamma_bar (radians)
@@ -8794,9 +8953,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauFw2m(double gamb, double phib, double psi, double eps)
     {
@@ -8816,10 +8975,10 @@ public static class SphericalCoordinateEO {
     /**
     **  CIP X,Y given Fukushima-Williams bias-precession-nutation angles.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param gamb      double     F-W angle gamma_bar (radians)
@@ -8867,9 +9026,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static CelestialIntermediatePole jauFw2xy(double gamb, double phib, double psi, double eps)
     {
@@ -8887,7 +9046,7 @@ public static class SphericalCoordinateEO {
     /**
      * Geodetic coordinates.
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
-     * @version $Name$
+     * 
      * @since AIDA Stage 1
      */
     public static class GeodeticCoord {
@@ -8907,22 +9066,22 @@ public static class SphericalCoordinateEO {
     **  Transform geocentric coordinates to geodetic using the specified
     **  reference ellipsoid.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  JSOFA (Standards of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical transformation.
+    **<p>Status:  canonical transformation.
     **
     **<!-- Given: -->
     **     @param n        int         ellipsoid identifier (Note 1)
     **     @param xyz      double[3]   geocentric vector (Note 2)
     **
     **<!-- Returned: -->
-    **     @param elong    double       <u>returned</u> longitude (radians, east +ve)
-    **     @param phi      double       <u>returned</u> latitude (geodetic, radians, Note 3)
-    **     @param height   double       <u>returned</u> height above ellipsoid (geodetic, Notes 2,3)
+    **     @return elong    double       <u>returned</u> longitude (radians, east +ve)
+    **             phi      double       <u>returned</u> latitude (geodetic, radians, Note 3)
+    **             height   double       <u>returned</u> height above ellipsoid (geodetic, Notes 2,3)
     **
     ** <!-- Returned (function value): -->
-    **  @return int       status:
+    **  @throws JSOFAIllegalParameter
     **                          0 = OK
     **                         -1 = illegal identifier (Note 3)
     **                         -2 = internal error (Note 3)
@@ -8955,9 +9114,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static GeodeticCoord jauGc2gd ( int n, double xyz[] ) throws JSOFAIllegalParameter
     {
@@ -8980,10 +9139,10 @@ public static class SphericalCoordinateEO {
     **  Transform geocentric coordinates to geodetic for a reference
     **  ellipsoid of specified form.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  JSOFA (Standards of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param a        double      equatorial radius (Notes 2,4)
@@ -9036,9 +9195,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 November 2
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
  * 
     */
     public static GeodeticCoord jauGc2gde ( double a, double f, double xyz[] ) throws JSOFAIllegalParameter
@@ -9134,10 +9293,10 @@ public static class SphericalCoordinateEO {
     **  Transform geodetic coordinates to geocentric using the specified
     **  reference ellipsoid.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  JSOFA (Standards of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical transformation.
+    **<p>Status:  canonical transformation.
     **
     **<!-- Given: -->
     **     @param n        int         ellipsoid identifier (Note 1)
@@ -9146,11 +9305,10 @@ public static class SphericalCoordinateEO {
     **     @param height   double      height above ellipsoid (geodetic, Notes 2,3)
     **
     **<!-- Returned: -->
-    **     @param xyz      double[3]    <u>returned</u> geocentric vector (Note 2)
+    **     @return xyz      double[3]    <u>returned</u> geocentric vector (Note 2)
     **
     ** <!-- Returned (function value): -->
-    **  @return int       status:
-    **                          0 = OK
+    **  @throws JSOFAIllegalParameter
     **                         -1 = illegal identifier (Note 3)
     **                         -2 = illegal case (Note 3)
     **
@@ -9185,9 +9343,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[] jauGd2gc ( int n, double elong, double phi, double height ) throws JSOFAIllegalParameter, JSOFAInternalError
     {
@@ -9207,10 +9365,10 @@ public static class SphericalCoordinateEO {
     **  Transform geodetic coordinates to geocentric for a reference
     **  ellipsoid of specified form.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  JSOFA (Standards of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param a        double      equatorial radius (Notes 1,4)
@@ -9220,10 +9378,10 @@ public static class SphericalCoordinateEO {
     **     @param height   double      height above ellipsoid (geodetic, Notes 3,4)
     **
     **<!-- Returned: -->
-    **     @param xyz      double[3]    <u>returned</u> geocentric vector (Note 3)
+    **     @return xyz      double[3]    <u>returned</u> geocentric vector (Note 3)
     **
     ** <!-- Returned (function value): -->
-    **  @return int         status:
+    **  @throws JSOFAInternalError
     **                            0 = OK
     **                           -1 = illegal case (Note 4)
     ** <p>Notes:
@@ -9262,9 +9420,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 November 2
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[] jauGd2gce ( double a, double f, double elong, double phi,
                     double height ) throws JSOFAInternalError
@@ -9300,10 +9458,10 @@ public static class SphericalCoordinateEO {
     **  Greenwich mean sidereal time (model consistent with IAU 2000
     **  resolutions).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param uta,utb     double     UT1 as a 2-part Julian Date (Notes 1,2)
@@ -9367,9 +9525,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 March 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauGmst00(double uta, double utb, double tta, double ttb)
     {
@@ -9396,10 +9554,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Greenwich mean sidereal time (consistent with IAU 2006 precession).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param uta,utb     double     UT1 as a 2-part Julian Date (Notes 1,2)
@@ -9454,9 +9612,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 24
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauGmst06(double uta, double utb, double tta, double ttb)
     {
@@ -9484,10 +9642,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Universal Time to Greenwich mean sidereal time (IAU 1982 model).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param dj1,dj2     double     UT1 Julian Date (see note)
@@ -9544,9 +9702,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 24
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauGmst82(double dj1, double dj2)
     {
@@ -9588,10 +9746,10 @@ public static class SphericalCoordinateEO {
     **  Greenwich apparent sidereal time (consistent with IAU 2000
     **  resolutions).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param uta,utb     double     UT1 as a 2-part Julian Date (Notes 1,2)
@@ -9656,9 +9814,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauGst00a(double uta, double utb, double tta, double ttb)
     {
@@ -9678,10 +9836,10 @@ public static class SphericalCoordinateEO {
     **  Greenwich apparent sidereal time (consistent with IAU 2000
     **  resolutions but using the truncated nutation model IAU 2000B).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param uta,utb     double     UT1 as a 2-part Julian Date (Notes 1,2)
@@ -9754,9 +9912,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauGst00b(double uta, double utb)
     {
@@ -9775,10 +9933,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Greenwich apparent sidereal time, IAU 2006, given the NPB matrix.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param uta,utb   double         UT1 as a 2-part Julian Date (Notes 1,2)
@@ -9838,9 +9996,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 24
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauGst06(double uta, double utb, double tta, double ttb,
                     double rnpb[][])
@@ -9868,10 +10026,10 @@ public static class SphericalCoordinateEO {
     **  Greenwich apparent sidereal time (consistent with IAU 2000 and 2006
     **  resolutions).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param uta,utb     double     UT1 as a 2-part Julian Date (Notes 1,2)
@@ -9927,9 +10085,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauGst06a(double uta, double utb, double tta, double ttb)
     {
@@ -9951,10 +10109,10 @@ public static class SphericalCoordinateEO {
     **  Greenwich apparent sidereal time (consistent with IAU 1982/94
     **  resolutions).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param uta,utb     double     UT1 as a 2-part Julian Date (Notes 1,2)
@@ -10012,9 +10170,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauGst94(double uta, double utb)
     {
@@ -10033,10 +10191,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Transform Hipparcos star data into the FK5 (J2000.0) system.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **  Given (all Hipparcos, epoch J2000.0):
     **     rh      double    RA (radians)
@@ -10085,9 +10243,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static CatalogCoords jauH2fk5(double rh, double dh,
                   double drh, double ddh, double pxh, double rvh)
@@ -10138,10 +10296,10 @@ public static class SphericalCoordinateEO {
     **  Transform a Hipparcos star position into FK5 J2000.0, assuming
     **  zero Hipparcos proper motion.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param rh             double     Hipparcos RA (radians)
@@ -10211,9 +10369,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     *
     */
     public static CatalogCoords jauHfk5z(double rh, double dh, double date1, double date2)
@@ -10264,10 +10422,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Initialize an r-matrix to the identity matrix.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Returned: -->
     **     @param r        double[3][3]      <u>returned</u> r-matrix
@@ -10277,9 +10435,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static void jauIr(double r[][])
     {
@@ -10296,10 +10454,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Julian Date to Gregorian year, month, day, and fraction of a day.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param dj1,dj2    double    Julian Date (Notes 1, 2)
@@ -10345,9 +10503,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 26
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static Calendar jauJd2cal(double dj1, double dj2) throws JSOFAIllegalParameter
     {
@@ -10402,10 +10560,10 @@ public static class SphericalCoordinateEO {
     **  Julian Date to Gregorian Calendar, expressed in a form convenient
     **  for formatting messages:  rounded to a specified precision.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param ndp        int       number of decimal places of days in fraction
@@ -10456,9 +10614,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 October 28
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static int jauJdcalf(int ndp, double dj1, double dj2, int iymdf[])
     {
@@ -10517,10 +10675,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Form the matrix of nutation for a given date, IAU 2000A model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
@@ -10569,9 +10727,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 12
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauNum00a(double date1, double date2)
     {
@@ -10587,10 +10745,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Form the matrix of nutation for a given date, IAU 2000B model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double          TT as a 2-part Julian Date (Note 1)
@@ -10639,9 +10797,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 12
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauNum00b(double date1, double date2)
     {
@@ -10657,10 +10815,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Form the matrix of nutation for a given date, IAU 2006/2000A model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2    double           TT as a 2-part Julian Date (Note 1)
@@ -10708,9 +10866,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 12
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauNum06a(double date1, double date2)
     {
@@ -10734,10 +10892,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Form the matrix of nutation.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param epsa         double          mean obliquity of date (Note 1)
@@ -10775,9 +10933,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauNumat(double epsa, double dpsi, double deps)
     {
@@ -10811,10 +10969,10 @@ public static class SphericalCoordinateEO {
     **  Nutation, IAU 2000A model (MHB2000 luni-solar and planetary nutation
     **  with free core nutation omitted).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2    double    TT as a 2-part Julian Date (Note 1)
@@ -10958,9 +11116,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static NutationTerms jauNut00a(double date1, double date2 )
     {
@@ -12858,10 +13016,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Nutation, IAU 2000B model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2    double     TT as a 2-part Julian Date (Note 1)
@@ -12974,9 +13132,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static NutationTerms jauNut00b(double date1, double date2)
     {
@@ -13197,7 +13355,7 @@ public static class SphericalCoordinateEO {
     **<!-- Returned: -->
     **     @param dpsi,deps      double     <u>returned</u> nutation, luni-solar + planetary (Note 2)
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     ** <p>Notes:
     ** <ol>
@@ -13262,9 +13420,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 24
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static NutationTerms jauNut06a(double date1, double date2)
     {
@@ -13289,17 +13447,17 @@ public static class SphericalCoordinateEO {
     /**
     **  Nutation, IAU 1980 model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2    double     TT as a 2-part Julian Date (Note 1)
     **
     **<!-- Returned: -->
-    **     @param dpsi           double      <u>returned</u> nutation in longitude (radians)
-    **     @param deps           double      <u>returned</u> nutation in obliquity (radians)
+    **     @return dpsi           double      <u>returned</u> nutation in longitude (radians)
+    **             deps           double      <u>returned</u> nutation in obliquity (radians)
     **
     ** <p>Notes:
     ** <ol>
@@ -13337,9 +13495,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 September 30
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static NutationTerms jauNut80(double date1, double date2)
     {
@@ -13573,10 +13731,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Form the matrix of nutation for a given date, IAU 1980 model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2     double           TDB date (Note 1)
@@ -13618,9 +13776,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 12
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauNutm80(double date1, double date2)
     {
@@ -13640,10 +13798,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Mean obliquity of the ecliptic, IAU 2006 precession model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2   double    TT as a 2-part Julian Date (Note 1)
@@ -13682,9 +13840,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 March 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauObl06(double date1, double date2)
     {
@@ -13710,10 +13868,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Mean obliquity of the ecliptic, IAU 1980 model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2    double     TT as a 2-part Julian Date (Note 1)
@@ -13754,9 +13912,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 March 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauObl80(double date1, double date2)
     {
@@ -13844,10 +14002,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Precession angles, IAU 2006, equinox based.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical models.
+    **<p>Status:  canonical models.
     **
     **<!-- Given: -->
     **     @param date1,date2    double    TT as a 2-part Julian Date (Note 1)
@@ -13960,9 +14118,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static PrecessionAngles jauP06e(double date1, double date2)
     {
@@ -14117,10 +14275,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Extend a p-vector to a pv-vector by appending a zero velocity.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param p         double[3]        p-vector
@@ -14134,9 +14292,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauP2pv(double p[] )
     {
@@ -14171,18 +14329,18 @@ public static class SphericalCoordinateEO {
     /**
     **  P-vector to spherical polar coordinates.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param p         double[3]     p-vector
     **
     **<!-- Returned: -->
-    **     @param theta     double         <u>returned</u> longitude angle (radians)
-    **     @param phi       double         <u>returned</u> latitude angle (radians)
-    **     @param r         double         <u>returned</u> radial distance
+    **     @return theta     double         <u>returned</u> longitude angle (radians)
+    **             phi       double         <u>returned</u> latitude angle (radians)
+    **             r         double         <u>returned</u> radial distance
     **
     ** <p>Notes:
     ** <ol>
@@ -14197,9 +14355,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 22
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static SphericalPosition jauP2s(double p[])
     {
@@ -14214,10 +14372,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Position-angle from two p-vectors.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param a       double[3]   direction of reference point
@@ -14251,9 +14409,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 25
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauPap(double a[] , double b[] )
     {
@@ -14305,10 +14463,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Position-angle from spherical coordinates.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param al      double      longitude of point A (e.g. RA) in radians
@@ -14331,9 +14489,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 22
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauPas(double al, double ap, double bl, double bp)
     {
@@ -14355,10 +14513,10 @@ public static class SphericalCoordinateEO {
     **  precession from epoch J2000.0, using the IAU 2006 model.  Frame
     **  bias (the offset between ICRS and mean J2000.0) is included.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double    TT as a 2-part Julian Date (Note 1)
@@ -14415,9 +14573,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 26
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static EulerAngles jauPb06(double date1, double date2)
     {
@@ -14448,10 +14606,10 @@ public static class SphericalCoordinateEO {
     /**
     **  p-vector inner (=scalar=dot) product.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param a       double[3]      first p-vector
@@ -14462,9 +14620,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 22
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauPdp(double a[] , double b[] )
     {
@@ -14484,7 +14642,7 @@ public static class SphericalCoordinateEO {
      * Precession angles, IAU 2006 (Fukushima-Williams 4-angle formulation).
      * 
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
-     * @version $Name$
+     * 
      * @since AIDA Stage 1
      */
     public static class FWPrecessionAngles{
@@ -14506,19 +14664,19 @@ public static class SphericalCoordinateEO {
     /**
     **  Precession angles, IAU 2006 (Fukushima-Williams 4-angle formulation).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2   double    TT as a 2-part Julian Date (Note 1)
     **
     **<!-- Returned: -->
-    **     @param gamb          double     <u>returned</u> F-W angle gamma_bar (radians)
-    **     @param phib          double     <u>returned</u> F-W angle phi_bar (radians)
-    **     @param psib          double     <u>returned</u> F-W angle psi_bar (radians)
-    **     @param epsa          double     <u>returned</u> F-W angle epsilon_A (radians)
+    **     @return gamb          double     <u>returned</u> F-W angle gamma_bar (radians)
+    **             phib          double     <u>returned</u> F-W angle phi_bar (radians)
+    **             psib          double     <u>returned</u> F-W angle psi_bar (radians)
+    **             epsa          double     <u>returned</u> F-W angle epsilon_A (radians)
     **
     ** <p>Notes:
     ** <ol>
@@ -14578,9 +14736,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static FWPrecessionAngles jauPfw06(double date1, double date2 )
     {
@@ -14620,10 +14778,10 @@ public static class SphericalCoordinateEO {
     
 
     /**
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **  Approximate heliocentric position and velocity of a nominated major
     **  planet:  Mercury, Venus, EMB, Mars, Jupiter, Saturn, Uranus or
@@ -14779,9 +14937,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static int jauPlan94(double date1, double date2, int np, double pv[][])
     {
@@ -15088,10 +15246,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Modulus of p-vector.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param p       double[3]      p-vector
@@ -15101,9 +15259,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 22
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauPm(double p[] )
     {
@@ -15123,16 +15281,16 @@ public static class SphericalCoordinateEO {
     **  Precession matrix (including frame bias) from GCRS to a specified
     **  date, IAU 2000 model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
     **
     **<!-- Returned: -->
-    **     @retun rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 2)
+    **     @return rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 2)
     **
     ** <p>Notes:
     ** <ol>
@@ -15172,9 +15330,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 21
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauPmat00(double date1, double date2)
     {
@@ -15192,10 +15350,10 @@ public static class SphericalCoordinateEO {
     **  Precession matrix (including frame bias) from GCRS to a specified
     **  date, IAU 2006 model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
@@ -15242,9 +15400,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 21
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauPmat06(double date1, double date2)
     {
@@ -15263,10 +15421,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Precession matrix from J2000.0 to a specified date, IAU 1976 model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2  double        ending date, TT (Note 1)
@@ -15329,9 +15487,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauPmat76(double date1, double date2)
     {
@@ -15356,10 +15514,10 @@ public static class SphericalCoordinateEO {
     /**
     **  P-vector subtraction.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param a         double[3]       first p-vector
@@ -15374,9 +15532,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 November 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[]  jauPmp(double a[] , double b[]  )
     {
@@ -15392,7 +15550,7 @@ public static class SphericalCoordinateEO {
     /**
      * A normalized vector with r being the modulus and u[3] being the unit vector.
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
-     * @version $Name$
+     * 
      * @since AIDA Stage 1
      */
     public static class NormalizedVector {
@@ -15406,17 +15564,17 @@ public static class SphericalCoordinateEO {
     /**
     **  Convert a p-vector into modulus and unit vector.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param p         double[3]       p-vector
     **
     **<!-- Returned: -->
-    **     @param r         double           <u>returned</u> modulus
-    **     @param u         double[3]        <u>returned</u> unit vector
+    **     @return r         double           <u>returned</u> modulus
+    **             u         double[3]        <u>returned</u> unit vector
     **
     ** <p>Notes:
     ** <ol>
@@ -15434,9 +15592,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 November 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static NormalizedVector jauPn(double p[])
     {
@@ -15467,10 +15625,10 @@ public static class SphericalCoordinateEO {
     **  supporting classical (equinox-based) use directly and CIO-based
     **  use indirectly.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
@@ -15557,9 +15715,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static PrecessionNutation  jauPn00(double date1, double date2, double dpsi, double deps)
     {
@@ -15596,7 +15754,7 @@ public static class SphericalCoordinateEO {
     /**
      * Precession-nutation model. 
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
-     * @version $Name$
+     * 
      * @since AIDA Stage 1
      */
     public static class PrecessionNutation {
@@ -15631,10 +15789,10 @@ public static class SphericalCoordinateEO {
     **  supporting classical (equinox-based) use directly and CIO-based
     **  use indirectly.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
@@ -15721,9 +15879,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static PrecessionNutation jauPn00a(double date1, double date2)
     {
@@ -15742,22 +15900,22 @@ public static class SphericalCoordinateEO {
     **  supporting classical (equinox-based) use directly and CIO-based
     **  use indirectly.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
     **
     **<!-- Returned: -->
-    **     @param dpsi,deps     double            <u>returned</u> nutation (Note 2)
-    **     @param epsa          double            <u>returned</u> mean obliquity (Note 3)
-    **     @param rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
-    **     @param rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
-    **     @param rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 6)
-    **     @param rn            double[3][3]      <u>returned</u> nutation matrix (Note 7)
-    **     @param rbpn          double[3][3]      <u>returned</u> GCRS-to-true matrix (Notes 8,9)
+    **     @return dpsi,deps     double            <u>returned</u> nutation (Note 2)
+    **             epsa          double            <u>returned</u> mean obliquity (Note 3)
+    **             rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
+    **             rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
+    **             rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 6)
+    **             rn            double[3][3]      <u>returned</u> nutation matrix (Note 7)
+    **             rbpn          double[3][3]      <u>returned</u> GCRS-to-true matrix (Notes 8,9)
     **
     ** <p>Notes:
     ** <ol>
@@ -15831,9 +15989,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static PrecessionNutation jauPn00b(double date1, double date2)
     {
@@ -15852,22 +16010,22 @@ public static class SphericalCoordinateEO {
     **  supporting classical (equinox-based) use directly and CIO-based use
     **  indirectly.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
     **     @param dpsi,deps     double           nutation (Note 2)
     **
     **<!-- Returned: -->
-    **     @param epsa          double            <u>returned</u> mean obliquity (Note 3)
-    **     @param rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
-    **     @param rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
-    **     @param rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 6)
-    **     @param rn            double[3][3]      <u>returned</u> nutation matrix (Note 7)
-    **     @param rbpn          double[3][3]      <u>returned</u> GCRS-to-true matrix (Note 8)
+    **     @return epsa          double            <u>returned</u> mean obliquity (Note 3)
+    **            rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
+    **            rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
+    **            rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 6)
+    **            rn            double[3][3]      <u>returned</u> nutation matrix (Note 7)
+    **            rbpn          double[3][3]      <u>returned</u> GCRS-to-true matrix (Note 8)
     **
     ** <p>Notes:
     ** <ol>
@@ -15940,9 +16098,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static PrecessionNutation jauPn06(double date1, double date2, double dpsi, double deps)
     {
@@ -15987,22 +16145,22 @@ public static class SphericalCoordinateEO {
     **  supporting classical (equinox-based) use directly and CIO-based use
     **  indirectly.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double           TT as a 2-part Julian Date (Note 1)
     **
     **<!-- Returned: -->
-    **     @param dpsi,deps     double            <u>returned</u> nutation (Note 2)
-    **     @param epsa          double            <u>returned</u> mean obliquity (Note 3)
-    **     @param rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
-    **     @param rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
-    **     @param rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 6)
-    **     @param rn            double[3][3]      <u>returned</u> nutation matrix (Note 7)
-    **     @param rbpn          double[3][3]      <u>returned</u> GCRS-to-true matrix (Notes 8,9)
+    **     @return dpsi,deps     double            <u>returned</u> nutation (Note 2)
+    **            epsa          double            <u>returned</u> mean obliquity (Note 3)
+    **            rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
+    **            rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
+    **            rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 6)
+    **            rn            double[3][3]      <u>returned</u> nutation matrix (Note 7)
+    **            rbpn          double[3][3]      <u>returned</u> GCRS-to-true matrix (Notes 8,9)
     **
     ** <p>Notes:
     ** <ol>
@@ -16066,9 +16224,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static PrecessionNutation jauPn06a(double date1, double date2)
     {
@@ -16085,10 +16243,10 @@ public static class SphericalCoordinateEO {
     **  Form the matrix of precession-nutation for a given date (including
     **  frame bias), equinox-based, IAU 2000A model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double      TT as a 2-part Julian Date (Note 1)
@@ -16137,9 +16295,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 21
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauPnm00a(double date1, double date2)
     {
@@ -16155,10 +16313,10 @@ public static class SphericalCoordinateEO {
     **  Form the matrix of precession-nutation for a given date (including
     **  frame bias), equinox-based, IAU 2000B model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2  double        TT as a 2-part Julian Date (Note 1)
@@ -16207,9 +16365,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 21
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauPnm00b(double date1, double date2)
     {
@@ -16226,10 +16384,10 @@ public static class SphericalCoordinateEO {
     **  Form the matrix of precession-nutation for a given date (including
     **  frame bias), IAU 2006 precession and IAU 2000A nutation models.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2  double        TT as a 2-part Julian Date (Note 1)
@@ -16275,9 +16433,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 21
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauPnm06a(double date1, double date2)
     {
@@ -16300,10 +16458,10 @@ public static class SphericalCoordinateEO {
     **  Form the matrix of precession/nutation for a given date, IAU 1976
     **  precession model, IAU 1980 nutation model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2     double          TDB date (Note 1)
@@ -16351,9 +16509,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2010 January 23
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauPnm80(double date1, double date2)
     {
@@ -16377,10 +16535,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Form the matrix of polar motion for a given date, IAU 2000.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param xp,yp     double     coordinates of the pole (radians, Note 1)
@@ -16423,9 +16581,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauPom00(double xp, double yp, double sp)
     {
@@ -16445,10 +16603,10 @@ public static class SphericalCoordinateEO {
     /**
     **  P-vector addition.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param a         double[3]       first p-vector
@@ -16463,9 +16621,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 November 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[] jauPpp(double a[] , double b[] )
     {
@@ -16482,10 +16640,10 @@ public static class SphericalCoordinateEO {
     /**
     **  P-vector plus scaled p-vector.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param a       double[3]      first p-vector
@@ -16504,9 +16662,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 November 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     static double[] jauPpsp(double a[] , double s, double b[]  )
     {
@@ -16526,7 +16684,7 @@ public static class SphericalCoordinateEO {
     /**
      * Precession correction terms.
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
-     * @version $Name$
+     * 
      * @since AIDA Stage 1
      */
     public static class PrecessionDeltaTerms {
@@ -16544,10 +16702,10 @@ public static class SphericalCoordinateEO {
     **  Precession-rate part of the IAU 2000 precession-nutation models
     **  (part of MHB2000).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2     double   TT as a 2-part Julian Date (Note 1)
@@ -16609,9 +16767,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     static PrecessionDeltaTerms jauPr00(double date1, double date2)
     {
@@ -16636,7 +16794,7 @@ public static class SphericalCoordinateEO {
     /**
      * Euler Angles.
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
-     * @version $Name$
+     * 
      * @since AIDA Stage 1
      */
     public static class EulerAngles {
@@ -16660,10 +16818,10 @@ public static class SphericalCoordinateEO {
     **  precession between two epochs, using the IAU 1976 model (as for
     **  the FK5 catalog).
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param ep01,ep02    double     TDB starting epoch (Note 1)
@@ -16721,9 +16879,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     static EulerAngles jauPrec76(double ep01, double ep02, double ep11, double ep12)
     {
@@ -16755,10 +16913,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Discard velocity component of a pv-vector.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param pv       double[2][3]      pv-vector
@@ -16771,9 +16929,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[] jauPv2p(double pv[][] )
     {
@@ -16788,7 +16946,7 @@ public static class SphericalCoordinateEO {
     /**
      * A position and velocity expressed in spherical polar coordinates.
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
-     * @version $Name$
+     * 
      * @since AIDA Stage 1
      */
     public static class SphericalPositionVelocity {
@@ -16803,10 +16961,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Convert position/velocity from Cartesian to spherical coordinates.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param pv        double[2][3]   pv-vector
@@ -16835,9 +16993,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 October 28
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static SphericalPositionVelocity jauPv2s(double pv[][])
     {
@@ -16897,10 +17055,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Inner (=scalar=dot) product of two pv-vectors.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param a         double[2][3]       first pv-vector
@@ -16921,9 +17079,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 22
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[] jauPvdpv(double a[][], double b[][] )
     {
@@ -16950,7 +17108,7 @@ public static class SphericalCoordinateEO {
     /**
      * Modulus of pv-vector.
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
-     * @version $Name$
+     * 
      * @since AIDA Stage 1
      */
     public static class PVModulus{
@@ -16964,10 +17122,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Modulus of pv-vector.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param pv      double[2][3]    pv-vector
@@ -16981,9 +17139,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 22
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static PVModulus jauPvm(double pv[][])
     {
@@ -17001,10 +17159,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Subtract one pv-vector from another.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param a        double[2][3]       first pv-vector
@@ -17022,9 +17180,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 November 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauPvmpv(double a[][], double b[][])
     {
@@ -17040,10 +17198,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Add one pv-vector to another.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param a         double[2][3]       first pv-vector
@@ -17061,9 +17219,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 November 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauPvppv(double a[][], double b[][])
     {
@@ -17079,7 +17237,7 @@ public static class SphericalCoordinateEO {
     /**
      * Typical catalogue coordinates. i.e. Position, proper motion, parallax and radial velocity.
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 4 Feb 2010
-     * @version $Name$
+     * 
      * @since AIDA Stage 1
      */
     public static class CatalogCoords {
@@ -17103,10 +17261,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Convert star position+velocity vector to catalog coordinates.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **  Given (Note 1):
     **     pv     double[2][3]   pv-vector (AU, AU/day)
@@ -17195,9 +17353,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static CatalogCoords jauPvstar(double pv[][]) throws JSOFAInternalError
     {
@@ -17263,10 +17421,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Update a pv-vector.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param dt        double            time interval
@@ -17291,9 +17449,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 November 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauPvu(double dt, double pv[][] )
     {
@@ -17309,10 +17467,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Update a pv-vector, discarding the velocity component.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param dt        double             time interval
@@ -17331,9 +17489,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[] jauPvup(double dt, double pv[][] )
     {
@@ -17350,10 +17508,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Outer (=vector=cross) product of two pv-vectors.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param a         double[2][3]       first pv-vector
@@ -17380,9 +17538,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 November 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauPvxpv(double a[][], double b[][] )
     {
@@ -17409,10 +17567,10 @@ public static class SphericalCoordinateEO {
     /**
     **  p-vector outer (=vector=cross) product.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param a         double[3]       first p-vector
@@ -17427,9 +17585,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 November 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[] jauPxp(double a[] , double b[]  )
     {
@@ -17454,10 +17612,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Express an r-matrix as an r-vector.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param r         double[3][3]     rotation matrix
@@ -17483,9 +17641,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 12
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[] jauRm2v(double r[][] )
     {
@@ -17517,10 +17675,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Form the r-matrix corresponding to a given r-vector.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param w         double[3]       rotation vector (Note 1)
@@ -17543,9 +17701,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauRv2m(double w[])
     {
@@ -17588,10 +17746,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Rotate an r-matrix about the x-axis.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param phi     double           angle (radians)
@@ -17611,9 +17769,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 22
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static void jauRx(double phi, double r[][])
     {
@@ -17643,10 +17801,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Multiply a p-vector by an r-matrix.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param r         double[3][3]     r-matrix
@@ -17663,9 +17821,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 October 28
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[] jauRxp(double r[][], double p[])
     {
@@ -17691,10 +17849,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Multiply a pv-vector by an r-matrix.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param r         double[3][3]     r-matrix
@@ -17711,9 +17869,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 October 28
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauRxpv(double r[][], double pv[][])
     {
@@ -17729,10 +17887,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Multiply two r-matrices.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param a         double[3][3]     first r-matrix
@@ -17750,9 +17908,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 November 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauRxr(double a[][], double b[][])
     {
@@ -17778,10 +17936,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Rotate an r-matrix about the y-axis.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param theta   double           angle (radians)
@@ -17801,9 +17959,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 22
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static void jauRy(double theta, double r[][])
     {
@@ -17833,10 +17991,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Rotate an r-matrix about the z-axis.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param psi     double           angle (radians)
@@ -17856,9 +18014,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 22
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static void jauRz(double psi, double r[][])
     {
@@ -17890,10 +18048,10 @@ public static class SphericalCoordinateEO {
     **  the equator of the Celestial Intermediate Pole, given the CIP's X,Y
     **  coordinates.  Compatible with IAU 2000A precession-nutation.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2    double     TT as a 2-part Julian Date (Note 1)
@@ -17964,9 +18122,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauS00(double date1, double date2, double x, double y)
     {
@@ -18208,10 +18366,10 @@ public static class SphericalCoordinateEO {
     **  the equator of the Celestial Intermediate Pole, using the IAU 2000A
     **  precession-nutation model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
@@ -18275,9 +18433,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauS00a(double date1, double date2)
     {
@@ -18303,10 +18461,10 @@ public static class SphericalCoordinateEO {
     **  the equator of the Celestial Intermediate Pole, using the IAU 2000B
     **  precession-nutation model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
@@ -18370,9 +18528,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauS00b(double date1, double date2)
     {
@@ -18398,10 +18556,10 @@ public static class SphericalCoordinateEO {
     **  the equator of the Celestial Intermediate Pole, given the CIP's X,Y
     **  coordinates.  Compatible with IAU 2006/2000A precession-nutation.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2    double     TT as a 2-part Julian Date (Note 1)
@@ -18469,9 +18627,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 December 17
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauS06(double date1, double date2, double x, double y)
     {
@@ -18713,10 +18871,10 @@ public static class SphericalCoordinateEO {
     **  the equator of the Celestial Intermediate Pole, using the IAU 2006
     **  precession and IAU 2000A nutation models.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
@@ -18782,9 +18940,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2010 January 18
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauS06a(double date1, double date2)
     {
@@ -18808,10 +18966,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Convert spherical coordinates to Cartesian.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param theta     double        longitude angle (radians)
@@ -18822,9 +18980,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 October 28
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[] jauS2c(double theta, double phi )
     {
@@ -18844,10 +19002,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Convert spherical polar coordinates to p-vector.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param theta    double        longitude angle (radians)
@@ -18863,9 +19021,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[] jauS2p(double theta, double phi, double r )
     {
@@ -18884,10 +19042,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Convert position/velocity from spherical to Cartesian coordinates.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param theta     double           longitude angle (radians)
@@ -18902,9 +19060,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 25
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauS2pv(double theta, double phi, double r,
                  double td, double pd, double rd)
@@ -18938,10 +19096,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Multiply a pv-vector by two scalars.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param s1      double          scalar to multiply position component by
@@ -18959,9 +19117,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 October 28
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauS2xpv(double s1, double s2, double pv[][])
     {
@@ -18977,10 +19135,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Angular separation between two p-vectors.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param a       double[3]     first p-vector (not necessarily unit length)
@@ -19007,9 +19165,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 22
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauSepp(double a[] , double b[] )
     {
@@ -19034,10 +19192,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Angular separation between two sets of spherical coordinates.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param al      double        first longitude (radians)
@@ -19054,9 +19212,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauSeps(double al, double ap, double bl, double bp)
     {
@@ -19079,10 +19237,10 @@ public static class SphericalCoordinateEO {
     **  The TIO locator s', positioning the Terrestrial Intermediate Origin
     **  on the equator of the Celestial Intermediate Pole.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2   double     TT as a 2-part Julian Date (Note 1)
@@ -19125,9 +19283,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 24
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double jauSp00(double date1, double date2)
     {
@@ -19148,10 +19306,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Star proper motion:  update star catalog data for space motion.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param ra1     double      right ascension (radians), before
@@ -19250,9 +19408,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static CatalogCoords jauStarpm(double ra1, double dec1,
                   double pmr1, double pmd1, double px1, double rv1,
@@ -19300,10 +19458,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Convert star catalog coordinates to position+velocity vector.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **  Given (Note 1):
     **     ra     double        right ascension (radians)
@@ -19411,9 +19569,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 July 6
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static int jauStarpv(double ra, double dec,
                   double pmr, double pmd, double px, double rv,
@@ -19519,10 +19677,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Multiply a p-vector by a scalar.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param s       double         scalar
@@ -19535,9 +19693,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 October 28
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static  double[] jauSxp(double s, double p[])
     {
@@ -19554,10 +19712,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Multiply a pv-vector by a scalar.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param s        double           scalar
@@ -19574,9 +19732,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 October 28
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauSxpv(double s, double pv[][])
     {
@@ -19595,12 +19753,12 @@ public static class SphericalCoordinateEO {
      **  This function is part of the International Astronomical Union's
      **  SOFA (Standards of Fundamental Astronomy) software collection.
      **
-     **  Status:  canonical.
+     **<p>Status:  canonical.
      **
-     **  Given:
+     **<!-- Given: -->
      **  @param   tai1,tai2  double    TAI as a 2-part Julian Date
      **
-     **  Returned:
+     **<!-- Returned:-->
      **     @return    TT as a 2-part Julian Date
      **
      **
@@ -19611,7 +19769,7 @@ public static class SphericalCoordinateEO {
      **     Day Number and tai2 is the fraction of a day.  The returned
      **     tt1,tt2 follow suit.
      **
-     **  References:
+     **<p>References:
      **
      **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
      **     IERS Technical Note No. 32, BKG (2004)
@@ -19619,11 +19777,11 @@ public static class SphericalCoordinateEO {
      **     Explanatory Supplement to the Astronomical Almanac,
      **     P. Kenneth Seidelmann (ed), University Science Books (1992)
      **
-     **  This revision:  2010 May 16
+     **<p>This revision:  2010 May 16
      **
-     **  SOFA release 2010-12-01
+     **@since SOFA release 2010-12-01
      **
-     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      */
     public static JulianDate jauTaitt(double tai1, double tai2)
     {
@@ -19654,17 +19812,17 @@ public static class SphericalCoordinateEO {
      **  This function is part of the International Astronomical Union's
      **  SOFA (Standards of Fundamental Astronomy) software collection.
      **
-     **  Status:  canonical.
+     **<p>Status:  canonical.
      **
-     **  Given:
+     **<!-- Given: -->
      **  @param   tai1,tai2  double    TAI as a 2-part Julian Date
      **  @param   dta        double    UT1-TAI in seconds
      **
-     **  Returned:
+     **<!-- Returned:-->
      **  @return      UT1 as a 2-part Julian Date
      **
      **
-     **  Notes:
+     **<p>Notes:
      **  <ol>
      ** <li>  tai1+tai2 is Julian Date, apportioned in any convenient way
      **     between the two arguments, for example where tai1 is the Julian
@@ -19679,11 +19837,11 @@ public static class SphericalCoordinateEO {
      **     Explanatory Supplement to the Astronomical Almanac,
      **     P. Kenneth Seidelmann (ed), University Science Books (1992)
      **
-     **  This revision:  2010 May 16
+     **<p>This revision:  2010 May 16
      **
-     **  SOFA release 2010-12-01
+     **@since SOFA release 2010-12-01
      **
-     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      **
      */
     public static JulianDate jauTaiut1(double tai1, double tai2, double dta)
@@ -19713,12 +19871,12 @@ public static class SphericalCoordinateEO {
      **  This function is part of the International Astronomical Union's
      **  SOFA (Standards of Fundamental Astronomy) software collection.
      **
-     **  Status:  canonical.
+     **<p>Status:  canonical.
      **
-     **  Given:
+     **<!-- Given: -->
      **  @param   tai1,tai2     TAI as a 2-part Julian Date (Note 1)
      **
-     **  Returned:
+     **<!-- Returned:-->
      **  @return   UTC as a 2-part quasi Julian Date (Notes 1-3)
      **
      **  Returned (function value):
@@ -19726,7 +19884,7 @@ public static class SphericalCoordinateEO {
      **                                  0 = OK
      **                                 -1 = unacceptable date
      **
-     **  Notes:
+     **<p>Notes:
      ** <ol>
      ** <li>  tai1+tai2 is Julian Date, apportioned in any convenient way
      **     between the two arguments, for example where tai1 is the Julian
@@ -19753,7 +19911,7 @@ public static class SphericalCoordinateEO {
      **     jauDat       delta(AT) = TAI-UTC
      **     jauCal2jd    Gregorian calendar to JD
      **
-     **  References:
+     **<p>References:
      **
      **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
      **     IERS Technical Note No. 32, BKG (2004)
@@ -19761,11 +19919,11 @@ public static class SphericalCoordinateEO {
      **     Explanatory Supplement to the Astronomical Almanac,
      **     P. Kenneth Seidelmann (ed), University Science Books (1992)
      **
-     **  This revision:  2010 May 16
+     **<p>This revision:  2010 May 16
      **
-     **  SOFA release 2010-12-01
+     **@since SOFA release 2010-12-01
      **
-     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAIllegalParameter 
      * @throws JSOFAInternalError 
      */
@@ -19851,16 +20009,16 @@ public static class SphericalCoordinateEO {
      **  This function is part of the International Astronomical Union's
      **  SOFA (Standards of Fundamental Astronomy) software collection.
      **
-     **  Status:  canonical.
+     **<p>Status:  canonical.
      **
-     **  Given:
+     **<!-- Given: -->
      **   @param  tcb1,tcb2  double    TCB as a 2-part Julian Date
      **
-     **  Returned:
+     **<!-- Returned:-->
      **   @return    TDB as a 2-part Julian Date
      **
      **
-     **  Notes:
+     **<p>Notes:
      **  <ol>
      ** <li>  tcb1+tcb2 is Julian Date, apportioned in any convenient way
      **     between the two arguments, for example where tcb1 is the Julian
@@ -19889,11 +20047,11 @@ public static class SphericalCoordinateEO {
      **
      **     IAU 2006 Resolution B3
      **
-     **  This revision:  2010 May 16
+     **<p>This revision:  2010 May 16
      **
-     **  SOFA release 2010-12-01
+     **@since SOFA release 2010-12-01
      **
-     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      */
     public static JulianDate jauTcbtdb(double tcb1, double tcb2)
     {
@@ -19931,12 +20089,12 @@ public static class SphericalCoordinateEO {
      **  This function is part of the International Astronomical Union's
      **  SOFA (Standards of Fundamental Astronomy) software collection.
      **
-     **  Status:  canonical.
+     **<p>Status:  canonical.
      **
-     **  Given:
+     **<!-- Given: -->
      **  @param   tcg1,tcg2  double    TCG as a 2-part Julian Date
      **
-     **  Returned:
+     **<!-- Returned:-->
      **   @return    TT as a 2-part Julian Date
      **
      **
@@ -19947,18 +20105,18 @@ public static class SphericalCoordinateEO {
      **     Day Number and tcg22 is the fraction of a day.  The returned
      **     tt1,tt2 follow suit.
      **
-     **  References:
+     **<p>References:
      **
      **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),.
      **     IERS Technical Note No. 32, BKG (2004)
      **
      **     IAU 2000 Resolution B1.9
      **
-     **  This revision:  2010 May 14
+     **<p>This revision:  2010 May 14
      **
-     **  SOFA release 2010-12-01
+     **@since SOFA release 2010-12-01
      **
-     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      */
     public static JulianDate jauTcgtt(double tcg1, double tcg2)
     {
@@ -19988,15 +20146,15 @@ public static class SphericalCoordinateEO {
      **  This function is part of the International Astronomical Union's
      **  SOFA (Standards of Fundamental Astronomy) software collection.
      **
-     **  Status:  canonical.
+     **<p>Status:  canonical.
      **
-     **  Given:
+     **<!-- Given: -->
      **   @param  tdb1,tdb2      TDB as a 2-part Julian Date
      **
-     **  Returned:
+     **<!-- Returned:-->
      **   @return    TCB as a 2-part Julian Date
      **
-     **  Notes:
+     **<p>Notes:
      ** <ol>
      **  <li>  tdb1+tdb2 is Julian Date, apportioned in any convenient way
      **     between the two arguments, for example where tdb1 is the Julian
@@ -20025,11 +20183,11 @@ public static class SphericalCoordinateEO {
      **
      **     IAU 2006 Resolution B3
      **
-     **  This revision:  2010 September 10
+     **<p>This revision:  2010 September 10
      **
-     **  SOFA release 2010-12-01
+     **@since SOFA release 2010-12-01
      **
-     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      */
     public static JulianDate jauTdbtcb(double tdb1, double tdb2 )
     {
@@ -20073,17 +20231,17 @@ public static class SphericalCoordinateEO {
      **  This function is part of the International Astronomical Union's
      **  SOFA (Standards of Fundamental Astronomy) software collection.
      **
-     **  Status:  canonical.
+     **<p>Status:  canonical.
      **
-     **  Given:
+     **<!-- Given: -->
      **    @param dtb1,tdb2  double    TDB as a 2-part Julian Date
      **    @param dtr        double    TDB-TT in seconds
      **
-     **  Returned:
+     **<!-- Returned:-->
      **   @return   TT as a 2-part Julian Date
      **
      **
-     **  Notes:
+     **<p>Notes:
      ** <ol>
      ** <li>  tdb1+tdb2 is Julian Date, apportioned in any convenient way
      **     between the two arguments, for example where tdb1 is the Julian
@@ -20101,18 +20259,18 @@ public static class SphericalCoordinateEO {
      **  <li>  TDB is essentially the same as Teph, the time argument for the
      **     JPL solar system ephemerides.
      **  </ol>
-     **  References:
+     **<p>References:
      **
      **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
      **     IERS Technical Note No. 32, BKG (2004)
      **
      **     IAU 2006 Resolution 3
      **
-     **  This revision:  2010 May 13
+     **<p>This revision:  2010 May 13
      **
-     **  SOFA release 2010-12-01
+     **@since SOFA release 2010-12-01
      **
-     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      **
      */
     public static JulianDate jauTdbtt(double tdb1, double tdb2, double dtr  )
@@ -20142,15 +20300,15 @@ public static class SphericalCoordinateEO {
      **  This function is part of the International Astronomical Union's
      **  SOFA (Standards of Fundamental Astronomy) software collection.
      **
-     **  Status:  support function.
+     **<p>Status:  support function.
      **
-     **  Given:
+     **<!-- Given: -->
      **     s         int     sign:  '-' = negative, otherwise positive
      **     ihour     int     hours
      **     imin      int     minutes
      **     sec       double  seconds
      **
-     **  Returned:
+     **<!-- Returned:-->
      **     days      double  angle in radians
      **
      **  Returned (function value):
@@ -20159,18 +20317,18 @@ public static class SphericalCoordinateEO {
      **                                2 = imin outside range 0-59
      **                                3 = sec outside range 0-59.999...
      **
-     **  Notes:
+     **<p>Notes:
      **
      **  1)  The result is computed even if any of the range checks fail.
      **
      **  2)  Negative ihour, imin and/or sec produce a warning status, but
      **      the absolute value is used in the conversion.
      **
-     **  This revision:  2010 August 27
+     **<p>This revision:  2010 August 27
      **
-     **  SOFA release 2010-12-01
+     **@since SOFA release 2010-12-01
      **
-     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAIllegalParameter 
      */
     public static double jauTf2a(char s, int ihour, int imin, double sec ) throws JSOFAIllegalParameter
@@ -20198,15 +20356,15 @@ public static class SphericalCoordinateEO {
      **  This function is part of the International Astronomical Union's
      **  SOFA (Standards of Fundamental Astronomy) software collection.
      **
-     **  Status:  support function.
+     **<p>Status:  support function.
      **
-     **  Given:
+     **<!-- Given: -->
      **     s         int     sign:  '-' = negative, otherwise positive
      **     ihour     int     hours
      **     imin      int     minutes
      **     sec       double  seconds
      **
-     **  Returned:
+     **<!-- Returned:-->
      **     days      double  interval in days
      **
      **  Returned (function value):
@@ -20215,18 +20373,18 @@ public static class SphericalCoordinateEO {
      **                                2 = imin outside range 0-59
      **                                3 = sec outside range 0-59.999...
      **
-     **  Notes:
+     **<p>Notes:
      **
      **  1)  The result is computed even if any of the range checks fail.
      **
      **  2)  Negative ihour, imin and/or sec produce a warning status, but
      **      the absolute value is used in the conversion.
      **
-     **  This revision:  2010 August 27
+     **<p>This revision:  2010 August 27
      **
-     **  SOFA release 2010-12-01
+     **@since SOFA release 2010-12-01
      **
-     **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+     **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAIllegalParameter 
      */
     public static double jauTf2d(char s, int ihour, int imin, double sec) throws JSOFAIllegalParameter
@@ -20249,10 +20407,10 @@ public static class SphericalCoordinateEO {
     /**
      **  Transpose an r-matrix.
      **
-     **  This function is derived from the International Astronomical Union's
+     **<p>This function is derived from the International Astronomical Union's
      **  SOFA (Standards Of Fundamental Astronomy) software collection.
      **
-     **  Status:  vector/matrix support function.
+     **<p>Status:  vector/matrix support function.
      **
      **<!-- Given: -->
      **     @param r         double[3][3]     r-matrix
@@ -20268,9 +20426,9 @@ public static class SphericalCoordinateEO {
      ** </ul>
      **<p>This revision:  2008 May 22
      **
-     **  <!-- Release 2009-12-31 -->
+     **  @since Release 20101201
      **
-     **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+     **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
      */
     public static double[][] jauTr(double r[][])
     {
@@ -20293,10 +20451,10 @@ public static class SphericalCoordinateEO {
     /**
      **  Multiply a p-vector by the transpose of an r-matrix.
      **
-     **  This function is derived from the International Astronomical Union's
+     **<p>This function is derived from the International Astronomical Union's
      **  SOFA (Standards Of Fundamental Astronomy) software collection.
      **
-     **  Status:  vector/matrix support function.
+     **<p>Status:  vector/matrix support function.
      **
      **<!-- Given: -->
      **     @param r         double[3][3]    r-matrix
@@ -20314,9 +20472,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 October 28
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[] jauTrxp(double r[][], double p[]  )
     {
@@ -20337,10 +20495,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Multiply a pv-vector by the transpose of an r-matrix.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Given: -->
     **     @param r         double[3][3]     r-matrix
@@ -20358,9 +20516,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 October 28
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static double[][] jauTrxpv(double r[][], double pv[][] )
     {
@@ -21981,12 +22139,12 @@ public static class SphericalCoordinateEO {
        **  This function is part of the International Astronomical Union's
        **  SOFA (Standards of Fundamental Astronomy) software collection.
        **
-       **  Status:  canonical.
+       **<p>Status:  canonical.
        **
-       **  Given:
+       **<!-- Given: -->
        **     tt1,tt2    double    TT as a 2-part Julian Date
        **
-       **  Returned:
+       **<!-- Returned:-->
        **     tai1,tai2  double    TAI as a 2-part Julian Date
        **
        **  Returned (function value):
@@ -21999,7 +22157,7 @@ public static class SphericalCoordinateEO {
        **     and tt2 is the fraction of a day.  The returned tai1,tai2 follow
        **     suit.
        **
-       **  References:
+       **<p>References:
        **
        **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
        **     IERS Technical Note No. 32, BKG (2004)
@@ -22007,11 +22165,11 @@ public static class SphericalCoordinateEO {
        **     Explanatory Supplement to the Astronomical Almanac,
        **     P. Kenneth Seidelmann (ed), University Science Books (1992)
        **
-       **  This revision:  2010 May 13
+       **<p>This revision:  2010 May 13
        **
-       **  SOFA release 2010-12-01
+       **@since SOFA release 2010-12-01
        **
-       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
        */
       public static JulianDate jauTttai(double tt1, double tt2)
       {
@@ -22041,12 +22199,12 @@ public static class SphericalCoordinateEO {
        **  This function is part of the International Astronomical Union's
        **  SOFA (Standards of Fundamental Astronomy) software collection.
        **
-       **  Status:  canonical.
+       **<p>Status:  canonical.
        **
-       **  Given:
+       **<!-- Given: -->
        **     tt1,tt2    double    TT as a 2-part Julian Date
        **
-       **  Returned:
+       **<!-- Returned:-->
        **     tcg1,tcg2  double    TCG as a 2-part Julian Date
        **
        **  Returned (function value):
@@ -22059,18 +22217,18 @@ public static class SphericalCoordinateEO {
        **     and tt2 is the fraction of a day.  The returned tcg1,tcg2 follow
        **     suit.
        **
-       **  References:
+       **<p>References:
        **
        **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
        **     IERS Technical Note No. 32, BKG (2004)
        **
        **     IAU 2000 Resolution B1.9
        **
-       **  This revision:  2010 May 13
+       **<p>This revision:  2010 May 13
        **
-       **  SOFA release 2010-12-01
+       **@since SOFA release 2010-12-01
        **
-       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
        */
       public static JulianDate jauTttcg(double tt1, double tt2)
 
@@ -22105,19 +22263,19 @@ public static class SphericalCoordinateEO {
        **  This function is part of the International Astronomical Union's
        **  SOFA (Standards of Fundamental Astronomy) software collection.
        **
-       **  Status:  canonical.
+       **<p>Status:  canonical.
        **
-       **  Given:
+       **<!-- Given: -->
        **     tt1,tt2    double    TT as a 2-part Julian Date
        **     dtr        double    TDB-TT in seconds
        **
-       **  Returned:
+       **<!-- Returned:-->
        **     tdb1,tdb2  double    TDB as a 2-part Julian Date
        **
        **  Returned (function value):
        **                int       status:  0 = OK
        **
-       **  Notes:
+       **<p>Notes:
        **
        **  1  tt1+tt2 is Julian Date, apportioned in any convenient way between
        **     the two arguments, for example where tt1 is the Julian Day Number
@@ -22135,18 +22293,18 @@ public static class SphericalCoordinateEO {
        **  3  TDB is essentially the same as Teph, the time argument for the JPL
        **     solar system ephemerides.
        **
-       **  References:
+       **<p>References:
        **
        **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
        **     IERS Technical Note No. 32, BKG (2004)
        **
        **     IAU 2006 Resolution 3
        **
-       **  This revision:  2010 May 13
+       **<p>This revision:  2010 May 13
        **
-       **  SOFA release 2010-12-01
+       **@since SOFA release 2010-12-01
        **
-       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
        */
       public static JulianDate jauTttdb(double tt1, double tt2, double dtr)
       {
@@ -22177,19 +22335,19 @@ public static class SphericalCoordinateEO {
        **  This function is part of the International Astronomical Union's
        **  SOFA (Standards of Fundamental Astronomy) software collection.
        **
-       **  Status:  canonical.
+       **<p>Status:  canonical.
        **
-       **  Given:
+       **<!-- Given: -->
        **     tt1,tt2    double    TT as a 2-part Julian Date
        **     dt         double    TT-UT1 in seconds
        **
-       **  Returned:
+       **<!-- Returned:-->
        **     ut11,ut12  double    UT1 as a 2-part Julian Date
        **
        **  Returned (function value):
        **                int       status:  0 = OK
        **
-       **  Notes:
+       **<p>Notes:
        **
        **  1  tt1+tt2 is Julian Date, apportioned in any convenient way between
        **     the two arguments, for example where tt1 is the Julian Day Number
@@ -22203,11 +22361,11 @@ public static class SphericalCoordinateEO {
        **     Explanatory Supplement to the Astronomical Almanac,
        **     P. Kenneth Seidelmann (ed), University Science Books (1992)
        **
-       **  This revision:  2010 May 16
+       **<p>This revision:  2010 May 16
        **
-       **  SOFA release 2010-12-01
+       **@since SOFA release 2010-12-01
        **
-       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
        */
       public static JulianDate jauTtut1(double tt1, double tt2, double dt)
 
@@ -22238,19 +22396,19 @@ public static class SphericalCoordinateEO {
        **  This function is part of the International Astronomical Union's
        **  SOFA (Standards of Fundamental Astronomy) software collection.
        **
-       **  Status:  canonical.
+       **<p>Status:  canonical.
        **
-       **  Given:
+       **<!-- Given: -->
        **     ut11,ut12  double    UT1 as a 2-part Julian Date
        **     dta        double    UT1-TAI in seconds
        **
-       **  Returned:
+       **<!-- Returned:-->
        **     tai1,tai2  double    TAI as a 2-part Julian Date
        **
        **  Returned (function value):
        **                int       status:  0 = OK
        **
-       **  Notes:
+       **<p>Notes:
        **
        **  1  ut11+ut12 is Julian Date, apportioned in any convenient way
        **     between the two arguments, for example where ut11 is the Julian
@@ -22265,11 +22423,11 @@ public static class SphericalCoordinateEO {
        **     Explanatory Supplement to the Astronomical Almanac,
        **     P. Kenneth Seidelmann (ed), University Science Books (1992)
        **
-       **  This revision:  2010 May 16
+       **<p>This revision:  2010 May 16
        **
-       **  SOFA release 2010-12-01
+       **@since SOFA release 2010-12-01
        **
-       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
        */
       public static JulianDate jauUt1tai(double ut11, double ut12, double dta )
 
@@ -22299,19 +22457,19 @@ public static class SphericalCoordinateEO {
        **  This function is part of the International Astronomical Union's
        **  SOFA (Standards of Fundamental Astronomy) software collection.
        **
-       **  Status:  canonical.
+       **<p>Status:  canonical.
        **
-       **  Given:
+       **<!-- Given: -->
        **     ut11,ut12  double    UT1 as a 2-part Julian Date
        **     dt         double    TT-UT1 in seconds
        **
-       **  Returned:
+       **<!-- Returned:-->
        **     tt1,tt2    double    TAI as a 2-part Julian Date
        **
        **  Returned (function value):
        **                int       status:  0 = OK
        **
-       **  Notes:
+       **<p>Notes:
        **
        **  1  ut11+ut12 is Julian Date, apportioned in any convenient way
        **     between the two arguments, for example where ut11 is the Julian
@@ -22325,11 +22483,11 @@ public static class SphericalCoordinateEO {
        **     Explanatory Supplement to the Astronomical Almanac,
        **     P. Kenneth Seidelmann (ed), University Science Books (1992)
        **
-       **  This revision:  2010 May 16
+       **<p>This revision:  2010 May 16
        **
-       **  SOFA release 2010-12-01
+       **@since SOFA release 2010-12-01
        **
-       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
        */
       public static JulianDate jauUt1tt(double ut11, double ut12, double dt)
       {
@@ -22360,13 +22518,13 @@ public static class SphericalCoordinateEO {
        **  This function is part of the International Astronomical Union's
        **  SOFA (Standards of Fundamental Astronomy) software collection.
        **
-       **  Status:  canonical.
+       **<p>Status:  canonical.
        **
-       **  Given:
+       **<!-- Given: -->
        **     ut11,ut12  double   UT1 as a 2-part Julian Date (Note 1)
        **     dut1       double   Delta UT1: UT1-UTC in seconds (Note 2)
        **
-       **  Returned:
+       **<!-- Returned:-->
        **     utc1,utc2  double   UTC as a 2-part quasi Julian Date (Notes 3,4)
        **
        **  Returned (function value):
@@ -22374,7 +22532,7 @@ public static class SphericalCoordinateEO {
        **                                  0 = OK
        **                                 -1 = unacceptable date
        **
-       **  Notes:
+       **<p>Notes:
        **
        **  1  ut11+ut12 is Julian Date, apportioned in any convenient way
        **     between the two arguments, for example where ut11 is the Julian
@@ -22406,7 +22564,7 @@ public static class SphericalCoordinateEO {
        **     jauDat       delta(AT) = TAI-UTC
        **     jauCal2jd    Gregorian calendar to JD
        **
-       **  References:
+       **<p>References:
        **
        **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
        **     IERS Technical Note No. 32, BKG (2004)
@@ -22414,11 +22572,11 @@ public static class SphericalCoordinateEO {
        **     Explanatory Supplement to the Astronomical Almanac,
        **     P. Kenneth Seidelmann (ed), University Science Books (1992)
        **
-       **  This revision:  2010 May 16
+       **<p>This revision:  2010 May 16
        **
-       **  SOFA release 2010-12-01
+       **@since SOFA release 2010-12-01
        **
-       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAIllegalParameter 
      * @throws JSOFAInternalError 
        */
@@ -22508,12 +22666,12 @@ public static class SphericalCoordinateEO {
        **  This function is part of the International Astronomical Union's
        **  SOFA (Standards of Fundamental Astronomy) software collection.
        **
-       **  Status:  canonical.
+       **<p>Status:  canonical.
        **
-       **  Given:
+       **<!-- Given: -->
        **     utc1,utc2  double   UTC as a 2-part quasi Julian Date (Notes 1-4)
        **
-       **  Returned:
+       **<!-- Returned:-->
        **     tai1,tai2  double   TAI as a 2-part Julian Date (Note 5)
        **
        **  Returned (function value):
@@ -22521,7 +22679,7 @@ public static class SphericalCoordinateEO {
        **                                  0 = OK
        **                                 -1 = unacceptable date
        **
-       **  Notes:
+       **<p>Notes:
        **
        **  1) utc1+utc2 is quasi Julian Date (see Note 2), apportioned in any
        **     convenient way between the two arguments, for example where utc1
@@ -22548,7 +22706,7 @@ public static class SphericalCoordinateEO {
        **     jauDat       delta(AT) = TAI-UTC
        **     jauCal2jd    Gregorian calendar to JD
        **
-       **  References:
+       **<p>References:
        **
        **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
        **     IERS Technical Note No. 32, BKG (2004)
@@ -22556,11 +22714,11 @@ public static class SphericalCoordinateEO {
        **     Explanatory Supplement to the Astronomical Almanac,
        **     P. Kenneth Seidelmann (ed), University Science Books (1992)
        **
-       **  This revision:  2010 September 10
+       **<p>This revision:  2010 September 10
        **
-       **  SOFA release 2010-12-01
+       **@since SOFA release 2010-12-01
        **
-       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError 
      * @throws JSOFAIllegalParameter 
        **
@@ -22626,13 +22784,13 @@ public static class SphericalCoordinateEO {
        **  This function is part of the International Astronomical Union's
        **  SOFA (Standards of Fundamental Astronomy) software collection.
        **
-       **  Status:  canonical.
+       **<p>Status:  canonical.
        **
-       **  Given:
+       **<!-- Given: -->
        **     utc1,utc2  double   UTC as a 2-part quasi Julian Date (Notes 1-4)
        **     dut1       double   Delta UT1 = UT1-UTC in seconds (Note 5)
        **
-       **  Returned:
+       **<!-- Returned:-->
        **     ut11,ut12  double   UT1 as a 2-part Julian Date (Note 6)
        **
        **  Returned (function value):
@@ -22640,7 +22798,7 @@ public static class SphericalCoordinateEO {
        **                                  0 = OK
        **                                 -1 = unacceptable date
        **
-       **  Notes:
+       **<p>Notes:
        **
        **  1) utc1+utc2 is quasi Julian Date (see Note 2), apportioned in any
        **     convenient way between the two arguments, for example where utc1
@@ -22671,7 +22829,7 @@ public static class SphericalCoordinateEO {
        **     introduction of the time scale and that are too far in the future
        **     to be trusted.  See jauDat for further details.
        **
-       **  References:
+       **<p>References:
        **
        **     McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
        **     IERS Technical Note No. 32, BKG (2004)
@@ -22685,11 +22843,11 @@ public static class SphericalCoordinateEO {
        **     jauUtctai    UTC to TAI
        **     jauTaiut1    TAI to UT1
        **
-       **  This revision:  2010 May 16
+       **<p>This revision:  2010 May 16
        **
-       **  SOFA release 2010-12-01
+       **@since SOFA release 2010-12-01
        **
-       **  Copyright (C) 2010 IAU SOFA Board.  See notes at end.
+       **  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError 
      * @throws JSOFAIllegalParameter 
        */
@@ -22718,10 +22876,10 @@ public static class SphericalCoordinateEO {
     **  X,Y coordinates of celestial intermediate pole from series based
     **  on IAU 2006 precession and IAU 2000A nutation.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  canonical model.
+    **<p>Status:  canonical model.
     **
     **<!-- Given: -->
     **     @param date1,date2   double      TT as a 2-part Julian Date (Note 1)
@@ -22802,9 +22960,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2009 October 16
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     {
 
@@ -23848,10 +24006,10 @@ public static class SphericalCoordinateEO {
     **  Intermediate Pole and the CIO locator s, using the IAU 2000A
     **  precession-nutation model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double    TT as a 2-part Julian Date (Note 1)
@@ -23904,9 +24062,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 12
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static ICRFrame jauXys00a(double date1, double date2)
     {
@@ -23934,7 +24092,7 @@ public static class SphericalCoordinateEO {
     **     Intermediate Origin on the equator of the CIP.
  
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
-     * @version $Name$
+     * 
      * @since AIDA Stage 1
      */
     public static class ICRFrame {
@@ -23950,10 +24108,10 @@ public static class SphericalCoordinateEO {
     **  Intermediate Pole and the CIO locator s, using the IAU 2000B
     **  precession-nutation model.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double    TT as a 2-part Julian Date (Note 1)
@@ -24006,9 +24164,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 12
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static ICRFrame jauXys00b(double date1, double date2)
     {
@@ -24034,10 +24192,10 @@ public static class SphericalCoordinateEO {
     **  Intermediate Pole and the CIO locator s, using the IAU 2006
     **  precession and IAU 2000A nutation models.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  support function.
+    **<p>Status:  support function.
     **
     **<!-- Given: -->
     **     @param date1,date2   double   TT as a 2-part Julian Date (Note 1)
@@ -24090,9 +24248,9 @@ public static class SphericalCoordinateEO {
     **
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static ICRFrame jauXys06a(double date1, double date2)
     {
@@ -24116,19 +24274,19 @@ public static class SphericalCoordinateEO {
     /**
     **  Zero a p-vector.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Returned: -->
     **     @param p         double[3]        <u>returned</u> p-vector
     **
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static void jauZp(double p[] )
     {
@@ -24144,10 +24302,10 @@ public static class SphericalCoordinateEO {
     /**
     **  Zero a pv-vector.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Returned: -->
     **     @param pv        double[2][3]        <u>returned</u> pv-vector
@@ -24157,9 +24315,9 @@ public static class SphericalCoordinateEO {
     ** </ul>
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static void jauZpv(double pv[][])
     {
@@ -24174,19 +24332,19 @@ public static class SphericalCoordinateEO {
     /**
     **  Initialize an r-matrix to the null matrix.
     **
-    **  This function is derived from the International Astronomical Union's
+    **<p>This function is derived from the International Astronomical Union's
     **  SOFA (Standards Of Fundamental Astronomy) software collection.
     **
-    **  Status:  vector/matrix support function.
+    **<p>Status:  vector/matrix support function.
     **
     **<!-- Returned: -->
     **     @param r         double[3][3]      <u>returned</u> r-matrix
     **
     **<p>This revision:  2008 May 11
     **
-    **  <!-- Release 2009-12-31 -->
+    **  @since Release 20101201 
     **
-    **  Copyright (C) 2009 IAU SOFA Review Board.  See notes at end.
+    **  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
     public static void jauZr(double r[][])
     {
@@ -24215,7 +24373,7 @@ public static class SphericalCoordinateEO {
     private static double fmod(double d, double d2) {
         return d % d2;
     }
- // new 20131202 routines after here
+ //IMPL new 20131202 routines after here
 
     /**
      *  Star-independent astrometry parameters.
@@ -24223,37 +24381,57 @@ public static class SphericalCoordinateEO {
      *  (Vectors eb, eh, em and v are all with respect to BCRS axes.)
      *  
      *  @author Paul Harrison (paul.harrison@manchester.ac.uk) 26 Mar 2014
+     *  @since 20131202
      */
-    public static class  jauASTROM {
-       public double pmt;        /** PM time interval (SSB, Julian years) */
-       public double eb[] = new double[3];      /** SSB to observer (vector, au) [3]*/
-       public double eh[] = new double[3];      /** Sun to observer (unit vector)[3] */
-       public double em;         /** distance from Sun to observer (au) */
-       public double v[] = new double[3];       /** barycentric observer velocity (vector, c)[3] */
-       public double bm1;        /** sqrt(1-|v|^2): reciprocal of Lorenz factor */
-       public double bpn[][] = new double[3][3];  /** bias-precession-nutation matrix [3][3] */
-       public double along;      /** longitude + s' + dERA(DUT) (radians) */
-       public double phi;        /** geodetic latitude (radians) */
-       public double xpl;        /** polar motion xp wrt local meridian (radians) */
-       public double ypl;        /** polar motion yp wrt local meridian (radians) */
-       public double sphi;       /** sine of geodetic latitude */
-       public double cphi;       /** cosine of geodetic latitude */
-       public double diurab;     /** magnitude of diurnal aberration vector */
-       public double eral;       /** "local" Earth rotation angle (radians) */
-       public double refa;       /** refraction constant A (radians) */
-       public double refb;       /** refraction constant B (radians) */
+    public static class  Astrom {
+        
+/** PM time interval (SSB, Julian years) */
+       public double pmt;       
+/** SSB to observer (vector, au) [3]*/
+       public double eb[] = new double[3];      
+/** Sun to observer (unit vector)[3] */
+       public double eh[] = new double[3];      
+/** distance from Sun to observer (au) */
+       public double em;         
+/** barycentric observer velocity (vector, c)[3] */
+       public double v[] = new double[3];       
+/** sqrt(1-|v|^2): reciprocal of Lorenz factor */
+       public double bm1;        
+/** bias-precession-nutation matrix [3][3] */
+       public double bpn[][] = new double[3][3];  
+/** longitude + s' + dERA(DUT) (radians) */
+       public double along;      
+/** geodetic latitude (radians) */
+       public double phi;        
+/** polar motion xp wrt local meridian (radians) */
+       public double xpl;        
+/** polar motion yp wrt local meridian (radians) */
+       public double ypl;        
+/** sine of geodetic latitude */
+       public double sphi;       
+/** cosine of geodetic latitude */
+       public double cphi;       
+/** magnitude of diurnal aberration vector */
+       public double diurab;     
+/** "local" Earth rotation angle (radians) */
+       public double eral;       
+/** refraction constant A (radians) */
+       public double refa;       
+/** refraction constant B (radians) */
+       public double refb;       
        
        /**
         * 
         */
-       public jauASTROM(){}
+       public Astrom(){}
     } ;
 
     /**
      *  Body parameters for light deflection.
      *  @author Paul Harrison (paul.harrison@manchester.ac.uk) 26 Mar 2014
+     *  @since 20131202
      */
-    public static class jauLDBODY {
+    public static class Ldbody {
         /** mass of the body (solar masses) */
        public double bm;
        /** deflection limiter (radians^2/2) */
@@ -24267,21 +24445,21 @@ public static class SphericalCoordinateEO {
      *  Apply aberration to transform natural direction into proper
      *  direction.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *    @param pnat     double[3]    natural direction to the source (unit vector)
      *    @param v        double[3]    observer barycentric velocity in units of c
      *    @param s        double       distance between the Sun and the observer (au)
      *    @param bm1      double       sqrt(1-|v|^2): reciprocal of Lorenz factor
      *
-     *  Returned:
+     *<!-- Returned:-->
      *    @return ppr      double[3]     <b>Returned</b> proper direction to source (unit vector)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The algorithm is based on Expr. (7.40) in the Explanatory
@@ -24300,7 +24478,7 @@ public static class SphericalCoordinateEO {
      *     used, errors of up to 5 microarcseconds could occur.
      *
      * </ol>
-     *  References:
+     *<p>References:
      * <ul>
      *
      * <li> Urban, S. & Seidelmann, P. K. (eds), Explanatory Supplement to
@@ -24316,11 +24494,12 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauPdp} scalar product of two p-vectors
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static  double[] jauAb(double pnat[], double v[], double s, double bm1
            )
@@ -24357,51 +24536,35 @@ public static class SphericalCoordinateEO {
      *  parallax, light deflection and aberration parts of the astrometric
      *  transformation chain.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param date1   double        TDB as a 2-part...
      *     @param date2   double        ...Julian Date (Note 1)
      *     @param ebpv    double[2][3]  Earth barycentric pos/vel (au, au/day)
      *     @param ehp     double[3]     Earth heliocentric position (au)
      *
-     *  Returned:
-     *     @return astrom  jauASTROM*     <b>Returned</b> star-independent astrometry parameters:
-     *      @return pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
-     *      @return eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
-     *      @return eh      double[3]      <b>Returned</b> Sun to observer (unit vector)
-     *      @return em      double         <b>Returned</b> distance from Sun to observer (au)
-     *      @return v       double[3]      <b>Returned</b> barycentric observer velocity (vector, c)
-     *      @return bm1     double         <b>Returned</b> sqrt(1-|v|^2): reciprocal of Lorenz factor
-     *      @return bpn     double[3][3]   <b>Returned</b> bias-precession-nutation matrix
-     *      @return along   double         <b>Returned</b> unchanged
-     *      @return xpl     double         <b>Returned</b> unchanged
-     *      @return ypl     double         <b>Returned</b> unchanged
-     *      @return sphi    double         <b>Returned</b> unchanged
-     *      @return cphi    double         <b>Returned</b> unchanged
-     *      @return diurab  double         <b>Returned</b> unchanged
-     *      @return eral    double         <b>Returned</b> unchanged
-     *      @return refa    double         <b>Returned</b> unchanged
-     *      @return refb    double         <b>Returned</b> unchanged
+     *<!-- Returned:-->
+     *     @param astrom  jauASTROM     <b>Returned</b> star-independent astrometry parameters:
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
      *     convenient way between the two arguments.  For example,
      *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
      *     others:
+     *     <pre>
+     *           date1          date2
      *
-     *            <p>date1          date2
-     *
-     *         <p>2450123.7           0.0       (JD method)
+     *         2450123.7           0.0       (JD method)
      *         2451545.0       -1421.3       (J2000 method)
      *         2400000.5       50123.2       (MJD method)
      *         2450123.5           0.2       (date & time method)
-     *
+     *     </pre>
      *     <p>The JD method is the most natural and convenient to use in cases
      *     where the loss of several decimal digits of resolution is
      *     acceptable.  The J2000 method is best matched to the way the
@@ -24422,16 +24585,16 @@ public static class SphericalCoordinateEO {
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
+     *     <pre>
+     *          functions         observer        transformation
      *
-     *          <p>functions         observer        transformation
-     *
-     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
      *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
      *       iauApco iauApco13    terrestrial     ICRS <-> observed
      *       iauApcs iauApcs13    space           ICRS <-> GCRS
      *       iauAper iauAper13    terrestrial     update Earth rotation
      *       iauApio iauApio13    terrestrial     CIRS <-> observed
-     *
+     *     </pre>
      *     <p>Those with names ending in "13" use contemporary SOFA models to
      *     compute the various ephemerides.  The others accept ephemerides
      *     supplied by the caller.
@@ -24452,15 +24615,15 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauApcs} astrometry parameters, ICRS-GCRS, space observer
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static void jauApcg(double date1, double date2,
             double ebpv[][], double ehp[],
-            jauASTROM astrom)
+            Astrom astrom)
     {
         /* Geocentric observer */
         double pv[][] = { { 0.0, 0.0, 0.0 },
@@ -24485,49 +24648,33 @@ public static class SphericalCoordinateEO {
      *  parallax, light deflection and aberration parts of the astrometric
      *  transformation chain.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param date1   double      TDB as a 2-part...
      *     @param date2   double      ...Julian Date (Note 1)
      *
-     *  Returned:
-     *     @return astrom  jauASTROM*   <b>Returned</b> star-independent astrometry parameters:
-     *      @return pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
-     *      @return eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
-     *      @return eh      double[3]      <b>Returned</b> Sun to observer (unit vector)
-     *      @return em      double         <b>Returned</b> distance from Sun to observer (au)
-     *      @return v       double[3]      <b>Returned</b> barycentric observer velocity (vector, c)
-     *      @return bm1     double         <b>Returned</b> sqrt(1-|v|^2): reciprocal of Lorenz factor
-     *      @return bpn     double[3][3]   <b>Returned</b> bias-precession-nutation matrix
-     *      @return along   double         <b>Returned</b> unchanged
-     *      @return xpl     double         <b>Returned</b> unchanged
-     *      @return ypl     double         <b>Returned</b> unchanged
-     *      @return sphi    double         <b>Returned</b> unchanged
-     *      @return cphi    double         <b>Returned</b> unchanged
-     *      @return diurab  double         <b>Returned</b> unchanged
-     *      @return eral    double         <b>Returned</b> unchanged
-     *      @return refa    double         <b>Returned</b> unchanged
-     *      @return refb    double         <b>Returned</b> unchanged
+     *<!-- Returned:-->
+     *     @param astrom     <b>Returned</b> star-independent astrometry parameters:
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
      *     convenient way between the two arguments.  For example,
      *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
      *     others:
+     *     <pre>
+     *            date1          date2
      *
-     *            <p>date1          date2
-     *
-     *         <p>2450123.7           0.0       (JD method)
+     *         2450123.7           0.0       (JD method)
      *         2451545.0       -1421.3       (J2000 method)
      *         2400000.5       50123.2       (MJD method)
      *         2450123.5           0.2       (date & time method)
-     *
+     *     </pre>
      *     <p>The JD method is the most natural and convenient to use in cases
      *     where the loss of several decimal digits of resolution is
      *     acceptable.  The J2000 method is best matched to the way the
@@ -24552,16 +24699,16 @@ public static class SphericalCoordinateEO {
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
+     *     <pre>
+     *          functions         observer        transformation
      *
-     *          <p>functions         observer        transformation
-     *
-     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
      *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
      *       iauApco iauApco13    terrestrial     ICRS <-> observed
      *       iauApcs iauApcs13    space           ICRS <-> GCRS
      *       iauAper iauAper13    terrestrial     update Earth rotation
      *       iauApio iauApio13    terrestrial     CIRS <-> observed
-     *
+     *     </pre>
      *     <p>Those with names ending in "13" use contemporary SOFA models to
      *     compute the various ephemerides.  The others accept ephemerides
      *     supplied by the caller.
@@ -24583,13 +24730,13 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauApcg} astrometry parameters, ICRS-GCRS, geocenter
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
-    public static void jauApcg13(double date1, double date2, jauASTROM astrom)
+    public static void jauApcg13(double date1, double date2, Astrom astrom)
     {
         double ehpv[][] = new double[2][3], ebpv[][] = new double[2][3];
 
@@ -24615,12 +24762,12 @@ public static class SphericalCoordinateEO {
      *  parallax, light deflection, aberration, and bias-precession-nutation
      *  parts of the astrometric transformation chain.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param date1   double        TDB as a 2-part...
      *     @param date2   double        ...Julian Date (Note 1)
      *     @param ebpv    double[2][3]  Earth barycentric position/velocity (au, au/day)
@@ -24628,40 +24775,24 @@ public static class SphericalCoordinateEO {
      *     @param x,y     double        CIP X,Y (components of unit vector)
      *     @param s       double        the CIO locator s (radians)
      *
-     *  Returned:
-     *     @return astrom  jauASTROM*     <b>Returned</b> star-independent astrometry parameters:
-     *      @return pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
-     *      @return eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
-     *      @return eh      double[3]      <b>Returned</b> Sun to observer (unit vector)
-     *      @return em      double         <b>Returned</b> distance from Sun to observer (au)
-     *      @return v       double[3]      <b>Returned</b> barycentric observer velocity (vector, c)
-     *      @return bm1     double         <b>Returned</b> sqrt(1-|v|^2): reciprocal of Lorenz factor
-     *      @return bpn     double[3][3]   <b>Returned</b> bias-precession-nutation matrix
-     *      @return along   double         <b>Returned</b> unchanged
-     *      @return xpl     double         <b>Returned</b> unchanged
-     *      @return ypl     double         <b>Returned</b> unchanged
-     *      @return sphi    double         <b>Returned</b> unchanged
-     *      @return cphi    double         <b>Returned</b> unchanged
-     *      @return diurab  double         <b>Returned</b> unchanged
-     *      @return eral    double         <b>Returned</b> unchanged
-     *      @return refa    double         <b>Returned</b> unchanged
-     *      @return refb    double         <b>Returned</b> unchanged
+     *<!-- Returned:-->
+     *     @param astrom       <b>Returned</b> star-independent astrometry parameters:
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
      *     convenient way between the two arguments.  For example,
      *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
      *     others:
+     *     <pre>
+     *            date1          date2
      *
-     *            <p>date1          date2
-     *
-     *         <p>2450123.7           0.0       (JD method)
+     *         2450123.7           0.0       (JD method)
      *         2451545.0       -1421.3       (J2000 method)
      *         2400000.5       50123.2       (MJD method)
      *         2450123.5           0.2       (date & time method)
-     *
+     *     </pre>
      *     <p>The JD method is the most natural and convenient to use in cases
      *     where the loss of several decimal digits of resolution is
      *     acceptable.  The J2000 method is best matched to the way the
@@ -24687,16 +24818,16 @@ public static class SphericalCoordinateEO {
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
+     *     <pre>
+     *          functions         observer        transformation
      *
-     *          <p>functions         observer        transformation
-     *
-     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
      *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
      *       iauApco iauApco13    terrestrial     ICRS <-> observed
      *       iauApcs iauApcs13    space           ICRS <-> GCRS
      *       iauAper iauAper13    terrestrial     update Earth rotation
      *       iauApio iauApio13    terrestrial     CIRS <-> observed
-     *
+     *     </pre>
      *     <p>Those with names ending in "13" use contemporary SOFA models to
      *     compute the various ephemerides.  The others accept ephemerides
      *     supplied by the caller.
@@ -24718,16 +24849,16 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauC2ixys} celestial-to-intermediate matrix, given X,Y and s
      *
      * </ul>
-     *  This revision:   2013 September 25
+     *<p>This revision:   2013 September 25
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static void jauApci(double date1, double date2,
             double ebpv[][], double ehp[],
             double x, double y, double s,
-            jauASTROM astrom)
+            Astrom astrom)
     {
 
         /* Star-independent astrometry parameters for geocenter. */
@@ -24751,16 +24882,16 @@ public static class SphericalCoordinateEO {
      *  parallax, light deflection, aberration, and bias-precession-nutation
      *  parts of the astrometric transformation chain.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param date1   double       TDB as a 2-part...
      *     @param date2   double       ...Julian Date (Note 1)
      *     
-     *  Returned:
+     *<!-- Returned:-->
      *     @param astrom  jauASTROM    <b>Returned</b> star-independent astrometry parameters:
      *                    pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
      *                    eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
@@ -24780,21 +24911,21 @@ public static class SphericalCoordinateEO {
      *                    refb    double         <b>Returned</b> unchanged
      *     @return eo      double*       <b>Returned</b> equation of the origins (ERA-GST)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
      *     convenient way between the two arguments.  For example,
      *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
      *     others:
+     *     <pre>
+     *            date1          date2
      *
-     *            <p>date1          date2
-     *
-     *         <p>2450123.7           0.0       (JD method)
+     *         2450123.7           0.0       (JD method)
      *         2451545.0       -1421.3       (J2000 method)
      *         2400000.5       50123.2       (MJD method)
      *         2450123.5           0.2       (date & time method)
-     *
+     *     </pre>
      *     <p>The JD method is the most natural and convenient to use in cases
      *     where the loss of several decimal digits of resolution is
      *     acceptable.  The J2000 method is best matched to the way the
@@ -24819,16 +24950,16 @@ public static class SphericalCoordinateEO {
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
+     *     <pre>
+     *          functions         observer        transformation
      *
-     *          <p>functions         observer        transformation
-     *
-     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
      *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
      *       iauApco iauApco13    terrestrial     ICRS <-> observed
      *       iauApcs iauApcs13    space           ICRS <-> GCRS
      *       iauAper iauAper13    terrestrial     update Earth rotation
      *       iauApio iauApio13    terrestrial     CIRS <-> observed
-     *
+     *     </pre>
      *     <p>Those with names ending in "13" use contemporary SOFA models to
      *     compute the various ephemerides.  The others accept ephemerides
      *     supplied by the caller.
@@ -24854,14 +24985,14 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauEors} equation of the origins, given NPB matrix and s
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static double jauApci13(double date1, double date2,
-            jauASTROM astrom)
+            Astrom astrom)
     {
         double ehpv[][] = new double[2][3], ebpv[][] = new double[2][3], r[][], s;
 
@@ -24896,12 +25027,12 @@ public static class SphericalCoordinateEO {
      *  rotation information and the refraction constants as well as the
      *  site coordinates.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param date1   double        TDB as a 2-part...
      *     @param date2   double        ...Julian Date (Note 1)
      *     @param ebpv    double[2][3]  Earth barycentric PV (au, au/day, Note 2)
@@ -24917,40 +25048,24 @@ public static class SphericalCoordinateEO {
      *     @param refa    double        refraction constant A (radians, Note 5)
      *     @param refb    double        refraction constant B (radians, Note 5)
      *
-     *  Returned:
-     *     @return astrom  jauASTROM*     <b>Returned</b> star-independent astrometry parameters:
-     *      @return pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
-     *      @return eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
-     *      @return eh      double[3]      <b>Returned</b> Sun to observer (unit vector)
-     *      @return em      double         <b>Returned</b> distance from Sun to observer (au)
-     *      @return v       double[3]      <b>Returned</b> barycentric observer velocity (vector, c)
-     *      @return bm1     double         <b>Returned</b> sqrt(1-|v|^2): reciprocal of Lorenz factor
-     *      @return bpn     double[3][3]   <b>Returned</b> bias-precession-nutation matrix
-     *      @return along   double         <b>Returned</b> longitude + s' (radians)
-     *      @return xpl     double         <b>Returned</b> polar motion xp wrt local meridian (radians)
-     *      @return ypl     double         <b>Returned</b> polar motion yp wrt local meridian (radians)
-     *      @return sphi    double         <b>Returned</b> sine of geodetic latitude
-     *      @return cphi    double         <b>Returned</b> cosine of geodetic latitude
-     *      @return diurab  double         <b>Returned</b> magnitude of diurnal aberration vector
-     *      @return eral    double         <b>Returned</b> "local" Earth rotation angle (radians)
-     *      @return refa    double         <b>Returned</b> refraction constant A (radians)
-     *      @return refb    double         <b>Returned</b> refraction constant B (radians)
+     *<!-- Returned:-->
+     *     @param astrom       <b>Returned</b> star-independent astrometry parameters:
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
      *     convenient way between the two arguments.  For example,
      *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
      *     others:
+     *     <pre>
+     *            date1          date2
      *
-     *            <p>date1          date2
-     *
-     *         <p>2450123.7           0.0       (JD method)
+     *         2450123.7           0.0       (JD method)
      *         2451545.0       -1421.3       (J2000 method)
      *         2400000.5       50123.2       (MJD method)
      *         2450123.5           0.2       (date & time method)
-     *
+     *     </pre>
      *     <p>The JD method is the most natural and convenient to use in cases
      *     where the loss of several decimal digits of resolution is
      *     acceptable.  The J2000 method is best matched to the way the
@@ -25004,16 +25119,16 @@ public static class SphericalCoordinateEO {
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
+     *     <pre>
+     *          functions         observer        transformation
      *
-     *          <p>functions         observer        transformation
-     *
-     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
      *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
      *       iauApco iauApco13    terrestrial     ICRS <-> observed
      *       iauApcs iauApcs13    space           ICRS <-> GCRS
      *       iauAper iauAper13    terrestrial     update Earth rotation
      *       iauApio iauApio13    terrestrial     CIRS <-> observed
-     *
+     *     </pre>
      *     <p>Those with names ending in "13" use contemporary SOFA models to
      *     compute the various ephemerides.  The others accept ephemerides
      *     supplied by the caller.
@@ -25039,11 +25154,11 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauCr} copy r-matrix
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError 
      * @throws JSOFAIllegalParameter 
      */
@@ -25053,7 +25168,7 @@ public static class SphericalCoordinateEO {
             double elong, double phi, double hm,
             double xp, double yp, double sp,
             double refa, double refb,
-            jauASTROM astrom) throws JSOFAIllegalParameter, JSOFAInternalError
+            Astrom astrom) throws JSOFAIllegalParameter, JSOFAInternalError
     {
         double sl, cl, r[][], pvc[][], pv[][];
 
@@ -25112,12 +25227,12 @@ public static class SphericalCoordinateEO {
      *  parallax, light deflection, aberration, and bias-precession-nutation
      *  parts of the ICRS/CIRS transformations.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param utc1    double      UTC as a 2-part...
      *     @param utc2    double      ...quasi Julian Date (Notes 1,2)
      *     @param dut1    double      UT1-UTC (seconds, Note 3)
@@ -25130,18 +25245,19 @@ public static class SphericalCoordinateEO {
      *     @param rh      double      relative humidity at the observer (range 0-1)
      *     @param wl      double      wavelength (micrometers, Note 7)
      *
-     *  Returned:
-     *     @param astrom  jauASTROM*   <b>Returned</b> star-independent astrometry parameters:
+     *<!-- Returned:-->
+     *     @param astrom     <b>Returned</b> star-independent astrometry parameters:
      *         
      *     
      *     @return eo      double      <b>Returned</b> equation of the origins (ERA-GST)
      *
-     *  @Throws Returned  (function   <b>Returned</b> value):
-     *            @return int         status:   <b>Returned</b> +1 = dubious year (Note 2)
-     *                                @return 0  =   <b>Returned</b> OK
-     *                               @return -1  =   <b>Returned</b> unacceptable date
+     *  @throws JSOFAInternalError
+     *  @throws JSOFAIllegalParameter
+     *             int         status:   <b>Returned</b> +1 = dubious year (Note 2)
+     *                                 0  =   <b>Returned</b> OK
+     *                                -1  =   <b>Returned</b> unacceptable date
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> utc1+utc2 is quasi Julian Date (see Note 2), apportioned in any
@@ -25220,16 +25336,16 @@ public static class SphericalCoordinateEO {
      *
      *      <p>The various functions support different classes of observer and
      *      portions of the transformation chain:
+     *      <pre>
+     *          functions         observer        transformation
      *
-     *          <p>functions         observer        transformation
-     *
-     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
      *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
      *       iauApco iauApco13    terrestrial     ICRS <-> observed
      *       iauApcs iauApcs13    space           ICRS <-> GCRS
      *       iauAper iauAper13    terrestrial     update Earth rotation
      *       iauApio iauApio13    terrestrial     CIRS <-> observed
-     *
+     *      </pre>
      *      <p>Those with names ending in "13" use contemporary SOFA models to
      *      compute the various ephemerides.  The others accept ephemerides
      *      supplied by the caller.
@@ -25261,18 +25377,18 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauEors} equation of the origins, given NPB matrix and s
      *
      * </ul>
-     *  This revision:   2013 December 5
+     *<p>This revision:   2013 December 5
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError 
      * @throws JSOFAIllegalParameter 
      */
     public static double jauApco13(double utc1, double utc2, double dut1,
             double elong, double phi, double hm, double xp, double yp,
             double phpa, double tc, double rh, double wl,
-            jauASTROM astrom ) throws JSOFAIllegalParameter, JSOFAInternalError
+            Astrom astrom ) throws JSOFAIllegalParameter, JSOFAInternalError
     {
         double ehpv[][] = new double[2][3], ebpv[][] = new double[2][3],
         r[][], s, theta, sp;
@@ -25329,52 +25445,36 @@ public static class SphericalCoordinateEO {
      *  motion, parallax, light deflection and aberration parts of the
      *  astrometric transformation chain.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param date1   double        TDB as a 2-part...
      *     @param date2   double        ...Julian Date (Note 1)
      *     @param pv      double[2][3]  observer's geocentric pos/vel (m, m/s)
      *     @param ebpv    double[2][3]  Earth barycentric PV (au, au/day)
      *     @param ehp     double[3]     Earth heliocentric P (au)
      *
-     *  Returned:
-     *     @return astrom  jauASTROM*     <b>Returned</b> star-independent astrometry parameters:
-     *      @return pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
-     *      @return eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
-     *      @return eh      double[3]      <b>Returned</b> Sun to observer (unit vector)
-     *      @return em      double         <b>Returned</b> distance from Sun to observer (au)
-     *      @return v       double[3]      <b>Returned</b> barycentric observer velocity (vector, c)
-     *      @return bm1     double         <b>Returned</b> sqrt(1-|v|^2): reciprocal of Lorenz factor
-     *      @return bpn     double[3][3]   <b>Returned</b> bias-precession-nutation matrix
-     *      @return along   double         <b>Returned</b> unchanged
-     *      @return xpl     double         <b>Returned</b> unchanged
-     *      @return ypl     double         <b>Returned</b> unchanged
-     *      @return sphi    double         <b>Returned</b> unchanged
-     *      @return cphi    double         <b>Returned</b> unchanged
-     *      @return diurab  double         <b>Returned</b> unchanged
-     *      @return eral    double         <b>Returned</b> unchanged
-     *      @return refa    double         <b>Returned</b> unchanged
-     *      @return refb    double         <b>Returned</b> unchanged
-     *
-     *  Notes:
+     *<!-- Returned:-->
+     *     @param astrom       <b>Returned</b> star-independent astrometry parameters:
+
+     *<p>Notes:
      * <ol>
      *
      *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
      *     convenient way between the two arguments.  For example,
      *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
      *     others:
+     *     <pre>
+     *         date1          date2
      *
-     *            <p>date1          date2
-     *
-     *         <p>2450123.7           0.0       (JD method)
+     *         2450123.7           0.0       (JD method)
      *         2451545.0       -1421.3       (J2000 method)
      *         2400000.5       50123.2       (MJD method)
      *         2450123.5           0.2       (date & time method)
-     *
+     *     </pre>
      *     <p>The JD method is the most natural and convenient to use in cases
      *     where the loss of several decimal digits of resolution is
      *     acceptable.  The J2000 method is best matched to the way the
@@ -25411,15 +25511,16 @@ public static class SphericalCoordinateEO {
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
      *
-     *          <p>functions         observer        transformation
+     *     <pre>
+     *          functions         observer        transformation
      *
-     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
      *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
      *       iauApco iauApco13    terrestrial     ICRS <-> observed
      *       iauApcs iauApcs13    space           ICRS <-> GCRS
      *       iauAper iauAper13    terrestrial     update Earth rotation
      *       iauApio iauApio13    terrestrial     CIRS <-> observed
-     *
+     *     </pre>
      *     <p>Those with names ending in "13" use contemporary SOFA models to
      *     compute the various ephemerides.  The others accept ephemerides
      *     supplied by the caller.
@@ -25443,15 +25544,15 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauIr} initialize r-matrix to identity
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static void jauApcs(double date1, double date2, double pv[][],
             double ebpv[][], double ehp[],
-            jauASTROM astrom)
+            Astrom astrom)
     {
         /* au/d to m/s */
         final double AUDMS = DAU/DAYSEC;
@@ -25510,50 +25611,34 @@ public static class SphericalCoordinateEO {
      *  motion, parallax, light deflection and aberration parts of the
      *  astrometric transformation chain.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param date1   double        TDB as a 2-part...
      *     @param date2   double        ...Julian Date (Note 1)
      *     @param pv      double[2][3]  observer's geocentric pos/vel (Note 3)
      *
-     *  Returned:
-     *     @return astrom  jauASTROM*     <b>Returned</b> star-independent astrometry parameters:
-     *      @return pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
-     *      @return eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
-     *      @return eh      double[3]      <b>Returned</b> Sun to observer (unit vector)
-     *      @return em      double         <b>Returned</b> distance from Sun to observer (au)
-     *      @return v       double[3]      <b>Returned</b> barycentric observer velocity (vector, c)
-     *      @return bm1     double         <b>Returned</b> sqrt(1-|v|^2): reciprocal of Lorenz factor
-     *      @return bpn     double[3][3]   <b>Returned</b> bias-precession-nutation matrix
-     *      @return along   double         <b>Returned</b> unchanged
-     *      @return xpl     double         <b>Returned</b> unchanged
-     *      @return ypl     double         <b>Returned</b> unchanged
-     *      @return sphi    double         <b>Returned</b> unchanged
-     *      @return cphi    double         <b>Returned</b> unchanged
-     *      @return diurab  double         <b>Returned</b> unchanged
-     *      @return eral    double         <b>Returned</b> unchanged
-     *      @return refa    double         <b>Returned</b> unchanged
-     *      @return refb    double         <b>Returned</b> unchanged
+     *<!-- Returned:-->
+     *     @param astrom       <b>Returned</b> star-independent astrometry parameters:
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
      *     convenient way between the two arguments.  For example,
      *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
      *     others:
+     *     <pre>
+     *           date1          date2
      *
-     *            <p>date1          date2
-     *
-     *         <p>2450123.7           0.0       (JD method)
+     *         2450123.7           0.0       (JD method)
      *         2451545.0       -1421.3       (J2000 method)
      *         2400000.5       50123.2       (MJD method)
      *         2450123.5           0.2       (date & time method)
-     *
+     *     </pre>
      *     <p>The JD method is the most natural and convenient to use in cases
      *     where the loss of several decimal digits of resolution is
      *     acceptable.  The J2000 method is best matched to the way the
@@ -25584,16 +25669,16 @@ public static class SphericalCoordinateEO {
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
+     *     </pre>
+     *          functions         observer        transformation
      *
-     *          <p>functions         observer        transformation
-     *
-     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
      *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
      *       iauApco iauApco13    terrestrial     ICRS <-> observed
      *       iauApcs iauApcs13    space           ICRS <-> GCRS
      *       iauAper iauAper13    terrestrial     update Earth rotation
      *       iauApio iauApio13    terrestrial     CIRS <-> observed
-     *
+     *     </pre>
      *     <p>Those with names ending in "13" use contemporary SOFA models to
      *     compute the various ephemerides.  The others accept ephemerides
      *     supplied by the caller.
@@ -25615,14 +25700,14 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauApcs} astrometry parameters, ICRS-GCRS, space observer
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static void jauApcs13(double date1, double date2, double pv[][],
-            jauASTROM astrom)
+            Astrom astrom)
     {
         double ehpv[][] = new double[2][3], ebpv[][] = new double[2][3];
 
@@ -25642,14 +25727,14 @@ public static class SphericalCoordinateEO {
      *  In the star-independent astrometry parameters, update only the
      *  Earth rotation angle, supplied by the caller explicitly.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param theta    double       Earth rotation angle (radians, Note 2)
-     *     @param astrom   jauASTROM*   star-independent astrometry parameters:
+     *     @param astrom      star-independent astrometry parameters:
      *      @param pmt     double        not used
      *      @param eb      double[3]     not used
      *      @param eh      double[3]     not used
@@ -25667,26 +25752,10 @@ public static class SphericalCoordinateEO {
      *      @param refa    double        not used
      *      @param refb    double        not used
      *
-     *  Returned:
-     *     @return astrom   jauASTROM*    <b>Returned</b> star-independent astrometry parameters:
-     *      @return pmt     double         <b>Returned</b> unchanged
-     *      @return eb      double[3]      <b>Returned</b> unchanged
-     *      @return eh      double[3]      <b>Returned</b> unchanged
-     *      @return em      double         <b>Returned</b> unchanged
-     *      @return v       double[3]      <b>Returned</b> unchanged
-     *      @return bm1     double         <b>Returned</b> unchanged
-     *      @return bpn     double[3][3]   <b>Returned</b> unchanged
-     *      @return along   double         <b>Returned</b> unchanged
-     *      @return xpl     double         <b>Returned</b> unchanged
-     *      @return ypl     double         <b>Returned</b> unchanged
-     *      @return sphi    double         <b>Returned</b> unchanged
-     *      @return cphi    double         <b>Returned</b> unchanged
-     *      @return diurab  double         <b>Returned</b> unchanged
-     *      @return eral    double         <b>Returned</b> "local" Earth rotation angle (radians)
-     *      @return refa    double         <b>Returned</b> unchanged
-     *      @return refb    double         <b>Returned</b> unchanged
-     *
-     *  Notes:
+     *<!-- Returned:-->
+     *     @param astrom       <b>Returned</b> star-independent astrometry parameters:
+    *
+     *<p>Notes:
      * <ol>
      *
      *  <li> This function exists to enable sidereal-tracking applications to
@@ -25708,7 +25777,7 @@ public static class SphericalCoordinateEO {
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
      *
-     *          <p>functions         observer        transformation
+     *          functions         observer        transformation
      *
      *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
      *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
@@ -25729,13 +25798,13 @@ public static class SphericalCoordinateEO {
      *     transformation), and atmospheric refraction.
      *
      * </ol>
-     *  This revision:   2013 September 25
+     *<p>This revision:   2013 September 25
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
-    public static void jauAper(double theta, jauASTROM astrom)
+    public static void jauAper(double theta, Astrom astrom)
     {
         astrom.eral = theta + astrom.along;
 
@@ -25748,15 +25817,15 @@ public static class SphericalCoordinateEO {
      *  In the star-independent astrometry parameters, update only the
      *  Earth rotation angle.  The caller provides UT1, (n.b. not UTC).
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param ut11     double       UT1 as a 2-part...
      *     @param ut12     double       ...Julian Date (Note 1)
-     *     @param astrom   jauASTROM*   star-independent astrometry parameters:
+     *     @param astrom      star-independent astrometry parameters:
      *      @param pmt     double        not used
      *      @param eb      double[3]     not used
      *      @param eh      double[3]     not used
@@ -25774,26 +25843,10 @@ public static class SphericalCoordinateEO {
      *      @param refa    double        not used
      *      @param refb    double        not used
      *
-     *  Returned:
-     *     @return astrom   jauASTROM*    <b>Returned</b> star-independent astrometry parameters:
-     *      @return pmt     double         <b>Returned</b> unchanged
-     *      @return eb      double[3]      <b>Returned</b> unchanged
-     *      @return eh      double[3]      <b>Returned</b> unchanged
-     *      @return em      double         <b>Returned</b> unchanged
-     *      @return v       double[3]      <b>Returned</b> unchanged
-     *      @return bm1     double         <b>Returned</b> unchanged
-     *      @return bpn     double[3][3]   <b>Returned</b> unchanged
-     *      @return along   double         <b>Returned</b> unchanged
-     *      @return xpl     double         <b>Returned</b> unchanged
-     *      @return ypl     double         <b>Returned</b> unchanged
-     *      @return sphi    double         <b>Returned</b> unchanged
-     *      @return cphi    double         <b>Returned</b> unchanged
-     *      @return diurab  double         <b>Returned</b> unchanged
-     *      @return eral    double         <b>Returned</b> "local" Earth rotation angle (radians)
-     *      @return refa    double         <b>Returned</b> unchanged
-     *      @return refb    double         <b>Returned</b> unchanged
+     *<!-- Returned:-->
+     *     @param astrom       <b>Returned</b> star-independent astrometry parameters:
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The UT1 date (n.b. not UTC) ut11+ut12 is a Julian Date,
@@ -25803,7 +25856,7 @@ public static class SphericalCoordinateEO {
      *
      *            <p>ut11           ut12
      *
-     *         <p>2450123.7           0.0       (JD method)
+     *         2450123.7           0.0       (JD method)
      *         2451545.0       -1421.3       (J2000 method)
      *         2400000.5       50123.2       (MJD method)
      *         2450123.5           0.2       (date & time method)
@@ -25829,7 +25882,7 @@ public static class SphericalCoordinateEO {
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
      *
-     *          <p>functions         observer        transformation
+     *          functions         observer        transformation
      *
      *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
      *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
@@ -25856,13 +25909,13 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauEra00} Earth rotation angle, IAU 2000
      *
      * </ul>
-     *  This revision:   2013 September 25
+     *<p>This revision:   2013 September 25
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
-    public static void jauAper13(double ut11, double ut12, jauASTROM astrom)
+    public static void jauAper13(double ut11, double ut12, Astrom astrom)
     {
         jauAper(jauEra00(ut11,ut12), astrom);
 
@@ -25877,12 +25930,12 @@ public static class SphericalCoordinateEO {
      *  coordinates.  The caller supplies the Earth orientation information
      *  and the refraction constants as well as the site coordinates.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param sp      double       the TIO locator s' (radians, Note 1)
      *     @param theta   double       Earth rotation angle (radians)
      *     @param elong   double       longitude (radians, east +ve, Note 2)
@@ -25892,26 +25945,10 @@ public static class SphericalCoordinateEO {
      *     @param refa    double       refraction constant A (radians, Note 4)
      *     @param refb    double       refraction constant B (radians, Note 4)
      *
-     *  Returned:
-     *     @return astrom  jauASTROM*    <b>Returned</b> star-independent astrometry parameters:
-     *      @return pmt     double         <b>Returned</b> unchanged
-     *      @return eb      double[3]      <b>Returned</b> unchanged
-     *      @return eh      double[3]      <b>Returned</b> unchanged
-     *      @return em      double         <b>Returned</b> unchanged
-     *      @return v       double[3]      <b>Returned</b> unchanged
-     *      @return bm1     double         <b>Returned</b> unchanged
-     *      @return bpn     double[3][3]   <b>Returned</b> unchanged
-     *      @return along   double         <b>Returned</b> longitude + s' (radians)
-     *      @return xpl     double         <b>Returned</b> polar motion xp wrt local meridian (radians)
-     *      @return ypl     double         <b>Returned</b> polar motion yp wrt local meridian (radians)
-     *      @return sphi    double         <b>Returned</b> sine of geodetic latitude
-     *      @return cphi    double         <b>Returned</b> cosine of geodetic latitude
-     *      @return diurab  double         <b>Returned</b> magnitude of diurnal aberration vector
-     *      @return eral    double         <b>Returned</b> "local" Earth rotation angle (radians)
-     *      @return refa    double         <b>Returned</b> refraction constant A (radians)
-     *      @return refb    double         <b>Returned</b> refraction constant B (radians)
-     *
-     *  Notes:
+     *<!-- Returned:-->
+     *     @return astrom  jauASTROM    <b>Returned</b> star-independent astrometry parameters:
+     *     
+     *<p>Notes:
      * <ol>
      *
      *  <li> sp, the TIO locator s', is a tiny quantity needed only by the
@@ -25955,7 +25992,7 @@ public static class SphericalCoordinateEO {
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
      *
-     *          <p>functions         observer        transformation
+     *          functions         observer        transformation
      *
      *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
      *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
@@ -25985,18 +26022,18 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauAper} astrometry parameters: update ERA
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError 
      * @throws JSOFAIllegalParameter 
      */
     public static void jauApio(double sp, double theta,
             double elong, double phi, double hm, double xp, double yp,
             double refa, double refb,
-            jauASTROM astrom) throws JSOFAIllegalParameter, JSOFAInternalError
+            Astrom astrom) throws JSOFAIllegalParameter, JSOFAInternalError
     {
         double sl, cl, pv[][];
 
@@ -26038,12 +26075,12 @@ public static class SphericalCoordinateEO {
      *  coordinates.  The caller supplies UTC, site coordinates, ambient air
      *  conditions and observing wavelength.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param utc1    double       UTC as a 2-part...
      *     @param utc2    double       ...quasi Julian Date (Notes 1,2)
      *     @param dut1    double       UT1-UTC (seconds)
@@ -26056,31 +26093,16 @@ public static class SphericalCoordinateEO {
      *     @param rh      double       relative humidity at the observer (range 0-1)
      *     @param wl      double       wavelength (micrometers, Note 7)
      *
-     *  Returned:
-     *     @return astrom  jauASTROM*    <b>Returned</b> star-independent astrometry parameters:
-     *      @return pmt     double         <b>Returned</b> unchanged
-     *      @return eb      double[3]      <b>Returned</b> unchanged
-     *      @return eh      double[3]      <b>Returned</b> unchanged
-     *      @return em      double         <b>Returned</b> unchanged
-     *      @return v       double[3]      <b>Returned</b> unchanged
-     *      @return bm1     double         <b>Returned</b> unchanged
-     *      @return bpn     double[3][3]   <b>Returned</b> unchanged
-     *      @return along   double         <b>Returned</b> longitude + s' (radians)
-     *      @return xpl     double         <b>Returned</b> polar motion xp wrt local meridian (radians)
-     *      @return ypl     double         <b>Returned</b> polar motion yp wrt local meridian (radians)
-     *      @return sphi    double         <b>Returned</b> sine of geodetic latitude
-     *      @return cphi    double         <b>Returned</b> cosine of geodetic latitude
-     *      @return diurab  double         <b>Returned</b> magnitude of diurnal aberration vector
-     *      @return eral    double         <b>Returned</b> "local" Earth rotation angle (radians)
-     *      @return refa    double         <b>Returned</b> refraction constant A (radians)
-     *      @return refb    double         <b>Returned</b> refraction constant B (radians)
+     *<!-- Returned:-->
+     *     @param astrom      <b>Returned</b> star-independent astrometry parameters:
+     *     @throws JSOFAInternalError
+     *     @throws JSOFAIllegalParameter
+     *                   
+     *             int          status:   <b>Returned</b> +1 = dubious year (Note 2)
+     *                                  0  =   <b>Returned</b> OK
+     *                                 -1  =   <b>Returned</b> unacceptable date
      *
-     *  @return Returned  (function   <b>Returned</b> value):
-     *            @return int          status:   <b>Returned</b> +1 = dubious year (Note 2)
-     *                                 @return 0  =   <b>Returned</b> OK
-     *                                @return -1  =   <b>Returned</b> unacceptable date
-     *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> utc1+utc2 is quasi Julian Date (see Note 2), apportioned in any
@@ -26159,16 +26181,16 @@ public static class SphericalCoordinateEO {
      *
      *      <p>The various functions support different classes of observer and
      *      portions of the transformation chain:
+     *      <pre>
+     *          functions         observer        transformation
      *
-     *          <p>functions         observer        transformation
-     *
-     *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
+     *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
      *       iauApci iauApci13    terrestrial     ICRS <-> CIRS
      *       iauApco iauApco13    terrestrial     ICRS <-> observed
      *       iauApcs iauApcs13    space           ICRS <-> GCRS
      *       iauAper iauAper13    terrestrial     update Earth rotation
      *       iauApio iauApio13    terrestrial     CIRS <-> observed
-     *
+     *      </pre>
      *      <p>Those with names ending in "13" use contemporary SOFA models to
      *      compute the various ephemerides.  The others accept ephemerides
      *      supplied by the caller.
@@ -26195,18 +26217,18 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauApio} astrometry parameters, CIRS-observed
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError 
      * @throws JSOFAIllegalParameter 
      */
     public static void jauApio13(double utc1, double utc2, double dut1,
             double elong, double phi, double hm, double xp, double yp,
             double phpa, double tc, double rh, double wl,
-            jauASTROM astrom) throws JSOFAIllegalParameter, JSOFAInternalError
+            Astrom astrom) throws JSOFAIllegalParameter, JSOFAInternalError
     {
         double sp, theta;
 
@@ -26237,12 +26259,12 @@ public static class SphericalCoordinateEO {
     /**
      *  Transform ICRS star data, epoch J2000.0, to CIRS.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param rc      double    ICRS right ascension at J2000.0 (radians, Note 1)
      *     @param dc      double    ICRS declination at J2000.0 (radians, Note 1)
      *     @param pr      double    RA proper motion (radians/year; Note 2)
@@ -26252,11 +26274,11 @@ public static class SphericalCoordinateEO {
      *     @param date1   double    TDB as a 2-part...
      *     @param date2   double    ...Julian Date (Note 3)
      *
-     *  Returned:
-     *     @return ri,di   double*    <b>Returned</b> CIRS geocentric RA,Dec (radians)
-     *     @return eo      double*    <b>Returned</b> equation of the origins (ERA-GST, Note 5)
+     *<!-- Returned:-->
+     *     @return    double*    <b>Returned</b> CIRS geocentric RA,Dec (radians)
+     *        eo      double*    <b>Returned</b> equation of the origins (ERA-GST, Note 5)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> Star data for an epoch other than J2000.0 (for example from the
@@ -26270,9 +26292,9 @@ public static class SphericalCoordinateEO {
      *     JD(TDB)=2450123.8g could be expressed in any of these ways, among
      *     others:
      *
-     *            <p>date1          date2
+     *            date1          date2
      *
-     *         <p>2450123.8g           0.0       (JD method)
+     *         2450123.8g           0.0       (JD method)
      *         2451545.0       -1421.3       (J2000 method)
      *         2400000.5       50123.2       (MJD method)
      *         2450123.5           0.2       (date & time method)
@@ -26313,18 +26335,18 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauAtciq} quick ICRS to CIRS
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static SphericalCoordinateEO jauAtci13(double rc, double dc,
             double pr, double pd, double px, double rv,
             double date1, double date2)
     {
         /* Star-independent astrometry parameters */
-        jauASTROM astrom = new jauASTROM();
+        Astrom astrom = new Astrom();
 
 
         /* The transformation parameters. */
@@ -26351,39 +26373,23 @@ public static class SphericalCoordinateEO {
      *  If the parallax and proper motions are zero the iauAtciqz function
      *  can be used instead.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param rc,dc   double      ICRS RA,Dec at J2000.0 (radians)
      *     @param pr      double      RA proper motion (radians/year; Note 3)
      *     @param pd      double      Dec proper motion (radians/year)
      *     @param px      double      parallax (arcsec)
      *     @param rv      double      radial velocity (km/s, +ve if receding)
-     *     @param astrom  jauASTROM*  star-independent astrometry parameters:
-     *      @param pmt     double        PM time interval (SSB, Julian years)
-     *      @param eb      double[3]     SSB to observer (vector, au)
-     *      @param eh      double[3]     Sun to observer (unit vector)
-     *      @param em      double        distance from Sun to observer (au)
-     *      @param v       double[3]     barycentric observer velocity (vector, c)
-     *      @param bm1     double        sqrt(1-|v|^2): reciprocal of Lorenz factor
-     *      @param bpn     double[3][3]  bias-precession-nutation matrix
-     *      @param along   double        longitude + s' (radians)
-     *      @param xpl     double        polar motion xp wrt local meridian (radians)
-     *      @param ypl     double        polar motion yp wrt local meridian (radians)
-     *      @param sphi    double        sine of geodetic latitude
-     *      @param cphi    double        cosine of geodetic latitude
-     *      @param diurab  double        magnitude of diurnal aberration vector
-     *      @param eral    double        "local" Earth rotation angle (radians)
-     *      @param refa    double        refraction constant A (radians)
-     *      @param refb    double        refraction constant B (radians)
+     *     @param astrom    star-independent astrometry parameters:
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return     double      <b>Returned</b> CIRS RA,Dec (radians)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> All the vectors are with respect to BCRS axes.
@@ -26405,15 +26411,15 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static SphericalCoordinate jauAtciq(double rc, double dc,
             double pr, double pd, double px, double rv,
-            jauASTROM astrom)
+            Astrom astrom)
     {
         double pco[], pnat[], ppr[], pi[], w;
 
@@ -26456,44 +26462,25 @@ public static class SphericalCoordinateEO {
      *  parallax and proper motions are zero, the iauAtciqz function can be
      *  used.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param rc,dc   double        ICRS RA,Dec at J2000.0 (radians)
      *     @param pr      double        RA proper motion (radians/year; Note 3)
      *     @param pd      double        Dec proper motion (radians/year)
      *     @param px      double        parallax (arcsec)
      *     @param rv      double        radial velocity (km/s, +ve if receding)
-     *     @param astrom  jauASTROM*    star-independent astrometry parameters:
-     *      @param pmt     double        PM time interval (SSB, Julian years)
-     *      @param eb      double[3]     SSB to observer (vector, au)
-     *      @param eh      double[3]     Sun to observer (unit vector)
-     *      @param em      double        distance from Sun to observer (au)
-     *      @param v       double[3]     barycentric observer velocity (vector, c)
-     *      @param bm1     double        sqrt(1-|v|^2): reciprocal of Lorenz factor
-     *      @param bpn     double[3][3]  bias-precession-nutation matrix
-     *      @param along   double        longitude + s' (radians)
-     *      @param xpl     double        polar motion xp wrt local meridian (radians)
-     *      @param ypl     double        polar motion yp wrt local meridian (radians)
-     *      @param sphi    double        sine of geodetic latitude
-     *      @param cphi    double        cosine of geodetic latitude
-     *      @param diurab  double        magnitude of diurnal aberration vector
-     *      @param eral    double        "local" Earth rotation angle (radians)
-     *      @param refa    double        refraction constant A (radians)
-     *      @param refb    double        refraction constant B (radians)
+     *     @param astrom      star-independent astrometry parameters:
      *      @param n      int            number of bodies (Note 3)
      *      @param b      jauLDBODY[n]  data for each of the n bodies (Notes 3,4):
-     *       @param bm     double         mass of the body (solar masses, Note 5)
-     *       @param dl     double         deflection limiter (Note 6)
-     *       @param pv     [2][3]         barycentric PV of the body (au, au/day)
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return ri,di    double      <b>Returned</b> CIRS RA,Dec (radians)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> Star data for an epoch other than J2000.0 (for example from the
@@ -26520,13 +26507,13 @@ public static class SphericalCoordinateEO {
      *     threshold, the deflection is artificially reduced, reaching zero
      *     for phi = 0.   Example values suitable for a terrestrial
      *     observer, together with masses, are as follows:
+     *     <pre>
+     *        body i     b[i].bm        b[i].dl
      *
-     *        <p>body i     b[i].bm        b[i].dl
-     *
-     *        <p>Sun        1.0            6e-6
+     *        Sun        1.0            6e-6
      *        Jupiter    0.00095435     3e-9
      *        Saturn     0.00028574     3e-10
-     *
+     *     </pre>
      *  <li> For efficiency, validation of the contents of the b array is
      *     omitted.  The supplied masses must be greater than zero, the
      *     position and velocity vectors must be right, and the deflection
@@ -26543,15 +26530,15 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static SphericalCoordinate jauAtciqn(double rc, double dc, double pr, double pd,
-            double px, double rv, jauASTROM astrom,
-            int n, jauLDBODY b[])
+            double px, double rv, Astrom astrom,
+            int n, Ldbody b[])
     {
         double pco[], pnat[], ppr[] = new double[3], pi[] = new double[3], w;
 
@@ -26591,39 +26578,23 @@ public static class SphericalCoordinateEO {
      *  The corresponding function for the case of non-zero parallax and
      *  proper motion is iauAtciq.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param rc,dc   double      ICRS astrometric RA,Dec (radians)
-     *     @param astrom  jauASTROM*  star-independent astrometry parameters:
-     *      @param pmt     double        PM time interval (SSB, Julian years)
-     *      @param eb      double[3]     SSB to observer (vector, au)
-     *      @param eh      double[3]     Sun to observer (unit vector)
-     *      @param em      double        distance from Sun to observer (au)
-     *      @param v       double[3]     barycentric observer velocity (vector, c)
-     *      @param bm1     double        sqrt(1-|v|^2): reciprocal of Lorenz factor
-     *      @param bpn     double[3][3]  bias-precession-nutation matrix
-     *      @param along   double        longitude + s' (radians)
-     *      @param xpl     double        polar motion xp wrt local meridian (radians)
-     *      @param ypl     double        polar motion yp wrt local meridian (radians)
-     *      @param sphi    double        sine of geodetic latitude
-     *      @param cphi    double        cosine of geodetic latitude
-     *      @param diurab  double        magnitude of diurnal aberration vector
-     *      @param eral    double        "local" Earth rotation angle (radians)
-     *      @param refa    double        refraction constant A (radians)
-     *      @param refb    double        refraction constant B (radians)
+     *     @param astrom    star-independent astrometry parameters:
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return ri,di   double       <b>Returned</b> CIRS RA,Dec (radians)
      *
      *  Note:
      *
      *     @return All  the   <b>Returned</b> vectors are with respect to BCRS axes.
      *
-     *  References:
+     *<p>References:
      * <ul>
      *
      * <li> Urban, S. & Seidelmann, P. K. (eds), Explanatory Supplement to
@@ -26644,13 +26615,13 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauAnp} normalize angle into range +/- pi
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
-    public static SphericalCoordinate jauAtciqz(double rc, double dc, jauASTROM astrom)
+    public static SphericalCoordinate jauAtciqz(double rc, double dc, Astrom astrom)
     {
         double pco[], pnat[], ppr[] = new double[3], pi[] , w;
 
@@ -26684,12 +26655,12 @@ public static class SphericalCoordinateEO {
      *  SOFA models are used for the Earth ephemeris, bias-precession-
      *  nutation, Earth orientation and refraction.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param rc,dc   double    ICRS right ascension at J2000.0 (radians, Note 1)
      *     @param pr      double    RA proper motion (radians/year; Note 2)
      *     @param pd      double    Dec proper motion (radians/year)
@@ -26707,20 +26678,21 @@ public static class SphericalCoordinateEO {
      *     @param rh      double    relative humidity at the observer (range 0-1)
      *     @param wl      double    wavelength (micrometers, Note 9)
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return aob     double*    <b>Returned</b> observed azimuth (radians: N=0,E=90)
-     *     @return zob     double*    <b>Returned</b> observed zenith distance (radians)
-     *     @return hob     double*    <b>Returned</b> observed hour angle (radians)
-     *     @return dob     double*    <b>Returned</b> observed declination (radians)
-     *     @return rob     double*    <b>Returned</b> observed right ascension (CIO-based, radians)
-     *     @return eo      double*    <b>Returned</b> equation of the origins (ERA-GST)
+     *             zob     double*    <b>Returned</b> observed zenith distance (radians)
+     *             hob     double*    <b>Returned</b> observed hour angle (radians)
+     *             dob     double*    <b>Returned</b> observed declination (radians)
+     *             rob     double*    <b>Returned</b> observed right ascension (CIO-based, radians)
+     *             eo      double*    <b>Returned</b> equation of the origins (ERA-GST)
      *
-     *  @return Returned  (function   <b>Returned</b> value):
-     *            @return int       status:   <b>Returned</b> +1 = dubious year (Note 4)
-     *                              @return 0  =   <b>Returned</b> OK
-     *                             @return -1  =   <b>Returned</b> unacceptable date
+     *  @throws JSOFAInternalError
+     *  @throws JSOFAIllegalParameter
+     *             int       status:   <b>Returned</b> +1 = dubious year (Note 4)
+     *                               0  =   <b>Returned</b> OK
+     *                              -1  =   <b>Returned</b> unacceptable date
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> Star data for an epoch other than J2000.0 (for example from the
@@ -26826,11 +26798,11 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauAtioq} quick ICRS to observed
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError 
      * @throws JSOFAIllegalParameter 
      */
@@ -26841,7 +26813,7 @@ public static class SphericalCoordinateEO {
             double phpa, double tc, double rh, double wl) throws JSOFAIllegalParameter, JSOFAInternalError
     {
         int j;
-        jauASTROM astrom = new jauASTROM();
+        Astrom astrom = new Astrom();
 
 
         /* Star-independent astrometry parameters. */
@@ -26865,21 +26837,21 @@ public static class SphericalCoordinateEO {
     /**
      *  Transform star RA,Dec from geocentric CIRS to ICRS astrometric.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param ri,di   double   CIRS geocentric RA,Dec (radians)
      *     @param date1   double   TDB as a 2-part...
      *     @param date2   double   ...Julian Date (Note 1)
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return rc,dc   double    <b>Returned</b> ICRS astrometric RA,Dec (radians)
-     *     @return eo      double    <b>Returned</b> equation of the origins (ERA-GST, Note 4)
+     *      eo      double    <b>Returned</b> equation of the origins (ERA-GST, Note 4)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
@@ -26887,9 +26859,9 @@ public static class SphericalCoordinateEO {
      *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
      *     others:
      *
-     *            <p>date1          date2
+     *            date1          date2
      *
-     *         <p>2450123.7           0.0       (JD method)
+     *         2450123.7           0.0       (JD method)
      *         2451545.0       -1421.3       (J2000 method)
      *         2400000.5       50123.2       (MJD method)
      *         2450123.5           0.2       (date & time method)
@@ -26936,16 +26908,16 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauAticq} quick CIRS to ICRS astrometric
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static SphericalCoordinateEO jauAtic13(double ri, double di, double date1, double date2)
     {
         /* Star-independent astrometry parameters */
-        jauASTROM astrom = new jauASTROM();
+        Astrom astrom = new Astrom();
 
 
         /* Star-independent astrometry parameters. */
@@ -26970,35 +26942,19 @@ public static class SphericalCoordinateEO {
      *  calling one of the functions iauApci[13], iauApcg[13], iauApco[13]
      *  or iauApcs[13].
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param ri,di   double      CIRS RA,Dec (radians)
-     *     @param astrom  jauASTROM*  star-independent astrometry parameters:
-     *      @param pmt     double        PM time interval (SSB, Julian years)
-     *      @param eb      double[3]     SSB to observer (vector, au)
-     *      @param eh      double[3]     Sun to observer (unit vector)
-     *      @param em      double        distance from Sun to observer (au)
-     *      @param v       double[3]     barycentric observer velocity (vector, c)
-     *      @param bm1     double        sqrt(1-|v|^2): reciprocal of Lorenz factor
-     *      @param bpn     double[3][3]  bias-precession-nutation matrix
-     *      @param along   double        longitude + s' (radians)
-     *      @param xpl     double        polar motion xp wrt local meridian (radians)
-     *      @param ypl     double        polar motion yp wrt local meridian (radians)
-     *      @param sphi    double        sine of geodetic latitude
-     *      @param cphi    double        cosine of geodetic latitude
-     *      @param diurab  double        magnitude of diurnal aberration vector
-     *      @param eral    double        "local" Earth rotation angle (radians)
-     *      @param refa    double        refraction constant A (radians)
-     *      @param refb    double        refraction constant B (radians)
+     *     @param astrom    star-independent astrometry parameters:
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return rc,dc   double       <b>Returned</b> ICRS astrometric RA,Dec (radians)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> Only the Sun is taken into account in the light deflection
@@ -27022,13 +26978,13 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauAnp} normalize angle into range +/- pi
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
-    public static SphericalCoordinate  jauAticq(double ri, double di, jauASTROM astrom )
+    public static SphericalCoordinate  jauAticq(double ri, double di, Astrom astrom )
     {
         int j, i;
         double pi[] , ppr[], pnat[] = new double[3], pco[] = new double[3], w, d[] = new double[3], 
@@ -27120,40 +27076,19 @@ public static class SphericalCoordinateEO {
      *  If the only light-deflecting body to be taken into account is the
      *  Sun, the iauAticq function can be used instead.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param ri,di   double       CIRS RA,Dec (radians)
-     *     @param astrom  jauASTROM*   star-independent astrometry parameters:
-     *      @param pmt     double        PM time interval (SSB, Julian years)
-     *      @param eb      double[3]     SSB to observer (vector, au)
-     *      @param eh      double[3]     Sun to observer (unit vector)
-     *      @param em      double        distance from Sun to observer (au)
-     *      @param v       double[3]     barycentric observer velocity (vector, c)
-     *      @param bm1     double        sqrt(1-|v|^2): reciprocal of Lorenz factor
-     *      @param bpn     double[3][3]  bias-precession-nutation matrix
-     *      @param along   double        longitude + s' (radians)
-     *      @param xpl     double        polar motion xp wrt local meridian (radians)
-     *      @param ypl     double        polar motion yp wrt local meridian (radians)
-     *      @param sphi    double        sine of geodetic latitude
-     *      @param cphi    double        cosine of geodetic latitude
-     *      @param diurab  double        magnitude of diurnal aberration vector
-     *      @param eral    double        "local" Earth rotation angle (radians)
-     *      @param refa    double        refraction constant A (radians)
-     *      @param refb    double        refraction constant B (radians)
-     *      @param n      int            number of bodies (Note 3)
-     *      @param b      jauLDBODY[n]  data for each of the n bodies (Notes 3,4):
-     *       @param bm     double        mass of the body (solar masses, Note 5)
-     *       @param dl     double        deflection limiter (Note 6)
-     *       @param pv     [2][3]        barycentric PV of the body (au, au/day)
+     *     @param astrom     star-independent astrometry parameters:
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return rc,dc   double       <b>Returned</b> ICRS astrometric RA,Dec (radians)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> Iterative techniques are used for the aberration and light
@@ -27206,14 +27141,14 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauAnp} normalize angle into range +/- pi
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
-    public static SphericalCoordinate jauAticqn(double ri, double di, jauASTROM astrom,
-            int n, jauLDBODY b[])
+    public static SphericalCoordinate jauAticqn(double ri, double di, Astrom astrom,
+            int n, Ldbody b[])
     {
         int j, i;
         double pi[], ppr[], pnat[] = new double[3], pco[] = new double[3], w, d[] = new double[3], before[] = new double[3], r2, r,
@@ -27291,25 +27226,35 @@ public static class SphericalCoordinateEO {
     }
     
     /**
-     *  .
+     * Observed Position.
+     *  "Observed" Az,ZD means the position that would be seen by a
+     *      perfect geodetically aligned theodolite.  (Zenith distance is
+     *      used rather than altitude in order to reflect the fact that no
+     *      allowance is made for depression of the horizon.)  This is
+     *      related to the observed HA,Dec via the standard rotation, using
+     *      the geodetic latitude (corrected for polar motion), while the
+     *      observed HA and RA are related simply through the Earth rotation
+     *      angle and the site longitude.  "Observed" RA,Dec or HA,Dec thus
+     *      means the position that would be seen by a perfect equatorial
+     *      with its polar axis aligned to the Earth's axis of rotation..
      * @author Paul Harrison (paul.harrison@manchester.ac.uk) 28 Mar 2014
      * @version $Revision$ $date$
      */
     public static class ObservedPosition{
         /**    observed azimuth (radians: N=0,E=90) */
-        double   aob;
+        public double   aob;
 
         /**    observed zenith distance (radians)   */
-        double   zob;
+        public double   zob;
 
         /**    observed Hour Angle (radians)        */
-        double   hob;
+        public double   hob;
 
         /**    observed Declination (radians)       */
-        double   dob;
+        public double   dob;
 
         /**    observed Right Ascension (radians)   */
-        double   rob;
+        public double   rob;
         public ObservedPosition(double   aob,
                 double   zob,
                 double   hob,
@@ -27324,11 +27269,16 @@ public static class SphericalCoordinateEO {
         }
     }
     
+    /**
+     * Observed position with the equation of the origins.
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 29 Mar 2014
+     * @version $Revision$ $date$
+     */
     public static class ObservedPositionEO {
        /**
-        * observed position
+        * observed position.
         */
-        ObservedPosition op;
+        public ObservedPosition op;
         /**
          * The equation of the origins.    The equation of the origins is the distance between the true
          *  equinox and the celestial intermediate origin and, equivalently,
@@ -27337,7 +27287,7 @@ public static class SphericalCoordinateEO {
          *  (since J2000.0) in right ascension plus the equation of the
          *  equinoxes (including the small correction terms).   
          */
-        double eo;
+        public double eo;
         /**
          * @param op
          * @param eo
@@ -27356,12 +27306,12 @@ public static class SphericalCoordinateEO {
      *  CIRS RA,Dec to observed place.  The caller supplies UTC, site
      *  coordinates, ambient air conditions and observing wavelength.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param ri      double    CIRS right ascension (CIO-based, radians)
      *     @param di      double    CIRS declination (radians)
      *     @param utc1    double    UTC as a 2-part...
@@ -27376,19 +27326,20 @@ public static class SphericalCoordinateEO {
      *     @param rh      double    relative humidity at the observer (range 0-1)
      *     @param wl      double    wavelength (micrometers, Note 7)
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return aob     double*    <b>Returned</b> observed azimuth (radians: N=0,E=90)
      *             zob     double*    <b>Returned</b> observed zenith distance (radians)
      *             hob     double*    <b>Returned</b> observed hour angle (radians)
      *             dob     double*    <b>Returned</b> observed declination (radians)
      *             rob     double*    <b>Returned</b> observed right ascension (CIO-based, radians)
      *
-     *  @Throws Returned  (function   <b>Returned</b> value):
-     *            @return int       status:   <b>Returned</b> +1 = dubious year (Note 2)
-     *                              @return 0  =   <b>Returned</b> OK
-     *                             @return -1  =   <b>Returned</b> unacceptable date
+     *  @throws JSOFAInternalError
+     *  @throws JSOFAIllegalParameter
+     *             int       status:   <b>Returned</b> +1 = dubious year (Note 2)
+     *                              0  =   <b>Returned</b> OK
+     *                              -1  =   <b>Returned</b> unacceptable date
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> utc1+utc2 is quasi Julian Date (see Note 2), apportioned in any
@@ -27485,11 +27436,11 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauAtioq} quick ICRS to observed
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError 
      * @throws JSOFAIllegalParameter 
      */
@@ -27499,7 +27450,7 @@ public static class SphericalCoordinateEO {
             double phpa, double tc, double rh, double wl) throws JSOFAIllegalParameter, JSOFAInternalError
     {
         int j;
-        jauASTROM astrom = new jauASTROM();
+        Astrom astrom = new Astrom();
 
 
         /* Star-independent astrometry parameters for CIRS->observed. */
@@ -27522,40 +27473,24 @@ public static class SphericalCoordinateEO {
      *  The star-independent astrometry parameters can be obtained by
      *  calling iauApio[13] or iauApco[13].
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param ri      double      CIRS right ascension
      *     @param di      double      CIRS declination
-     *     @param astrom  jauASTROM*  star-independent astrometry parameters:
-     *      @param pmt     double        PM time interval (SSB, Julian years)
-     *      @param eb      double[3]     SSB to observer (vector, au)
-     *      @param eh      double[3]     Sun to observer (unit vector)
-     *      @param em      double        distance from Sun to observer (au)
-     *      @param v       double[3]     barycentric observer velocity (vector, c)
-     *      @param bm1     double        sqrt(1-|v|^2): reciprocal of Lorenz factor
-     *      @param bpn     double[3][3]  bias-precession-nutation matrix
-     *      @param along   double        longitude + s' (radians)
-     *      @param xpl     double        polar motion xp wrt local meridian (radians)
-     *      @param ypl     double        polar motion yp wrt local meridian (radians)
-     *      @param sphi    double        sine of geodetic latitude
-     *      @param cphi    double        cosine of geodetic latitude
-     *      @param diurab  double        magnitude of diurnal aberration vector
-     *      @param eral    double        "local" Earth rotation angle (radians)
-     *      @param refa    double        refraction constant A (radians)
-     *      @param refb    double        refraction constant B (radians)
+     *     @param astrom    star-independent astrometry parameters:
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return aob     double*      <b>Returned</b> observed azimuth (radians: N=0,E=90)
-     *     @return zob     double*      <b>Returned</b> observed zenith distance (radians)
-     *     @return hob     double*      <b>Returned</b> observed hour angle (radians)
-     *     @return dob     double*      <b>Returned</b> observed declination (radians)
-     *     @return rob     double*      <b>Returned</b> observed right ascension (CIO-based, radians)
+     *             zob     double*      <b>Returned</b> observed zenith distance (radians)
+     *             hob     double*      <b>Returned</b> observed hour angle (radians)
+     *             dob     double*      <b>Returned</b> observed declination (radians)
+     *             rob     double*      <b>Returned</b> observed right ascension (CIO-based, radians)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> This function returns zenith distance rather than altitude in
@@ -27611,13 +27546,13 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
      *
      * </ul>
-     *  This revision:   2013 December 5
+     *<p>This revision:   2013 December 5
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
-    public static ObservedPosition jauAtioq(double ri, double di, jauASTROM astrom)
+    public static ObservedPosition jauAtioq(double ri, double di, Astrom astrom)
     {
         /* Minimum cos(alt) and sin(alt) for refraction purposes */
         final double CELMIN = 1e-6;
@@ -27709,12 +27644,12 @@ public static class SphericalCoordinateEO {
      *  The caller supplies UTC, site coordinates, ambient air conditions
      *  and observing wavelength.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param type    char[]    type of coordinates - "R", "H" or "A" (Notes 1,2)
      *     @param ob1     double    observed Az, HA or RA (radians; Az is N=0,E=90)
      *     @param ob2     double    observed ZD or Dec (radians)
@@ -27730,15 +27665,16 @@ public static class SphericalCoordinateEO {
      *     @param rh      double    relative humidity at the observer (range 0-1)
      *     @param wl      double    wavelength (micrometers, Note 9)
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return rc,dc   double     <b>Returned</b> ICRS astrometric RA,Dec (radians)
      *
-     *  @return Returned  (function   <b>Returned</b> value):
-     *            @return int       status:   <b>Returned</b> +1 = dubious year (Note 4)
-     *                              @return 0  =   <b>Returned</b> OK
-     *                             @return -1  =   <b>Returned</b> unacceptable date
+     *  @throws JSOFAInternalError
+     *  @throws JSOFAIllegalParameter
+     *                   int       status:   <b>Returned</b> +1 = dubious year (Note 4)
+     *                               0  =   <b>Returned</b> OK
+     *                              -1  =   <b>Returned</b> unacceptable date
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> "Observed" Az,ZD means the position that would be seen by a
@@ -27845,11 +27781,11 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauAticq} quick CIRS to ICRS
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError 
      * @throws JSOFAIllegalParameter 
      */
@@ -27859,7 +27795,7 @@ public static class SphericalCoordinateEO {
             double phpa, double tc, double rh, double wl
             ) throws JSOFAIllegalParameter, JSOFAInternalError
     {
-        jauASTROM astrom = new jauASTROM();
+        Astrom astrom = new Astrom();
         double eo;
 
         /* Star-independent astrometry parameters. */
@@ -27883,12 +27819,12 @@ public static class SphericalCoordinateEO {
      *  Observed place to CIRS.  The caller supplies UTC, site coordinates,
      *  ambient air conditions and observing wavelength.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param type    char[]    type of coordinates - "R", "H" or "A" (Notes 1,2)
      *     @param ob1     double    observed Az, HA or RA (radians; Az is N=0,E=90)
      *     @param ob2     double    observed ZD or Dec (radians)
@@ -27904,16 +27840,17 @@ public static class SphericalCoordinateEO {
      *     @param rh      double    relative humidity at the observer (range 0-1)
      *     @param wl      double    wavelength (micrometers, Note 9)
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return ri      double*    <b>Returned</b> CIRS right ascension (CIO-based, radians)
-     *     @return di      double*    <b>Returned</b> CIRS declination (radians)
+     *             di      double*    <b>Returned</b> CIRS declination (radians)
      *
-     *  @return Returned  (function   <b>Returned</b> value):
-     *            @return int       status:   <b>Returned</b> +1 = dubious year (Note 2)
-     *                              @return 0  =   <b>Returned</b> OK
-     *                             @return -1  =   <b>Returned</b> unacceptable date
+     *  @throws JSOFAInternalError
+     *  @throws JSOFAIllegalParameter
+     *             int       status:   <b>Returned</b> +1 = dubious year (Note 2)
+     *                               0  =   <b>Returned</b> OK
+     *                              -1  =   <b>Returned</b> unacceptable date
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> "Observed" Az,ZD means the position that would be seen by a
@@ -28019,11 +27956,11 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauAtoiq} quick observed to CIRS
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError 
      * @throws JSOFAIllegalParameter 
      */
@@ -28033,7 +27970,7 @@ public static class SphericalCoordinateEO {
             double phpa, double tc, double rh, double wl
             ) throws JSOFAIllegalParameter, JSOFAInternalError
     {
-        jauASTROM astrom = new jauASTROM();
+        Astrom astrom = new Astrom();
 
 
         /* Star-independent astrometry parameters for CIRS->observed. */
@@ -28058,35 +27995,19 @@ public static class SphericalCoordinateEO {
      *  The star-independent astrometry parameters can be obtained by
      *  calling iauApio[13] or iauApco[13].
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param type    char[]      type of coordinates: "R", "H" or "A" (Note 1)
      *     @param ob1     double      observed Az, HA or RA (radians; Az is N=0,E=90)
      *     @param ob2     double      observed ZD or Dec (radians)
-     *     @param astrom  jauASTROM*  star-independent astrometry parameters:
-     *      @param pmt     double        PM time interval (SSB, Julian years)
-     *      @param eb      double[3]     SSB to observer (vector, au)
-     *      @param eh      double[3]     Sun to observer (unit vector)
-     *      @param em      double        distance from Sun to observer (au)
-     *      @param v       double[3]     barycentric observer velocity (vector, c)
-     *      @param bm1     double        sqrt(1-|v|^2): reciprocal of Lorenz factor
-     *      @param bpn     double[3][3]  bias-precession-nutation matrix
-     *      @param along   double        longitude + s' (radians)
-     *      @param xpl     double        polar motion xp wrt local meridian (radians)
-     *      @param ypl     double        polar motion yp wrt local meridian (radians)
-     *      @param sphi    double        sine of geodetic latitude
-     *      @param cphi    double        cosine of geodetic latitude
-     *      @param diurab  double        magnitude of diurnal aberration vector
-     *      @param eral    double        "local" Earth rotation angle (radians)
-     *      @param refa    double        refraction constant A (radians)
-     *      @param refb    double        refraction constant B (radians)
+     *     @param astrom    star-independent astrometry parameters:
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return ri      double*      <b>Returned</b> CIRS right ascension (CIO-based, radians)
-     *     @return di      double*      <b>Returned</b> CIRS declination (radians)
+     *             di      double*      <b>Returned</b> CIRS declination (radians)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> "Observed" Az,El means the position that would be seen by a
@@ -28136,14 +28057,14 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauAnp} normalize angle into range 0 to 2pi
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static SphericalCoordinate jauAtoiq(String type,
-            double ob1, double ob2, jauASTROM astrom
+            double ob1, double ob2, Astrom astrom
             )
     {
         char c;
@@ -28257,12 +28178,12 @@ public static class SphericalCoordinateEO {
      *  Apply light deflection by a solar-system body, as part of
      *  transforming coordinate direction into natural direction.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param bm      double      mass of the gravitating body (solar masses)
      *     @param p       double[3]   direction from observer to source (unit vector)
      *     @param q       double[3]   direction from body to source (unit vector)
@@ -28270,10 +28191,10 @@ public static class SphericalCoordinateEO {
      *     @param em      double      distance from body to observer (au)
      *     @param dlim    double      deflection limiter (Note 4)
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return p1      double[3]    <b>Returned</b> observer to deflected source (unit vector)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The algorithm is based on Expr. (70) in Klioner (2003) and
@@ -28309,7 +28230,7 @@ public static class SphericalCoordinateEO {
      *     positive.
      *
      * </ol>
-     *  References:
+     *<p>References:
      * <ul>
      *
      * <li> Urban, S. & Seidelmann, P. K. (eds), Explanatory Supplement to
@@ -28326,11 +28247,11 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauPxp} vector product of two p-vectors
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static double[] jauLd(double bm, double p[], double q[], double e[],
             double em, double dlim)
@@ -28372,12 +28293,12 @@ public static class SphericalCoordinateEO {
      *  For a star, apply light deflection by multiple solar-system bodies,
      *  as part of transforming coordinate direction into natural direction.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     n    int           number of bodies (note 1)
      *     b    jauLDBODY[n]  data for each of the n bodies (Notes 1,2):
      *      bm   double         mass of the body (solar masses, Note 3)
@@ -28386,7 +28307,7 @@ public static class SphericalCoordinateEO {
      *     ob   double[3]     barycentric position of the observer (au)
      *     sc   double[3]     observer to star coord direction (unit vector)
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     sn    double[3]      observer to deflected star (unit vector)
      *
      *  1) The array b contains n entries, one for each body to be
@@ -28445,13 +28366,13 @@ public static class SphericalCoordinateEO {
      *     iauPn        decompose p-vector into modulus and direction
      *     iauLd        light deflection by a solar-system body
      *
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
-    public static double[] jauLdn(int n, jauLDBODY b[], double ob[], double sc[])
+    public static double[] jauLdn(int n, Ldbody b[], double ob[], double sc[])
     {
         /* Light time for 1 AU (days) */
         final double CR = AULT/DAYSEC;
@@ -28496,20 +28417,20 @@ public static class SphericalCoordinateEO {
     /**
      *  Light deflection by the Sun.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param p       double[3]   direction from observer to source (unit vector)
      *     @param e       double[3]   direction from Sun to observer (unit vector)
      *     @param em      double      distance from Sun to observer (au)
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return p1      double[3]    <b>Returned</b> observer to deflected source (unit vector)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The source is presumed to be sufficiently distant that its
@@ -28529,11 +28450,11 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauLd} light deflection by a solar-system body
      *
      * </ul>
-     *  This revision:   2013 August 30
+     *<p>This revision:   2013 August 30
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static double[] jauLdsun(double p[], double e[], double em)
     {
@@ -28545,12 +28466,12 @@ public static class SphericalCoordinateEO {
     /**
      *  Proper motion and parallax.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param rc,dc   double      ICRS RA,Dec at catalog epoch (radians)
      *     @param pr      double      RA proper motion (radians/year; Note 1)
      *     @param pd      double      Dec proper motion (radians/year)
@@ -28559,10 +28480,10 @@ public static class SphericalCoordinateEO {
      *     @param pmt     double      proper motion time interval (SSB, Julian years)
      *     @param pob     double[3]   SSB to observer vector (au)
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return pco     double[3]    <b>Returned</b> coordinate direction (BCRS unit vector)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The proper motion in RA is dRA/dt rather than cos(Dec)*dRA/dt.
@@ -28576,7 +28497,7 @@ public static class SphericalCoordinateEO {
      *     direction of the star at the catalog epoch.
      *
      * </ol>
-     *  References:
+     *<p>References:
      * <ul>
      *
      * <li> 1984 Astronomical Almanac, pp B39-B41.
@@ -28592,11 +28513,11 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauPn} decompose p-vector into modulus and direction
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static double[] jauPmpx(double rc, double dc, double pr, double pd,
             double px, double rv, double pmt, double pob[]
@@ -28648,12 +28569,12 @@ public static class SphericalCoordinateEO {
      *  Star proper motion:  update star catalog data for space motion, with
      *  special handling to handle the zero parallax case.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param ra1     double       right ascension (radians), before
      *     @param dec1    double       declination (radians), before
      *     @param pmr1    double       RA proper motion (radians/year), before
@@ -28665,24 +28586,25 @@ public static class SphericalCoordinateEO {
      *     @param ep2a    double       "after" epoch, part A (Note 1)
      *     @param ep2b    double       "after" epoch, part B (Note 1)
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return ra2     double        <b>Returned</b> right ascension (radians), after
-     *     @return dec2    double        <b>Returned</b> declination (radians), after
-     *     @return pmr2    double        <b>Returned</b> RA proper motion (radians/year), after
-     *     @return pmd2    double        <b>Returned</b> Dec proper motion (radians/year), after
-     *     @return px2     double        <b>Returned</b> parallax (arcseconds), after
-     *     @return rv2     double        <b>Returned</b> radial velocity (km/s, +ve = receding), after
+     *             dec2    double        <b>Returned</b> declination (radians), after
+     *             pmr2    double        <b>Returned</b> RA proper motion (radians/year), after
+     *             pmd2    double        <b>Returned</b> Dec proper motion (radians/year), after
+     *             px2     double        <b>Returned</b> parallax (arcseconds), after
+     *             rv2     double        <b>Returned</b> radial velocity (km/s, +ve = receding), after
      *
-     *  @Throws Returned  (function   <b>Returned</b> value):
+     *  @throws JSOFAInternalError
+@throws JSOFAIllegalParameter
      *            int         status:
-     *                         @return -1  =   <b>Returned</b> system error (should not occur)
-     *                          @return 0  =   <b>Returned</b> no warnings or errors
-     *                          @return 1  =   <b>Returned</b> distance overridden (Note 6)
-     *                          @return 2  =   <b>Returned</b> excessive velocity (Note 7)
-     *                          @return 4  =   <b>Returned</b> solution didn't converge (Note 8)
-     *                       @return else  =   <b>Returned</b> binary logical OR of the above warnings
+     *                         -1  =   <b>Returned</b> system error (should not occur)
+     *                          0  =   <b>Returned</b> no warnings or errors
+     *                          1  =   <b>Returned</b> distance overridden (Note 6)
+     *                          2  =   <b>Returned</b> excessive velocity (Note 7)
+     *                          4  =   <b>Returned</b> solution didn't converge (Note 8)
+     *                        else  =   <b>Returned</b> binary logical OR of the above warnings
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The starting and ending TDB epochs ep1a+ep1b and ep2a+ep2b are
@@ -28692,7 +28614,7 @@ public static class SphericalCoordinateEO {
      *
      *            <p>epNa            epNb
      *
-     *         <p>2450123.7           0.0       (JD method)
+     *         2450123.7           0.0       (JD method)
      *         2451545.0       -1421.3       (J2000 method)
      *         2400000.5       50123.2       (MJD method)
      *         2450123.5           0.2       (date & time method)
@@ -28749,11 +28671,11 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauStarpm} update star catalog data for space motion
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError 
      */
     public static CatalogCoords jauPmsafe(double ra1, double dec1, double pmr1, double pmd1,
@@ -28795,12 +28717,12 @@ public static class SphericalCoordinateEO {
     /**
      *  Position and velocity of a terrestrial observing station.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *     @param elong    double        longitude (radians, east +ve, Note 1)
      *     @param phi      double        latitude (geodetic, radians, Note 1)
      *     @param hm       double        height above ref. ellipsoid (geodetic, m)
@@ -28808,10 +28730,10 @@ public static class SphericalCoordinateEO {
      *     @param sp       double        the TIO locator s' (radians, Note 2)
      *     @param theta    double        Earth rotation angle (radians, Note 3)
      *
-     *  Returned:
+     *<!-- Returned:-->
      *     @return pv       double[2][3]   <b>Returned</b> position/velocity vector (m, m/s, CIRS)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The terrestrial coordinates are with respect to the WGS84
@@ -28839,7 +28761,7 @@ public static class SphericalCoordinateEO {
      *     function, and the result set to zeros.
      *
      * </ol>
-     *  References:
+     *<p>References:
      * <ul>
      *
      * <li> McCarthy, D. D., Petit, G. (eds.), IERS Conventions (2003),
@@ -28857,11 +28779,11 @@ public static class SphericalCoordinateEO {
      *     <li>{@link #jauTrxp} product of transpose of r-matrix and p-vector
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     * @since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError 
      * @throws JSOFAIllegalParameter 
      */
@@ -28933,22 +28855,22 @@ public static class SphericalCoordinateEO {
      *  and dZ is what to add to Z to give the "topocentric" (i.e. in vacuo)
      *  zenith distance.
      *
-     *  This function is derived from the International Astronomical Union's
+     *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
      *
-     *  Status:  support function.
+     *<p>Status:  support function.
      *
-     *  Given:
+     *<!-- Given: -->
      *    @param phpa    double     pressure at the observer (hPa = millibar)
      *    @param tc      double     ambient temperature at the observer (deg C)
      *    @param rh      double     relative humidity at the observer (range 0-1)
      *    @param wl      double     wavelength (micrometers)
      *
-     *  Returned:
+     *<!-- Returned:-->
      *    @return      <b>Returned</b> tan Z coefficient (radians)
      *                 <b>Returned</b> tan^3 Z coefficient (radians)
      *
-     *  Notes:
+     *<p>Notes:
      * <ol>
      *
      *  <li> The model balances speed and accuracy to give good results in
@@ -28994,7 +28916,7 @@ public static class SphericalCoordinateEO {
      *
      *       <p>ZD       raytrace     iauRefco   Saastamoinen
      *
-     *       <p>10         10.27        10.27        10.27
+     *       10         10.27        10.27        10.27
      *       20         21.19        21.20        21.19
      *       30         33.61        33.61        33.60
      *       40         48.82        48.83        48.81
@@ -29049,7 +28971,7 @@ public static class SphericalCoordinateEO {
      *        n-1 and beta are from Green (1987), Equation (4.31).
      *
      * </ol>
-     *  References:
+     *<p>References:
      * <ul>
      *
      * <li> Crane, R.K., Meeks, M.L. (ed), "Refraction Effects in the Neutral
@@ -29073,11 +28995,11 @@ public static class SphericalCoordinateEO {
      * <li> Stone, Ronald C., P.A.S.P. 108, 1051-1058, 1996.
      *
      * </ul>
-     *  This revision:   2013 October 9
+     *<p>This revision:   2013 October 9
      *
-     *  SOFA release 2013-12-02
+     *@since JSOFA release 20131202
      *
-     *  Copyright (C) 2013 IAU SOFA Board.  See notes at end.
+     *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      */
     public static RefCos jauRefco(double phpa, double tc, double rh, double wl )
     {

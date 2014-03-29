@@ -1,24 +1,24 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
-  <modelVersion>4.0.0</modelVersion>
-  <groupId>org.jastronomy</groupId>
-  <artifactId>jsofa</artifactId>
-  <name>JSOFA</name>
-  <packaging>jar</packaging>
-  <version>20131202-rc1</version>
- 
-  <dependencies>
-  	<dependency>
-  		<groupId>junit</groupId>
-  		<artifactId>junit</artifactId>
-  		<version>4.6</version>
-          <scope>test</scope>
-  	</dependency>
-  </dependencies>
-  <!-- was inherited -->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
+>
+   <modelVersion>4.0.0</modelVersion>
+   <groupId>org.jastronomy</groupId>
+   <artifactId>jsofa</artifactId>
+   <name>JSOFA</name>
+   <packaging>jar</packaging>
+   <version>20131202b</version>
+   <dependencies>
+      <dependency>
+         <groupId>junit</groupId>
+         <artifactId>junit</artifactId>
+         <version>4.6</version>
+         <scope>test</scope>
+      </dependency>
+   </dependencies>
+   <!-- was inherited -->
    <url>http://astrogrid.jb.man.ac.uk/jastro/</url>
    <inceptionYear>2010</inceptionYear>
-  
-     <developers>
+   <developers>
       <developer>
          <id>pah</id>
          <name>Paul Harrison</name>
@@ -27,7 +27,7 @@
          <organizationUrl>http://www.jb.man.ac.uk/</organizationUrl>
          <roles>
             <role>Developer</role>
-               <role>Admin</role>
+            <role>Admin</role>
          </roles>
       </developer>
    </developers>
@@ -41,6 +41,7 @@
          </plugin>
          <plugin>
             <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.1</version>
             <configuration>
                <showDeprecation>true</showDeprecation>
                <source>1.7</source>
@@ -50,6 +51,7 @@
          </plugin>
          <plugin>
             <artifactId>maven-surefire-plugin</artifactId>
+            <version>2.17</version>
             <configuration>
                <argLine>-ea</argLine>
                <testFailureIgnore>true</testFailureIgnore>
@@ -58,13 +60,12 @@
                </includes>
             </configuration>
          </plugin>
-        <plugin>
-            <!--
-               make sure that the source jar is created - early in build
-               at verify..
-            -->
+         <plugin>
+            <!-- make sure that the source jar is created - early in build 
+               at verify.. -->
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
+            <version>2.2.1</version>
             <executions>
                <execution>
                   <id>attach-sources</id>
@@ -75,109 +76,131 @@
                </execution>
             </executions>
          </plugin>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>cobertura-maven-plugin</artifactId>
+            <version>2.6</version>
+            <configuration>
+               <instrumentation>
+               </instrumentation>
+            </configuration>
+            <executions>
+               <execution>
+                  <goals>
+                     <goal>clean</goal>
+                  </goals>
+               </execution>
+            </executions>
+         </plugin>
+         
       </plugins>
       <extensions>
-       <!-- Enabling the use of external ssh -->
+         <!-- Enabling the use of external ssh -->
          <extension>
             <groupId>org.apache.maven.wagon</groupId>
             <artifactId>wagon-ssh-external</artifactId>
             <version>2.4</version>
          </extension>
-     
       </extensions>
    </build>
-  <reporting>
-  <plugins>
-        <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-project-info-reports-plugin</artifactId>
-        <version>2.7</version>
-        <reportSets>
-          <reportSet>
-            <reports>
-              <report>index</report>
-              <report>dependencies</report>
-              <report>project-team</report>
-              <!-- 
-              <report>mailing-list</report>
-              <report>cim</report>
-              <report>issue-tracking</report>
-              <report>scm</report>
-               -->
-              <report>license</report>
-              <report>summary</report>
-            </reports>
-          </reportSet>
-        </reportSets>
-      </plugin>
-  
-     <plugin>
-         <artifactId>maven-surefire-report-plugin</artifactId>
-         <configuration>
-           <testFailureIgnore>true</testFailureIgnore>
-         </configuration>
+   <reporting>
+      <plugins>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-project-info-reports-plugin</artifactId>
+            <version>2.7</version>
+            <reportSets>
+               <reportSet>
+                  <reports>
+                     <report>index</report>
+                     <report>dependencies</report>
+                     <report>project-team</report>
+                     <!-- <report>mailing-list</report> <report>cim</report> 
+                        <report>issue-tracking</report> <report>scm</report> -->
+                     <report>license</report>
+                     <report>summary</report>
+                  </reports>
+               </reportSet>
+            </reportSets>
          </plugin>
          <plugin>
-         <artifactId>maven-javadoc-plugin</artifactId>
-         </plugin>
-       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jxr-plugin</artifactId>
-        <configuration>
-            <linkJavadoc>true</linkJavadoc>
-        </configuration>
-         <reportSets>
-            <reportSet>
-               <reports>
-              <report>jxr</report>
-              <report>test-jxr</report>
-            </reports>
-           </reportSet>
-          </reportSets>
-        
-      </plugin>
-        <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>taglist-maven-plugin</artifactId>
+            <artifactId>maven-surefire-report-plugin</artifactId>
+            <version>2.13</version>
             <configuration>
-            <tags>
-            <tag>FIXME</tag>
-            <tag>TODO</tag>
-            <tag>@todo</tag>
-            <tag>IMPL</tag>
-            <tag>@deprecated</tag>
-            </tags>
+               <testFailureIgnore>true</testFailureIgnore>
             </configuration>
          </plugin>
-       <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>cobertura-maven-plugin</artifactId>
-        <version>2.6</version>
-      </plugin>
-  </plugins>
-  
- </reporting>
- <distributionManagement>
-     <downloadUrl>http://astrogrid.jb.man.ac.uk/jsofa/</downloadUrl>
-     <site>
-        <id>jsofa</id>
-        <name>JSOFA Site</name>
-        <url>scpexe://astrogrid.jb.man.ac.uk/local/www/root/html/jsofa/</url>
-     </site>
-     <repository>
-        <id>jastro</id>
-        <name>Jastronomy Repository</name>
-        <url>scpexe://astrogrid.jb.man.ac.uk/local/www/root/html/maven/</url>
-        
-     </repository>
- </distributionManagement>
-  
-  
- <organization>
-    <name>JBCA, University of Manchester</name>
-    <url>http://www.jb.man.ac.uk/</url>
- </organization>
- <description>A pure Java translation of the SOFA library</description>
+         <plugin>
+            <artifactId>maven-javadoc-plugin</artifactId>
+            <version>2.9</version>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jxr-plugin</artifactId>
+            <version>2.3</version>
+            <configuration>
+               <linkJavadoc>true</linkJavadoc>
+            </configuration>
+            <reportSets>
+               <reportSet>
+                  <reports>
+                     <report>jxr</report>
+                     <report>test-jxr</report>
+                  </reports>
+               </reportSet>
+            </reportSets>
+         </plugin>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>taglist-maven-plugin</artifactId>
+            <version>2.4</version>
+            <configuration>
+               <tags>
+                  <tag>FIXME</tag>
+                  <tag>TODO</tag>
+                  <tag>@todo</tag>
+                  <tag>IMPL</tag>
+                  <tag>@deprecated</tag>
+               </tags>
+            </configuration>
+         </plugin>
+         <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>cobertura-maven-plugin</artifactId>
+            <version>2.6</version>
+         </plugin>
+         <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-changes-plugin</artifactId>
+            <version>2.9</version>
+            <reportSets>
+               <reportSet>
+                  <reports>
+                     <report>changes-report</report>
+                  </reports>
+               </reportSet>
+            </reportSets>
+         </plugin>
+      </plugins>
+   </reporting>
+   <distributionManagement>
+      <downloadUrl>http://astrogrid.jb.man.ac.uk/jsofa/</downloadUrl>
+      <site>
+         <id>jsofa</id>
+         <name>JSOFA Site</name>
+         <url>scpexe://astrogrid.jb.man.ac.uk/local/www/root/html/jsofa/</url>
+      </site>
+      <repository>
+         <id>jastro</id>
+         <name>Jastronomy Repository</name>
+         <url>scpexe://astrogrid.jb.man.ac.uk/local/www/root/html/maven/</url>
+      </repository>
+   </distributionManagement>
+   <organization>
+      <name>JBCA, University of Manchester</name>
+      <url>http://www.jb.man.ac.uk/</url>
+   </organization>
+   <description>A pure Java translation of the SOFA library</description>
    <licenses>
       <license>
          <url>${basedir}/LICENSE.txt</url>

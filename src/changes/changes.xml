@@ -1,0 +1,33 @@
+<document xmlns="http://maven.apache.org/changes/1.0.0"
+          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:schemaLocation="http://maven.apache.org/changes/1.0.0 http://maven.apache.org/xsd/changes-1.0.0.xsd">
+  <properties>
+    <title>JSOFA</title>
+    <author email="paul.harrison@manchester.ac.uk">Paul Harrison</author>
+  </properties>
+  <body>
+    <release version="20131202b" date="31-Mar-2014" description="update release">
+      <action dev="pah" type="update">
+        update release to IAU SOFA 2012-07-10 b - Added the "Astrometry" routines.
+      </action>
+      <action dev="pah" type="update">Java 1.7 now minimum required version</action>
+    </release>
+    
+    <release version="20120710" date="09-Dec-2013" description="update release">
+      <action dev="pah" type="update">
+        update release to IAU SOFA 2012-07-10.
+      </action>
+    </release>
+    <release version="20120301" date="26-Jul-2012" description="update release">
+      <action dev="pah" type="update">
+        update release to IAU SOFA 2012-03-01.
+      </action>
+    </release>
+
+    <release version="20101201" date="22-Dec-2011" description="Original release">
+      <action dev="pah" type="update">
+        First official release based on IAU SOFA 2010-12-01
+      </action>
+    </release>
+  </body>
+</document>
