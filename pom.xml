@@ -82,6 +82,9 @@
             <version>2.6</version>
             <configuration>
                <instrumentation>
+                  <excludes>
+                     <exclude>/**/package-info.*</exclude>
+                  </excludes>
                </instrumentation>
             </configuration>
             <executions>
@@ -92,7 +95,6 @@
                </execution>
             </executions>
          </plugin>
-         
       </plugins>
       <extensions>
          <!-- Enabling the use of external ssh -->
@@ -115,8 +117,9 @@
                      <report>index</report>
                      <report>dependencies</report>
                      <report>project-team</report>
-                     <!-- <report>mailing-list</report> <report>cim</report> 
-                        <report>issue-tracking</report> <report>scm</report> -->
+                     <!-- <report>mailing-list</report> <report>cim</report> -->
+                      <report>issue-tracking</report> 
+                      <report>scm</report> 
                      <report>license</report>
                      <report>summary</report>
                   </reports>
@@ -186,7 +189,7 @@
    <distributionManagement>
       <downloadUrl>http://astrogrid.jb.man.ac.uk/jsofa/</downloadUrl>
       <site>
-         <id>jsofa</id>
+         <id>jastro</id>
          <name>JSOFA Site</name>
          <url>scpexe://astrogrid.jb.man.ac.uk/local/www/root/html/jsofa/</url>
       </site>
@@ -207,4 +210,12 @@
          <name>Modified SOFA Licence</name>
       </license>
    </licenses>
+   <scm>
+      <url>https://github.com/Javastro/jsofa</url>
+      <connection>scm:git:git://github.com/Javastro/jsofa.git</connection>
+      <developerConnection>scm:git:git@github.com:Javastro/jsofa.git</developerConnection>
+   </scm>
+   <issueManagement>
+      <url>https://github.com/Javastro/jsofa/issues</url>
+   </issueManagement>
 </project>

@@ -26,3 +26,4 @@ JSOFA
    
    The software {{{./surefire-report.html}passes}} all its {{{./xref-test/org/jastronomy/jsofa/JSOFATest.html}unit tests}} which are based on the standard tests that come with the official C and Fortran versions from the IAU.
   
+   The source code is {{{https://github.com/Javastro/jsofa}on GitHub}}
