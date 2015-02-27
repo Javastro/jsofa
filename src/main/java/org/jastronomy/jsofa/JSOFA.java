@@ -28791,15 +28791,40 @@ public static class SphericalCoordinateEO {
             double xp, double yp, double sp, double theta
             ) throws JSOFAIllegalParameter, JSOFAInternalError
     {
-        /* Earth rotation rate in radians per UT1 second */
-        final double OM = 1.00273781191135448 * D2PI / DAYSEC;
 
-        double xyzm[],rpm[][], xyz[], x, y, z, s, c;
-        double pv[][] = new double[2][3];
+        double xyzm[];
 
         /* Geodetic to geocentric transformation (WGS84). */
         xyzm = jauGd2gc(1, elong, phi, hm);
 
+        return jauPvtob(xyzm, xp, yp, sp, theta );
+        /* Finished. */
+
+
+    }
+    
+    /**
+     * Alternative Position and velocity of a terrestrial observing station with observatory position already in cartesian.
+     * @see JSOFA#jauPvtob(double, double, double, double, double, double, double) for more detail.
+     * @param xyzm observatory geocentric position in metres.
+     * @param xp,yp    double        coordinates of the pole (radians, Note 2)
+     * @param sp       double        the TIO locator s' (radians, Note 2)
+     * @param theta    double        Earth rotation angle (radians, Note 3)
+     * @return Position and velocity of observer.
+     * @throws JSOFAIllegalParameter
+     * @throws JSOFAInternalError
+     */
+    public static double [][] jauPvtob(double xyzm[],
+            double xp, double yp, double sp, double theta
+            ) throws JSOFAIllegalParameter, JSOFAInternalError
+    {
+        /* Earth rotation rate in radians per UT1 second */
+        final double OM = 1.00273781191135448 * D2PI / DAYSEC;
+
+        double rpm[][], xyz[], x, y, z, s, c;
+        double pv[][] = new double[2][3];
+
+      
         /* Polar motion and TIO position. */
         rpm = jauPom00(xp, yp, sp);
         xyz = jauTrxp(rpm, xyzm);
@@ -28836,10 +28861,10 @@ public static class SphericalCoordinateEO {
      */
     public static class RefCos {
         /**    refraction coefficient A  */
-        double    a ;
+        public double    a ;
 
         /**    refraction coefficient B  */
-        double    b ;
+        public double    b ;
         public RefCos(double a, double b) {
           this.a = a;
           this.b = b;
