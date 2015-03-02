@@ -21,10 +21,10 @@ import static java.lang.StrictMath.*;
  */
 public class JSOFA {
     /** tracked IAU SOFA release {@value}. */
-    public final static String SOFA_RELEASE = "2013-12-02";
+    public final static String SOFA_RELEASE = "2015-02-09";
 
     /** tracked IAU SOFA revision {@value}. */
-    public final static String SOFA_REVISION = "b";
+    public final static String SOFA_REVISION = "11";
 
     
 
@@ -1241,7 +1241,7 @@ public class JSOFA {
 
     /* Obtain the spherical angles E and d. */
        r2 = x*x + y*y;
-       e = (r2 != 0.0) ? atan2(y, x) : 0.0;
+       e = (r2 > 0.0) ? atan2(y, x) : 0.0;
        d = atan(sqrt(r2 / (1.0 - r2)));
 
     /* Form the matrix. */
@@ -2662,7 +2662,7 @@ return new JulianDate(dj, time) ;
 
  
 /** Release year for this version of jauDat {@value} */
-public final static int IYV = 2013;
+public final static int IYV = 2015;
 
     /**
     **  For a given UTC date, calculate delta(AT) = TAI-UTC.
@@ -2695,7 +2695,7 @@ public final static int IYV = 2013;
     **     :  even if no leap seconds have been       :
     **     :  added.                                  :
     **     :                                          :
-    **     :  Latest leap second:  2012 June 30       :
+    **     :  Latest leap second:  2015 June 30        :
     **     :                                          :
     **     :__________________________________________:
     **</pre>
@@ -2777,7 +2777,7 @@ public final static int IYV = 2013;
     **<p>Called:<ul>
     **     <li>{@link #jauCal2jd} Gregorian calendar to Julian Day number
     ** </ul>
-    **<p>This revision:  2012 June 03
+    **<p>@version 20150302
     **
     **  @since Release 20101201
     **
@@ -2857,7 +2857,8 @@ public final static int IYV = 2013;
           new LeapInfo( 1999,  1, 32.0       ),
           new LeapInfo( 2006,  1, 33.0       ),
           new LeapInfo( 2009,  1, 34.0       ),
-          new LeapInfo( 2012,  7, 35.0       )
+          new LeapInfo( 2012,  7, 35.0       ),
+          new LeapInfo( 2015,  7, 36.0       )
        };
 
     /* Number of Delta(AT) changes */
@@ -9233,7 +9234,7 @@ public static class SphericalCoordinateEO {
        p2 = x*x + y*y;
 
     /* Longitude. */
-       double elong = p2 != 0.0 ? atan2(y, x) : 0.0;
+       double elong = p2 > 0.0 ? atan2(y, x) : 0.0;
 
     /* Unsigned z-coordinate. */
        absz = abs(z);
@@ -17654,7 +17655,7 @@ public static class SphericalCoordinateEO {
        y = r[2][0] - r[0][2];
        z = r[0][1] - r[1][0];
        s2 = sqrt(x*x + y*y + z*z);
-       if (s2 != 0) {
+       if (s2 > 0) {
           c2 = r[0][0] + r[1][1] + r[2][2] - 1;
           phi = atan2(s2, c2);
           f =  phi / s2;
@@ -17721,7 +17722,7 @@ public static class SphericalCoordinateEO {
        f = 1.0 - c;
 
     /* Euler axis (direction of rotation vector), perhaps null. */
-       if (phi != 0.0) {
+       if (phi > 0.0) {
            x /= phi;
            y /= phi;
            z /= phi;
@@ -28415,7 +28416,7 @@ public static class SphericalCoordinateEO {
     }
 
     /**
-     *  Light deflection by the Sun.
+     *   Deflection of starlight by the Sun.
      *
      *<p>This function is derived from the International Astronomical Union's
      *  SOFA (Standards of Fundamental Astronomy) software collection.
@@ -28423,12 +28424,12 @@ public static class SphericalCoordinateEO {
      *<p>Status:  support function.
      *
      *<!-- Given: -->
-     *     @param p       double[3]   direction from observer to source (unit vector)
+     *     @param p       double[3]   direction from observer to star (unit vector)
      *     @param e       double[3]   direction from Sun to observer (unit vector)
      *     @param em      double      distance from Sun to observer (au)
      *
      *<!-- Returned:-->
-     *     @return p1      double[3]    <b>Returned</b> observer to deflected source (unit vector)
+     *     @return p1      double[3]    <b>Returned</b> observer to deflected start (unit vector)
      *
      *<p>Notes:
      * <ol>
@@ -29078,12 +29079,214 @@ public static class SphericalCoordinateEO {
 
 
     }
+ 
     
+    /**
+    **  Transformation from Galactic Coordinates to ICRS.
+    **
+    **  This function is derived from the International Astronomical Union's
+    **  SOFA (Standards of Fundamental Astronomy) software collection.
+    **
+    **  Status:  support routine.
+    **
+    **  @param   dl     double      galactic longitude (radians)
+    **  @param   db     double      galactic latitude (radians)
+    **
+    **  @return co ICRS right ascension, declination.
+    **
+    **  <p>Notes:<ol>
+    **
+    **  <li> The IAU 1958 system of Galactic coordinates was defined with
+    **     respect to the now obsolete reference system FK4 B1950.0.  When
+    **     interpreting the system in a modern context, several factors have
+    **     to be taken into account:<ul>
+    **
+    **     <li> The inclusion in FK4 positions of the E-terms of aberration.
+    **
+    **     <li> The distortion of the FK4 proper motion system by differential
+    **       Galactic rotation.
+    **
+    **     <li> The use of the B1950.0 equinox rather than the now-standard
+    **       J2000.0.
+    **
+    **     <li> The frame bias between ICRS and the J2000.0 mean place system.
+    **  </ul>
+    **     The Hipparcos Catalogue (Perryman & ESA 1997) provides a rotation
+    **     matrix that transforms directly between ICRS and Galactic
+    **     coordinates with the above factors taken into account.  The
+    **     matrix is derived from three angles, namely the ICRS coordinates
+    **     of the Galactic pole and the longitude of the ascending node of
+    **     the galactic equator on the ICRS equator.  They are given in
+    **     degrees to five decimal places and for canonical purposes are
+    **     regarded as exact.  In the Hipparcos Catalogue the matrix
+    **     elements are given to 10 decimal places (about 20 microarcsec).
+    **     In the present SOFA function the matrix elements have been
+    **     recomputed from the canonical three angles and are given to 30
+    **     decimal places.
+    **
+    **  <li> The inverse transformation is performed by the function jauIcrs2g.
+    **  </ol>
+    **
+    **  Reference:
+    **     Perryman M.A.C. & ESA, 1997, ESA SP-1200, The Hipparcos and Tycho
+    **     catalogues.  Astrometric and photometric star catalogues
+    **     derived from the ESA Hipparcos Space Astrometry Mission.  ESA
+    **     Publications Division, Noordwijk, Netherlands.
+    **
+    **  @version  2015 March 02
+    ** 
+    **
+    **  @since JSOFA release 20150209
+    **
+    */
+    public static SphericalCoordinate jauG2icrs ( double dl, double db)
+    {
+       double v1[], v2[];
+
+    /*
+    **  L2,B2 system of galactic coordinates in the form presented in the
+    **  Hipparcos Catalogue.  In degrees:
+    **
+    **  P = 192.85948    right ascension of the Galactic north pole in ICRS
+    **  Q =  27.12825    declination of the Galactic north pole in ICRS
+    **  R =  32.93192    longitude of the ascending node of the Galactic
+    **                   plane on the ICRS equator
+    **
+    **  ICRS to galactic rotation matrix, obtained by computing
+    **  R_3(-R) R_1(pi/2-Q) R_3(pi/2+P) to the full precision shown:
+    */
+       double r[][]  = new double[][]{ { -0.054875560416215368492398900454,
+                            -0.873437090234885048760383168409,
+                            -0.483835015548713226831774175116 },
+                          { +0.494109427875583673525222371358,
+                            -0.444829629960011178146614061616,
+                            +0.746982244497218890527388004556 },
+                          { -0.867666149019004701181616534570,
+                            -0.198076373431201528180486091412,
+                            +0.455983776175066922272100478348 } };
+
+
+    /* Spherical to Cartesian. */
+       v1 = jauS2c(dl, db);
+
+    /* Galactic to ICRS. */
+       v2 = jauTrxp(r, v1);
+
+    /* Cartesian to spherical. */
+       SphericalCoordinate co = jauC2s(v2);
+
+    /* Express in conventional ranges. */
+       co.alpha = jauAnp(co.alpha);
+       co.delta = jauAnpm(co.delta);
+
+    /* Finished. */
+      return co;
+    }
+ 
+    
+    
+    /**
+    **  Transformation from ICRS to Galactic Coordinates.
+    **
+    **  This function is derived from the International Astronomical Union's
+    **  SOFA (Standards of Fundamental Astronomy) software collection.
+    **
+    **  Status:  support routine.
+    **
+    **     @param dr     double      ICRS right ascension (radians)
+    **     @param dd     double      ICRS declination (radians)
+    **
+    **  @return co galactic longitude (radians), galactic latitude (radians)
+    **
+    **  <p>Notes:<ol>
+    **
+    **  <li> The IAU 1958 system of Galactic coordinates was defined with
+    **     respect to the now obsolete reference system FK4 B1950.0.  When
+    **     interpreting the system in a modern context, several factors have
+    **     to be taken into account:<ul>
+    **
+    **     <li> The inclusion in FK4 positions of the E-terms of aberration.
+    **
+    **     <li> The distortion of the FK4 proper motion system by differential
+    **       Galactic rotation.
+    **
+    **     <li> The use of the B1950.0 equinox rather than the now-standard
+    **       J2000.0.
+    **
+    **     <li> The frame bias between ICRS and the J2000.0 mean place system.
+    **     </ul>
+    **     The Hipparcos Catalogue (Perryman & ESA 1997) provides a rotation
+    **     matrix that transforms directly between ICRS and Galactic
+    **     coordinates with the above factors taken into account.  The
+    **     matrix is derived from three angles, namely the ICRS coordinates
+    **     of the Galactic pole and the longitude of the ascending node of
+    **     the galactic equator on the ICRS equator.  They are given in
+    **     degrees to five decimal places and for canonical purposes are
+    **     regarded as exact.  In the Hipparcos Catalogue the matrix
+    **     elements are given to 10 decimal places (about 20 microarcsec).
+    **     In the present SOFA function the matrix elements have been
+    **     recomputed from the canonical three angles and are given to 30
+    **     decimal places.
+    **
+    **  <li> The inverse transformation is performed by the function iauG2icrs.
+    **  </ol>
+    **  Reference:
+    **     Perryman M.A.C. & ESA, 1997, ESA SP-1200, The Hipparcos and Tycho
+    **     catalogues.  Astrometric and photometric star catalogues
+    **     derived from the ESA Hipparcos Space Astrometry Mission.  ESA
+    **     Publications Division, Noordwijk, Netherlands.
+    **
+    **  @version   2015 January 20
+    **
+    **  @since JSOFA release 20150209
+    **
+    */
+    public static SphericalCoordinate jauIcrs2g ( double dr, double dd )
+    {
+       double v1[], v2[];
+
+    /*
+    **  L2,B2 system of galactic coordinates in the form presented in the
+    **  Hipparcos Catalogue.  In degrees:
+    **
+    **  P = 192.85948    right ascension of the Galactic north pole in ICRS
+    **  Q =  27.12825    declination of the Galactic north pole in ICRS
+    **  R =  32.93192    longitude of the ascending node of the Galactic
+    **                   plane on the ICRS equator
+    **
+    **  ICRS to galactic rotation matrix, obtained by computing
+    **  R_3(-R) R_1(pi/2-Q) R_3(pi/2+P) to the full precision shown:
+    */
+       double r[][] = new double[][] { { -0.054875560416215368492398900454,
+                            -0.873437090234885048760383168409,
+                            -0.483835015548713226831774175116 },
+                          { +0.494109427875583673525222371358,
+                            -0.444829629960011178146614061616,
+                            +0.746982244497218890527388004556 },
+                          { -0.867666149019004701181616534570,
+                            -0.198076373431201528180486091412,
+                            +0.455983776175066922272100478348 } };
+
+
+    /* Spherical to Cartesian. */
+       v1 = jauS2c(dr, dd);
+
+    /* ICRS to Galactic. */
+       v2 = jauRxp(r, v1);
+
+    /* Cartesian to spherical. */
+       SphericalCoordinate co = jauC2s(v2);
+
+    /* Express in conventional ranges. */
+       co.alpha = jauAnp(co.alpha);
+       co.delta = jauAnpm(co.delta);
+       return co;
+    }
 
 }
 
 /*
- * Copyright © 2014 Paul Harrison, University of Manchester.
+ * Copyright © 2015 Paul Harrison, University of Manchester.
  * 
  * This JSOFA software is derived from the official C release of the "Standards Of Fundamental Astronomy" (SOFA) library 
  * of the International Astronomical Union. The intention is to reproduce the functionality and algorithms of 
@@ -29102,7 +29305,7 @@ public static class SphericalCoordinateEO {
 
 /*----------------------------------------------------------------------
 **
-**  Copyright (C) 2013
+**  Copyright (C) 2015
 **  Standards Of Fundamental Astronomy Board
 **  of the International Astronomical Union.
 **

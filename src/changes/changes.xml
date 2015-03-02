@@ -6,6 +6,11 @@
     <author email="paul.harrison@manchester.ac.uk">Paul Harrison</author>
   </properties>
   <body>
+    <release  version="20150209" date="02-Mar-2015" description="tracking update release">
+       <action dev="pah" type="update">
+        Update the release to the IAU SOFA 2015-02-09 release - Updated 2015 leap second and added ICRS&lt;-&gt;galactic routines.
+       </action>
+    </release>
     <release version="20131202b" date="31-Mar-2014" description="update release">
       <action dev="pah" type="update">
         update release to IAU SOFA 2012-07-10 b - Added the "Astrometry" routines.

@@ -74,6 +74,10 @@
      {@link org.jastronomy.jsofa.JSOFA#jauPmpx}     apply proper motion and parallax<br/>
      {@link org.jastronomy.jsofa.JSOFA#jauPvtob}    observatory position and velocity<br/>
      {@link org.jastronomy.jsofa.JSOFA#jauRefco}    refraction constants<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauPvstar}    space motion pv-vector to star catalog data<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauStarpv}    star catalog data to space motion pv-vector<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauG2icrs}  Transformation from Galactic Coordinates to ICRS<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauIcrs2g}  Transformation from ICRS to Galactic Coordinates</br>
 
 
  <h3>Time scales</h3>
@@ -206,9 +210,6 @@
      {@link org.jastronomy.jsofa.JSOFA#jauFave03}    mean longitude of Venus<br/>
 
   <h3>Star space motion</h3>
-
-     {@link org.jastronomy.jsofa.JSOFA#jauPvstar}    space motion pv-vector to star catalog data<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauStarpv}    star catalog data to space motion pv-vector<br/>
 
   <h3>Star catalog conversions</h3>
 

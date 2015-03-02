@@ -1258,6 +1258,14 @@ public class JSOFATest {
            fail("jauDat j2");
        }
 
+       try {
+           deltat = jauDat(2015, 9, 1, 0.0 );
+           vvd(deltat, 36.0, 0.0, "iauDat", "d3");
+
+       } catch (Exception e) {
+           fail("jauDat j3");
+       }
+       
     }
 
     @Test
@@ -8536,6 +8544,49 @@ public void t_dtf2d() throws JSOFAIllegalParameter, JSOFAInternalError
    vvd(jd.djm0+jd.djm1, 2449534.49999, 1e-6, "iauDtf2d", "u");
 
 }
+
+
+/**
+**
+**  Test jauG2icrs function.
+**
+**  Called:  iauG2icrs, vvd
+**
+**  This revision:  2015 March 02
+*/
+@Test
+public void t_g2icrs()
+{
+   double dl, db;
+   SphericalCoordinate co;
+
+
+   dl =  5.5850536063818546461558105;
+   db = -0.7853981633974483096156608;
+   co = jauG2icrs(dl, db);
+   vvd(co.alpha,  5.9338074302227188048671, 1e-14, "iauG2icrs", "Ra");
+   vvd(co.delta, -1.1784870613579944551541, 1e-14, "iauG2icrs", "Dec");
+ }
+
+/**
+**
+**  Test iauIcrs2g function.
+**
+**  Called:  iauIcrs2g, vvd
+**
+**  This revision:  2015 March 02
+*/
+@Test
+public void t_icrs2g()
+{
+   double dr, dd;
+
+   dr =  5.9338074302227188048671087;
+   dd = -1.1784870613579944551540570;
+   SphericalCoordinate co = jauIcrs2g (dr, dd);
+   vvd(co.alpha,  5.5850536063818546461558, 1e-14, "iauIcrs2g", "L");
+   vvd(co.delta, -0.7853981633974483096157, 1e-14, "iauIcrs2g", "B");
+ }
 
 
 //end of tests

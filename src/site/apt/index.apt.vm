@@ -7,7 +7,7 @@
 JSOFA
 
    The JSOFA software is a pure Java translation of the International
-   Astronomical Union's C SOFA software library (version 2013-12-02) at {{http://www.iausofa.org/}}.
+   Astronomical Union's C SOFA software library (version ${project.version}) at {{http://www.iausofa.org/}}.
       
    For more information on using please read the {{{./apidocs/org/jastronomy/jsofa/package-summary.html#package_description}javadoc}} overview.
   
