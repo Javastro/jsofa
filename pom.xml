@@ -6,7 +6,7 @@
    <artifactId>jsofa</artifactId>
    <name>JSOFA</name>
    <packaging>jar</packaging>
-   <version>20150209</version>
+   <version>20160729</version>
    <dependencies>
       <dependency>
          <groupId>junit</groupId>
@@ -204,6 +204,10 @@
          <plugin>
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>2.9</version>
+            <configuration>
+              <failOnError>false</failOnError> 
+       <!--       <additionalparam>-Xdoclint:none</additionalparam>  Javadoc 8 became much more strict by default - switch this off-->
+            </configuration>
          </plugin>
          <plugin>
             <groupId>org.apache.maven.plugins</groupId>

@@ -65,9 +65,6 @@ public class JSOFATest {
 
 
     /*
-    **  - - - - - - - - -
-    **   t _ s o f a _ c
-    **  - - - - - - - - -
     **
     **  Validate the JSOFA C functions.
     **
@@ -86,10 +83,7 @@ public class JSOFATest {
     */
 
     private void viv(int ival, int ivalok, String func, String test)
-    /*
-    **  - - - -
-    **   v i v
-    **  - - - -
+    /**
     **
     **  Validate an integer result.
     **
@@ -120,10 +114,7 @@ public class JSOFATest {
 
     private void vvd(double val, double valok, double dval,
                     String func, String test)
-    /*
-    **  - - - -
-    **   v v d
-    **  - - - -
+    /**
     **
     **  Validate a double result.
     **
@@ -158,10 +149,7 @@ public class JSOFATest {
 
     @Test
     public void t_a2af()
-    /*
-    **  - - - - - - -
-    **   t _ a 2 a f
-    **  - - - - - - -
+    /**
     **
     **  Test jauA2af function.
     **
@@ -190,10 +178,7 @@ public class JSOFATest {
 
     @Test
     public void t_a2tf()
-    /*
-    **  - - - - - - -
-    **   t _ a 2 t f
-    **  - - - - - - -
+    /**
     **
     **  Test jauA2tf function.
     **
@@ -222,10 +207,7 @@ public class JSOFATest {
 
     @Test
     public void t_anp()
-    /*
-    **  - - - - - -
-    **   t _ a n p
-    **  - - - - - -
+    /**
     **
     **  Test jauAnp function.
     **
@@ -242,10 +224,7 @@ public class JSOFATest {
 
     @Test
     public void t_anpm()
-    /*
-    **  - - - - - - -
-    **   t _ a n p m
-    **  - - - - - - -
+    /**
     **
     **  Test jauAnpm function.
     **
@@ -262,10 +241,7 @@ public class JSOFATest {
 
     @Test
     public void t_bi00()
-    /*
-    **  - - - - - - -
-    **   t _ b i 0 0
-    **  - - - - - - -
+    /**
     **
     **  Test jauBi00 function.
     **
@@ -287,10 +263,7 @@ public class JSOFATest {
 
     @Test
     public void t_bp00()
-    /*
-    **  - - - - - - -
-    **   t _ b p 0 0
-    **  - - - - - - -
+    /**
     **
     **  Test jauBp00 function.
     **
@@ -340,10 +313,7 @@ public class JSOFATest {
 
     @Test
     public void t_bp06()
-    /*
-    **  - - - - - - -
-    **   t _ b p 0 6
-    **  - - - - - - -
+    /**
     **
     **  Test jauBp06 function.
     **
@@ -393,10 +363,7 @@ public class JSOFATest {
 
     @Test
     public void t_bpn2xy()
-    /*
-    **  - - - - - - - - -
-    **   t _ b p n 2 x y
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauBpn2xy function.
     **
@@ -432,10 +399,7 @@ public class JSOFATest {
 
     @Test
     public void t_c2i00a()
-    /*
-    **  - - - - - - - - -
-    **   t _ c 2 i 0 0 a
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauC2i00a function.
     **
@@ -468,10 +432,7 @@ public class JSOFATest {
 
     @Test
     public void t_c2i00b()
-    /*
-    **  - - - - - - - - -
-    **   t _ c 2 i 0 0 b
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauC2i00b function.
     **
@@ -504,10 +465,7 @@ public class JSOFATest {
 
     @Test
     public void t_c2i06a()
-    /*
-    **  - - - - - - - - -
-    **   t _ c 2 i 0 6 a
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauC2i06a function.
     **
@@ -540,10 +498,7 @@ public class JSOFATest {
 
     @Test
     public void t_c2ibpn()
-    /*
-    **  - - - - - - - - -
-    **   t _ c 2 i b p n
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauC2ibpn function.
     **
@@ -588,10 +543,7 @@ public class JSOFATest {
 
     @Test
     public void t_c2ixy()
-    /*
-    **  - - - - - - - -
-    **   t _ c 2 i x y
-    **  - - - - - - - -
+    /**
     **
     **  Test jauC2ixy function.
     **
@@ -627,10 +579,7 @@ public class JSOFATest {
 
     @Test
     public void t_c2ixys()
-    /*
-    **  - - - - - - - - -
-    **   t _ c 2 i x y s
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauC2ixys function.
     **
@@ -667,10 +616,7 @@ public class JSOFATest {
 
     @Test
     public void t_c2s()
-    /*
-    **  - - - - - -
-    **   t _ c 2 s
-    **  - - - - - -
+    /**
     **
     **  Test jauC2s function.
     **
@@ -698,10 +644,7 @@ public class JSOFATest {
 
     @Test
     public void t_c2t00a()
-    /*
-    **  - - - - - - - - -
-    **   t _ c 2 t 0 0 a
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauC2t00a function.
     **
@@ -741,10 +684,7 @@ public class JSOFATest {
 
     @Test
     public void t_c2t00b()
-    /*
-    **  - - - - - - - - -
-    **   t _ c 2 t 0 0 b
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauC2t00b function.
     **
@@ -784,10 +724,7 @@ public class JSOFATest {
 
     @Test
     public void t_c2t06a()
-    /*
-    **  - - - - - - - - -
-    **   t _ c 2 t 0 6 a
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauC2t06a function.
     **
@@ -827,10 +764,7 @@ public class JSOFATest {
 
     @Test
     public void t_c2tcio()
-    /*
-    **  - - - - - - - - -
-    **   t _ c 2 t c i o
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauC2tcio function.
     **
@@ -890,10 +824,7 @@ public class JSOFATest {
 
     @Test
     public void t_c2teqx()
-    /*
-    **  - - - - - - - - -
-    **   t _ c 2 t e q x
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauC2teqx function.
     **
@@ -952,10 +883,7 @@ public class JSOFATest {
 
     @Test
     public void t_c2tpe()
-    /*
-    **  - - - - - - - -
-    **   t _ c 2 t p e
-    **  - - - - - - - -
+    /**
     **
     **  Test jauC2tpe function.
     **
@@ -997,10 +925,7 @@ public class JSOFATest {
 
     @Test
     public void t_c2txy()
-    /*
-    **  - - - - - - - -
-    **   t _ c 2 t x y
-    **  - - - - - - - -
+    /**
     **
     **  Test jauC2txy function.
     **
@@ -1042,10 +967,7 @@ public class JSOFATest {
 
     @Test
     public void t_cal2jd()
-    /*
-    **  - - - - - - - - -
-    **   t _ c a l 2 j d
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauCal2jd function.
     **
@@ -1074,10 +996,7 @@ public class JSOFATest {
 
     @Test
     public void t_cp()
-    /*
-    **  - - - - -
-    **   t _ c p
-    **  - - - - -
+    /**
     **
     **  Test jauCp function.
     **
@@ -1105,10 +1024,7 @@ public class JSOFATest {
 
     @Test
     public void t_cpv()
-    /*
-    **  - - - - - -
-    **   t _ c p v
-    **  - - - - - -
+    /**
     **
     **  Test jauCpv function.
     **
@@ -1145,10 +1061,7 @@ public class JSOFATest {
 
     @Test
     public void t_cr()
-    /*
-    **  - - - - -
-    **   t _ c r
-    **  - - - - -
+    /**
     **
     **  Test jauCr function.
     **
@@ -1192,10 +1105,7 @@ public class JSOFATest {
 
     @Test
     public void t_d2tf()
-    /*
-    **  - - - - - - -
-    **   t _ d 2 t f
-    **  - - - - - - -
+    /**
     **
     **  Test jauD2tf function.
     **
@@ -1224,10 +1134,7 @@ public class JSOFATest {
 
     @Test
     public void t_dat()
-    /*
-    **  - - - - - -
-    **   t _ d a t
-    **  - - - - - -
+    /**
     **
     **  Test jauDat function.
     **
@@ -1240,8 +1147,10 @@ public class JSOFATest {
     */
     {
        double deltat;
-
-
+      int nls = leapSeconds.length;
+      viv(nls, 42, "jauDat", "number of leap second entries");
+      viv(leapSeconds[nls-1].iyear, 2017, "jauDat", "year of last leap second");
+      viv(leapSeconds[nls-1].month, 1, "jauDat", "month of last leap second");
        try {
            deltat = jauDat(2003, 6, 1, 0.0);
 
@@ -1259,8 +1168,8 @@ public class JSOFATest {
        }
 
        try {
-           deltat = jauDat(2015, 9, 1, 0.0 );
-           vvd(deltat, 36.0, 0.0, "iauDat", "d3");
+           deltat = jauDat(2017, 9, 1, 0.0 );
+           vvd(deltat, 37.0, 0.0, "jauDat", "d3");
 
        } catch (Exception e) {
            fail("jauDat j3");
@@ -1270,10 +1179,7 @@ public class JSOFATest {
 
     @Test
     public void t_dtdb()
-    /*
-    **  - - - - - - -
-    **   t _ d t d b
-    **  - - - - - - -
+    /**
     **
     **  Test jauDtdb function.
     **
@@ -1296,10 +1202,7 @@ public class JSOFATest {
 
     @Test
     public void t_ee00()
-    /*
-    **  - - - - - - -
-    **   t _ e e 0 0
-    **  - - - - - - -
+    /**
     **
     **  Test jauEe00 function.
     **
@@ -1325,10 +1228,7 @@ public class JSOFATest {
 
     @Test
     public void t_ee00a()
-    /*
-    **  - - - - - - - -
-    **   t _ e e 0 0 a
-    **  - - - - - - - -
+    /**
     **
     **  Test jauEe00a function.
     **
@@ -1351,10 +1251,7 @@ public class JSOFATest {
 
     @Test
     public void t_ee00b()
-    /*
-    **  - - - - - - - -
-    **   t _ e e 0 0 b
-    **  - - - - - - - -
+    /**
     **
     **  Test jauEe00b function.
     **
@@ -1377,10 +1274,7 @@ public class JSOFATest {
 
     @Test
     public void t_ee06a()
-    /*
-    **  - - - - - - - -
-    **   t _ e e 0 6 a
-    **  - - - - - - - -
+    /**
     **
     **  Test jauEe06a function.
     **
@@ -1402,10 +1296,7 @@ public class JSOFATest {
 
     @Test
     public void t_eect00()
-    /*
-    **  - - - - - - - - -
-    **   t _ e e c t 0 0
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauEect00 function.
     **
@@ -1428,10 +1319,7 @@ public class JSOFATest {
 
     @Test
     public void t_eform()
-    /*
-    **  - - - - - - - -
-    **   t _ e f o r m
-    **  - - - - - - - -
+    /**
     **
     **  Test jauEform function.
     **
@@ -1481,10 +1369,7 @@ public class JSOFATest {
 
     @Test
     public void t_eo06a()
-    /*
-    **  - - - - - - - -
-    **   t _ e o 0 6 a
-    **  - - - - - - - -
+    /**
     **
     **  Test jauEo06a function.
     **
@@ -1507,10 +1392,7 @@ public class JSOFATest {
 
     @Test
     public void t_eors()
-    /*
-    **  - - - - - - -
-    **   t _ e o r s
-    **  - - - - - - -
+    /**
     **
     **  Test jauEors function.
     **
@@ -1547,10 +1429,7 @@ public class JSOFATest {
 
     @Test
     public void t_epb()
-    /*
-    **  - - - - - -
-    **   t _ e p b
-    **  - - - - - -
+    /**
     **
     **  Test jauEpb function.
     **
@@ -1573,10 +1452,7 @@ public class JSOFATest {
 
     @Test
     public void t_epb2jd()
-    /*
-    **  - - - - - - - - -
-    **   t _ e p b 2 j d
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauEpb2jd function.
     **
@@ -1602,10 +1478,7 @@ public class JSOFATest {
 
     @Test
     public void t_epj()
-    /*
-    **  - - - - - -
-    **   t _ e p j
-    **  - - - - - -
+    /**
     **
     **  Test jauEpj function.
     **
@@ -1628,10 +1501,7 @@ public class JSOFATest {
 
     @Test
     public void t_epj2jd()
-    /*
-    **  - - - - - - - - -
-    **   t _ e p j 2 j d
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauEpj2jd function.
     **
@@ -1657,10 +1527,7 @@ public class JSOFATest {
 
     @Test
     public void t_epv00()
-    /*
-    **  - - - - - - - -
-    **   t _ e p v 0 0
-    **  - - - - - - - -
+    /**
     **
     **  Test jauEpv00 function.
     **
@@ -1673,10 +1540,10 @@ public class JSOFATest {
     */
     {
        double pvh[][] = new double[2][3], pvb[][] = new double[2][3];
-       int j;
+    
 
 
-       j = jauEpv00(2400000.5, 53411.52501161, pvh, pvb);
+       int j = jauEpv00(2400000.5, 53411.52501161, pvh, pvb);
 
        vvd(pvh[0][0], -0.7757238809297706813, 1e-14,
            "jauEpv00", "ph(x)");
@@ -1712,10 +1579,7 @@ public class JSOFATest {
 
     @Test
     public void t_eqeq94()
-    /*
-    **  - - - - - - - - -
-    **   t _ e q e q 9 4
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauEqeq94 function.
     **
@@ -1738,10 +1602,7 @@ public class JSOFATest {
 
     @Test
     public void t_era00()
-    /*
-    **  - - - - - - - -
-    **   t _ e r a 0 0
-    **  - - - - - - - -
+    /**
     **
     **  Test jauEra00 function.
     **
@@ -1764,10 +1625,7 @@ public class JSOFATest {
 
     @Test
     public void t_fad03()
-    /*
-    **  - - - - - - - -
-    **   t _ f a d 0 3
-    **  - - - - - - - -
+    /**
     **
     **  Test jauFad03 function.
     **
@@ -1785,10 +1643,7 @@ public class JSOFATest {
 
     @Test
     public void t_fae03()
-    /*
-    **  - - - - - - - -
-    **   t _ f a e 0 3
-    **  - - - - - - - -
+    /**
     **
     **  Test jauFae03 function.
     **
@@ -1806,10 +1661,7 @@ public class JSOFATest {
 
     @Test
     public void t_faf03()
-    /*
-    **  - - - - - - - -
-    **   t _ f a f 0 3
-    **  - - - - - - - -
+    /**
     **
     **  Test jauFaf03 function.
     **
@@ -1827,10 +1679,7 @@ public class JSOFATest {
 
     @Test
     public void t_faju03()
-    /*
-    **  - - - - - - - - -
-    **   t _ f a j u 0 3
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauFaju03 function.
     **
@@ -1848,10 +1697,7 @@ public class JSOFATest {
 
     @Test
     public void t_fal03()
-    /*
-    **  - - - - - - - -
-    **   t _ f a l 0 3
-    **  - - - - - - - -
+    /**
     **
     **  Test jauFal03 function.
     **
@@ -1869,10 +1715,7 @@ public class JSOFATest {
 
     @Test
     public void t_falp03()
-    /*
-    **  - - - - - - - - -
-    **   t _ f a l p 0 3
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauFalp03 function.
     **
@@ -1890,10 +1733,7 @@ public class JSOFATest {
 
     @Test
     public void t_fama03()
-    /*
-    **  - - - - - - - - -
-    **   t _ f a m a 0 3
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauFama03 function.
     **
@@ -1911,10 +1751,7 @@ public class JSOFATest {
 
     @Test
     public void t_fame03()
-    /*
-    **  - - - - - - - - -
-    **   t _ f a m e 0 3
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauFame03 function.
     **
@@ -1932,10 +1769,7 @@ public class JSOFATest {
 
     @Test
     public void t_fane03()
-    /*
-    **  - - - - - - - - -
-    **   t _ f a n e 0 3
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauFane03 function.
     **
@@ -1953,10 +1787,7 @@ public class JSOFATest {
 
     @Test
     public void t_faom03()
-    /*
-    **  - - - - - - - - -
-    **   t _ f a o m 0 3
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauFaom03 function.
     **
@@ -1974,10 +1805,7 @@ public class JSOFATest {
 
     @Test
     public void t_fapa03()
-    /*
-    **  - - - - - - - - -
-    **   t _ f a p a 0 3
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauFapa03 function.
     **
@@ -1995,10 +1823,7 @@ public class JSOFATest {
 
     @Test
     public void t_fasa03()
-    /*
-    **  - - - - - - - - -
-    **   t _ f a s a 0 3
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauFasa03 function.
     **
@@ -2016,10 +1841,7 @@ public class JSOFATest {
 
     @Test
     public void t_faur03()
-    /*
-    **  - - - - - - - - -
-    **   t _ f a u r 0 3
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauFaur03 function.
     **
@@ -2037,10 +1859,7 @@ public class JSOFATest {
 
     @Test
     public void t_fave03()
-    /*
-    **  - - - - - - - - -
-    **   t _ f a v e 0 3
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauFave03 function.
     **
@@ -2058,10 +1877,7 @@ public class JSOFATest {
 
     @Test
     public void t_fk52h()
-    /*
-    **  - - - - - - - -
-    **   t _ f k 5 2 h
-    **  - - - - - - - -
+    /**
     **
     **  Test jauFk52h function.
     **
@@ -2096,10 +1912,7 @@ public class JSOFATest {
 
     @Test
     public void t_fk5hip()
-    /*
-    **  - - - - - - - - -
-    **   t _ f k 5 h i p
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauFk5hip function.
     **
@@ -2133,10 +1946,7 @@ public class JSOFATest {
 
     @Test
     public void t_fk5hz()
-    /*
-    **  - - - - - - - -
-    **   t _ f k 5 h z
-    **  - - - - - - - -
+    /**
     **
     **  Test jauFk5hz function.
     **
@@ -2163,10 +1973,7 @@ public class JSOFATest {
 
     @Test
     public void t_fw2m()
-    /*
-    **  - - - - - - -
-    **   t _ f w 2 m
-    **  - - - - - - -
+    /**
     **
     **  Test jauFw2m function.
     **
@@ -2204,10 +2011,7 @@ public class JSOFATest {
 
     @Test
     public void t_fw2xy()
-    /*
-    **  - - - - - - - -
-    **   t _ f w 2 x y
-    **  - - - - - - - -
+    /**
     **
     **  Test jauFw2xy function.
     **
@@ -2236,10 +2040,7 @@ public class JSOFATest {
 
     @Test
     public void t_gc2gd()
-    /*
-    **  - - - - - - - -
-    **   t _ g c 2 g d
-    **  - - - - - - - -
+    /**
     **
     **  Test jauGc2gd function.
     **
@@ -2272,9 +2073,9 @@ public class JSOFATest {
             vvd(geo.height, 331.41731754844348, 1e-8, "jauGc2gd", "h2");
             
             geo = jauGc2gd( 3, xyz );
-            vvd(geo.elong, 0.98279372324732907, 1e-14, "iauGc2gd", "e3");
-            vvd(geo.phi, 0.97160181811015119, 1e-14, "iauGc2gd", "p3");
-            vvd(geo.height, 333.27707261303181, 1e-8, "iauGc2gd", "h3");
+            vvd(geo.elong, 0.98279372324732907, 1e-14, "jauGc2gd", "e3");
+            vvd(geo.phi, 0.97160181811015119, 1e-14, "jauGc2gd", "p3");
+            vvd(geo.height, 333.27707261303181, 1e-8, "jauGc2gd", "h3");
             
         } catch (JSOFAIllegalParameter e1) {
             fail("jauGc2gd should not thow exception for legal parameter");
@@ -2290,10 +2091,7 @@ public class JSOFATest {
 
     @Test
     public void t_gc2gde()
-    /*
-    **  - - - - - - - - -
-    **   t _ g c 2 g d e
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauGc2gde function.
     **
@@ -2322,10 +2120,7 @@ public class JSOFATest {
 
     @Test
     public void t_gd2gc()
-    /*
-    **  - - - - - - - -
-    **   t _ g d 2 g c
-    **  - - - - - - - -
+    /**
     **
     **  Test jauGd2gc function.
     **
@@ -2366,9 +2161,9 @@ public class JSOFATest {
             vvd(xyz[2], -3040909.4706095476, 1e-7, "jauGd2gc", "2/2");
             
             xyz = jauGd2gc( 3, e, p, h);
-            vvd(xyz[0], -5598998.7626301490, 1e-7, "iauGd2gc", "0/3");
-            vvd(xyz[1], 233011.5975297822, 1e-7, "iauGd2gc", "1/3");
-            vvd(xyz[2], -3040908.6861467111, 1e-7, "iauGd2gc", "2/3");
+            vvd(xyz[0], -5598998.7626301490, 1e-7, "jauGd2gc", "0/3");
+            vvd(xyz[1], 233011.5975297822, 1e-7, "jauGd2gc", "1/3");
+            vvd(xyz[2], -3040908.6861467111, 1e-7, "jauGd2gc", "2/3");
             
         } catch (JSOFAException e1) {
             fail("jauGd2gc should not thow exception ");
@@ -2386,10 +2181,7 @@ public class JSOFATest {
 
     @Test
     public void t_gd2gce() throws JSOFAInternalError
-    /*
-    **  - - - - - - - - -
-    **   t _ g d 2 g c e
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauGd2gce function.
     **
@@ -2414,10 +2206,7 @@ public class JSOFATest {
 
     @Test
     public void t_gmst00()
-    /*
-    **  - - - - - - - - -
-    **   t _ g m s t 0 0
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauGmst00 function.
     **
@@ -2440,10 +2229,7 @@ public class JSOFATest {
 
     @Test
     public void t_gmst06()
-    /*
-    **  - - - - - - - - -
-    **   t _ g m s t 0 6
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauGmst06 function.
     **
@@ -2466,10 +2252,7 @@ public class JSOFATest {
 
     @Test
     public void t_gmst82()
-    /*
-    **  - - - - - - - - -
-    **   t _ g m s t 8 2
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauGmst82 function.
     **
@@ -2492,10 +2275,7 @@ public class JSOFATest {
 
     @Test
     public void t_gst00a()
-    /*
-    **  - - - - - - - - -
-    **   t _ g s t 0 0 a
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauGst00a function.
     **
@@ -2518,10 +2298,7 @@ public class JSOFATest {
 
     @Test
     public void t_gst00b()
-    /*
-    **  - - - - - - - - -
-    **   t _ g s t 0 0 b
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauGst00b function.
     **
@@ -2544,10 +2321,7 @@ public class JSOFATest {
 
     @Test
     public void t_gst06()
-    /*
-    **  - - - - - - - -
-    **   t _ g s t 0 6
-    **  - - - - - - - -
+    /**
     **
     **  Test jauGst06 function.
     **
@@ -2582,10 +2356,7 @@ public class JSOFATest {
 
     @Test
     public void t_gst06a()
-    /*
-    **  - - - - - - - - -
-    **   t _ g s t 0 6 a
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauGst06a function.
     **
@@ -2608,10 +2379,7 @@ public class JSOFATest {
 
     @Test
     public void t_gst94()
-    /*
-    **  - - - - - - - -
-    **   t _ g s t 9 4
-    **  - - - - - - - -
+    /**
     **
     **  Test jauGst94 function.
     **
@@ -2634,10 +2402,7 @@ public class JSOFATest {
 
     @Test
     public void t_h2fk5()
-    /*
-    **  - - - - - - - -
-    **   t _ h 2 f k 5
-    **  - - - - - - - -
+    /**
     **
     **  Test jauH2fk5 function.
     **
@@ -2672,10 +2437,7 @@ public class JSOFATest {
 
     @Test
     public void t_hfk5z()
-    /*
-    **  - - - - - - - -
-    **   t _ h f k 5 z
-    **  - - - - - - - -
+    /**
     **
     **  Test jauHfk5z function.
     **
@@ -2705,10 +2467,7 @@ public class JSOFATest {
 
     @Test
     public void t_ir()
-    /*
-    **  - - - - -
-    **   t _ i r
-    **  - - - - -
+    /**
     **
     **  Test jauIr function.
     **
@@ -2753,10 +2512,7 @@ public class JSOFATest {
 
     @Test
     public void t_jd2cal() throws JSOFAIllegalParameter
-    /*
-    **  - - - - - - - - -
-    **   t _ j d 2 c a l
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauJd2cal function.
     **
@@ -2786,10 +2542,7 @@ public class JSOFATest {
 
     @Test
     public void t_jdcalf()
-    /*
-    **  - - - - - - - - -
-    **   t _ j d c a l f
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauJdcalf function.
     **
@@ -2821,10 +2574,7 @@ public class JSOFATest {
 
     @Test
     public void t_num00a()
-    /*
-    **  - - - - - - - - -
-    **   t _ n u m 0 0 a
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauNum00a function.
     **
@@ -2857,10 +2607,7 @@ public class JSOFATest {
 
     @Test
     public void t_num00b()
-    /*
-    **  - - - - - - - - -
-    **   t _ n u m 0 0 b
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauNum00b function.
     **
@@ -2892,10 +2639,7 @@ public class JSOFATest {
 
     @Test
     public void t_num06a()
-    /*
-    **  - - - - - - - - -
-    **   t _ n u m 0 6 a
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauNum06a function.
     **
@@ -2927,10 +2671,7 @@ public class JSOFATest {
 
     @Test
     public void t_numat()
-    /*
-    **  - - - - - - - -
-    **   t _ n u m a t
-    **  - - - - - - - -
+    /**
     **
     **  Test jauNumat function.
     **
@@ -2967,10 +2708,7 @@ public class JSOFATest {
 
     @Test
     public void t_nut00a()
-    /*
-    **  - - - - - - - - -
-    **   t _ n u t 0 0 a
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauNut00a function.
     **
@@ -2993,10 +2731,7 @@ public class JSOFATest {
 
     @Test
     public void t_nut00b()
-    /*
-    **  - - - - - - - - -
-    **   t _ n u t 0 0 b
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauNut00b function.
     **
@@ -3019,10 +2754,7 @@ public class JSOFATest {
 
     @Test
     public void t_nut06a()
-    /*
-    **  - - - - - - - - -
-    **   t _ n u t 0 6 a
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauNut06a function.
     **
@@ -3044,10 +2776,7 @@ public class JSOFATest {
 
     @Test
     public void t_nut80()
-    /*
-    **  - - - - - - - -
-    **   t _ n u t 8 0
-    **  - - - - - - - -
+    /**
     **
     **  Test jauNut80 function.
     **
@@ -3069,10 +2798,7 @@ public class JSOFATest {
 
     @Test
     public void t_nutm80()
-    /*
-    **  - - - - - - - - -
-    **   t _ n u t m 8 0
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauNutm80 function.
     **
@@ -3105,10 +2831,7 @@ public class JSOFATest {
 
     @Test
     public void t_obl06()
-    /*
-    **  - - - - - - - -
-    **   t _ o b l 0 6
-    **  - - - - - - - -
+    /**
     **
     **  Test jauObl06 function.
     **
@@ -3126,10 +2849,7 @@ public class JSOFATest {
 
     @Test
     public void t_obl80()
-    /*
-    **  - - - - - - - -
-    **   t _ o b l 8 0
-    **  - - - - - - - -
+    /**
     **
     **  Test jauObl80 function.
     **
@@ -3152,10 +2872,7 @@ public class JSOFATest {
 
     @Test
     public void t_p06e()
-    /*
-    **  - - - - - - -
-    **   t _ p 0 6 e
-    **  - - - - - - -
+    /**
     **
     **  Test jauP06e function.
     **
@@ -3192,10 +2909,7 @@ public class JSOFATest {
 
     @Test
     public void t_p2pv()
-    /*
-    **  - - - - - - -
-    **   t _ p 2 p v
-    **  - - - - - - -
+    /**
     **
     **  Test jauP2pv function.
     **
@@ -3236,10 +2950,7 @@ public class JSOFATest {
 
     @Test
     public void t_p2s()
-    /*
-    **  - - - - - -
-    **   t _ p 2 s
-    **  - - - - - -
+    /**
     **
     **  Test jauP2s function.
     **
@@ -3268,10 +2979,7 @@ public class JSOFATest {
 
     @Test
     public void t_pap()
-    /*
-    **  - - - - - -
-    **   t _ p a p
-    **  - - - - - -
+    /**
     **
     **  Test jauPap function.
     **
@@ -3302,10 +3010,7 @@ public class JSOFATest {
 
     @Test
     public void t_pas()
-    /*
-    **  - - - - - -
-    **   t _ p a s
-    **  - - - - - -
+    /**
     **
     **  Test jauPas function.
     **
@@ -3333,10 +3038,7 @@ public class JSOFATest {
 
     @Test
     public void t_pb06()
-    /*
-    **  - - - - - - -
-    **   t _ p b 0 6
-    **  - - - - - - -
+    /**
     **
     **  Test jauPb06 function.
     **
@@ -3359,10 +3061,7 @@ public class JSOFATest {
 
     @Test
     public void t_pdp()
-    /*
-    **  - - - - - -
-    **   t _ p d p
-    **  - - - - - -
+    /**
     **
     **  Test jauPdp function.
     **
@@ -3393,10 +3092,7 @@ public class JSOFATest {
 
     @Test
     public void t_pfw06()
-    /*
-    **  - - - - - - - -
-    **   t _ p f w 0 6
-    **  - - - - - - - -
+    /**
     **
     **  Test jauPfw06 function.
     **
@@ -3421,10 +3117,7 @@ public class JSOFATest {
 
     @Test
     public void t_plan94()
-    /*
-    **  - - - - - - - - -
-    **   t _ p l a n 9 4
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauPlan94 function.
     **
@@ -3437,10 +3130,10 @@ public class JSOFATest {
     */
     {
        double pv[][] = new double[2][3];
-       int j;
+    
 
 
-       j = jauPlan94(2400000.5, 1e6, 0, pv);
+       int j = jauPlan94(2400000.5, 1e6, 0, pv);
 
        vvd(pv[0][0], 0.0, 0.0, "jauPlan94", "x 1");
        vvd(pv[0][1], 0.0, 0.0, "jauPlan94", "y 1");
@@ -3484,10 +3177,7 @@ public class JSOFATest {
 
     @Test
     public void t_pmat00()
-    /*
-    **  - - - - - - - - -
-    **   t _ p m a t 0 0
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauPmat00 function.
     **
@@ -3520,10 +3210,7 @@ public class JSOFATest {
 
     @Test
     public void t_pmat06()
-    /*
-    **  - - - - - - - - -
-    **   t _ p m a t 0 6
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauPmat06 function.
     **
@@ -3556,10 +3243,7 @@ public class JSOFATest {
 
     @Test
     public void t_pmat76()
-    /*
-    **  - - - - - - - - -
-    **   t _ p m a t 7 6
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauPmat76 function.
     **
@@ -3592,10 +3276,7 @@ public class JSOFATest {
 
     @Test
     public void t_pm()
-    /*
-    **  - - - - -
-    **   t _ p m
-    **  - - - - -
+    /**
     **
     **  Test jauPm function.
     **
@@ -3622,10 +3303,7 @@ public class JSOFATest {
 
     @Test
     public void t_pmp()
-    /*
-    **  - - - - - -
-    **   t _ p m p
-    **  - - - - - -
+    /**
     **
     **  Test jauPmp function.
     **
@@ -3658,10 +3336,7 @@ public class JSOFATest {
 
     @Test
     public void t_pn()
-    /*
-    **  - - - - -
-    **   t _ p n
-    **  - - - - -
+    /**
     **
     **  Test jauPn function.
     **
@@ -3692,10 +3367,7 @@ public class JSOFATest {
 
     @Test
     public void t_pn00()
-    /*
-    **  - - - - - - -
-    **   t _ p n 0 0
-    **  - - - - - - -
+    /**
     **
     **  Test jauPn00 function.
     **
@@ -3780,10 +3452,7 @@ public class JSOFATest {
 
     @Test
     public void t_pn00a()
-    /*
-    **  - - - - - - - -
-    **   t _ p n 0 0 a
-    **  - - - - - - - -
+    /**
     **
     **  Test jauPn00a function.
     **
@@ -3868,10 +3537,7 @@ public class JSOFATest {
 
     @Test
     public void t_pn00b()
-    /*
-    **  - - - - - - - -
-    **   t _ p n 0 0 b
-    **  - - - - - - - -
+    /**
     **
     **  Test jauPn00b function.
     **
@@ -3954,10 +3620,7 @@ public class JSOFATest {
 
     @Test
     public void t_pn06a()
-    /*
-    **  - - - - - - - -
-    **   t _ p n 0 6 a
-    **  - - - - - - - -
+    /**
     **
     **  Test jauPn06a function.
     **
@@ -4041,10 +3704,7 @@ public class JSOFATest {
 
     @Test
     public void t_pn06()
-    /*
-    **  - - - - - - -
-    **   t _ p n 0 6
-    **  - - - - - - -
+    /**
     **
     **  Test jauPn06 function.
     **
@@ -4129,10 +3789,7 @@ public class JSOFATest {
 
     @Test
     public void t_pnm00a()
-    /*
-    **  - - - - - - - - -
-    **   t _ p n m 0 0 a
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauPnm00a function.
     **
@@ -4165,10 +3822,7 @@ public class JSOFATest {
 
     @Test
     public void t_pnm00b()
-    /*
-    **  - - - - - - - - -
-    **   t _ p n m 0 0 b
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauPnm00b function.
     **
@@ -4201,10 +3855,7 @@ public class JSOFATest {
 
     @Test
     public void t_pnm06a()
-    /*
-    **  - - - - - - - - -
-    **   t _ p n m 0 6 a
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauPnm06a function.
     **
@@ -4237,10 +3888,7 @@ public class JSOFATest {
 
     @Test
     public void t_pnm80()
-    /*
-    **  - - - - - - - -
-    **   t _ p n m 8 0
-    **  - - - - - - - -
+    /**
     **
     **  Test jauPnm80 function.
     **
@@ -4273,10 +3921,7 @@ public class JSOFATest {
 
     @Test
     public void t_pom00()
-    /*
-    **  - - - - - - - -
-    **   t _ p o m 0 0
-    **  - - - - - - - -
+    /**
     **
     **  Test jauPom00 function.
     **
@@ -4313,10 +3958,7 @@ public class JSOFATest {
 
     @Test
     public void t_ppp()
-    /*
-    **  - - - - - -
-    **   t _ p p p
-    **  - - - - - -
+    /**
     **
     **  Test jauPpp function.
     **
@@ -4349,10 +3991,7 @@ public class JSOFATest {
 
     @Test
     public void t_ppsp()
-    /*
-    **  - - - - - - -
-    **   t _ p p s p
-    **  - - - - - - -
+    /**
     **
     **  Test jauPpsp function.
     **
@@ -4387,10 +4026,7 @@ public class JSOFATest {
 
     @Test
     public void t_pr00()
-    /*
-    **  - - - - - - -
-    **   t _ p r 0 0
-    **  - - - - - - -
+    /**
     **
     **  Test jauPr00 function.
     **
@@ -4411,10 +4047,7 @@ public class JSOFATest {
 
     @Test
     public void t_prec76()
-    /*
-    **  - - - - - - - - -
-    **   t _ p r e c 7 6
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauPrec76 function.
     **
@@ -4444,10 +4077,7 @@ public class JSOFATest {
 
     @Test
     public void t_pv2p()
-    /*
-    **  - - - - - - -
-    **   t _ p v 2 p
-    **  - - - - - - -
+    /**
     **
     **  Test jauPv2p function.
     **
@@ -4480,10 +4110,7 @@ public class JSOFATest {
 
     @Test
     public void t_pv2s()
-    /*
-    **  - - - - - - -
-    **   t _ p v 2 s
-    **  - - - - - - -
+    /**
     **
     **  Test jauPv2s function.
     **
@@ -4519,10 +4146,7 @@ public class JSOFATest {
 
     @Test
     public void t_pvdpv()
-    /*
-    **  - - - - - - - -
-    **   t _ p v d p v
-    **  - - - - - - - -
+    /**
     **
     **  Test jauPvdpv function.
     **
@@ -4562,10 +4186,7 @@ public class JSOFATest {
 
     @Test
     public void t_pvm()
-    /*
-    **  - - - - - -
-    **   t _ p v m
-    **  - - - - - -
+    /**
     **
     **  Test jauPvm function.
     **
@@ -4597,10 +4218,7 @@ public class JSOFATest {
 
     @Test
     public void t_pvmpv()
-    /*
-    **  - - - - - - - -
-    **   t _ p v m p v
-    **  - - - - - - - -
+    /**
     **
     **  Test jauPvmpv function.
     **
@@ -4645,10 +4263,7 @@ public class JSOFATest {
 
     @Test
     public void t_pvppv()
-    /*
-    **  - - - - - - - -
-    **   t _ p v p p v
-    **  - - - - - - - -
+    /**
     **
     **  Test jauPvppv function.
     **
@@ -4693,10 +4308,7 @@ public class JSOFATest {
 
     @Test
     public void t_pvstar()
-    /*
-    **  - - - - - - - - -
-    **   t _ p v s t a r
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauPvstar function.
     **
@@ -4737,10 +4349,7 @@ public class JSOFATest {
 
     @Test
     public void t_pvu()
-    /*
-    **  - - - - - -
-    **   t _ p v u
-    **  - - - - - -
+    /**
     **
     **  Test jauPvu function.
     **
@@ -4777,10 +4386,7 @@ public class JSOFATest {
 
     @Test
     public void t_pvup()
-    /*
-    **  - - - - - - -
-    **   t _ p v u p
-    **  - - - - - - -
+    /**
     **
     **  Test jauPvup function.
     **
@@ -4813,10 +4419,7 @@ public class JSOFATest {
 
     @Test
     public void t_pvxpv()
-    /*
-    **  - - - - - - - -
-    **   t _ p v x p v
-    **  - - - - - - - -
+    /**
     **
     **  Test jauPvxpv function.
     **
@@ -4861,10 +4464,7 @@ public class JSOFATest {
 
     @Test
     public void t_pxp()
-    /*
-    **  - - - - - -
-    **   t _ p x p
-    **  - - - - - -
+    /**
     **
     **  Test jauPxp function.
     **
@@ -4897,10 +4497,7 @@ public class JSOFATest {
 
     @Test
     public void t_rm2v()
-    /*
-    **  - - - - - - -
-    **   t _ r m 2 v
-    **  - - - - - - -
+    /**
     **
     **  Test jauRm2v function.
     **
@@ -4937,10 +4534,7 @@ public class JSOFATest {
 
     @Test
     public void t_rv2m()
-    /*
-    **  - - - - - - -
-    **   t _ r v 2 m
-    **  - - - - - - -
+    /**
     **
     **  Test jauRv2m function.
     **
@@ -4977,10 +4571,7 @@ public class JSOFATest {
 
     @Test
     public void t_rx()
-    /*
-    **  - - - - -
-    **   t _ r x
-    **  - - - - -
+    /**
     **
     **  Test jauRx function.
     **
@@ -5027,10 +4618,7 @@ public class JSOFATest {
 
     @Test
     public void t_rxp()
-    /*
-    **  - - - - - -
-    **   t _ r x p
-    **  - - - - - -
+    /**
     **
     **  Test jauRxp function.
     **
@@ -5071,10 +4659,7 @@ public class JSOFATest {
 
     @Test
     public void t_rxpv()
-    /*
-    **  - - - - - - -
-    **   t _ r x p v
-    **  - - - - - - -
+    /**
     **
     **  Test jauRxpv function.
     **
@@ -5124,10 +4709,7 @@ public class JSOFATest {
 
     @Test
     public void t_rxr()
-    /*
-    **  - - - - - -
-    **   t _ r x r
-    **  - - - - - -
+    /**
     **
     **  Test jauRxr function.
     **
@@ -5184,10 +4766,7 @@ public class JSOFATest {
 
     @Test
     public void t_ry()
-    /*
-    **  - - - - -
-    **   t _ r y
-    **  - - - - -
+    /**
     **
     **  Test jauRy function.
     **
@@ -5234,10 +4813,7 @@ public class JSOFATest {
 
     @Test
     public void t_rz()
-    /*
-    **  - - - - -
-    **   t _ r z
-    **  - - - - -
+    /**
     **
     **  Test jauRz function.
     **
@@ -5284,10 +4860,7 @@ public class JSOFATest {
 
     @Test
     public void t_s00a()
-    /*
-    **  - - - - - - -
-    **   t _ s 0 0 a
-    **  - - - - - - -
+    /**
     **
     **  Test jauS00a function.
     **
@@ -5310,10 +4883,7 @@ public class JSOFATest {
 
     @Test
     public void t_s00b()
-    /*
-    **  - - - - - - -
-    **   t _ s 0 0 b
-    **  - - - - - - -
+    /**
     **
     **  Test jauS00b function.
     **
@@ -5336,10 +4906,7 @@ public class JSOFATest {
 
     @Test
     public void t_s00()
-    /*
-    **  - - - - - -
-    **   t _ s 0 0
-    **  - - - - - -
+    /**
     **
     **  Test jauS00 function.
     **
@@ -5365,10 +4932,7 @@ public class JSOFATest {
 
     @Test
     public void t_s06a()
-    /*
-    **  - - - - - - -
-    **   t _ s 0 6 a
-    **  - - - - - - -
+    /**
     **
     **  Test jauS06a function.
     **
@@ -5391,10 +4955,7 @@ public class JSOFATest {
 
     @Test
     public void t_s06()
-    /*
-    **  - - - - - -
-    **   t _ s 0 6
-    **  - - - - - -
+    /**
     **
     **  Test jauS06 function.
     **
@@ -5420,10 +4981,7 @@ public class JSOFATest {
 
     @Test
     public void t_s2c()
-    /*
-    **  - - - - - -
-    **   t _ s 2 c
-    **  - - - - - -
+    /**
     **
     **  Test jauS2c function.
     **
@@ -5448,10 +5006,7 @@ public class JSOFATest {
 
     @Test
     public void t_s2p()
-    /*
-    **  - - - - - -
-    **   t _ s 2 p
-    **  - - - - - -
+    /**
     **
     **  Test jauS2p function.
     **
@@ -5476,10 +5031,7 @@ public class JSOFATest {
 
     @Test
     public void t_s2pv()
-    /*
-    **  - - - - - - -
-    **   t _ s 2 p v
-    **  - - - - - - -
+    /**
     **
     **  Test jauS2pv function.
     **
@@ -5508,10 +5060,7 @@ public class JSOFATest {
 
     @Test
     public void t_s2xpv()
-    /*
-    **  - - - - - - - -
-    **   t _ s 2 x p v
-    **  - - - - - - - -
+    /**
     **
     **  Test jauS2xpv function.
     **
@@ -5551,10 +5100,7 @@ public class JSOFATest {
 
     @Test
     public void t_sepp()
-    /*
-    **  - - - - - - -
-    **   t _ s e p p
-    **  - - - - - - -
+    /**
     **
     **  Test jauSepp function.
     **
@@ -5585,10 +5131,7 @@ public class JSOFATest {
 
     @Test
     public void t_seps()
-    /*
-    **  - - - - - - -
-    **   t _ s e p s
-    **  - - - - - - -
+    /**
     **
     **  Test jauSeps function.
     **
@@ -5617,10 +5160,7 @@ public class JSOFATest {
 
     @Test
     public void t_sp00()
-    /*
-    **  - - - - - - -
-    **   t _ s p 0 0
-    **  - - - - - - -
+    /**
     **
     **  Test jauSp00 function.
     **
@@ -5639,10 +5179,7 @@ public class JSOFATest {
 
     @Test
     public void t_starpm()
-    /*
-    **  - - - - - - - - -
-    **   t _ s t a r p m
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauStarpm function.
     **
@@ -5685,10 +5222,7 @@ public class JSOFATest {
 
     @Test
     public void t_starpv()
-    /*
-    **  - - - - - - - - -
-    **   t _ s t a r p v
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauStarpv function.
     **
@@ -5701,7 +5235,7 @@ public class JSOFATest {
     */
     {
        double ra, dec, pmr, pmd, px, rv, pv[][] = new double[2][3];
-       int j;
+    
 
 
        ra =   0.01686756;
@@ -5711,7 +5245,7 @@ public class JSOFATest {
        px =   0.74723;
        rv = -21.6;
 
-       j = jauStarpv(ra, dec, pmr, pmd, px, rv, pv);
+       int j = jauStarpv(ra, dec, pmr, pmd, px, rv, pv);
 
        vvd(pv[0][0], 126668.5912743160601, 1e-10,"jauStarpv", "11");
        vvd(pv[0][1], 2136.792716839935195, 1e-12,"jauStarpv", "12");
@@ -5727,10 +5261,7 @@ public class JSOFATest {
 
     @Test
     public void t_sxp()
-    /*
-    **  - - - - - -
-    **   t _ s x p
-    **  - - - - - -
+    /**
     **
     **  Test jauSxp function.
     **
@@ -5762,10 +5293,7 @@ public class JSOFATest {
 
     @Test
     public void t_sxpv()
-    /*
-    **  - - - - - - -
-    **   t _ s x p v
-    **  - - - - - - -
+    /**
     **
     **  Test jauSxpv function.
     **
@@ -5804,34 +5332,28 @@ public class JSOFATest {
 
     @Test
      public void t_taitt()
-    /*
-    **  - - - - - - - -
-    **   t _ t a i t t
-    **  - - - - - - - -
+    /**
     **
-    **  Test iauTaitt function.
+    **  Test jauTaitt function.
     **
     **  Returned:
     **     status    int         TRUE = success, FALSE = fail
     **
-    **  Called:  iauTaitt, vvd, viv
+    **  Called:  jauTaitt, vvd, viv
     **
     **  This revision:  2010 September 7
     */
     {
        JulianDate jd = jauTaitt(2453750.5, 0.892482639);
 
-       vvd(jd.djm0, 2453750.5, 1e-6, "iauTaitt", "t1");
-       vvd(jd.djm1, 0.892855139, 1e-12, "iauTaitt", "t2");
+       vvd(jd.djm0, 2453750.5, 1e-6, "jauTaitt", "t1");
+       vvd(jd.djm1, 0.892855139, 1e-12, "jauTaitt", "t2");
 
     }
 
      @Test
      public void t_taiut1()
-    /*
-    **  - - - - - - - - -
-    **   t _ t a i u t 1
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauTaiut1 function.
     **
@@ -5852,10 +5374,7 @@ public class JSOFATest {
 
      @Test
      public void t_taiutc() throws JSOFAIllegalParameter, JSOFAInternalError
-    /*
-    **  - - - - - - - - -
-    **   t _ t a i u t c
-    **  - - - - - - - - - - - -
+    /**
     **
     **  Test jauTaiutc function.
     **
@@ -5876,10 +5395,7 @@ public class JSOFATest {
 
      @Test
      public void t_tcbtdb()
-    /*
-    **  - - - - - - - - -
-    **   t _ t c b t d b
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauTcbtdb function.
     **
@@ -5900,10 +5416,7 @@ public class JSOFATest {
 
      @Test
      public void t_tcgtt()
-    /*
-    **  - - - - - - - -
-    **   t _ t c g t t
-    **  - - - - - - - -
+    /**
     **
     **  Test jauTcgtt function.
     **
@@ -5923,10 +5436,7 @@ public class JSOFATest {
     }
      @Test
      public void t_tdbtcb()
-    /*
-    **  - - - - - - - - -
-    **   t _ t d b t c b
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauTdbtcb function.
     **
@@ -5947,10 +5457,7 @@ public class JSOFATest {
 
      @Test
      public void t_tdbtt()
-    /*
-    **  - - - - - - - -
-    **   t _ t d b t t
-    **  - - - - - - - -
+    /**
     **
     **  Test jauTdbtt function.
     **
@@ -5986,7 +5493,7 @@ public class JSOFATest {
 //    */
 //    {
 //       double a;
-//       int j;
+//    
 //
 //
 //       j = jauTf2a('+', 4, 58, 20.2, a);
@@ -6013,7 +5520,7 @@ public class JSOFATest {
 //    */
 //    {
 //       double d;
-//       int j;
+//    
 //
 //
 //       j = jauTf2d(' ', 23, 55, 10.9, d);
@@ -6027,10 +5534,7 @@ public class JSOFATest {
     
     @Test
     public void t_tr()
-    /*
-    **  - - - - -
-    **   t _ t r
-    **  - - - - -
+    /**
     **
     **  Test jauTr function.
     **
@@ -6075,10 +5579,7 @@ public class JSOFATest {
 
     @Test
     public void t_trxp()
-    /*
-    **  - - - - - - -
-    **   t _ t r x p
-    **  - - - - - - -
+    /**
     **
     **  Test jauTrxp function.
     **
@@ -6119,10 +5620,7 @@ public class JSOFATest {
 
     @Test
     public void t_trxpv()
-    /*
-    **  - - - - - - - -
-    **   t _ t r x p v
-    **  - - - - - - - -
+    /**
     **
     **  Test jauTrxpv function.
     **
@@ -6171,10 +5669,7 @@ public class JSOFATest {
     
     @Test
     public void t_tttai()
-    /*
-    **  - - - - - - - -
-    **   t _ t t t a i
-    **  - - - - - - - -
+    /**
     **
     **  Test jauTttai function.
     **
@@ -6199,10 +5694,7 @@ public class JSOFATest {
 
     @Test
     public void t_tttcg()
-    /*
-    **  - - - - - - - -
-    **   t _ t t t c g
-    **  - - - - - - - -
+    /**
     **
     **  Test jauTttcg function.
     **
@@ -6224,10 +5716,7 @@ public class JSOFATest {
 
     @Test
     public void t_tttdb()
-    /*
-    **  - - - - - - - -
-    **   t _ t t t d b
-    **  - - - - - - - -
+    /**
     **
     **  Test jauTttdb function.
     **
@@ -6250,10 +5739,7 @@ public class JSOFATest {
 
     @Test
     public void t_ttut1()
-    /*
-    **  - - - - - - - -
-    **   t _ t t u t 1
-    **  - - - - - - - -
+    /**
     **
     **  Test jauTtut1 function.
     **
@@ -6265,10 +5751,6 @@ public class JSOFATest {
     **  This revision:  2010 September 7
     */
     {
-       double u1, u2;
-       int j;
-
-
        JulianDate jd = jauTtut1(2453750.5, 0.892855139, 64.8499);
 
        vvd(jd.djm0, 2453750.5, 1e-6, "jauTtut1", "u1");
@@ -6278,10 +5760,7 @@ public class JSOFATest {
 
     @Test
     public void t_ut1tai()
-    /*
-    **  - - - - - - - - -
-    **   t _ u t 1 t a i
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauUt1tai function.
     **
@@ -6304,10 +5783,7 @@ public class JSOFATest {
 
     @Test
     public void t_ut1tt()
-    /*
-    **  - - - - - - - - - - -
-    **   t _ u t 1 t t
-    **  - - - - - - - - - - -
+    /**
     **
     **  Test jauUt1tt function.
     **
@@ -6319,10 +5795,6 @@ public class JSOFATest {
     **  This revision:  2010 September 7
     */
     {
-       double t1, t2;
-       int j;
-
-
        JulianDate jd = jauUt1tt(2453750.5, 0.892104561, 64.8499);
 
        vvd(jd.djm0, 2453750.5, 1e-6, "jauUt1tt", "t1");
@@ -6332,10 +5804,7 @@ public class JSOFATest {
 
     @Test
     public void t_ut1utc() throws JSOFAIllegalParameter, JSOFAInternalError
-    /*
-    **  - - - - - - - - -
-    **   t _ u t 1 u t c
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauUt1utc function.
     **
@@ -6347,10 +5816,6 @@ public class JSOFATest {
     **  This revision:  2010 September 7
     */
     {
-       double u1, u2;
-       int j;
-
-
        JulianDate jd = jauUt1utc(2453750.5, 0.892104561, 0.3341);
 
        vvd(jd.djm0, 2453750.5, 1e-6, "jauUt1utc", "u1");
@@ -6361,10 +5826,7 @@ public class JSOFATest {
 
     @Test
     public void t_utctai() throws JSOFAIllegalParameter, JSOFAInternalError
-    /*
-    **  - - - - - - - - -
-    **   t _ u t c t a i
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauUtctai function.
     **
@@ -6387,10 +5849,7 @@ public class JSOFATest {
 
     @Test
     public void t_utcut1() throws JSOFAIllegalParameter, JSOFAInternalError
-    /*
-    **  - - - - - - - - -
-    **   t _ u t c u t 1
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauUtcut1 function.
     **
@@ -6411,10 +5870,7 @@ public class JSOFATest {
 
     @Test
     public void t_xy06()
-    /*
-    **  - - - - - - -
-    **   t _ x y 0 6
-    **  - - - - - - -
+    /**
     **
     **  Test jauXy06 function.
     **
@@ -6436,10 +5892,7 @@ public class JSOFATest {
 
     @Test
     public void t_xys00a()
-    /*
-    **  - - - - - - - - -
-    **   t _ x y s 0 0 a
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauXys00a function.
     **
@@ -6462,10 +5915,7 @@ public class JSOFATest {
 
     @Test
     public void t_xys00b()
-    /*
-    **  - - - - - - - - -
-    **   t _ x y s 0 0 b
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauXys00b function.
     **
@@ -6489,10 +5939,7 @@ public class JSOFATest {
 
     @Test
     public void t_xys06a()
-    /*
-    **  - - - - - - - - -
-    **   t _ x y s 0 6 a
-    **  - - - - - - - - -
+    /**
     **
     **  Test jauXys06a function.
     **
@@ -6515,10 +5962,7 @@ public class JSOFATest {
 
     @Test
     public void t_zp()
-    /*
-    **  - - - - -
-    **   t _ z p
-    **  - - - - -
+    /**
     **
     **  Test jauZp function.
     **
@@ -6547,10 +5991,7 @@ public class JSOFATest {
 
     @Test
     public void t_zpv()
-    /*
-    **  - - - - - -
-    **   t _ z p v
-    **  - - - - - -
+    /**
     **
     **  Test jauZpv function.
     **
@@ -6587,10 +6028,7 @@ public class JSOFATest {
 
     @Test
     public void t_zr()
-    /*
-    **  - - - - -
-    **   t _ z r
-    **  - - - - -
+    /**
     **
     **  Test jauZr function.
     **
@@ -6638,17 +6076,14 @@ public class JSOFATest {
     
     @Test
 public void t_apcg()
-    /*
-    **  - - - - - - -
-    **   t _ a p c g
-    **  - - - - - - -
+    /**
     **
-    **  Test iauApcg function.
+    **  Test jauApcg function.
     **
     **  Returned:
     **     status    int         FALSE = success, TRUE = fail
     **
-    **  Called:  iauApcg, vvd
+    **  Called:  jauApcg, vvd
     **
     **  This revision:  2013 October 3
     */
@@ -6672,63 +6107,60 @@ public void t_apcg()
        jauApcg(date1, date2, ebpv, ehp, astrom);
 
        vvd(astrom.pmt, 12.65133794027378508, 1e-11,
-                       "iauApcg", "pmt");
+                       "jauApcg", "pmt");
        vvd(astrom.eb[0], 0.901310875, 1e-12,
-                         "iauApcg", "eb(1)");
+                         "jauApcg", "eb(1)");
        vvd(astrom.eb[1], -0.417402664, 1e-12,
-                         "iauApcg", "eb(2)");
+                         "jauApcg", "eb(2)");
        vvd(astrom.eb[2], -0.180982288, 1e-12,
-                         "iauApcg", "eb(3)");
+                         "jauApcg", "eb(3)");
        vvd(astrom.eh[0], 0.8940025429324143045, 1e-12,
-                         "iauApcg", "eh(1)");
+                         "jauApcg", "eh(1)");
        vvd(astrom.eh[1], -0.4110930268679817955, 1e-12,
-                         "iauApcg", "eh(2)");
+                         "jauApcg", "eh(2)");
        vvd(astrom.eh[2], -0.1782189004872870264, 1e-12,
-                         "iauApcg", "eh(3)");
+                         "jauApcg", "eh(3)");
        vvd(astrom.em, 1.010465295811013146, 1e-12,
-                      "iauApcg", "em");
+                      "jauApcg", "em");
        vvd(astrom.v[0], 0.4289638897813379954e-4, 1e-16,
-                        "iauApcg", "v(1_");
+                        "jauApcg", "v(1_");
        vvd(astrom.v[1], 0.8115034021720941898e-4, 1e-16,
-                        "iauApcg", "v(2)");
+                        "jauApcg", "v(2)");
        vvd(astrom.v[2], 0.3517555123437237778e-4, 1e-16,
-                        "iauApcg", "v(3)");
+                        "jauApcg", "v(3)");
        vvd(astrom.bm1, 0.9999999951686013336, 1e-12,
-                       "iauApcg", "bm1");
+                       "jauApcg", "bm1");
        vvd(astrom.bpn[0][0], 1.0, 0.0,
-                             "iauApcg", "bpn(1,1)");
+                             "jauApcg", "bpn(1,1)");
        vvd(astrom.bpn[1][0], 0.0, 0.0,
-                             "iauApcg", "bpn(2,1)");
+                             "jauApcg", "bpn(2,1)");
        vvd(astrom.bpn[2][0], 0.0, 0.0,
-                             "iauApcg", "bpn(3,1)");
+                             "jauApcg", "bpn(3,1)");
        vvd(astrom.bpn[0][1], 0.0, 0.0,
-                             "iauApcg", "bpn(1,2)");
+                             "jauApcg", "bpn(1,2)");
        vvd(astrom.bpn[1][1], 1.0, 0.0,
-                             "iauApcg", "bpn(2,2)");
+                             "jauApcg", "bpn(2,2)");
        vvd(astrom.bpn[2][1], 0.0, 0.0,
-                             "iauApcg", "bpn(3,2)");
+                             "jauApcg", "bpn(3,2)");
        vvd(astrom.bpn[0][2], 0.0, 0.0,
-                             "iauApcg", "bpn(1,3)");
+                             "jauApcg", "bpn(1,3)");
        vvd(astrom.bpn[1][2], 0.0, 0.0,
-                             "iauApcg", "bpn(2,3)");
+                             "jauApcg", "bpn(2,3)");
        vvd(astrom.bpn[2][2], 1.0, 0.0,
-                             "iauApcg", "bpn(3,3)");
+                             "jauApcg", "bpn(3,3)");
 
     }
 
     @Test
     public void t_ab()
-    /*
-    **  - - - - -
-    **   t _ a b
-    **  - - - - -
+    /**
     **
-    **  Test iauAb function.
+    **  Test jauAb function.
     **
     **  Returned:
     **     status    int         FALSE = success, TRUE = fail
     **
-    **  Called:  iauAb, vvd
+    **  Called:  jauAb, vvd
     **
     **  This revision:  2013 October 1
     */
@@ -6747,25 +6179,22 @@ public void t_apcg()
 
        ppr = jauAb(pnat, v, s, bm1);
 
-       vvd(ppr[0], -0.7631631094219556269, 1e-12, "iauAb", "1");
-       vvd(ppr[1], -0.6087553082505590832, 1e-12, "iauAb", "2");
-       vvd(ppr[2], -0.2167926269368471279, 1e-12, "iauAb", "3");
+       vvd(ppr[0], -0.7631631094219556269, 1e-12, "jauAb", "1");
+       vvd(ppr[1], -0.6087553082505590832, 1e-12, "jauAb", "2");
+       vvd(ppr[2], -0.2167926269368471279, 1e-12, "jauAb", "3");
 
     }
 
     @Test
     public void t_apcg13()
-    /*
-    **  - - - - - - - - -
-    **   t _ a p c g 1 3
-    **  - - - - - - - - -
+    /**
     **
-    **  Test iauApcg13 function.
+    **  Test jauApcg13 function.
     **
     **  Returned:
     **     status    int         FALSE = success, TRUE = fail
     **
-    **  Called:  iauApcg13, vvd
+    **  Called:  jauApcg13, vvd
     **
     **  This revision:  2013 October 3
     */
@@ -6780,62 +6209,59 @@ public void t_apcg()
        jauApcg13(date1, date2, astrom);
 
        vvd(astrom.pmt, 12.65133794027378508, 1e-11,
-                       "iauApcg13", "pmt");
+                       "jauApcg13", "pmt");
        vvd(astrom.eb[0], 0.9013108747340644755, 1e-12,
-                       "iauApcg13", "eb(1)");
+                       "jauApcg13", "eb(1)");
        vvd(astrom.eb[1], -0.4174026640406119957, 1e-12,
-                       "iauApcg13", "eb(2)");
+                       "jauApcg13", "eb(2)");
        vvd(astrom.eb[2], -0.1809822877867817771, 1e-12,
-                       "iauApcg13", "eb(3)");
+                       "jauApcg13", "eb(3)");
        vvd(astrom.eh[0], 0.8940025429255499549, 1e-12,
-                       "iauApcg13", "eh(1)");
+                       "jauApcg13", "eh(1)");
        vvd(astrom.eh[1], -0.4110930268331896318, 1e-12,
-                       "iauApcg13", "eh(2)");
+                       "jauApcg13", "eh(2)");
        vvd(astrom.eh[2], -0.1782189006019749850, 1e-12,
-                       "iauApcg13", "eh(3)");
+                       "jauApcg13", "eh(3)");
        vvd(astrom.em, 1.010465295964664178, 1e-12,
-                       "iauApcg13", "em");
+                       "jauApcg13", "em");
        vvd(astrom.v[0], 0.4289638897157027528e-4, 1e-16,
-                       "iauApcg13", "v(1)");
+                       "jauApcg13", "v(1)");
        vvd(astrom.v[1], 0.8115034002544663526e-4, 1e-16,
-                       "iauApcg13", "v(2)");
+                       "jauApcg13", "v(2)");
        vvd(astrom.v[2], 0.3517555122593144633e-4, 1e-16,
-                       "iauApcg13", "v(3)");
+                       "jauApcg13", "v(3)");
        vvd(astrom.bm1, 0.9999999951686013498, 1e-12,
-                       "iauApcg13", "bm1");
+                       "jauApcg13", "bm1");
        vvd(astrom.bpn[0][0], 1.0, 0.0,
-                             "iauApcg13", "bpn(1,1)");
+                             "jauApcg13", "bpn(1,1)");
        vvd(astrom.bpn[1][0], 0.0, 0.0,
-                             "iauApcg13", "bpn(2,1)");
+                             "jauApcg13", "bpn(2,1)");
        vvd(astrom.bpn[2][0], 0.0, 0.0,
-                             "iauApcg13", "bpn(3,1)");
+                             "jauApcg13", "bpn(3,1)");
        vvd(astrom.bpn[0][1], 0.0, 0.0,
-                             "iauApcg13", "bpn(1,2)");
+                             "jauApcg13", "bpn(1,2)");
        vvd(astrom.bpn[1][1], 1.0, 0.0,
-                             "iauApcg13", "bpn(2,2)");
+                             "jauApcg13", "bpn(2,2)");
        vvd(astrom.bpn[2][1], 0.0, 0.0,
-                             "iauApcg13", "bpn(3,2)");
+                             "jauApcg13", "bpn(3,2)");
        vvd(astrom.bpn[0][2], 0.0, 0.0,
-                             "iauApcg13", "bpn(1,3)");
+                             "jauApcg13", "bpn(1,3)");
        vvd(astrom.bpn[1][2], 0.0, 0.0,
-                             "iauApcg13", "bpn(2,3)");
+                             "jauApcg13", "bpn(2,3)");
        vvd(astrom.bpn[2][2], 1.0, 0.0,
-                             "iauApcg13", "bpn(3,3)");
+                             "jauApcg13", "bpn(3,3)");
 
     }
     @Test
     public void t_apci()
-    /*
-    **  - - - - - - -
-    **   t _ a p c i
-    **  - - - - - - -
+    /**
     **
-    **  Test iauApci function.
+    **  Test jauApci function.
     **
     **  Returned:
     **     status    int         FALSE = success, TRUE = fail
     **
-    **  Called:  iauApci, vvd
+    **  Called:  jauApci, vvd
     **
     **  This revision:  2013 October 3
     */
@@ -6862,63 +6288,60 @@ public void t_apcg()
        jauApci(date1, date2, ebpv, ehp, x, y, s, astrom);
 
        vvd(astrom.pmt, 12.65133794027378508, 1e-11,
-                       "iauApci", "pmt");
+                       "jauApci", "pmt");
        vvd(astrom.eb[0], 0.901310875, 1e-12,
-                         "iauApci", "eb(1)");
+                         "jauApci", "eb(1)");
        vvd(astrom.eb[1], -0.417402664, 1e-12,
-                         "iauApci", "eb(2)");
+                         "jauApci", "eb(2)");
        vvd(astrom.eb[2], -0.180982288, 1e-12,
-                         "iauApci", "eb(3)");
+                         "jauApci", "eb(3)");
        vvd(astrom.eh[0], 0.8940025429324143045, 1e-12,
-                         "iauApci", "eh(1)");
+                         "jauApci", "eh(1)");
        vvd(astrom.eh[1], -0.4110930268679817955, 1e-12,
-                         "iauApci", "eh(2)");
+                         "jauApci", "eh(2)");
        vvd(astrom.eh[2], -0.1782189004872870264, 1e-12,
-                         "iauApci", "eh(3)");
+                         "jauApci", "eh(3)");
        vvd(astrom.em, 1.010465295811013146, 1e-12,
-                      "iauApci", "em");
+                      "jauApci", "em");
        vvd(astrom.v[0], 0.4289638897813379954e-4, 1e-16,
-                        "iauApci", "v(1)");
+                        "jauApci", "v(1)");
        vvd(astrom.v[1], 0.8115034021720941898e-4, 1e-16,
-                        "iauApci", "v(2)");
+                        "jauApci", "v(2)");
        vvd(astrom.v[2], 0.3517555123437237778e-4, 1e-16,
-                        "iauApci", "v(3)");
+                        "jauApci", "v(3)");
        vvd(astrom.bm1, 0.9999999951686013336, 1e-12,
-                       "iauApci", "bm1");
+                       "jauApci", "bm1");
        vvd(astrom.bpn[0][0], 0.9999991390295159156, 1e-12,
-                             "iauApci", "bpn(1,1)");
+                             "jauApci", "bpn(1,1)");
        vvd(astrom.bpn[1][0], 0.4978650072505016932e-7, 1e-12,
-                             "iauApci", "bpn(2,1)");
+                             "jauApci", "bpn(2,1)");
        vvd(astrom.bpn[2][0], 0.1312227200000000000e-2, 1e-12,
-                             "iauApci", "bpn(3,1)");
+                             "jauApci", "bpn(3,1)");
        vvd(astrom.bpn[0][1], -0.1136336653771609630e-7, 1e-12,
-                             "iauApci", "bpn(1,2)");
+                             "jauApci", "bpn(1,2)");
        vvd(astrom.bpn[1][1], 0.9999999995713154868, 1e-12,
-                             "iauApci", "bpn(2,2)");
+                             "jauApci", "bpn(2,2)");
        vvd(astrom.bpn[2][1], -0.2928086230000000000e-4, 1e-12,
-                             "iauApci", "bpn(3,2)");
+                             "jauApci", "bpn(3,2)");
        vvd(astrom.bpn[0][2], -0.1312227200895260194e-2, 1e-12,
-                             "iauApci", "bpn(1,3)");
+                             "jauApci", "bpn(1,3)");
        vvd(astrom.bpn[1][2], 0.2928082217872315680e-4, 1e-12,
-                             "iauApci", "bpn(2,3)");
+                             "jauApci", "bpn(2,3)");
        vvd(astrom.bpn[2][2], 0.9999991386008323373, 1e-12,
-                             "iauApci", "bpn(3,3)");
+                             "jauApci", "bpn(3,3)");
 
     }
     
     @Test
     public void t_apci13()
-    /*
-    **  - - - - - - - - -
-    **   t _ a p c i 1 3
-    **  - - - - - - - - -
+    /**
     **
-    **  Test iauApci13 function.
+    **  Test jauApci13 function.
     **
     **  Returned:
     **     status    int         FALSE = success, TRUE = fail
     **
-    **  Called:  iauApci13, vvd
+    **  Called:  jauApci13, vvd
     **
     **  This revision:  2013 October 3
     */
@@ -6933,65 +6356,62 @@ public void t_apcg()
        eo = jauApci13(date1, date2, astrom);
 
        vvd(astrom.pmt, 12.65133794027378508, 1e-11,
-                       "iauApci13", "pmt");
+                       "jauApci13", "pmt");
        vvd(astrom.eb[0], 0.9013108747340644755, 1e-12,
-                         "iauApci13", "eb(1)");
+                         "jauApci13", "eb(1)");
        vvd(astrom.eb[1], -0.4174026640406119957, 1e-12,
-                         "iauApci13", "eb(2)");
+                         "jauApci13", "eb(2)");
        vvd(astrom.eb[2], -0.1809822877867817771, 1e-12,
-                         "iauApci13", "eb(3)");
+                         "jauApci13", "eb(3)");
        vvd(astrom.eh[0], 0.8940025429255499549, 1e-12,
-                         "iauApci13", "eh(1)");
+                         "jauApci13", "eh(1)");
        vvd(astrom.eh[1], -0.4110930268331896318, 1e-12,
-                         "iauApci13", "eh(2)");
+                         "jauApci13", "eh(2)");
        vvd(astrom.eh[2], -0.1782189006019749850, 1e-12,
-                         "iauApci13", "eh(3)");
+                         "jauApci13", "eh(3)");
        vvd(astrom.em, 1.010465295964664178, 1e-12,
-                      "iauApci13", "em");
+                      "jauApci13", "em");
        vvd(astrom.v[0], 0.4289638897157027528e-4, 1e-16,
-                        "iauApci13", "v(1)");
+                        "jauApci13", "v(1)");
        vvd(astrom.v[1], 0.8115034002544663526e-4, 1e-16,
-                        "iauApci13", "v(2)");
+                        "jauApci13", "v(2)");
        vvd(astrom.v[2], 0.3517555122593144633e-4, 1e-16,
-                        "iauApci13", "v(3)");
+                        "jauApci13", "v(3)");
        vvd(astrom.bm1, 0.9999999951686013498, 1e-12,
-                       "iauApci13", "bm1");
+                       "jauApci13", "bm1");
        vvd(astrom.bpn[0][0], 0.9999992060376761710, 1e-12,
-                             "iauApci13", "bpn(1,1)");
+                             "jauApci13", "bpn(1,1)");
        vvd(astrom.bpn[1][0], 0.4124244860106037157e-7, 1e-12,
-                             "iauApci13", "bpn(2,1)");
+                             "jauApci13", "bpn(2,1)");
        vvd(astrom.bpn[2][0], 0.1260128571051709670e-2, 1e-12,
-                             "iauApci13", "bpn(3,1)");
+                             "jauApci13", "bpn(3,1)");
        vvd(astrom.bpn[0][1], -0.1282291987222130690e-7, 1e-12,
-                             "iauApci13", "bpn(1,2)");
+                             "jauApci13", "bpn(1,2)");
        vvd(astrom.bpn[1][1], 0.9999999997456835325, 1e-12,
-                             "iauApci13", "bpn(2,2)");
+                             "jauApci13", "bpn(2,2)");
        vvd(astrom.bpn[2][1], -0.2255288829420524935e-4, 1e-12,
-                             "iauApci13", "bpn(3,2)");
+                             "jauApci13", "bpn(3,2)");
        vvd(astrom.bpn[0][2], -0.1260128571661374559e-2, 1e-12,
-                             "iauApci13", "bpn(1,3)");
+                             "jauApci13", "bpn(1,3)");
        vvd(astrom.bpn[1][2], 0.2255285422953395494e-4, 1e-12,
-                             "iauApci13", "bpn(2,3)");
+                             "jauApci13", "bpn(2,3)");
        vvd(astrom.bpn[2][2], 0.9999992057833604343, 1e-12,
-                             "iauApci13", "bpn(3,3)");
+                             "jauApci13", "bpn(3,3)");
        vvd(eo, -0.2900618712657375647e-2, 1e-12,
-               "iauApci13", "eo");
+               "jauApci13", "eo");
 
     } 
     
     @Test
     public void t_apco() throws JSOFAIllegalParameter, JSOFAInternalError
-    /*
-    **  - - - - - - -
-    **   t _ a p c o
-    **  - - - - - - -
+    /**
     **
-    **  Test iauApco function.
+    **  Test jauApco function.
     **
     **  Returned:
     **     status    int         FALSE = success, TRUE = fail
     **
-    **  Called:  iauApco, vvd
+    **  Called:  jauApco, vvd
     **
     **  This revision:  2013 October 3
     */
@@ -7030,65 +6450,65 @@ public void t_apcg()
                refa, refb, astrom);
 
        vvd(astrom.pmt, 13.25248468622587269, 1e-11,
-                       "iauApco", "pmt");
+                       "jauApco", "pmt");
        vvd(astrom.eb[0], -0.9741827110630897003, 1e-12,
-                         "iauApco", "eb(1)");
+                         "jauApco", "eb(1)");
        vvd(astrom.eb[1], -0.2115130190135014340, 1e-12,
-                         "iauApco", "eb(2)");
+                         "jauApco", "eb(2)");
        vvd(astrom.eb[2], -0.09179840186968295686, 1e-12,
-                         "iauApco", "eb(3)");
+                         "jauApco", "eb(3)");
        vvd(astrom.eh[0], -0.9736425571689670428, 1e-12,
-                         "iauApco", "eh(1)");
+                         "jauApco", "eh(1)");
        vvd(astrom.eh[1], -0.2092452125848862201, 1e-12,
-                         "iauApco", "eh(2)");
+                         "jauApco", "eh(2)");
        vvd(astrom.eh[2], -0.09075578152261439954, 1e-12,
-                         "iauApco", "eh(3)");
+                         "jauApco", "eh(3)");
        vvd(astrom.em, 0.9998233241710617934, 1e-12,
-                      "iauApco", "em");
+                      "jauApco", "em");
        vvd(astrom.v[0], 0.2078704985147609823e-4, 1e-16,
-                        "iauApco", "v(1)");
+                        "jauApco", "v(1)");
        vvd(astrom.v[1], -0.8955360074407552709e-4, 1e-16,
-                        "iauApco", "v(2)");
+                        "jauApco", "v(2)");
        vvd(astrom.v[2], -0.3863338980073114703e-4, 1e-16,
-                        "iauApco", "v(3)");
+                        "jauApco", "v(3)");
        vvd(astrom.bm1, 0.9999999950277561600, 1e-12,
-                       "iauApco", "bm1");
+                       "jauApco", "bm1");
        vvd(astrom.bpn[0][0], 0.9999991390295159156, 1e-12,
-                             "iauApco", "bpn(1,1)");
+                             "jauApco", "bpn(1,1)");
        vvd(astrom.bpn[1][0], 0.4978650072505016932e-7, 1e-12,
-                             "iauApco", "bpn(2,1)");
+                             "jauApco", "bpn(2,1)");
        vvd(astrom.bpn[2][0], 0.1312227200000000000e-2, 1e-12,
-                             "iauApco", "bpn(3,1)");
+                             "jauApco", "bpn(3,1)");
        vvd(astrom.bpn[0][1], -0.1136336653771609630e-7, 1e-12,
-                             "iauApco", "bpn(1,2)");
+                             "jauApco", "bpn(1,2)");
        vvd(astrom.bpn[1][1], 0.9999999995713154868, 1e-12,
-                             "iauApco", "bpn(2,2)");
+                             "jauApco", "bpn(2,2)");
        vvd(astrom.bpn[2][1], -0.2928086230000000000e-4, 1e-12,
-                             "iauApco", "bpn(3,2)");
+                             "jauApco", "bpn(3,2)");
        vvd(astrom.bpn[0][2], -0.1312227200895260194e-2, 1e-12,
-                             "iauApco", "bpn(1,3)");
+                             "jauApco", "bpn(1,3)");
        vvd(astrom.bpn[1][2], 0.2928082217872315680e-4, 1e-12,
-                             "iauApco", "bpn(2,3)");
+                             "jauApco", "bpn(2,3)");
        vvd(astrom.bpn[2][2], 0.9999991386008323373, 1e-12,
-                             "iauApco", "bpn(3,3)");
+                             "jauApco", "bpn(3,3)");
        vvd(astrom.along, -0.5278008060301974337, 1e-12,
-                         "iauApco", "along");
+                         "jauApco", "along");
        vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
-                       "iauApco", "xpl");
+                       "jauApco", "xpl");
        vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
-                       "iauApco", "ypl");
+                       "jauApco", "ypl");
        vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
-                        "iauApco", "sphi");
+                        "jauApco", "sphi");
        vvd(astrom.cphi, 0.3299123514971474711, 1e-12,
-                        "iauApco", "cphi");
+                        "jauApco", "cphi");
        vvd(astrom.diurab, 0, 0,
-                          "iauApco", "diurab");
+                          "jauApco", "diurab");
        vvd(astrom.eral, 2.617608903969802566, 1e-12,
-                        "iauApco", "eral");
+                        "jauApco", "eral");
        vvd(astrom.refa, 0.2014187790000000000e-3, 1e-15,
-                        "iauApco", "refa");
+                        "jauApco", "refa");
        vvd(astrom.refb, -0.2361408310000000000e-6, 1e-18,
-                        "iauApco", "refb");
+                        "jauApco", "refb");
 
     }
     
@@ -7096,17 +6516,13 @@ public void t_apcg()
 
 @Test
     public void t_apco13() throws JSOFAIllegalParameter, JSOFAInternalError
-/*
-**  - - - - - - - - -
-**   t _ a p c o 1 3
-**  - - - - - - - - -
-**
-**  Test iauApco13 function.
+/**
+**  Test jauApco13 function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauApco13, vvd, viv
+**  Called:  jauApco13, vvd, viv
 **
 **  This revision:  2013 October 4
 */
@@ -7133,83 +6549,79 @@ public void t_apcg()
                  phpa, tc, rh, wl, astrom);
 
    vvd(astrom.pmt, 13.25248468622475727, 1e-11,
-                   "iauApco13", "pmt");
+                   "jauApco13", "pmt");
    vvd(astrom.eb[0], -0.9741827107321449445, 1e-12,
-                   "iauApco13", "eb(1)");
+                   "jauApco13", "eb(1)");
    vvd(astrom.eb[1], -0.2115130190489386190, 1e-12,
-                     "iauApco13", "eb(2)");
+                     "jauApco13", "eb(2)");
    vvd(astrom.eb[2], -0.09179840189515518726, 1e-12,
-                     "iauApco13", "eb(3)");
+                     "jauApco13", "eb(3)");
    vvd(astrom.eh[0], -0.9736425572586866640, 1e-12,
-                     "iauApco13", "eh(1)");
+                     "jauApco13", "eh(1)");
    vvd(astrom.eh[1], -0.2092452121602867431, 1e-12,
-                     "iauApco13", "eh(2)");
+                     "jauApco13", "eh(2)");
    vvd(astrom.eh[2], -0.09075578153903832650, 1e-12,
-                     "iauApco13", "eh(3)");
+                     "jauApco13", "eh(3)");
    vvd(astrom.em, 0.9998233240914558422, 1e-12,
-                  "iauApco13", "em");
+                  "jauApco13", "em");
    vvd(astrom.v[0], 0.2078704986751370303e-4, 1e-16,
-                    "iauApco13", "v(1)");
+                    "jauApco13", "v(1)");
    vvd(astrom.v[1], -0.8955360100494469232e-4, 1e-16,
-                    "iauApco13", "v(2)");
+                    "jauApco13", "v(2)");
    vvd(astrom.v[2], -0.3863338978840051024e-4, 1e-16,
-                    "iauApco13", "v(3)");
+                    "jauApco13", "v(3)");
    vvd(astrom.bm1, 0.9999999950277561368, 1e-12,
-                   "iauApco13", "bm1");
+                   "jauApco13", "bm1");
    vvd(astrom.bpn[0][0], 0.9999991390295147999, 1e-12,
-                         "iauApco13", "bpn(1,1)");
+                         "jauApco13", "bpn(1,1)");
    vvd(astrom.bpn[1][0], 0.4978650075315529277e-7, 1e-12,
-                         "iauApco13", "bpn(2,1)");
+                         "jauApco13", "bpn(2,1)");
    vvd(astrom.bpn[2][0], 0.001312227200850293372, 1e-12,
-                         "iauApco13", "bpn(3,1)");
+                         "jauApco13", "bpn(3,1)");
    vvd(astrom.bpn[0][1], -0.1136336652812486604e-7, 1e-12,
-                         "iauApco13", "bpn(1,2)");
+                         "jauApco13", "bpn(1,2)");
    vvd(astrom.bpn[1][1], 0.9999999995713154865, 1e-12,
-                         "iauApco13", "bpn(2,2)");
+                         "jauApco13", "bpn(2,2)");
    vvd(astrom.bpn[2][1], -0.2928086230975367296e-4, 1e-12,
-                         "iauApco13", "bpn(3,2)");
+                         "jauApco13", "bpn(3,2)");
    vvd(astrom.bpn[0][2], -0.001312227201745553566, 1e-12,
-                         "iauApco13", "bpn(1,3)");
+                         "jauApco13", "bpn(1,3)");
    vvd(astrom.bpn[1][2], 0.2928082218847679162e-4, 1e-12,
-                         "iauApco13", "bpn(2,3)");
+                         "jauApco13", "bpn(2,3)");
    vvd(astrom.bpn[2][2], 0.9999991386008312212, 1e-12,
-                         "iauApco13", "bpn(3,3)");
+                         "jauApco13", "bpn(3,3)");
    vvd(astrom.along, -0.5278008060301974337, 1e-12,
-                     "iauApco13", "along");
+                     "jauApco13", "along");
    vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
-                   "iauApco13", "xpl");
+                   "jauApco13", "xpl");
    vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
-                   "iauApco13", "ypl");
+                   "jauApco13", "ypl");
    vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
-                    "iauApco13", "sphi");
+                    "jauApco13", "sphi");
    vvd(astrom.cphi, 0.3299123514971474711, 1e-12,
-                    "iauApco13", "cphi");
+                    "jauApco13", "cphi");
    vvd(astrom.diurab, 0, 0,
-                      "iauApco13", "diurab");
+                      "jauApco13", "diurab");
    vvd(astrom.eral, 2.617608909189066140, 1e-12,
-                    "iauApco13", "eral");
+                    "jauApco13", "eral");
    vvd(astrom.refa, 0.2014187785940396921e-3, 1e-15,
-                    "iauApco13", "refa");
+                    "jauApco13", "refa");
    vvd(astrom.refb, -0.2361408314943696227e-6, 1e-18,
-                    "iauApco13", "refb");
+                    "jauApco13", "refb");
    vvd(eo, -0.003020548354802412839, 1e-14,
-           "iauApco13", "eo");
+           "jauApco13", "eo");
 
 }
 
 @Test
     public void t_apcs()
-/*
-**  - - - - - - -
-**   t _ a p c s
-**  - - - - - - -
-**
-**  Test iauApcs function.
+/**
+**  Test jauApcs function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauApcs, vvd
+**  Called:  jauApcs, vvd
 **
 **  This revision:  2013 October 3
 */
@@ -7239,63 +6651,59 @@ public void t_apcg()
    jauApcs(date1, date2, pv, ebpv, ehp, astrom);
 
    vvd(astrom.pmt, 13.25248468622587269, 1e-11,
-                   "iauApcs", "pmt");
+                   "jauApcs", "pmt");
    vvd(astrom.eb[0], -0.9741827110630456169, 1e-12,
-                     "iauApcs", "eb(1)");
+                     "jauApcs", "eb(1)");
    vvd(astrom.eb[1], -0.2115130190136085494, 1e-12,
-                     "iauApcs", "eb(2)");
+                     "jauApcs", "eb(2)");
    vvd(astrom.eb[2], -0.09179840186973175487, 1e-12,
-                     "iauApcs", "eb(3)");
+                     "jauApcs", "eb(3)");
    vvd(astrom.eh[0], -0.9736425571689386099, 1e-12,
-                     "iauApcs", "eh(1)");
+                     "jauApcs", "eh(1)");
    vvd(astrom.eh[1], -0.2092452125849967195, 1e-12,
-                     "iauApcs", "eh(2)");
+                     "jauApcs", "eh(2)");
    vvd(astrom.eh[2], -0.09075578152266466572, 1e-12,
-                     "iauApcs", "eh(3)");
+                     "jauApcs", "eh(3)");
    vvd(astrom.em, 0.9998233241710457140, 1e-12,
-                  "iauApcs", "em");
+                  "jauApcs", "em");
    vvd(astrom.v[0], 0.2078704985513566571e-4, 1e-16,
-                    "iauApcs", "v(1)");
+                    "jauApcs", "v(1)");
    vvd(astrom.v[1], -0.8955360074245006073e-4, 1e-16,
-                    "iauApcs", "v(2)");
+                    "jauApcs", "v(2)");
    vvd(astrom.v[2], -0.3863338980073572719e-4, 1e-16,
-                    "iauApcs", "v(3)");
+                    "jauApcs", "v(3)");
    vvd(astrom.bm1, 0.9999999950277561601, 1e-12,
-                   "iauApcs", "bm1");
+                   "jauApcs", "bm1");
    vvd(astrom.bpn[0][0], 1, 0,
-                         "iauApcs", "bpn(1,1)");
+                         "jauApcs", "bpn(1,1)");
    vvd(astrom.bpn[1][0], 0, 0,
-                         "iauApcs", "bpn(2,1)");
+                         "jauApcs", "bpn(2,1)");
    vvd(astrom.bpn[2][0], 0, 0,
-                         "iauApcs", "bpn(3,1)");
+                         "jauApcs", "bpn(3,1)");
    vvd(astrom.bpn[0][1], 0, 0,
-                         "iauApcs", "bpn(1,2)");
+                         "jauApcs", "bpn(1,2)");
    vvd(astrom.bpn[1][1], 1, 0,
-                         "iauApcs", "bpn(2,2)");
+                         "jauApcs", "bpn(2,2)");
    vvd(astrom.bpn[2][1], 0, 0,
-                         "iauApcs", "bpn(3,2)");
+                         "jauApcs", "bpn(3,2)");
    vvd(astrom.bpn[0][2], 0, 0,
-                         "iauApcs", "bpn(1,3)");
+                         "jauApcs", "bpn(1,3)");
    vvd(astrom.bpn[1][2], 0, 0,
-                         "iauApcs", "bpn(2,3)");
+                         "jauApcs", "bpn(2,3)");
    vvd(astrom.bpn[2][2], 1, 0,
-                         "iauApcs", "bpn(3,3)");
+                         "jauApcs", "bpn(3,3)");
 
 }
 
 @Test
     public void t_apcs13()
-/*
-**  - - - - - - - - -
-**   t _ a p c s 1 3
-**  - - - - - - - - -
-**
-**  Test iauApcs13 function.
+/**
+**  Test jauApcs13 function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauApcs13, vvd
+**  Called:  jauApcs13, vvd
 **
 **  This revision:  2013 October 3
 */
@@ -7316,62 +6724,58 @@ public void t_apcg()
    jauApcs13(date1, date2, pv, astrom);
 
    vvd(astrom.pmt, 12.65133794027378508, 1e-11,
-                   "iauApcs13", "pmt");
+                   "jauApcs13", "pmt");
    vvd(astrom.eb[0], 0.9012691529023298391, 1e-12,
-                     "iauApcs13", "eb(1)");
+                     "jauApcs13", "eb(1)");
    vvd(astrom.eb[1], -0.4173999812023068781, 1e-12,
-                     "iauApcs13", "eb(2)");
+                     "jauApcs13", "eb(2)");
    vvd(astrom.eb[2], -0.1809906511146821008, 1e-12,
-                     "iauApcs13", "eb(3)");
+                     "jauApcs13", "eb(3)");
    vvd(astrom.eh[0], 0.8939939101759726824, 1e-12,
-                     "iauApcs13", "eh(1)");
+                     "jauApcs13", "eh(1)");
    vvd(astrom.eh[1], -0.4111053891734599955, 1e-12,
-                     "iauApcs13", "eh(2)");
+                     "jauApcs13", "eh(2)");
    vvd(astrom.eh[2], -0.1782336880637689334, 1e-12,
-                     "iauApcs13", "eh(3)");
+                     "jauApcs13", "eh(3)");
    vvd(astrom.em, 1.010428384373318379, 1e-12,
-                  "iauApcs13", "em");
+                  "jauApcs13", "em");
    vvd(astrom.v[0], 0.4279877278327626511e-4, 1e-16,
-                    "iauApcs13", "v(1)");
+                    "jauApcs13", "v(1)");
    vvd(astrom.v[1], 0.7963255057040027770e-4, 1e-16,
-                    "iauApcs13", "v(2)");
+                    "jauApcs13", "v(2)");
    vvd(astrom.v[2], 0.3517564000441374759e-4, 1e-16,
-                    "iauApcs13", "v(3)");
+                    "jauApcs13", "v(3)");
    vvd(astrom.bm1, 0.9999999952947981330, 1e-12,
-                   "iauApcs13", "bm1");
+                   "jauApcs13", "bm1");
    vvd(astrom.bpn[0][0], 1, 0,
-                         "iauApcs13", "bpn(1,1)");
+                         "jauApcs13", "bpn(1,1)");
    vvd(astrom.bpn[1][0], 0, 0,
-                         "iauApcs13", "bpn(2,1)");
+                         "jauApcs13", "bpn(2,1)");
    vvd(astrom.bpn[2][0], 0, 0,
-                         "iauApcs13", "bpn(3,1)");
+                         "jauApcs13", "bpn(3,1)");
    vvd(astrom.bpn[0][1], 0, 0,
-                         "iauApcs13", "bpn(1,2)");
+                         "jauApcs13", "bpn(1,2)");
    vvd(astrom.bpn[1][1], 1, 0,
-                         "iauApcs13", "bpn(2,2)");
+                         "jauApcs13", "bpn(2,2)");
    vvd(astrom.bpn[2][1], 0, 0,
-                         "iauApcs13", "bpn(3,2)");
+                         "jauApcs13", "bpn(3,2)");
    vvd(astrom.bpn[0][2], 0, 0,
-                         "iauApcs13", "bpn(1,3)");
+                         "jauApcs13", "bpn(1,3)");
    vvd(astrom.bpn[1][2], 0, 0,
-                         "iauApcs13", "bpn(2,3)");
+                         "jauApcs13", "bpn(2,3)");
    vvd(astrom.bpn[2][2], 1, 0,
-                         "iauApcs13", "bpn(3,3)");
+                         "jauApcs13", "bpn(3,3)");
 
 }
 @Test
     public void t_aper()
 /*
-**  - - - - - - -
-**   t _ a p e r
-**  - - - - - - -
-*
-**  Test iauAper function.
+**  Test jauAper function.
 *
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 *
-**  Called:  iauAper, vvd
+**  Called:  jauAper, vvd
 *
 **  This revision:  2013 October 3
 */
@@ -7386,22 +6790,18 @@ public void t_apcg()
    jauAper(theta, astrom);
 
    vvd(astrom.eral, 6.912000000000000000, 1e-12,
-                    "iauAper", "pmt");
+                    "jauAper", "pmt");
 
 }
 @Test
     public void t_aper13()
-/*
-**  - - - - - - - - -
-**   t _ a p e r 1 3
-**  - - - - - - - - -
-**
-**  Test iauAper13 function.
+/**
+**  Test jauAper13 function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauAper13, vvd
+**  Called:  jauAper13, vvd
 **
 **  This revision:  2013 October 3
 */
@@ -7417,22 +6817,18 @@ public void t_apcg()
    jauAper13(ut11, ut12, astrom);
 
    vvd(astrom.eral, 3.316236661789694933, 1e-12,
-                    "iauAper13", "pmt");
+                    "jauAper13", "pmt");
 
 }
 @Test
     public void t_apio() throws JSOFAIllegalParameter, JSOFAInternalError
-/*
-**  - - - - - - -
-**   t _ a p i o
-**  - - - - - - -
-**
-**  Test iauApio function.
+/**
+**  Test jauApio function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauApio, vvd
+**  Called:  jauApio, vvd
 **
 **  This revision:  2013 October 3
 */
@@ -7454,45 +6850,41 @@ public void t_apcg()
    jauApio(sp, theta, elong, phi, hm, xp, yp, refa, refb, astrom);
 
    vvd(astrom.along, -0.5278008060301974337, 1e-12,
-                     "iauApio", "along");
+                     "jauApio", "along");
    vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
-                   "iauApio", "xpl");
+                   "jauApio", "xpl");
    vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
-                   "iauApio", "ypl");
+                   "jauApio", "ypl");
    vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
-                    "iauApio", "sphi");
+                    "jauApio", "sphi");
    vvd(astrom.cphi, 0.3299123514971474711, 1e-12,
-                    "iauApio", "cphi");
+                    "jauApio", "cphi");
    vvd(astrom.diurab, 0.5135843661699913529e-6, 1e-12,
-                      "iauApio", "diurab");
+                      "jauApio", "diurab");
    vvd(astrom.eral, 2.617608903969802566, 1e-12,
-                    "iauApio", "eral");
+                    "jauApio", "eral");
    vvd(astrom.refa, 0.2014187790000000000e-3, 1e-15,
-                    "iauApio", "refa");
+                    "jauApio", "refa");
    vvd(astrom.refb, -0.2361408310000000000e-6, 1e-18,
-                    "iauApio", "refb");
+                    "jauApio", "refb");
 
 }
 
 @Test
     public void t_apio13() throws JSOFAIllegalParameter, JSOFAInternalError
-/*
-**  - - - - - - - - -
-**   t _ a p i o 1 3
-**  - - - - - - - - -
-**
-**  Test iauApio13 function.
+/**
+**  Test jauApio13 function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauApio13, vvd, viv
+**  Called:  jauApio13, vvd, viv
 **
 **  This revision:  2013 October 4
 */
 {
    double utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl;
-   int j;
+
    Astrom astrom = new Astrom() ;
 
 
@@ -7513,44 +6905,40 @@ public void t_apcg()
                  phpa, tc, rh, wl, astrom);
 
    vvd(astrom.along, -0.5278008060301974337, 1e-12,
-                     "iauApio13", "along");
+                     "jauApio13", "along");
    vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
-                   "iauApio13", "xpl");
+                   "jauApio13", "xpl");
    vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
-                   "iauApio13", "ypl");
+                   "jauApio13", "ypl");
    vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
-                    "iauApio13", "sphi");
+                    "jauApio13", "sphi");
    vvd(astrom.cphi, 0.3299123514971474711, 1e-12,
-                    "iauApio13", "cphi");
+                    "jauApio13", "cphi");
    vvd(astrom.diurab, 0.5135843661699913529e-6, 1e-12,
-                      "iauApio13", "diurab");
+                      "jauApio13", "diurab");
    vvd(astrom.eral, 2.617608909189066140, 1e-12,
-                    "iauApio13", "eral");
+                    "jauApio13", "eral");
    vvd(astrom.refa, 0.2014187785940396921e-3, 1e-15,
-                    "iauApio13", "refa");
+                    "jauApio13", "refa");
    vvd(astrom.refb, -0.2361408314943696227e-6, 1e-18,
-                    "iauApio13", "refb");
+                    "jauApio13", "refb");
 
 }
 
 @Test
     public void t_atci13()
-/*
-**  - - - - - - - - -
-**   t _ a t c i 1 3
-**  - - - - - - - - -
-**
-**  Test iauAtci13 function.
+/**
+**  Test jauAtci13 function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauAtci13, vvd
+**  Called:  jauAtci13, vvd
 **
 **  This revision:  2013 October 3
 */
 {
-   double rc, dc, pr, pd, px, rv, date1, date2, ri, di, eo;
+   double rc, dc, pr, pd, px, rv, date1, date2;
 
 
    rc = 2.71;
@@ -7565,37 +6953,33 @@ public void t_apcg()
    SphericalCoordinateEO coe = jauAtci13(rc, dc, pr, pd, px, rv, date1, date2);
 
    vvd(coe.pos.alpha, 2.710121572969038991, 1e-12,
-           "iauAtci13", "ri");
+           "jauAtci13", "ri");
    vvd(coe.pos.delta, 0.1729371367218230438, 1e-12,
-           "iauAtci13", "di");
+           "jauAtci13", "di");
    vvd(coe.eo, -0.002900618712657375647, 1e-14,
-           "iauAtci13", "eo");
+           "jauAtci13", "eo");
 
 }
 
 @Test
     public void t_atciq()
-/*
-**  - - - - - - - -
-**   t _ a t c i q
-**  - - - - - - - -
-**
-**  Test iauAtciq function.
+/**
+**  Test jauAtciq function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauApci13, iauAtciq, vvd
+**  Called:  jauApci13, jauAtciq, vvd
 **
 **  This revision:  2013 October 3
 */
 {
-   double date1, date2, eo, rc, dc, pr, pd, px, rv, ri, di;
+   double date1, date2, rc, dc, pr, pd, px, rv;
    Astrom astrom = new Astrom() ;
 
    date1 = 2456165.5;
    date2 = 0.401182685;
-   eo = jauApci13(date1, date2, astrom);
+   jauApci13(date1, date2, astrom);
    rc = 2.71;
    dc = 0.174;
    pr = 1e-5;
@@ -7605,8 +6989,8 @@ public void t_apcg()
 
    SphericalCoordinate co = jauAtciq(rc, dc, pr, pd, px, rv, astrom);
 
-   vvd(co.alpha, 2.710121572969038991, 1e-12, "iauAtciq", "ri");
-   vvd(co.delta, 0.1729371367218230438, 1e-12, "iauAtciq", "di");
+   vvd(co.alpha, 2.710121572969038991, 1e-12, "jauAtciq", "ri");
+   vvd(co.delta, 0.1729371367218230438, 1e-12, "jauAtciq", "di");
 
 }
 
@@ -7614,28 +6998,24 @@ public void t_apcg()
 
 @Test
     public void t_atciqn()
-/*
-**  - - - - - - - - -
-**   t _ a t c i q n
-**  - - - - - - - - -
-**
-**  Test iauAtciqn function.
+/**
+**  Test jauAtciqn function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauApci13, iauAtciqn, vvd
+**  Called:  jauApci13, jauAtciqn, vvd
 **
 **  This revision:  2013 October 3
 */
 {
    Ldbody b[] = {new Ldbody(),new Ldbody(),new Ldbody()};
-   double date1, date2, eo, rc, dc, pr, pd, px, rv, ri, di;
+   double date1, date2, rc, dc, pr, pd, px, rv;
    Astrom astrom = new Astrom() ;
 
    date1 = 2456165.5;
    date2 = 0.401182685;
-   eo = jauApci13(date1, date2, astrom);
+   jauApci13(date1, date2, astrom);
    rc = 2.71;
    dc = 0.174;
    pr = 1e-5;
@@ -7669,65 +7049,56 @@ public void t_apcg()
 
    SphericalCoordinate co = jauAtciqn( rc, dc, pr, pd, px, rv, astrom, 3, b);
 
-   vvd(co.alpha, 2.710122008105325582, 1e-12, "iauAtciqn", "ri");
-   vvd(co.delta, 0.1729371916491459122, 1e-12, "iauAtciqn", "di");
+   vvd(co.alpha, 2.710122008105325582, 1e-12, "jauAtciqn", "ri");
+   vvd(co.delta, 0.1729371916491459122, 1e-12, "jauAtciqn", "di");
 
 }
 @Test
     public void t_atciqz()
-/*
-**  - - - - - - - - -
-**   t _ a t c i q z
-**  - - - - - - - - -
-**
-**  Test iauAtciqz function.
+/**
+**  Test jauAtciqz function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauApci13, iauAtciqz, vvd
+**  Called:  jauApci13, jauAtciqz, vvd
 **
 **  This revision:  2013 October 3
 */
 {
-   double date1, date2, eo, rc, dc, ri, di;
+   double date1, date2, rc, dc;
    Astrom astrom = new Astrom() ;
 
 
    date1 = 2456165.5;
    date2 = 0.401182685;
-   eo = jauApci13(date1, date2, astrom);
+   jauApci13(date1, date2, astrom);
    rc = 2.71;
    dc = 0.174;
 
    SphericalCoordinate co = jauAtciqz(rc, dc, astrom);
 
-   vvd(co.alpha, 2.709994899247599271, 1e-12, "iauAtciqz", "ri");
-   vvd(co.delta, 0.1728740720983623469, 1e-12, "iauAtciqz", "di");
+   vvd(co.alpha, 2.709994899247599271, 1e-12, "jauAtciqz", "ri");
+   vvd(co.delta, 0.1728740720983623469, 1e-12, "jauAtciqz", "di");
 
 }
 
 @Test
     public void t_atco13() throws JSOFAIllegalParameter, JSOFAInternalError
-/*
-**  - - - - - - - - -
-**   t _ a t c o 1 3
-**  - - - - - - - - -
-**
-**  Test iauAtco13 function.
+/**
+**  Test jauAtco13 function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauAtco13, vvd, viv
+**  Called:  jauAtco13, vvd, viv
 **
 **  This revision:  2013 October 4
 */
 {
    double rc, dc, pr, pd, px, rv, utc1, utc2, dut1,
-          elong, phi, hm, xp, yp, phpa, tc, rh, wl,
-          aob, zob, hob, dob, rob, eo;
-   int j;
+          elong, phi, hm, xp, yp, phpa, tc, rh, wl
+        ;
 
 
    rc = 2.71;
@@ -7753,33 +7124,29 @@ public void t_apcg()
                  utc1, utc2, dut1, elong, phi, hm, xp, yp,
                  phpa, tc, rh, wl);
 
-   vvd(ope.op.aob, 0.09251774485358230653, 1e-12, "iauAtco13", "aob");
-   vvd(ope.op.zob, 1.407661405256767021, 1e-12, "iauAtco13", "zob");
-   vvd(ope.op.hob, -0.09265154431403157925, 1e-12, "iauAtco13", "hob");
-   vvd(ope.op.dob, 0.1716626560075591655, 1e-12, "iauAtco13", "dob");
-   vvd(ope.op.rob, 2.710260453503097719, 1e-12, "iauAtco13", "rob");
-   vvd(ope.eo, -0.003020548354802412839, 1e-14, "iauAtco13", "eo");
+   vvd(ope.op.aob, 0.09251774485358230653, 1e-12, "jauAtco13", "aob");
+   vvd(ope.op.zob, 1.407661405256767021, 1e-12, "jauAtco13", "zob");
+   vvd(ope.op.hob, -0.09265154431403157925, 1e-12, "jauAtco13", "hob");
+   vvd(ope.op.dob, 0.1716626560075591655, 1e-12, "jauAtco13", "dob");
+   vvd(ope.op.rob, 2.710260453503097719, 1e-12, "jauAtco13", "rob");
+   vvd(ope.eo, -0.003020548354802412839, 1e-14, "jauAtco13", "eo");
 
 }
 
 @Test
     public void t_atic13()
-/*
-**  - - - - - - - - -
-**   t _ a t i c 1 3
-**  - - - - - - - - -
-**
-**  Test iauAtic13 function.
+/**
+**  Test jauAtic13 function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauAtic13, vvd
+**  Called:  jauAtic13, vvd
 **
 **  This revision:  2013 October 3
 */
 {
-   double ri, di, date1, date2, rc, dc, eo;
+   double ri, di, date1, date2;
 
 
    ri = 2.710121572969038991;
@@ -7789,71 +7156,63 @@ public void t_apcg()
 
    SphericalCoordinateEO oe = jauAtic13(ri, di, date1, date2);
 
-   vvd(oe.pos.alpha, 2.710126504531374930, 1e-12, "iauAtic13", "rc");
-   vvd(oe.pos.delta, 0.1740632537628342320, 1e-12, "iauAtic13", "dc");
-   vvd(oe.eo, -0.002900618712657375647, 1e-14, "iauAtic13", "eo");
+   vvd(oe.pos.alpha, 2.710126504531374930, 1e-12, "jauAtic13", "rc");
+   vvd(oe.pos.delta, 0.1740632537628342320, 1e-12, "jauAtic13", "dc");
+   vvd(oe.eo, -0.002900618712657375647, 1e-14, "jauAtic13", "eo");
 
 }
 
 @Test
     public void t_aticq()
-/*
-**  - - - - - - - -
-**   t _ a t i c q
-**  - - - - - - - -
-**
-**  Test iauAticq function.
+/**
+**  Test jauAticq function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauApci13, iauAticq, vvd
+**  Called:  jauApci13, jauAticq, vvd
 **
 **  This revision:  2013 October 3
 */
 {
-   double date1, date2, eo, ri, di, rc, dc;
+   double date1, date2, ri, di;
    Astrom astrom = new Astrom() ;
 
 
    date1 = 2456165.5;
    date2 = 0.401182685;
-   eo = jauApci13(date1, date2, astrom);
+   jauApci13(date1, date2, astrom);
    ri = 2.710121572969038991;
    di = 0.1729371367218230438;
 
    SphericalCoordinate co = jauAticq(ri, di, astrom);
 
-   vvd(co.alpha, 2.710126504531374930, 1e-12, "iauAticq", "rc");
-   vvd(co.delta, 0.1740632537628342320, 1e-12, "iauAticq", "dc");
+   vvd(co.alpha, 2.710126504531374930, 1e-12, "jauAticq", "rc");
+   vvd(co.delta, 0.1740632537628342320, 1e-12, "jauAticq", "dc");
 
 }
 
 @Test
     public void t_aticqn()
-/*
-**  - - - - - - - - -
-**   t _ a t i c q n
-**  - - - - - - - - -
-**
-**  Test iauAticqn function.
+/**
+**  Test jauAticqn function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauApci13, iauAticqn, vvd
+**  Called:  jauApci13, jauAticqn, vvd
 **
 **  This revision:  2013 October 3
 */
 {
-   double date1, date2, eo, ri, di, rc, dc;
+   double date1, date2, ri, di;
    Ldbody b[] = {new Ldbody(),new Ldbody(),new Ldbody()};
    Astrom astrom = new Astrom() ;
 
 
    date1 = 2456165.5;
    date2 = 0.401182685;
-   eo = jauApci13(date1, date2, astrom);
+   jauApci13(date1, date2, astrom);
    ri = 2.709994899247599271;
    di = 0.1728740720983623469;
    b[0].bm = 0.00028574;
@@ -7883,31 +7242,27 @@ public void t_apcg()
 
    SphericalCoordinate co = jauAticqn(ri, di, astrom, 3, b);
 
-   vvd(co.alpha, 2.709999575032685412, 1e-12, "iauAtciqn", "rc");
-   vvd(co.delta, 0.1739999656317778034, 1e-12, "iauAtciqn", "dc");
+   vvd(co.alpha, 2.709999575032685412, 1e-12, "jauAtciqn", "rc");
+   vvd(co.delta, 0.1739999656317778034, 1e-12, "jauAtciqn", "dc");
 
 }
 
 @Test
     public void t_atio13() throws JSOFAIllegalParameter, JSOFAInternalError
-/*
-**  - - - - - - - - -
-**   t _ a t i o 1 3
-**  - - - - - - - - -
-**
-**  Test iauAtio13 function.
+/**
+**  Test jauAtio13 function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauAtio13, vvd, viv
+**  Called:  jauAtio13, vvd, viv
 **
 **  This revision:  2013 October 3
 */
 {
    double ri, di, utc1, utc2, dut1, elong, phi, hm, xp, yp,
-          phpa, tc, rh, wl, aob, zob, hob, dob, rob;
-   int j;
+          phpa, tc, rh, wl;
+
 
 
    ri = 2.710121572969038991;
@@ -7929,33 +7284,29 @@ public void t_apcg()
                  xp, yp, phpa, tc, rh, wl
                  );
 
-   vvd(o.aob, 0.09233952224794989993, 1e-12, "iauAtio13", "aob");
-   vvd(o.zob, 1.407758704513722461, 1e-12, "iauAtio13", "zob");
-   vvd(o.hob, -0.09247619879782006106, 1e-12, "iauAtio13", "hob");
-   vvd(o.dob, 0.1717653435758265198, 1e-12, "iauAtio13", "dob");
-   vvd(o.rob, 2.710085107986886201, 1e-12, "iauAtio13", "rob");
+   vvd(o.aob, 0.09233952224794989993, 1e-12, "jauAtio13", "aob");
+   vvd(o.zob, 1.407758704513722461, 1e-12, "jauAtio13", "zob");
+   vvd(o.hob, -0.09247619879782006106, 1e-12, "jauAtio13", "hob");
+   vvd(o.dob, 0.1717653435758265198, 1e-12, "jauAtio13", "dob");
+   vvd(o.rob, 2.710085107986886201, 1e-12, "jauAtio13", "rob");
 
 }
 
 @Test
     public void t_atioq() throws JSOFAIllegalParameter, JSOFAInternalError
-/*
-**  - - - - - - - -
-**   t _ a t i o q
-**  - - - - - - - -
-**
-**  Test iauAtioq function.
+/**
+**  Test jauAtioq function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauApio13, iauAtioq, vvd, viv
+**  Called:  jauApio13, jauAtioq, vvd, viv
 **
 **  This revision:  2013 October 4
 */
 {
    double utc1, utc2, dut1, elong, phi, hm, xp, yp,
-          phpa, tc, rh, wl, ri, di, aob, zob, hob, dob, rob;
+          phpa, tc, rh, wl, ri, di;
    Astrom astrom = new Astrom() ;
 
 
@@ -7978,21 +7329,17 @@ public void t_apcg()
 
    ObservedPosition o = jauAtioq(ri, di, astrom);
 
-   vvd(o.aob, 0.09233952224794989993, 1e-12, "iauAtioq", "aob");
-   vvd(o.zob, 1.407758704513722461, 1e-12, "iauAtioq", "zob");
-   vvd(o.hob, -0.09247619879782006106, 1e-12, "iauAtioq", "hob");
-   vvd(o.dob, 0.1717653435758265198, 1e-12, "iauAtioq", "dob");
-   vvd(o.rob, 2.710085107986886201, 1e-12, "iauAtioq", "rob");
+   vvd(o.aob, 0.09233952224794989993, 1e-12, "jauAtioq", "aob");
+   vvd(o.zob, 1.407758704513722461, 1e-12, "jauAtioq", "zob");
+   vvd(o.hob, -0.09247619879782006106, 1e-12, "jauAtioq", "hob");
+   vvd(o.dob, 0.1717653435758265198, 1e-12, "jauAtioq", "dob");
+   vvd(o.rob, 2.710085107986886201, 1e-12, "jauAtioq", "rob");
 
 }
 
 @Test
     public void t_atoc13() throws JSOFAIllegalParameter, JSOFAInternalError
-/*
-**  - - - - - - - - -
-**   t _ a t o c 1 3
-**  - - - - - - - - -
-**
+/**
 **  Test jauAtoc13 function.
 **
 **  Returned:
@@ -8005,7 +7352,7 @@ public void t_apcg()
 {
    double utc1, utc2, dut1,
           elong, phi, hm, xp, yp, phpa, tc, rh, wl,
-          ob1, ob2, rc, dc;
+          ob1, ob2;
 
 
    utc1 = 2456384.5;
@@ -8047,24 +7394,20 @@ public void t_apcg()
 
 @Test
     public void t_atoi13() throws JSOFAIllegalParameter, JSOFAInternalError
-/*
-**  - - - - - - - - -
-**   t _ a t o i 1 3
-**  - - - - - - - - -
-**
-**  Test iauAtoi13 function.
+/**
+**  Test jauAtoi13 function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauAtoi13, vvd, viv
+**  Called:  jauAtoi13, vvd, viv
 **
 **  This revision:  2013 October 3
 */
 {
    double utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl,
-          ob1, ob2, ri, di;
-   int j;
+          ob1, ob2;
+
 
 
    utc1 = 2456384.5;
@@ -8084,38 +7427,34 @@ public void t_apcg()
    ob2 = 0.1717653435758265198;
    SphericalCoordinate co = jauAtoi13( "R", ob1, ob2, utc1, utc2, dut1,
                    elong, phi, hm, xp, yp, phpa, tc, rh, wl);
-   vvd(co.alpha, 2.710121574449135955, 1e-12, "iauAtoi13", "R/ri");
-   vvd(co.delta, 0.1729371839114567725, 1e-12, "iauAtoi13", "R/di");
+   vvd(co.alpha, 2.710121574449135955, 1e-12, "jauAtoi13", "R/ri");
+   vvd(co.delta, 0.1729371839114567725, 1e-12, "jauAtoi13", "R/di");
 
    ob1 = -0.09247619879782006106;
    ob2 = 0.1717653435758265198;
    co = jauAtoi13( "H", ob1, ob2, utc1, utc2, dut1,
                    elong, phi, hm, xp, yp, phpa, tc, rh, wl);
-   vvd(co.alpha, 2.710121574449135955, 1e-12, "iauAtoi13", "H/ri");
-   vvd(co.delta, 0.1729371839114567725, 1e-12, "iauAtoi13", "H/di");
+   vvd(co.alpha, 2.710121574449135955, 1e-12, "jauAtoi13", "H/ri");
+   vvd(co.delta, 0.1729371839114567725, 1e-12, "jauAtoi13", "H/di");
 
    ob1 = 0.09233952224794989993;
    ob2 = 1.407758704513722461;
    co = jauAtoi13( "A", ob1, ob2, utc1, utc2, dut1,
                    elong, phi, hm, xp, yp, phpa, tc, rh, wl);
-   vvd(co.alpha, 2.710121574449135955, 1e-12, "iauAtoi13", "A/ri");
-   vvd(co.delta, 0.1729371839114567728, 1e-12, "iauAtoi13", "A/di");
+   vvd(co.alpha, 2.710121574449135955, 1e-12, "jauAtoi13", "A/ri");
+   vvd(co.delta, 0.1729371839114567728, 1e-12, "jauAtoi13", "A/di");
 
 }
 
 @Test
     public void t_atoiq() throws JSOFAIllegalParameter, JSOFAInternalError
 /*
-**  - - - - - - - -
-**   t _ a t o i q
-**  - - - - - - - -
-*
-**  Test iauAtoiq function.
+**  Test jauAtoiq function.
 *
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 *
-**  Called:  iauApio13, iauAtoiq, vvd
+**  Called:  jauApio13, jauAtoiq, vvd
 *
 **  This revision:  2013 October 4
 */
@@ -8144,41 +7483,37 @@ public void t_apcg()
    ob2 = 0.1717653435758265198;
    SphericalCoordinate co = jauAtoiq("R", ob1, ob2, astrom);
    vvd(co.alpha, 2.710121574449135955, 1e-12,
-           "iauAtoiq", "R/ri");
+           "jauAtoiq", "R/ri");
    vvd(co.delta, 0.1729371839114567725, 1e-12,
-           "iauAtoiq", "R/di");
+           "jauAtoiq", "R/di");
 
    ob1 = -0.09247619879782006106;
    ob2 = 0.1717653435758265198;
    co = jauAtoiq("H", ob1, ob2, astrom);
    vvd(co.alpha, 2.710121574449135955, 1e-12,
-           "iauAtoiq", "H/ri");
+           "jauAtoiq", "H/ri");
    vvd(co.delta, 0.1729371839114567725, 1e-12,
-           "iauAtoiq", "H/di");
+           "jauAtoiq", "H/di");
 
    ob1 = 0.09233952224794989993;
    ob2 = 1.407758704513722461;
    co = jauAtoiq("A", ob1, ob2, astrom);
    vvd(co.alpha, 2.710121574449135955, 1e-12,
-           "iauAtoiq", "A/ri");
+           "jauAtoiq", "A/ri");
    vvd(co.delta, 0.1729371839114567728, 1e-12,
-           "iauAtoiq", "A/di");
+           "jauAtoiq", "A/di");
 
 }
 
 @Test
     public void t_ld()
-/*
-**  - - - - -
-**   t _ l d
-**  - - - - -
-**
-**  Test iauLd function.
+/**
+**  Test jauLd function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauLd, vvd
+**  Called:  jauLd, vvd
 *
 **  This revision:  2013 October 2
 */
@@ -8202,11 +7537,11 @@ public void t_apcg()
    p1 = jauLd(bm, p, q, e, em, dlim);
 
    vvd(p1[0], -0.7632762548968159627, 1e-12,
-               "iauLd", "1");
+               "jauLd", "1");
    vvd(p1[1], -0.6086337670823762701, 1e-12,
-               "iauLd", "2");
+               "jauLd", "2");
    vvd(p1[2], -0.2167355431320546947, 1e-12,
-               "iauLd", "3");
+               "jauLd", "3");
 
 }
 
@@ -8217,12 +7552,12 @@ public void t_apcg()
 **   t _ l d n
 **  - - - - - -
 **
-**  Test iauLdn function.
+**  Test jauLdn function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauLdn, vvd
+**  Called:  jauLdn, vvd
 **
 **  This revision:  2013 October 2
 */
@@ -8267,27 +7602,23 @@ public void t_apcg()
    sn = jauLdn(n, b, ob, sc);
 
    vvd(sn[0], -0.7632762579693333866, 1e-12,
-               "iauLdn", "1");
+               "jauLdn", "1");
    vvd(sn[1], -0.6086337636093002660, 1e-12,
-               "iauLdn", "2");
+               "jauLdn", "2");
    vvd(sn[2], -0.2167355420646328159, 1e-12,
-               "iauLdn", "3");
+               "jauLdn", "3");
 
 }
 
 @Test
     public void t_ldsun()
-/*
-**  - - - - - - - -
-**   t _ l d s u n
-**  - - - - - - - -
-**
-**  Test iauLdsun function.
+/**
+**  Test jauLdsun function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauLdsun, vvd
+**  Called:  jauLdsun, vvd
 **
 **  This revision:  2013 October 2
 */
@@ -8306,26 +7637,22 @@ public void t_apcg()
    p1 = jauLdsun(p, e, em);
 
    vvd(p1[0], -0.7632762580731413169, 1e-12,
-               "iauLdsun", "1");
+               "jauLdsun", "1");
    vvd(p1[1], -0.6086337635262647900, 1e-12,
-               "iauLdsun", "2");
+               "jauLdsun", "2");
    vvd(p1[2], -0.2167355419322321302, 1e-12,
-               "iauLdsun", "3");
+               "jauLdsun", "3");
 
 }
 @Test
     public void t_pmpx()
-/*
-**  - - - - - - -
-**   t _ p m p x
-**  - - - - - - -
-**
-**  Test iauPmpx function.
+/**
+**  Test jauPmpx function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauPmpx, vvd
+**  Called:  jauPmpx, vvd
 **
 **  This revision:  2013 October 2
 */
@@ -8347,33 +7674,28 @@ public void t_apcg()
    pco = jauPmpx(rc, dc, pr, pd, px, rv, pmt, pob);
 
    vvd(pco[0], 0.2328137623960308440, 1e-12,
-               "iauPmpx", "1");
+               "jauPmpx", "1");
    vvd(pco[1], 0.6651097085397855317, 1e-12,
-               "iauPmpx", "2");
+               "jauPmpx", "2");
    vvd(pco[2], 0.7095257765896359847, 1e-12,
-               "iauPmpx", "3");
+               "jauPmpx", "3");
 
 }
 
 @Test
     public void t_pmsafe() throws JSOFAInternalError
-/*
-**  - - - - - - - - -
-**   t _ p m s a f e
-**  - - - - - - - - -
-**
-**  Test iauPmsafe function.
+/**
+**  Test jauPmsafe function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauPmsafe, vvd, viv
+**  Called:  jauPmsafe, vvd, viv
 **
 **  This revision:  2013 October 2
 */
 {
-   double ra1, dec1, pmr1, pmd1, px1, rv1, ep1a, ep1b, ep2a, ep2b,
-          ra2, dec2, pmr2, pmd2, px2, rv2;
+   double ra1, dec1, pmr1, pmd1, px1, rv1, ep1a, ep1b, ep2a, ep2b;
 
 
    ra1 = 1.234;
@@ -8392,34 +7714,30 @@ public void t_apcg()
                  );
 
    vvd(cc.pos.alpha, 1.234087484501017061, 1e-12,
-            "iauPmsafe", "ra2");
+            "jauPmsafe", "ra2");
    vvd(cc.pos.delta, 0.7888249982450468574, 1e-12,
-            "iauPmsafe", "dec2");
+            "jauPmsafe", "dec2");
    vvd(cc.pm.alpha, 0.9996457663586073988e-5, 1e-12,
-             "iauPmsafe", "pmr2");
+             "jauPmsafe", "pmr2");
    vvd(cc.pm.delta, -0.2000040085106737816e-4, 1e-16,
-             "iauPmsafe", "pmd2");
+             "jauPmsafe", "pmd2");
    vvd(cc.px, 0.9999997295356765185e-2, 1e-12,
-            "iauPmsafe", "px2");
+            "jauPmsafe", "px2");
    vvd(cc.rv, 10.38468380113917014, 1e-10,
-            "iauPmsafe", "rv2");
+            "jauPmsafe", "rv2");
 
 }
 
 
 @Test
     public void t_pvtob() throws JSOFAIllegalParameter, JSOFAInternalError
-/*
-**  - - - - - - - -
-**   t _ p v t o b
-**  - - - - - - - -
-**
-**  Test iauPvtob function.
+/**
+**  Test jauPvtob function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauPvtob, vvd
+**  Called:  jauPvtob, vvd
 **
 **  This revision:  2013 October 2
 */
@@ -8438,38 +7756,34 @@ public void t_apcg()
    pv = jauPvtob(elong, phi, hm, xp, yp, sp, theta);
 
    vvd(pv[0][0], 4225081.367071159207, 1e-5,
-                 "iauPvtob", "p(1)");
+                 "jauPvtob", "p(1)");
    vvd(pv[0][1], 3681943.215856198144, 1e-5,
-                 "iauPvtob", "p(2)");
+                 "jauPvtob", "p(2)");
    vvd(pv[0][2], 3041149.399241260785, 1e-5,
-                 "iauPvtob", "p(3)");
+                 "jauPvtob", "p(3)");
    vvd(pv[1][0], -268.4915389365998787, 1e-9,
-                 "iauPvtob", "v(1)");
+                 "jauPvtob", "v(1)");
    vvd(pv[1][1], 308.0977983288903123, 1e-9,
-                 "iauPvtob", "v(2)");
+                 "jauPvtob", "v(2)");
    vvd(pv[1][2], 0, 0,
-                 "iauPvtob", "v(3)");
+                 "jauPvtob", "v(3)");
 
 }
 
 @Test
     public void t_refco()
-/*
-**  - - - - - - - -
-**   t _ r e f c o
-**  - - - - - - - -
-**
-**  Test iauRefco function.
+/**
+**  Test jauRefco function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauRefco, vvd
+**  Called:  jauRefco, vvd
 **
 **  This revision:  2013 October 2
 */
 {
-   double phpa, tc, rh, wl, refa, refb;
+   double phpa, tc, rh, wl;
 
 
    phpa = 800.0;
@@ -8480,26 +7794,22 @@ public void t_apcg()
    RefCos ref = jauRefco(phpa, tc, rh, wl);
 
    vvd(ref.a, 0.2264949956241415009e-3, 1e-15,
-             "iauRefco", "refa");
+             "jauRefco", "refa");
    vvd(ref.b, -0.2598658261729343970e-6, 1e-18,
-             "iauRefco", "refb");
+             "jauRefco", "refb");
 
 }
 
 
 @Test
 public void t_d2dtf() throws JSOFAIllegalParameter, JSOFAInternalError
-/*
-**  - - - - - - - -
-**   t _ d 2 d t f
-**  - - - - - - - -
-**
-**  Test iauD2dtf function.
+/**
+**  Test jauD2dtf function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauD2dtf, viv
+**  Called:  jauD2dtf, viv
 **
 **  This revision:  2013 August 7
 */
@@ -8507,13 +7817,13 @@ public void t_d2dtf() throws JSOFAIllegalParameter, JSOFAInternalError
 
    CalendarHMS c = jauD2dtf("UTC", 5, 2400000.5, 49533.99999);
 
-   viv(c.iy, 1994, "iauD2dtf", "y");
-   viv(c.im, 6, "iauD2dtf", "mo");
-   viv(c.id, 30, "iauD2dtf", "d");
-   viv(c.ihmsf[0], 23, "iauD2dtf", "h");
-   viv(c.ihmsf[1], 59, "iauD2dtf", "m");
-   viv(c.ihmsf[2], 60, "iauD2dtf", "s");
-   viv(c.ihmsf[3], 13599, "iauD2dtf", "f");
+   viv(c.iy, 1994, "jauD2dtf", "y");
+   viv(c.im, 6, "jauD2dtf", "mo");
+   viv(c.id, 30, "jauD2dtf", "d");
+   viv(c.ihmsf[0], 23, "jauD2dtf", "h");
+   viv(c.ihmsf[1], 59, "jauD2dtf", "m");
+   viv(c.ihmsf[2], 60, "jauD2dtf", "s");
+   viv(c.ihmsf[3], 13599, "jauD2dtf", "f");
 
 }
 
@@ -8524,12 +7834,12 @@ public void t_d2dtf() throws JSOFAIllegalParameter, JSOFAInternalError
 **   t _ d t f 2 d
 **  - - - - - - - -
 **
-**  Test iauDtf2d function.
+**  Test jauDtf2d function.
 **
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauDtf2d, vvd, viv
+**  Called:  jauDtf2d, vvd, viv
 **
 **  This revision:  2013 August 7
  * @throws JSOFAInternalError 
@@ -8541,7 +7851,7 @@ public void t_dtf2d() throws JSOFAIllegalParameter, JSOFAInternalError
 
    JulianDate jd = jauDtf2d("UTC", 1994, 6, 30, 23, 59, 60.13599);
 
-   vvd(jd.djm0+jd.djm1, 2449534.49999, 1e-6, "iauDtf2d", "u");
+   vvd(jd.djm0+jd.djm1, 2449534.49999, 1e-6, "jauDtf2d", "u");
 
 }
 
@@ -8550,7 +7860,7 @@ public void t_dtf2d() throws JSOFAIllegalParameter, JSOFAInternalError
 **
 **  Test jauG2icrs function.
 **
-**  Called:  iauG2icrs, vvd
+**  Called:  jauG2icrs, vvd
 **
 **  This revision:  2015 March 02
 */
@@ -8564,15 +7874,15 @@ public void t_g2icrs()
    dl =  5.5850536063818546461558105;
    db = -0.7853981633974483096156608;
    co = jauG2icrs(dl, db);
-   vvd(co.alpha,  5.9338074302227188048671, 1e-14, "iauG2icrs", "Ra");
-   vvd(co.delta, -1.1784870613579944551541, 1e-14, "iauG2icrs", "Dec");
+   vvd(co.alpha,  5.9338074302227188048671, 1e-14, "jauG2icrs", "Ra");
+   vvd(co.delta, -1.1784870613579944551541, 1e-14, "jauG2icrs", "Dec");
  }
 
 /**
 **
-**  Test iauIcrs2g function.
+**  Test jauIcrs2g function.
 **
-**  Called:  iauIcrs2g, vvd
+**  Called:  jauIcrs2g, vvd
 **
 **  This revision:  2015 March 02
 */
@@ -8584,16 +7894,353 @@ public void t_icrs2g()
    dr =  5.9338074302227188048671087;
    dd = -1.1784870613579944551540570;
    SphericalCoordinate co = jauIcrs2g (dr, dd);
-   vvd(co.alpha,  5.5850536063818546461558, 1e-14, "iauIcrs2g", "L");
-   vvd(co.delta, -0.7853981633974483096157, 1e-14, "iauIcrs2g", "B");
+   vvd(co.alpha,  5.5850536063818546461558, 1e-14, "jauIcrs2g", "L");
+   vvd(co.delta, -0.7853981633974483096157, 1e-14, "jauIcrs2g", "B");
  }
+
+/**
+**
+**  Test jauEceq06 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauEceq06, vvd
+**
+**  This revision:  2016 March 12
+*/
+@Test
+public void t_eceq06()
+{
+   double date1, date2, dl, db;
+
+
+   date1 = 2456165.5;
+   date2 = 0.401182685;
+   dl = 5.1;
+   db = -0.9;
+
+   SphericalCoordinate co = jauEceq06(date1, date2, dl, db);
+
+   vvd(co.alpha, 5.533459733613627767, 1e-14, "jauEceq06", "dr");
+   vvd(co.delta, -1.246542932554480576, 1e-14, "jauEceq06", "dd");
+
+}
+
+/**
+**
+**  Test jauEcm06 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauEcm06, vvd
+**
+**  This revision:  2016 March 12
+*/
+@Test
+public void t_ecm06()
+{
+   double date1, date2;
+
+
+   date1 = 2456165.5;
+   date2 = 0.401182685;
+
+   double rm[][] = jauEcm06(date1, date2);
+
+   vvd(rm[0][0], 0.9999952427708701137, 1e-14,
+       "jauEcm06", "rm11");
+   vvd(rm[0][1], -0.2829062057663042347e-2, 1e-14,
+       "jauEcm06", "rm12");
+   vvd(rm[0][2], -0.1229163741100017629e-2, 1e-14,
+       "jauEcm06", "rm13");
+   vvd(rm[1][0], 0.3084546876908653562e-2, 1e-14,
+       "jauEcm06", "rm21");
+   vvd(rm[1][1], 0.9174891871550392514, 1e-14,
+       "jauEcm06", "rm22");
+   vvd(rm[1][2], 0.3977487611849338124, 1e-14,
+       "jauEcm06", "rm23");
+   vvd(rm[2][0], 0.2488512951527405928e-5, 1e-14,
+       "jauEcm06", "rm31");
+   vvd(rm[2][1], -0.3977506604161195467, 1e-14,
+       "jauEcm06", "rm32");
+   vvd(rm[2][2], 0.9174935488232863071, 1e-14,
+       "jauEcm06", "rm33");
+
+}
+
+/**
+**
+**  Test jauEqec06 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauEqec06, vvd
+**
+**  This revision:  2016 March 12
+*/
+@Test
+public void t_eqec06()
+{
+   double date1, date2, dr, dd;
+
+
+   date1 = 1234.5;
+   date2 = 2440000.5;
+   dr = 1.234;
+   dd = 0.987;
+
+   SphericalCoordinate co = jauEqec06(date1, date2, dr, dd);
+
+   vvd(co.alpha, 1.342509918994654619, 1e-14, "jauEqec06", "dl");
+   vvd(co.delta, 0.5926215259704608132, 1e-14, "jauEqec06", "db");
+
+}
+/**
+**  Test jauLteceq function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauLteceq, vvd
+**
+**  This revision:  2016 March 12
+*/
+@Test
+public void t_lteceq()
+{
+   double epj, dl, db;
+
+
+   epj = 2500.0;
+   dl = 1.5;
+   db = 0.6;
+
+   SphericalCoordinate co = jauLteceq(epj, dl, db);
+
+   vvd(co.alpha, 1.275156021861921167, 1e-14, "jauLteceq", "dr");
+   vvd(co.delta, 0.9966573543519204791, 1e-14, "jauLteceq", "dd");
+
+}
+
+/**
+**  Test jauLtecm function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauLtecm, vvd
+**
+**  This revision:  2016 March 12
+*/
+@Test
+public void t_ltecm()
+{
+   double epj;
+
+
+   epj = -3000.0;
+
+   double rm[][] =jauLtecm(epj);
+
+   vvd(rm[0][0], 0.3564105644859788825, 1e-14,
+       "jauLtecm", "rm11");
+   vvd(rm[0][1], 0.8530575738617682284, 1e-14,
+       "jauLtecm", "rm12");
+   vvd(rm[0][2], 0.3811355207795060435, 1e-14,
+       "jauLtecm", "rm13");
+   vvd(rm[1][0], -0.9343283469640709942, 1e-14,
+       "jauLtecm", "rm21");
+   vvd(rm[1][1], 0.3247830597681745976, 1e-14,
+       "jauLtecm", "rm22");
+   vvd(rm[1][2], 0.1467872751535940865, 1e-14,
+       "jauLtecm", "rm23");
+   vvd(rm[2][0], 0.1431636191201167793e-2, 1e-14,
+       "jauLtecm", "rm31");
+   vvd(rm[2][1], -0.4084222566960599342, 1e-14,
+       "jauLtecm", "rm32");
+   vvd(rm[2][2], 0.9127919865189030899, 1e-14,
+       "jauLtecm", "rm33");
+
+}
+
+/**
+**
+**  Test jauLteqec function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauLteqec, vvd
+**
+**  This revision:  2016 March 12
+*/
+@Test
+public void t_lteqec()
+{
+   double epj, dr, dd;
+
+
+   epj = -1500.0;
+   dr = 1.234;
+   dd = 0.987;
+
+   SphericalCoordinate co = jauLteqec(epj, dr, dd);
+
+   vvd(co.alpha, 0.5039483649047114859, 1e-14, "jauLteqec", "dl");
+   vvd(co.delta, 0.5848534459726224882, 1e-14, "jauLteqec", "db");
+
+}
+
+/**
+**  Test jauLtp function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauLtp, vvd
+**
+**  This revision:  2016 March 12
+*/
+@Test
+public void t_ltp()
+{
+   double epj;
+
+
+   epj = 1666.666;
+
+   double rp[][] = jauLtp(epj);
+
+   vvd(rp[0][0], 0.9967044141159213819, 1e-14,
+       "jauLtp", "rp11");
+   vvd(rp[0][1], 0.7437801893193210840e-1, 1e-14,
+       "jauLtp", "rp12");
+   vvd(rp[0][2], 0.3237624409345603401e-1, 1e-14,
+       "jauLtp", "rp13");
+   vvd(rp[1][0], -0.7437802731819618167e-1, 1e-14,
+       "jauLtp", "rp21");
+   vvd(rp[1][1], 0.9972293894454533070, 1e-14,
+       "jauLtp", "rp22");
+   vvd(rp[1][2], -0.1205768842723593346e-2, 1e-14,
+       "jauLtp", "rp23");
+   vvd(rp[2][0], -0.3237622482766575399e-1, 1e-14,
+       "jauLtp", "rp31");
+   vvd(rp[2][1], -0.1206286039697609008e-2, 1e-14,
+       "jauLtp", "rp32");
+   vvd(rp[2][2], 0.9994750246704010914, 1e-14,
+       "jauLtp", "rp33");
+
+}
+
+/**
+**  Test jauLtpb function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauLtpb, vvd
+**
+**  This revision:  2016 March 12
+*/
+@Test
+public void t_ltpb()
+{
+   double epj ;
+
+
+   epj = 1666.666;
+
+   double rpb[][] = jauLtpb(epj);
+
+   vvd(rpb[0][0], 0.9967044167723271851, 1e-14,
+       "jauLtpb", "rpb11");
+   vvd(rpb[0][1], 0.7437794731203340345e-1, 1e-14,
+       "jauLtpb", "rpb12");
+   vvd(rpb[0][2], 0.3237632684841625547e-1, 1e-14,
+       "jauLtpb", "rpb13");
+   vvd(rpb[1][0], -0.7437795663437177152e-1, 1e-14,
+       "jauLtpb", "rpb21");
+   vvd(rpb[1][1], 0.9972293947500013666, 1e-14,
+       "jauLtpb", "rpb22");
+   vvd(rpb[1][2], -0.1205741865911243235e-2, 1e-14,
+       "jauLtpb", "rpb23");
+   vvd(rpb[2][0], -0.3237630543224664992e-1, 1e-14,
+       "jauLtpb", "rpb31");
+   vvd(rpb[2][1], -0.1206316791076485295e-2, 1e-14,
+       "jauLtpb", "rpb32");
+   vvd(rpb[2][2], 0.9994750220222438819, 1e-14,
+       "jauLtpb", "rpb33");
+
+}
+
+/**
+**  Test jauLtpecl function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauLtpecl, vvd
+**
+**  This revision:  2016 March 12
+*/
+@Test
+public void t_ltpecl()
+{
+   double epj;
+
+
+   epj = -1500.0;
+
+   double vec[] = jauLtpecl(epj);
+
+   vvd(vec[0], 0.4768625676477096525e-3, 1e-14,
+       "jauLtpecl", "vec1");
+   vvd(vec[1], -0.4052259533091875112, 1e-14,
+       "jauLtpecl", "vec2");
+   vvd(vec[2], 0.9142164401096448012, 1e-14,
+       "jauLtpecl", "vec3");
+
+}
+
+/**
+**
+**  Test jauLtpequ function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauLtpequ, vvd
+**
+**  This revision:  2016 March 12
+*/
+@Test
+public void t_ltpequ()
+{
+   double epj;
+   epj = -2500.0;
+
+   double veq[] = jauLtpequ(epj);
+
+   vvd(veq[0], -0.3586652560237326659, 1e-14,
+       "jauLtpequ", "veq1");
+   vvd(veq[1], -0.1996978910771128475, 1e-14,
+       "jauLtpequ", "veq2");
+   vvd(veq[2], 0.9118552442250819624, 1e-14,
+       "jauLtpequ", "veq3");
+
+}
+
+
 
 
 //end of tests
 }
 
 /*
- * Copyright © 2010 Paul Harrison, University of Manchester.
+ * Copyright © 2016 Paul Harrison, University of Manchester.
  * 
  * This JSOFA software is derived from the official C release of the "Standards Of Fundamental Astronomy" (SOFA) library 
  * of the International Astronomical Union. The intention is to reproduce the functionality and algorithms of 
