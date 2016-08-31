@@ -1,0 +1,24 @@
+-classpath
+'/Users/pharriso/Work/javastro/jsofa/target/classes'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/Users/pharriso/Work/javastro/jsofa/src/main/java:/Users/pharriso/Work/javastro/jsofa/target/generated-sources/annotations'
+-author
+-bottom
+'Copyright &#169; 2010-2016 <a href="http://www.jb.man.ac.uk/">JBCA, University of Manchester</a>. All Rights Reserved.'
+-charset
+'UTF-8'
+-d
+'/Users/pharriso/Work/javastro/jsofa/target/site/apidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'JSOFA 20160729 API'
+-linkoffline
+'http://docs.oracle.com/javase/7/docs/api' '/Users/pharriso/Work/javastro/jsofa/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'JSOFA 20160729 API'
