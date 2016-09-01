@@ -1,0 +1,47 @@
+ -----
+ Deploying JSOFA
+ -----
+ Paul Harrison
+ -----
+
+Deploying JSOFA
+
+   The JSOFA software is build with maven and is deployed to the maven central 
+   repository using the {{{http://central.sonatype.org/pages/apache-maven.html}following instructions}}
+   summarized below.
+   
+   Check that the build and tests are passed
+
++---+   
+mvn clean install
++---+  
+
+   then deploy to the staging repository
+   
++---+
+mvn deploy -P release
++---+ 
+
+   if this is successful then
+
++---+
+mvn nexus-staging:release -P release
++---+
+
+   will release to the central repository
+
+
+* Deploying the site
+
+   The maven site is now deployed to {{https://javastro.github.com/jsofa/}} using
+   the {{{https://github.github.com/maven-plugins/site-plugin/}github site plug-in}}
+
++---+
+mvn site
++---+
+
+  will create the site and 
+
++---+
+mvn site-deploy -P release
++---+

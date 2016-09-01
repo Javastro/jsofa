@@ -4,14 +4,17 @@
    xsi:schemaLocation="http://maven.apache.org/DECORATION/1.0.0 http://maven.apache.org/xsd/decoration-1.0.0.xsd">
   <body>
     <breadcrumbs>
-       <item name="JSOFA " href="http://astrogrid.jb.man.ac.uk/jsofa/"/>
+       <item name="JSOFA " href="http://javastro.github.com/jsofa/"/>
     </breadcrumbs>
     <menu name="Download">
     
-    <item name="binary" href="http://astrogrid.jb.man.ac.uk/maven/org/jastronomy/${project.artifactId}/${project.version}/${project.build.finalName}.${project.packaging}"/>
-    <item name="sources" href="http://astrogrid.jb.man.ac.uk/maven/org/jastronomy/${project.artifactId}/${project.version}/${project.build.finalName}-sources.${project.packaging}"/>
+    <item name="binary" href="https://repo1.maven.org/maven2/org/javastro/${project.artifactId}/${project.version}/${project.build.finalName}.${project.packaging}"/>
+    <item name="sources" href="https://repo1.maven.org/maven2/org/javastro/${project.artifactId}/${project.version}/${project.build.finalName}-sources.${project.packaging}"/>
     </menu>
     <menu ref="reports"/>
+    <menu name="Developing">
+      <item name="release" href="deploying.html"/>
+    </menu>
  
   </body>
 </project>

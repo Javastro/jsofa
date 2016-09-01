@@ -9,15 +9,15 @@ JSOFA
    The JSOFA software is a pure Java translation of the International
    Astronomical Union's C SOFA software library (version ${project.version}) at {{http://www.iausofa.org/}}.
       
-   For more information on using please read the {{{./apidocs/org/jastronomy/jsofa/package-summary.html#package_description}javadoc}} overview.
+   For more information on using please read the {{{./apidocs/org/jastronomy/jsofa/package-summary.html#package.description}javadoc}} overview.
   
-   A jar (Java version 1.7) of the software can be obtained from the local Maven repository {{http://astrogrid.jb.man.ac.uk/maven/}} directly by clicking the links in the sidebar 
+   A jar (Java version 1.7) of the software can be obtained from the  {{{http://central.sonatype.org/}Central Maven repository}} directly by clicking the links in the sidebar 
    and if using maven as a
    build tool by including the following in the POM
    
 ---
 <dependency>
-  <groupId>org.jastronomy</groupId>
+  <groupId>org.javastro</groupId>
   <artifactId>jsofa</artifactId>
   <version>${project.version}</version>
 </dependency>

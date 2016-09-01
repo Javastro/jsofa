@@ -6,6 +6,11 @@
     <author email="paul.harrison@manchester.ac.uk">Paul Harrison</author>
   </properties>
   <body>
+    <release  version="20160503" date="04-Aug-2016" description="tracking update release">
+       <action dev="pah" type="update">
+        Update the release to IAU SOFA 2016-07-29_a - Updated Jan 1 2017 leap second and added long-term precession &lt;-&gt; Ecliptic coordinate routines.
+       </action>
+    </release>
     <release  version="20150209" date="02-Mar-2015" description="tracking update release">
        <action dev="pah" type="update">
         Update the release to the IAU SOFA 2015-02-09 release - Updated 2015 leap second and added ICRS&lt;-&gt;galactic routines.

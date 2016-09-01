@@ -2,11 +2,15 @@
    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"
 >
    <modelVersion>4.0.0</modelVersion>
-   <groupId>org.jastronomy</groupId>
+   <groupId>org.javastro</groupId>
    <artifactId>jsofa</artifactId>
    <name>JSOFA</name>
    <packaging>jar</packaging>
    <version>20160729</version>
+   <properties>
+      <github.global.server>github</github.global.server>
+      <github.global.oauth2Token>${env.GITHUB_OAUTH_TOKEN}</github.global.oauth2Token>
+   </properties>
    <dependencies>
       <dependency>
          <groupId>junit</groupId>
@@ -16,7 +20,7 @@
       </dependency>
    </dependencies>
    <!-- was inherited -->
-   <url>http://astrogrid.jb.man.ac.uk/jastro/</url>
+   <url>https://javastro.github.com/jsofa/</url>
    <inceptionYear>2010</inceptionYear>
    <developers>
       <developer>
@@ -104,12 +108,18 @@
                <artifactId>wagon-ssh-external</artifactId>
                <version>2.8</version>
             </plugin>
+            <plugin>
+               <groupId>org.apache.maven.plugins</groupId>
+               <artifactId>maven-javadoc-plugin</artifactId>
+               <version>2.9.1</version>
+            </plugin>
          </plugins>
       </pluginManagement>
       <plugins>
          <plugin>
             <artifactId>maven-site-plugin</artifactId>
             <configuration>
+               <skipDeploy>true</skipDeploy>
             </configuration>
          </plugin>
          <plugin>
@@ -130,21 +140,6 @@
                   <include>**/*Test.java</include>
                </includes>
             </configuration>
-         </plugin>
-         <plugin>
-            <!-- make sure that the source jar is created - early in build 
-               at verify.. -->
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-source-plugin</artifactId>
-            <executions>
-               <execution>
-                  <id>attach-sources</id>
-                  <phase>verify</phase>
-                  <goals>
-                     <goal>jar</goal>
-                  </goals>
-               </execution>
-            </executions>
          </plugin>
          <plugin>
             <groupId>org.codehaus.mojo</groupId>
@@ -205,8 +200,9 @@
             <artifactId>maven-javadoc-plugin</artifactId>
             <version>2.9</version>
             <configuration>
-              <failOnError>false</failOnError> 
-       <!--       <additionalparam>-Xdoclint:none</additionalparam>  Javadoc 8 became much more strict by default - switch this off-->
+               <failOnError>false</failOnError>
+               <!-- <additionalparam>-Xdoclint:none</additionalparam> Javadoc 
+                  8 became much more strict by default - switch this off -->
             </configuration>
          </plugin>
          <plugin>
@@ -259,17 +255,10 @@
       </plugins>
    </reporting>
    <distributionManagement>
-      <downloadUrl>http://astrogrid.jb.man.ac.uk/jsofa/</downloadUrl>
-      <site>
-         <id>jastro</id>
-         <name>JSOFA Site</name>
-         <url>scpexe://astrogrid.jb.man.ac.uk/local/www/root/html/jsofa/</url>
-      </site>
-      <repository>
-         <id>jastro</id>
-         <name>Jastronomy Repository</name>
-         <url>scpexe://astrogrid.jb.man.ac.uk/local/www/root/html/maven/</url>
-      </repository>
+      <snapshotRepository>
+         <id>ossrh</id>
+         <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+      </snapshotRepository>
    </distributionManagement>
    <organization>
       <name>JBCA, University of Manchester</name>
@@ -290,4 +279,85 @@
    <issueManagement>
       <url>https://github.com/Javastro/jsofa/issues</url>
    </issueManagement>
+   <profiles>
+      <profile>
+         <id>release</id>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-javadoc-plugin</artifactId>
+                  <executions>
+                     <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                           <goal>jar</goal>
+                        </goals>
+                        <configuration>
+                           <additionalparam>-Xdoclint:none</additionalparam><!-- 
+                              Javadoc 8 became much more strict by default - switch this off -->
+                        </configuration>
+                     </execution>
+                  </executions>
+               </plugin>
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-gpg-plugin</artifactId>
+                  <version>1.6</version>
+                  <executions>
+                     <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                           <goal>sign</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+               <plugin>
+                  <groupId>org.apache.maven.plugins</groupId>
+                  <artifactId>maven-source-plugin</artifactId>
+                  <executions>
+                     <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                           <goal>jar-no-fork</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+               <plugin>
+                  <groupId>org.sonatype.plugins</groupId>
+                  <artifactId>nexus-staging-maven-plugin</artifactId>
+                  <version>1.6.7</version>
+                  <extensions>true</extensions>
+                  <configuration>
+                     <serverId>ossrh</serverId>
+                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                     <autoReleaseAfterClose>false</autoReleaseAfterClose>
+                  </configuration>
+               </plugin>
+               <plugin>
+                  <groupId>com.github.github</groupId>
+                  <artifactId>site-maven-plugin</artifactId>
+                  <version>0.12</version>
+                  <configuration>
+                     <message>Building site for ${project.version}</message>
+                  </configuration>
+                  <executions>
+                     <execution>
+                        <goals>
+                           <goal>site</goal>
+                        </goals>
+                        <phase>site-deploy</phase>
+                        <configuration>
+                           <merge>true</merge>
+                        </configuration>
+                     </execution>
+                  </executions>
+               </plugin>
+            </plugins>
+         </build>
+      </profile>
+   </profiles>
 </project>
