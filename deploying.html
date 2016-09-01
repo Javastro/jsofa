@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>JSOFA &#x2013; JSOFA</title>
+    <title>JSOFA &#x2013; Deploying JSOFA</title>
     <style type="text/css" media="all">
       @import url("./css/maven-base.css");
       @import url("./css/maven-theme.css");
@@ -32,7 +32,7 @@
                   &nbsp;| <span id="projectVersion">Version: 20160729</span>
                           |                           <a href="http://javastro.github.com/jsofa/" class="externalLink" title="JSOFA">JSOFA</a>
         &gt;
-    JSOFA
+    Deploying JSOFA
               </div>
             <div class="xright">        
                     
@@ -56,32 +56,9 @@
           </ul>
                        <h5>Project Documentation</h5>
                   <ul>
-                                                                                                                                                                                          <li class="expanded">
+                                                                                                                                                                                <li class="collapsed">
                           <a href="project-info.html" title="Project Information">Project Information</a>
-                    <ul>
-                      <li class="none">
-            <strong>About</strong>
-          </li>
-                      <li class="none">
-                          <a href="dependencies.html" title="Dependencies">Dependencies</a>
-            </li>
-                      <li class="none">
-                          <a href="team-list.html" title="Project Team">Project Team</a>
-            </li>
-                      <li class="none">
-                          <a href="issue-tracking.html" title="Issue Tracking">Issue Tracking</a>
-            </li>
-                      <li class="none">
-                          <a href="source-repository.html" title="Source Repository">Source Repository</a>
-            </li>
-                      <li class="none">
-                          <a href="license.html" title="Project License">Project License</a>
-            </li>
-                      <li class="none">
-                          <a href="project-summary.html" title="Project Summary">Project Summary</a>
-            </li>
-              </ul>
-        </li>
+                  </li>
                                                                                                                                                                                                   <li class="collapsed">
                           <a href="project-reports.html" title="Project Reports">Project Reports</a>
                   </li>
@@ -89,8 +66,8 @@
                        <h5>Developing</h5>
                   <ul>
                   <li class="none">
-                          <a href="deploying.html" title="release">release</a>
-            </li>
+            <strong>release</strong>
+          </li>
           </ul>
                              <a href="http://maven.apache.org/" title="Built by Maven" class="poweredBy">
         <img class="poweredBy" alt="Built by Maven" src="./images/logos/maven-feather.png" />
@@ -102,18 +79,26 @@
     <div id="bodyColumn">
       <div id="contentBox">
         <div class="section">
-<h2><a name="JSOFA"></a>JSOFA</h2>
-<p>The JSOFA software is a pure Java translation of the International Astronomical Union's C SOFA software library (version 20160729) at <a class="externalLink" href="http://www.iausofa.org/">http://www.iausofa.org/</a>.</p>
-<p>For more information on using please read the <a href="./apidocs/org/jastronomy/jsofa/package-summary.html#package.description">javadoc</a> overview.</p>
-<p>A jar (Java version 1.7) of the software can be obtained from the <a class="externalLink" href="http://central.sonatype.org/">Central Maven repository</a> directly by clicking the links in the sidebar and if using maven as a build tool by including the following in the POM</p>
-<div>
-<pre>&lt;dependency&gt;
-  &lt;groupId&gt;org.javastro&lt;/groupId&gt;
-  &lt;artifactId&gt;jsofa&lt;/artifactId&gt;
-  &lt;version&gt;20160729&lt;/version&gt;
-&lt;/dependency&gt;</pre></div>
-<p>The software <a href="./surefire-report.html">passes</a> all its <a href="./xref-test/org/jastronomy/jsofa/JSOFATest.html">unit tests</a> which are based on the standard tests that come with the official C and Fortran versions from the IAU.</p>
-<p>The source code is <a class="externalLink" href="https://github.com/Javastro/jsofa">on GitHub</a></p></div>
+<h2><a name="Deploying_JSOFA"></a>Deploying JSOFA</h2>
+<p>The JSOFA software is build with maven and is deployed to the maven central repository using the <a class="externalLink" href="http://central.sonatype.org/pages/apache-maven.html">following instructions</a> summarized below.</p>
+<p>Check that the build and tests are passed</p>
+<div class="source">
+<pre>mvn clean install</pre></div>
+<p>then deploy to the staging repository</p>
+<div class="source">
+<pre>mvn deploy -P release</pre></div>
+<p>if this is successful then</p>
+<div class="source">
+<pre>mvn nexus-staging:release -P release</pre></div>
+<p>will release to the central repository</p>
+<div class="section">
+<h3><a name="Deploying_the_site"></a>Deploying the site</h3>
+<p>The maven site is now deployed to <a class="externalLink" href="https://javastro.github.com/jsofa/">https://javastro.github.com/jsofa/</a> using the <a class="externalLink" href="https://github.github.com/maven-plugins/site-plugin/">github site plug-in</a></p>
+<div class="source">
+<pre>mvn site</pre></div>
+<p>will create the site and </p>
+<div class="source">
+<pre>mvn site-deploy -P release</pre></div></div></div>
       </div>
     </div>
     <div class="clear">
