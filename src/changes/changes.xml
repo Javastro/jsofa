@@ -6,7 +6,12 @@
     <author email="paul.harrison@manchester.ac.uk">Paul Harrison</author>
   </properties>
   <body>
-    <release  version="20160503" date="04-Aug-2016" description="tracking update release">
+    <release version="20160729.1" date="26-Apr-2017" description="bugfix release">
+       <action dev="pah" issue="https://github.com/Javastro/jsofa/issues/1" type="fix">
+          Fields of SphericalCoordinateEO made public.
+       </action>
+    </release>
+    <release  version="20160729" date="04-Aug-2016" description="tracking update release">
        <action dev="pah" type="update">
         Update the release to IAU SOFA 2016-07-29_a - Updated Jan 1 2017 leap second and added long-term precession &lt;-&gt; Ecliptic coordinate routines.
        </action>

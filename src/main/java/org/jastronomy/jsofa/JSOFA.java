@@ -8791,8 +8791,8 @@ public static class SphericalCoordinate {
  * @version $Revision$ $date$
  */
 public static class SphericalCoordinateEO {
-    SphericalCoordinate pos;
-    double eo;
+    public SphericalCoordinate pos;
+    public double eo;
     /**
      * @param pos
      * @param eo

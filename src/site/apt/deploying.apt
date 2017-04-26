@@ -6,7 +6,7 @@
 
 Deploying JSOFA
 
-   The JSOFA software is build with maven and is deployed to the maven central 
+   The JSOFA software is built with maven and is deployed to the maven central 
    repository using the {{{http://central.sonatype.org/pages/apache-maven.html}following instructions}}
    summarized below.
    
@@ -45,3 +45,5 @@ mvn site
 +---+
 mvn site-deploy -P release
 +---+
+
+will deploy the site - it can take a long time!
