@@ -294,7 +294,9 @@
                            <goal>jar</goal>
                         </goals>
                         <configuration>
-                           <additionalparam>-Xdoclint:none</additionalparam><!-- 
+                           <additionalparam>-Xdoclint:none</additionalparam>
+                           <failOnError>false</failOnError>
+                           <!-- 
                               Javadoc 8 became much more strict by default - switch this off -->
                         </configuration>
                      </execution>

@@ -6,8 +6,8 @@
     <author email="paul.harrison@manchester.ac.uk">Paul Harrison</author>
   </properties>
   <body>
-    <release>
-       <action version="20170420" date="30-May-2017" description="tracking update release">
+    <release  version="20170420" date="30-May-2017" description="tracking update release">
+       <action  dev="pah" type="update">
         Update to be in line with IAU sofa 2017-04-20 - updating the astronomical unit definition to IAU 2012
        </action>
        <action dev="pah" issue="https://github.com/Javastro/jsofa/issues/2" type="fix">
