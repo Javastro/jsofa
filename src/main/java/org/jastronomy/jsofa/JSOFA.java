@@ -16,15 +16,18 @@ import static java.lang.StrictMath.*;
  * This code has been created by hand translating the official C version.
  * 
  * @author Paul Harrison (paul.harrison@manchester.ac.uk) 02 Apr 2014
- * @version JSOFA Release 2016-07-29_a
+ * @version JSOFA Release 20170420
  * @since 26 Jan 2010
  */
 public class JSOFA {
     /** tracked IAU SOFA release {@value}. */
-    public final static String SOFA_RELEASE = "2016-07-29";
+    public final static String SOFA_RELEASE = "2017-04-20";
+    
+    /** JSOFA release {@value}*/
+    public final static String JSOFA_RELEASE = "20170420";
 
     /** tracked IAU SOFA revision {@value}. */
-    public final static String SOFA_REVISION = "12";
+    public final static String SOFA_REVISION = "13";
 
     
 
@@ -86,17 +89,17 @@ public class JSOFA {
     public final static double TTMTAI = (32.184);
 
 
-    /**  Astronomical unit (m) {@value} */
-    public final static double DAU = (149597870e3);
+    /**  Astronomical unit (m) IAU 2012 {@value} */
+    public final static double DAU = (149597870.7e3);
     
-    /** Speed of light (m/s) */
+    /** Speed of light (m/s) {@value} */
     public final static double CMPS = 299792458.0;
 
-    /** Light time for 1 au (s) */
-    public final static double AULT = 499.004782;
+    /** Light time for 1 au (s) {@value} */
+    public final static double AULT = (DAU/CMPS);
 
 
-    /** Speed of light (AU per day) {@value} */
+    /** Speed of light (au per day) {@value} */
     public final static double DC = (DAYSEC / AULT);
     
     /** L_G = 1 - d(TT)/d(TCG) */
@@ -2814,9 +2817,9 @@ static class LeapInfo {
     *     signifies a year so early that JD could not be computed.
     *
     * <li> If the specified date is for a day which ends with a leap second,
-    *     the UTC-TAI value returned is for the period leading up to the
+    *     the TAI-UTC value returned is for the period leading up to the
     *     leap second.  If the date is for a day which begins as a leap
-    *     second ends, the UTC-TAI returned is for the period following the
+    *     second ends, the TAI-UTC returned is for the period following the
     *     leap second.
     *
     * <li> The day number must be in the normal calendar range, for example
@@ -7366,8 +7369,8 @@ static class LeapInfo {
          *     @param date2 double         TDB date (Note 1) 
          *
          *<!-- Returned: -->
-         *     @param pvh           double[2][3]    <u>returned</u> heliocentric Earth position/velocity (AU, AU/d)
-         *     @param pvb           double[2][3]    <u>returned</u> barycentric Earth position/velocity (AU, AU/d)
+         *     @param pvh           double[2][3]    <u>returned</u> heliocentric Earth position/velocity (au, au/d)
+         *     @param pvb           double[2][3]    <u>returned</u> barycentric Earth position/velocity (au, au/d)
          *
          * <!-- Returned (function value): -->
          *  @return int           status: 0 = OK
@@ -7403,19 +7406,19 @@ static class LeapInfo {
          * <li> On return, the arrays pvh and pvb contain the following:
          *
          *        pvh[0][0]  x       }
-         *        pvh[0][1]  y       } heliocentric position, AU
+         *        pvh[0][1]  y       } heliocentric position, au
          *        pvh[0][2]  z       }
          *
          *        pvh[1][0]  xdot    }
-         *        pvh[1][1]  ydot    } heliocentric velocity, AU/d
+         *        pvh[1][1]  ydot    } heliocentric velocity, au/d
          *        pvh[1][2]  zdot    }
          *
          *        pvb[0][0]  x       }
-         *        pvb[0][1]  y       } barycentric position, AU
+         *        pvb[0][1]  y       } barycentric position, au
          *        pvb[0][2]  z       }
          *
          *        pvb[1][0]  xdot    }
-         *        pvb[1][1]  ydot    } barycentric velocity, AU/d
+         *        pvb[1][1]  ydot    } barycentric velocity, au/d
          *        pvb[1][2]  zdot    }
          *
          *     The vectors are with respect to the Barycentric Celestial
@@ -14854,7 +14857,7 @@ public static class SphericalCoordinateEO {
     *                                  5=Jupiter,  6=Saturn,  7=Uranus, 8=Neptune)
     *
     *  Returned (argument):
-    *     @param  pv     double[2][3] (returned) planet p,v (heliocentric, J2000.0, AU,AU/d)
+    *     @param  pv     double[2][3] (returned) planet p,v (heliocentric, J2000.0, au,au/d)
     *
     * <!-- Returned (function value): -->
     *  @return int          status: -1 = illegal NP (outside 1-8)
@@ -14896,11 +14899,11 @@ public static class SphericalCoordinateEO {
     * <li> On successful return, the array pv contains the following:
     *<pre>
     *        pv[0][0]   x      }
-    *        pv[0][1]   y      } heliocentric position, AU
+    *        pv[0][1]   y      } heliocentric position, au
     *        pv[0][2]   z      }
     *
     *        pv[1][0]   xdot   }
-    *        pv[1][1]   ydot   } heliocentric velocity, AU/d
+    *        pv[1][1]   ydot   } heliocentric velocity, au/d
     *        pv[1][2]   zdot   }
     *</pre>
     *     The reference frame is equatorial and is with respect to the
@@ -15031,7 +15034,7 @@ public static class SphericalCoordinateEO {
     /*
     * Tables giving the mean Keplerian elements, limited to t^2 terms:
     *
-    *   a       semi-major axis (AU)
+    *   a       semi-major axis (au)
     *   dlm     mean longitude (degree and arcsecond)
     *   e       eccentricity
     *   pi      longitude of the perihelion (degree and arcsecond)
@@ -15258,7 +15261,7 @@ public static class SphericalCoordinateEO {
           at = 2.0 * atan2(sqrt((1.0 + de) / (1.0 - de)) * sin(ae2),
                                                            cos(ae2));
 
-       /* Distance (AU) and speed (radians per day). */
+       /* Distance (au) and speed (radians per day). */
           r = da * (1.0 - de * cos(ae));
           v = GK * sqrt((1.0 + 1.0 / amas[np]) / (da * da * da));
 
@@ -15275,7 +15278,7 @@ public static class SphericalCoordinateEO {
           xmc = (de * cos(dp) + xcw) * xf;
           xpxq2 = 2 * xp * xq;
 
-       /* Position (J2000.0 ecliptic x,y,z in AU). */
+       /* Position (J2000.0 ecliptic x,y,z in au). */
           x = r * (xcw - xm2 * xp);
           y = r * (xsw + xm2 * xq);
           z = r * (-xm2 * ci2);
@@ -15285,7 +15288,7 @@ public static class SphericalCoordinateEO {
           pv[0][1] = y * COSEPS - z * SINEPS;
           pv[0][2] = y * SINEPS + z * COSEPS;
 
-       /* Velocity (J2000.0 ecliptic xdot,ydot,zdot in AU/d). */
+       /* Velocity (J2000.0 ecliptic xdot,ydot,zdot in au/d). */
           x = v * (( -1.0 + 2.0 * xp * xp) * xms + xpxq2 * xmc);
           y = v * ((  1.0 - 2.0 * xq * xq) * xmc - xpxq2 * xms);
           z = v * (2.0 * ci2 * (xp * xms + xq * xmc));
@@ -17347,7 +17350,7 @@ public static class SphericalCoordinateEO {
     *<p>Status:  support function.
     *
     *  Given (Note 1):
-    *     pv     double[2][3]   pv-vector (AU, AU/day)
+    *     pv     double[2][3]   pv-vector (au, au/day)
     *
     *  Returned (Note 2):
     *     ra     double         right ascension (radians)
@@ -17403,7 +17406,7 @@ public static class SphericalCoordinateEO {
     * <li> Care is needed with units.  The star coordinates are in radians
     *     and the proper motions in radians per Julian year, but the
     *     parallax is in arcseconds; the radial velocity is in km/s, but
-    *     the pv-vector result is in AU and AU/day.
+    *     the pv-vector result is in au and au/day.
     *
     * <li> The proper motions are the rate of change of the right ascension
     *     and declination at the catalog epoch and are in radians per Julian
@@ -17431,7 +17434,7 @@ public static class SphericalCoordinateEO {
     *
     *     Stumpff, P., 1985, Astron.Astrophys. 144, 232-240.
     *
-    *@version 2008 May 18
+    *@version 2017 May 30
     *
     *  @since Release 20101201
     *
@@ -17443,13 +17446,13 @@ public static class SphericalCoordinateEO {
               usr[] = new double[3], ust[] = new double[3];
 
 
-    /* Isolate the radial component of the velocity (AU/day, inertial). */
+    /* Isolate the radial component of the velocity (au/day, inertial). */
        NormalizedVector nv = jauPn(pv[0]);
        x = nv.u;
        vr = jauPdp(x, pv[1]);
        ur = jauSxp(vr,x);
 
-    /* Isolate the transverse component of the velocity (AU/day, inertial). */
+    /* Isolate the transverse component of the velocity (au/day, inertial). */
        ut = jauPmp(pv[1], ur);
        vt = jauPm(ut);
 
@@ -17459,9 +17462,9 @@ public static class SphericalCoordinateEO {
 
     /* The inertial-to-observed correction terms. */
        d = 1.0 + betr;
-       w = 1.0 - betr*betr - bett*bett;
-       if (d == 0.0 || w < 0) throw new JSOFAInternalError("Superluminal speed", -1);
-       del = sqrt(w) - 1.0;
+       w = betr*betr + bett*bett;
+       if (d == 0.0 || w > 1) throw new JSOFAInternalError("Superluminal speed", -1);
+       del = -w / (sqrt(1.0 -w) + 1.0);
 
     /* Apply relativistic correction factor to radial velocity component. */
        w = (betr != 0) ? (betr - del) / (betr * d) : 1.0;
@@ -17471,7 +17474,7 @@ public static class SphericalCoordinateEO {
     /* component.                                                  */
        ust = jauSxp(1.0/d, ut);
 
-    /* Combine the two to obtain the observed velocity vector (AU/day). */
+    /* Combine the two to obtain the observed velocity vector (au/day). */
        pv[1] = jauPpp(usr, ust);
 
     /* Cartesian to spherical. */
@@ -19555,7 +19558,7 @@ public static class SphericalCoordinateEO {
     *     rv     double        radial velocity (km/s, positive = receding)
     *
     *  Returned (Note 2):
-    *     pv     double[2][3]  pv-vector (AU, AU/day)
+    *     pv     double[2][3]  pv-vector (au, au/day)
     *
     * <!-- Returned (function value): -->
     *  @return int           status:
@@ -19590,7 +19593,7 @@ public static class SphericalCoordinateEO {
     *     direction", where the object was located at the catalog epoch, be
     *     required, it may be obtained by calculating the magnitude of the
     *     position vector pv[0][0-2] dividing by the speed of light in
-    *     AU/day to give the light-time, and then multiplying the space
+    *     au/day to give the light-time, and then multiplying the space
     *     velocity pv[1][0-2] by this light-time and adding the result to
     *     pv[0][0-2].
     *
@@ -19609,7 +19612,7 @@ public static class SphericalCoordinateEO {
     * <li> Care is needed with units.  The star coordinates are in radians
     *     and the proper motions in radians per Julian year, but the
     *     parallax is in arcseconds; the radial velocity is in km/s, but
-    *     the pv-vector result is in AU and AU/day.
+    *     the pv-vector result is in au and au/day.
     *
     * <li> The RA proper motion is in terms of coordinate angle, not true
     *     angle.  If the catalog uses arcseconds for both RA and Dec proper
@@ -19678,7 +19681,7 @@ public static class SphericalCoordinateEO {
               od = 0.0, odel = 0.0;     /* warnings   */
 
 
-    /* Distance (AU). */
+    /* Distance (au). */
        if (px >= PXMIN) {
           w = px;
           iwarn = 0;
@@ -19688,14 +19691,14 @@ public static class SphericalCoordinateEO {
        }
        r = DR2AS / w;
 
-    /* Radial velocity (AU/day). */
+    /* Radial velocity (au/day). */
        rd = DAYSEC * rv * 1e3 / DAU;
 
     /* Proper motion (radian/day). */
        rad = pmr / DJY;
        decd = pmd / DJY;
 
-    /* To pv-vector (AU,AU/day). */
+    /* To pv-vector (au,au/day). */
        double[][] pvt = jauS2pv(ra, dec, r, rad, decd, rd);
        jauCpv(pvt,pv);
 
@@ -19706,14 +19709,14 @@ public static class SphericalCoordinateEO {
           iwarn += 2;
        }
 
-    /* Isolate the radial component of the velocity (AU/day). */
+    /* Isolate the radial component of the velocity (au/day). */
        NormalizedVector nv = jauPn(pv[0]);
        w = nv.r;
        x = nv.u;
        vsr = jauPdp(x, pv[1]);
        usr = jauSxp(vsr,x);
 
-    /* Isolate the transverse component of the velocity (AU/day). */
+    /* Isolate the transverse component of the velocity (au/day). */
        ust = jauPmp(pv[1], usr);
        vst = jauPm(ust);
 
@@ -25664,7 +25667,7 @@ public static class SphericalCoordinateEO {
         /* au/d to m/s */
         final double AUDMS = DAU/DAYSEC;
 
-        /* Light time for 1 AU (day) */
+        /* Light time for 1 au (day) */
         final double CR = AULT/DAYSEC;
 
         int i;
@@ -28489,7 +28492,7 @@ public static class SphericalCoordinateEO {
      */
     public static double[] jauLdn(int n, Ldbody b[], double ob[], double sc[])
     {
-        /* Light time for 1 AU (days) */
+        /* Light time for 1 au (days) */
         final double CR = AULT/DAYSEC;
 
         int i;

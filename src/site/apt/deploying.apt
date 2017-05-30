@@ -46,4 +46,4 @@ mvn site
 mvn site-deploy -P release
 +---+
 
-will deploy the site - it can take a long time!
+  will deploy the site - it can take a long time!

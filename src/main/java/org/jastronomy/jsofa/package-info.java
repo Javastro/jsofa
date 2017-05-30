@@ -6,7 +6,7 @@
  * The translation was originally made from the 2010-12-01 release of the JSOFA Library for ANSI C. Any updates to this software
  * have been be made by incremental changes in the original source.
  * 
- * The current software is base on SOFA version {@value org.jastronomy.jsofa.JSOFA#SOFA_RELEASE} revision {@value org.jastronomy.jsofa.JSOFA#SOFA_REVISION}
+ * The current software (version @value org.jastronomy.jsofa.JSOFA#JSOFA_RELEASE})  is based on SOFA version {@value org.jastronomy.jsofa.JSOFA#SOFA_RELEASE} revision {@value org.jastronomy.jsofa.JSOFA#SOFA_REVISION}
  * 
  * This javadoc provides a detailed manual on how to use each function - there are also some <a href="http://www.iausofa.org/cookbooks.html">cookbooks on the IAU SOFA site</a> which can 
  * also be used to discover how to use the library bearing in mind the changes outlined below.
@@ -353,7 +353,7 @@
  * @since February 2010
  * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
  * <pre>
- * Copyright © 2016 Paul Harrison, University of Manchester.
+ * Copyright © 2017 Paul Harrison, University of Manchester.
  * 
  * This JSOFA software is derived from the official C release of the "Standards Of Fundamental Astronomy" (SOFA) library 
  * of the International Astronomical Union. The intention is to reproduce the functionality and algorithms of 
@@ -371,7 +371,7 @@
  * 
 *+----------------------------------------------------------------------
 *
-*  Copyright (C) 2016
+*  Copyright (C) 2017
 *  Standards Of Fundamental Astronomy Board
 *  of the International Astronomical Union.
 *

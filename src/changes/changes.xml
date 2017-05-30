@@ -6,6 +6,14 @@
     <author email="paul.harrison@manchester.ac.uk">Paul Harrison</author>
   </properties>
   <body>
+    <release>
+       <action version="20170420" date="30-May-2017" description="tracking update release">
+        Update to be in line with IAU sofa 2017-04-20 - updating the astronomical unit definition to IAU 2012
+       </action>
+       <action dev="pah" issue="https://github.com/Javastro/jsofa/issues/2" type="fix">
+          update error for pv matrix documentation of jauPlan94
+       </action>
+    </release>
     <release version="20160729.1" date="26-Apr-2017" description="bugfix release">
        <action dev="pah" issue="https://github.com/Javastro/jsofa/issues/1" type="fix">
           Fields of SphericalCoordinateEO made public.
