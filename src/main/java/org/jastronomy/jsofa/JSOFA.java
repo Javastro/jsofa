@@ -14854,7 +14854,7 @@ public static class SphericalCoordinateEO {
     *                                  5=Jupiter,  6=Saturn,  7=Uranus, 8=Neptune)
     *
     *  Returned (argument):
-    *     @param  pv     double[3][2] (returned) planet p,v (heliocentric, J2000.0, AU,AU/d)
+    *     @param  pv     double[2][3] (returned) planet p,v (heliocentric, J2000.0, AU,AU/d)
     *
     * <!-- Returned (function value): -->
     *  @return int          status: -1 = illegal NP (outside 1-8)
@@ -14896,12 +14896,12 @@ public static class SphericalCoordinateEO {
     * <li> On successful return, the array pv contains the following:
     *<pre>
     *        pv[0][0]   x      }
-    *        pv[1][0]   y      } heliocentric position, AU
-    *        pv[2][0]   z      }
+    *        pv[0][1]   y      } heliocentric position, AU
+    *        pv[0][2]   z      }
     *
-    *        pv[0][1]   xdot   }
+    *        pv[1][0]   xdot   }
     *        pv[1][1]   ydot   } heliocentric velocity, AU/d
-    *        pv[2][1]   zdot   }
+    *        pv[1][2]   zdot   }
     *</pre>
     *     The reference frame is equatorial and is with respect to the
     *     mean equator and equinox of epoch J2000.0.
