@@ -21,226 +21,226 @@
  * <li> introduced simple {@link org.jastronomy.jsofa.JSOFAException} and children instead of the status return value.</li>
  * <li> the test routines use the JUnit framework.</li>
  * </ul>
- *</p> 
+ *
  *<p>There are a number of features of the java translation
  *   <ul>
  *     <li>The "functions" of the library are all static member functions of {@link org.jastronomy.jsofa.JSOFA}</li>
  *     <li>Class data members are typically publicly visible and no accessors are used - This makes the library code more "C"-like</li>
  *   </ul>
- *</p>
+ *
  * 
  *<h2>List of Routines Grouped by functionality </h2> 
  *  <h3>Calendars</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauCal2jd}    Gregorian calendar to Julian Day number<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauEpb}       Julian Date to Besselian Epoch<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauEpb2jd}    Besselian Epoch to Julian Date<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauEpj}       Julian Date to Julian Epoch<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauEpj2jd}    Julian Epoch to Julian Date<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauJd2cal}    Julian Date to Gregorian year, month, day, fraction<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauJdcalf}    Julian Date to Gregorian date for formatted output<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauCal2jd}    Gregorian calendar to Julian Day number<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauEpb}       Julian Date to Besselian Epoch<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauEpb2jd}    Besselian Epoch to Julian Date<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauEpj}       Julian Date to Julian Epoch<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauEpj2jd}    Julian Epoch to Julian Date<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauJd2cal}    Julian Date to Gregorian year, month, day, fraction<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauJdcalf}    Julian Date to Gregorian date for formatted output<br>
 
   <h3>Astrometry</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauAb}       Apply stellar aberration<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauApcg}     prepare for ICRS &lt;-&gt; GCRS, geocentric, special<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauApcg13}   prepare for ICRS &lt;-&gt; GCRS, geocentric<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauApci}     prepare for ICRS &lt;-&gt; CIRS, terrestrial, special<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauApci13}   prepare for ICRS &lt;-&gt; CIRS, terrestrial<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauApco}     prepare for ICRS &lt;-&gt; observed, terrestrial, special<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauApco13}   prepare for ICRS &lt;-&gt; observed, terrestrial<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauApcs}     prepare for ICRS &lt;-&gt; CIRS, space, special<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauApcs13}   prepare for ICRS &lt;-&gt; CIRS, space<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAper}     insert ERA into context<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAper13}   update context for Earth rotation<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauApio}     prepare for CIRS &lt;-&gt; observed, terrestrial, special<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauApio13}   prepare for CIRS &lt;-&gt; observed, terrestrial<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAtci13}   catalog -&gt; CIRS<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAtciq}    quick ICRS -&gt; CIRS<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAtciqn}   quick ICRS -&gt; CIRS, multiple deflections<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAtciqz}   quick astrometric ICRS -&gt; CIRS<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAtco13}   ICRS -&gt; observed<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAtic13}   CIRS -&gt; ICRS<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAticq}    quick CIRS -&gt; ICRS<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAtciqn}   quick CIRS -&gt; ICRS, multiple deflections<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAtio13}   CIRS -&gt; observed<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAtioq}    quick CIRS -&gt; observed<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAtoc13}   observed -&gt; astrometric ICRS<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAtoi13}   observed -&gt; CIRS<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAtoiq}    quick observed -&gt; CIRS<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauLd}       light deflection by a single solar-system body<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauLdn}      light deflection by multiple solar-system bodies<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauLdsun}    light deflection by the Sun<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPmpx}     apply proper motion and parallax<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPvtob}    observatory position and velocity<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauRefco}    refraction constants<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPvstar}    space motion pv-vector to star catalog data<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauStarpv}    star catalog data to space motion pv-vector<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAb}       Apply stellar aberration<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauApcg}     prepare for ICRS &lt;-&gt; GCRS, geocentric, special<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauApcg13}   prepare for ICRS &lt;-&gt; GCRS, geocentric<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauApci}     prepare for ICRS &lt;-&gt; CIRS, terrestrial, special<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauApci13}   prepare for ICRS &lt;-&gt; CIRS, terrestrial<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauApco}     prepare for ICRS &lt;-&gt; observed, terrestrial, special<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauApco13}   prepare for ICRS &lt;-&gt; observed, terrestrial<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauApcs}     prepare for ICRS &lt;-&gt; CIRS, space, special<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauApcs13}   prepare for ICRS &lt;-&gt; CIRS, space<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAper}     insert ERA into context<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAper13}   update context for Earth rotation<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauApio}     prepare for CIRS &lt;-&gt; observed, terrestrial, special<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauApio13}   prepare for CIRS &lt;-&gt; observed, terrestrial<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtci13}   catalog -&gt; CIRS<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtciq}    quick ICRS -&gt; CIRS<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtciqn}   quick ICRS -&gt; CIRS, multiple deflections<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtciqz}   quick astrometric ICRS -&gt; CIRS<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtco13}   ICRS -&gt; observed<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtic13}   CIRS -&gt; ICRS<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAticq}    quick CIRS -&gt; ICRS<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtciqn}   quick CIRS -&gt; ICRS, multiple deflections<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtio13}   CIRS -&gt; observed<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtioq}    quick CIRS -&gt; observed<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtoc13}   observed -&gt; astrometric ICRS<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtoi13}   observed -&gt; CIRS<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtoiq}    quick observed -&gt; CIRS<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauLd}       light deflection by a single solar-system body<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauLdn}      light deflection by multiple solar-system bodies<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauLdsun}    light deflection by the Sun<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPmpx}     apply proper motion and parallax<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPvtob}    observatory position and velocity<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauRefco}    refraction constants<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPvstar}    space motion pv-vector to star catalog data<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauStarpv}    star catalog data to space motion pv-vector<br>
  
 <h3>Galactic</h3> 
-     {@link org.jastronomy.jsofa.JSOFA#jauG2icrs}  Transformation from Galactic Coordinates to ICRS<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauIcrs2g}  Transformation from ICRS to Galactic Coordinates</br>
+     {@link org.jastronomy.jsofa.JSOFA#jauG2icrs}  Transformation from Galactic Coordinates to ICRS<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauIcrs2g}  Transformation from ICRS to Galactic Coordinates<br>
 
 <h3>Ecliptic coordinates</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauEceq06}    ecliptic to ICRS, IAU 2006<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauEcm06}     rotation matrix, ICRS to ecliptic, IAU 2006<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauEqec06}    ICRS to ecliptic, IAU 2006<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauLteceq}    ecliptic to ICRS, long term<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauLtecm}     rotation matrix, ICRS to ecliptic, long-term<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauLteqec}    ICRS to ecliptic, long term<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauEceq06}    ecliptic to ICRS, IAU 2006<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauEcm06}     rotation matrix, ICRS to ecliptic, IAU 2006<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauEqec06}    ICRS to ecliptic, IAU 2006<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauLteceq}    ecliptic to ICRS, long term<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauLtecm}     rotation matrix, ICRS to ecliptic, long-term<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauLteqec}    ICRS to ecliptic, long term<br>
 
 
  <h3>Time scales</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauD2dtf}    format 2-part JD for output<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauDat}      Delta(AT) (=TAI-UTC) for a given UTC date<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauDtdb}     TDB-TT<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauDtf2d}    encode time and date fields into 2-part JD<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauTaitt}    TAI to TT<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauTaiut1}   TAI to UT1<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauTaiutc}   TAI to UTC<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauTcbtdb}   TCB to TDB<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauTcgtt}    TCG to TT<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauTdbtcb}   TDB to TCB<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauTdbtt}    TDB to TT<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauTttai}    TT to TAI<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauTttcg}    TT to TCG<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauTttdb}    TT to TDB<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauTtut1}    TT to UT1<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauUt1tai}   UT1 to TAI<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauUt1tt}    UT1 to TT<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauUt1utc}   UT1 to UTC<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauUtctai}   UTC to TAI<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauUtcut1}   UTC to UT1<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauD2dtf}    format 2-part JD for output<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauDat}      Delta(AT) (=TAI-UTC) for a given UTC date<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauDtdb}     TDB-TT<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauDtf2d}    encode time and date fields into 2-part JD<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTaitt}    TAI to TT<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTaiut1}   TAI to UT1<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTaiutc}   TAI to UTC<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTcbtdb}   TCB to TDB<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTcgtt}    TCG to TT<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTdbtcb}   TDB to TCB<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTdbtt}    TDB to TT<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTttai}    TT to TAI<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTttcg}    TT to TCG<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTttdb}    TT to TDB<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTtut1}    TT to UT1<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauUt1tai}   UT1 to TAI<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauUt1tt}    UT1 to TT<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauUt1utc}   UT1 to UTC<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauUtctai}   UTC to TAI<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauUtcut1}   UTC to UT1<br>
 
 
 
 
   <h3>Earth rotation angle and sidereal time</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauEe00}      equation of the equinoxes, IAU 2000<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauEe00a}     equation of the equinoxes, IAU 2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauEe00b}     equation of the equinoxes, IAU 2000B<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauEe06a}     equation of the equinoxes, IAU 2006/2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauEect00}    equation of the equinoxes complementary terms, IAU 2000<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauEqeq94}    equation of the equinoxes, IAU 1994<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauEra00}     Earth rotation angle, IAU 2000<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauGmst00}    Greenwich mean sidereal time, IAU 2000<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauGmst06}    Greenwich mean sidereal time, IAU 2006<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauGmst82}    Greenwich mean sidereal time, IAU 1982<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauGst00a}    Greenwich apparent sidereal time, IAU 2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauGst00b}    Greenwich apparent sidereal time, IAU 2000B<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauGst06}     Greenwich apparent ST, IAU 2006, given NPB matrix<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauGst06a}    Greenwich apparent sidereal time, IAU 2006/2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauGst94}     Greenwich apparent sidereal time, IAU 1994<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauEe00}      equation of the equinoxes, IAU 2000<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauEe00a}     equation of the equinoxes, IAU 2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauEe00b}     equation of the equinoxes, IAU 2000B<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauEe06a}     equation of the equinoxes, IAU 2006/2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauEect00}    equation of the equinoxes complementary terms, IAU 2000<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauEqeq94}    equation of the equinoxes, IAU 1994<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauEra00}     Earth rotation angle, IAU 2000<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauGmst00}    Greenwich mean sidereal time, IAU 2000<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauGmst06}    Greenwich mean sidereal time, IAU 2006<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauGmst82}    Greenwich mean sidereal time, IAU 1982<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauGst00a}    Greenwich apparent sidereal time, IAU 2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauGst00b}    Greenwich apparent sidereal time, IAU 2000B<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauGst06}     Greenwich apparent ST, IAU 2006, given NPB matrix<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauGst06a}    Greenwich apparent sidereal time, IAU 2006/2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauGst94}     Greenwich apparent sidereal time, IAU 1994<br>
 
   <h3>Ephemerides (limited precision)</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauEpv00}     Earth position and velocity<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPlan94}    major-planet position and velocity<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauEpv00}     Earth position and velocity<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPlan94}    major-planet position and velocity<br>
 
   <h3>Precession, nutation, polar motion</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauBi00}      frame bias components, IAU 2000<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauBp00}      frame bias and precession matrices, IAU 2000<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauBp06}      frame bias and precession matrices, IAU 2006<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauBpn2xy}    extract CIP X,Y coordinates from NPB matrix<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauC2i00a}    celestial-to-intermediate matrix, IAU 2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauC2i00b}    celestial-to-intermediate matrix, IAU 2000B<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauC2i06a}    celestial-to-intermediate matrix, IAU 2006/2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauC2ibpn}    celestial-to-intermediate matrix, given NPB matrix, IAU 2000<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauC2ixy}     celestial-to-intermediate matrix, given X,Y, IAU 2000<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauC2ixys}    celestial-to-intermediate matrix, given X,Y and s<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauC2t00a}    celestial-to-terrestrial matrix, IAU 2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauC2t00b}    celestial-to-terrestrial matrix, IAU 2000B<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauC2t06a}    celestial-to-terrestrial matrix, IAU 2006/2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauC2tcio}    form CIO-based celestial-to-terrestrial matrix<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauC2teqx}    form equinox-based celestial-to-terrestrial matrix<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauC2tpe}     celestial-to-terrestrial matrix given nutation, IAU 2000<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauC2txy}     celestial-to-terrestrial matrix given CIP, IAU 2000<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauEo06a}     equation of the origins, IAU 2006/2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauEors}      equation of the origins, given NPB matrix and s<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFw2m}      Fukushima-Williams angles to r-matrix<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFw2xy}     Fukushima-Williams angles to X,Y<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauNum00a}    nutation matrix, IAU 2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauLtp}       long-term precession matrix<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauLtpb}      long-term precession matrix, including ICRS frame bias<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauLtpecl}    long-term precession of the ecliptic<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauLtpequ}    long-term precession of the equator<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauNum00b}    nutation matrix, IAU 2000B<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauNum06a}    nutation matrix, IAU 2006/2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauNumat}     form nutation matrix<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauNut00a}    nutation, IAU 2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauNut00b}    nutation, IAU 2000B<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauNut06a}    nutation, IAU 2006/2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauNut80}     nutation, IAU 1980<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauNutm80}    nutation matrix, IAU 1980<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauObl06}     mean obliquity, IAU 2006<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauObl80}     mean obliquity, IAU 1980<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPb06}      zeta,z,theta precession angles, IAU 2006, including bias<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPfw06}     bias-precession Fukushima-Williams angles, IAU 2006<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPmat00}    precession matrix (including frame bias), IAU 2000<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPmat06}    PB matrix, IAU 2006<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPmat76}    precession matrix, IAU 1976<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPn00}      bias/precession/nutation results, IAU 2000<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPn00a}     bias/precession/nutation, IAU 2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPn00b}     bias/precession/nutation, IAU 2000B<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPn06}      bias/precession/nutation results, IAU 2006<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPn06a}     bias/precession/nutation results, IAU 2006/2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPnm00a}    classical NPB matrix, IAU 2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPnm00b}    classical NPB matrix, IAU 2000B<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPnm06a}    classical NPB matrix, IAU 2006/2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPnm80}     precession/nutation matrix, IAU 1976/1980<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauP06e}      precession angles, IAU 2006, equinox based<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPom00}     polar motion matrix<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPr00}      IAU 2000 precession adjustments<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPrec76}    accumulated precession angles, IAU 1976<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauS00}       the CIO locator s, given X,Y, IAU 2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauS00a}      the CIO locator s, IAU 2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauS00b}      the CIO locator s, IAU 2000B<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauS06}       the CIO locator s, given X,Y, IAU 2006<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauS06a}      the CIO locator s, IAU 2006/2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauSp00}      the TIO locator s', IERS 2003<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauXy06}      CIP, IAU 2006/2000A, from series<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauXys00a}    CIP and s, IAU 2000A<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauXys00b}    CIP and s, IAU 2000B<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauXys06a}    CIP and s, IAU 2006/2000A<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauBi00}      frame bias components, IAU 2000<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauBp00}      frame bias and precession matrices, IAU 2000<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauBp06}      frame bias and precession matrices, IAU 2006<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauBpn2xy}    extract CIP X,Y coordinates from NPB matrix<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauC2i00a}    celestial-to-intermediate matrix, IAU 2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauC2i00b}    celestial-to-intermediate matrix, IAU 2000B<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauC2i06a}    celestial-to-intermediate matrix, IAU 2006/2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauC2ibpn}    celestial-to-intermediate matrix, given NPB matrix, IAU 2000<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauC2ixy}     celestial-to-intermediate matrix, given X,Y, IAU 2000<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauC2ixys}    celestial-to-intermediate matrix, given X,Y and s<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauC2t00a}    celestial-to-terrestrial matrix, IAU 2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauC2t00b}    celestial-to-terrestrial matrix, IAU 2000B<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauC2t06a}    celestial-to-terrestrial matrix, IAU 2006/2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauC2tcio}    form CIO-based celestial-to-terrestrial matrix<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauC2teqx}    form equinox-based celestial-to-terrestrial matrix<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauC2tpe}     celestial-to-terrestrial matrix given nutation, IAU 2000<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauC2txy}     celestial-to-terrestrial matrix given CIP, IAU 2000<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauEo06a}     equation of the origins, IAU 2006/2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauEors}      equation of the origins, given NPB matrix and s<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFw2m}      Fukushima-Williams angles to r-matrix<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFw2xy}     Fukushima-Williams angles to X,Y<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauNum00a}    nutation matrix, IAU 2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauLtp}       long-term precession matrix<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauLtpb}      long-term precession matrix, including ICRS frame bias<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauLtpecl}    long-term precession of the ecliptic<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauLtpequ}    long-term precession of the equator<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauNum00b}    nutation matrix, IAU 2000B<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauNum06a}    nutation matrix, IAU 2006/2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauNumat}     form nutation matrix<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauNut00a}    nutation, IAU 2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauNut00b}    nutation, IAU 2000B<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauNut06a}    nutation, IAU 2006/2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauNut80}     nutation, IAU 1980<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauNutm80}    nutation matrix, IAU 1980<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauObl06}     mean obliquity, IAU 2006<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauObl80}     mean obliquity, IAU 1980<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPb06}      zeta,z,theta precession angles, IAU 2006, including bias<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPfw06}     bias-precession Fukushima-Williams angles, IAU 2006<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPmat00}    precession matrix (including frame bias), IAU 2000<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPmat06}    PB matrix, IAU 2006<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPmat76}    precession matrix, IAU 1976<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPn00}      bias/precession/nutation results, IAU 2000<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPn00a}     bias/precession/nutation, IAU 2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPn00b}     bias/precession/nutation, IAU 2000B<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPn06}      bias/precession/nutation results, IAU 2006<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPn06a}     bias/precession/nutation results, IAU 2006/2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPnm00a}    classical NPB matrix, IAU 2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPnm00b}    classical NPB matrix, IAU 2000B<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPnm06a}    classical NPB matrix, IAU 2006/2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPnm80}     precession/nutation matrix, IAU 1976/1980<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauP06e}      precession angles, IAU 2006, equinox based<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPom00}     polar motion matrix<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPr00}      IAU 2000 precession adjustments<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPrec76}    accumulated precession angles, IAU 1976<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauS00}       the CIO locator s, given X,Y, IAU 2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauS00a}      the CIO locator s, IAU 2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauS00b}      the CIO locator s, IAU 2000B<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauS06}       the CIO locator s, given X,Y, IAU 2006<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauS06a}      the CIO locator s, IAU 2006/2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauSp00}      the TIO locator s', IERS 2003<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauXy06}      CIP, IAU 2006/2000A, from series<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauXys00a}    CIP and s, IAU 2000A<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauXys00b}    CIP and s, IAU 2000B<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauXys06a}    CIP and s, IAU 2006/2000A<br>
 
   <h3>Fundamental arguments for nutation etc.</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauFad03}     mean elongation of the Moon from the Sun<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFae03}     mean longitude of Earth<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFaf03}     mean argument of the latitude of the Moon<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFaju03}    mean longitude of Jupiter<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFal03}     mean anomaly of the Moon<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFalp03}    mean anomaly of the Sun<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFama03}    mean longitude of Mars<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFame03}    mean longitude of Mercury<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFane03}    mean longitude of Neptune<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFaom03}    mean longitude of the Moon's ascending node<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFapa03}    general accumulated precession in longitude<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFasa03}    mean longitude of Saturn<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFaur03}    mean longitude of Uranus<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFave03}    mean longitude of Venus<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauFad03}     mean elongation of the Moon from the Sun<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFae03}     mean longitude of Earth<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFaf03}     mean argument of the latitude of the Moon<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFaju03}    mean longitude of Jupiter<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFal03}     mean anomaly of the Moon<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFalp03}    mean anomaly of the Sun<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFama03}    mean longitude of Mars<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFame03}    mean longitude of Mercury<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFane03}    mean longitude of Neptune<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFaom03}    mean longitude of the Moon's ascending node<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFapa03}    general accumulated precession in longitude<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFasa03}    mean longitude of Saturn<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFaur03}    mean longitude of Uranus<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFave03}    mean longitude of Venus<br>
 
 
   <h3>Star catalog conversions</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauFk52h}     transform FK5 star data into the Hipparcos system<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFk5hip}    FK5 to Hipparcos rotation and spin<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauFk5hz}     FK5 to Hipparcos assuming zero Hipparcos proper motion<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauH2fk5}     transform Hipparcos star data into the FK5 system<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauHfk5z}     Hipparcos to FK5 assuming zero Hipparcos proper motion<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauStarpm}    proper motion between two epochs<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauFk52h}     transform FK5 star data into the Hipparcos system<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFk5hip}    FK5 to Hipparcos rotation and spin<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFk5hz}     FK5 to Hipparcos assuming zero Hipparcos proper motion<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauH2fk5}     transform Hipparcos star data into the FK5 system<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauHfk5z}     Hipparcos to FK5 assuming zero Hipparcos proper motion<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauStarpm}    proper motion between two epochs<br>
 
   <h3>Geodetic/geocentric</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauEform}     a,f for a nominated Earth reference ellipsoid<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauGc2gd}     geocentric to geodetic for a nominated ellipsoid<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauGc2gde}    geocentric to geodetic given ellipsoid a,f<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauGd2gc}     geodetic to geocentric for a nominated ellipsoid<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauGd2gce}    geodetic to geocentric given ellipsoid a,f<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauEform}     a,f for a nominated Earth reference ellipsoid<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauGc2gd}     geocentric to geodetic for a nominated ellipsoid<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauGc2gde}    geocentric to geodetic given ellipsoid a,f<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauGd2gc}     geodetic to geocentric for a nominated ellipsoid<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauGd2gce}    geodetic to geocentric given ellipsoid a,f<br>
 
 
 
@@ -248,112 +248,126 @@
 
   <h3>Initialize</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauZp}        zero p-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauZr}        initialize r-matrix to null<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauIr}        initialize r-matrix to identity<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauZp}        zero p-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauZr}        initialize r-matrix to null<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauIr}        initialize r-matrix to identity<br>
 
   <h3>Copy/extend/extract</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauCp}        copy p-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauCr}        copy r-matrix<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauCp}        copy p-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauCr}        copy r-matrix<br>
 
   <h3>Build rotations</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauRx}        rotate r-matrix about x<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauRy}        rotate r-matrix about y<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauRz}        rotate r-matrix about z<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauRx}        rotate r-matrix about x<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauRy}        rotate r-matrix about y<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauRz}        rotate r-matrix about z<br>
 
   <h3>Spherical/Cartesian conversions</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauS2c}       spherical to unit vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauC2s}       unit vector to spherical<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauS2p}       spherical to p-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauP2s}       p-vector to spherical<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauS2c}       spherical to unit vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauC2s}       unit vector to spherical<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauS2p}       spherical to p-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauP2s}       p-vector to spherical<br>
 
   <h3>Operations on vectors</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauPpp}       p-vector plus p-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPmp}       p-vector minus p-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPpsp}      p-vector plus scaled p-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPdp}       inner (=scalar=dot) product of two p-vectors<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPxp}       outer (=vector=cross) product of two p-vectors<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPm}        modulus of p-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPn}        normalize p-vector returning modulus<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauSxp}       multiply p-vector by scalar<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauPpp}       p-vector plus p-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPmp}       p-vector minus p-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPpsp}      p-vector plus scaled p-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPdp}       inner (=scalar=dot) product of two p-vectors<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPxp}       outer (=vector=cross) product of two p-vectors<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPm}        modulus of p-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPn}        normalize p-vector returning modulus<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauSxp}       multiply p-vector by scalar<br>
 
   <h3>Operations on matrices</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauRxr}       r-matrix multiply<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauTr}        transpose r-matrix<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauRxr}       r-matrix multiply<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTr}        transpose r-matrix<br>
 
   <h3>Matrix-vector products</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauRxp}       product of r-matrix and p-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauTrxp}      product of transpose of r-matrix and p-vector<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauRxp}       product of r-matrix and p-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTrxp}      product of transpose of r-matrix and p-vector<br>
 
   <h3>Separation and position-angle</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauSepp}      angular separation from p-vectors<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauSeps}      angular separation from spherical coordinates<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPap}       position-angle from p-vectors<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPas}       position-angle from spherical coordinates<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauSepp}      angular separation from p-vectors<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauSeps}      angular separation from spherical coordinates<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPap}       position-angle from p-vectors<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPas}       position-angle from spherical coordinates<br>
 
  <h3> Rotation vectors</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauRv2m}      r-vector to r-matrix<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauRm2v}      r-matrix to r-vector<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauRv2m}      r-vector to r-matrix<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauRm2v}      r-matrix to r-vector<br>
 
 
 <h2>OPERATIONS INVOLVING PV-VECTORS</h2>
 
   <h3>Initialize</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauZpv}       zero pv-vector<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauZpv}       zero pv-vector<br>
 
   <h3>Copy/extend/extract</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauCpv}       copy pv-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauP2pv}      append zero velocity to p-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPv2p}      discard velocity component of pv-vector<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauCpv}       copy pv-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauP2pv}      append zero velocity to p-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPv2p}      discard velocity component of pv-vector<br>
 
   <h3>Spherical/Cartesian conversions</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauS2pv}      spherical to pv-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPv2s}      pv-vector to spherical<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauS2pv}      spherical to pv-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPv2s}      pv-vector to spherical<br>
 
   <h3>Operations on vectors</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauPvppv}     pv-vector plus pv-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPvmpv}     pv-vector minus pv-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPvdpv}     inner (=scalar=dot) product of two pv-vectors<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPvxpv}     outer (=vector=cross) product of two pv-vectors<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPvm}       modulus of pv-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauSxpv}      multiply pv-vector by scalar<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauS2xpv}     multiply pv-vector by two scalars<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPvu}       update pv-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauPvup}      update pv-vector discarding velocity<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauPvppv}     pv-vector plus pv-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPvmpv}     pv-vector minus pv-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPvdpv}     inner (=scalar=dot) product of two pv-vectors<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPvxpv}     outer (=vector=cross) product of two pv-vectors<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPvm}       modulus of pv-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauSxpv}      multiply pv-vector by scalar<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauS2xpv}     multiply pv-vector by two scalars<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPvu}       update pv-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPvup}      update pv-vector discarding velocity<br>
 
   <h3>Matrix-vector products</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauRxpv}      product of r-matrix and pv-vector<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauTrxpv}     product of transpose of r-matrix and pv-vector<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauRxpv}      product of r-matrix and pv-vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTrxpv}     product of transpose of r-matrix and pv-vector<br>
 
 
 <h3>OPERATIONS ON ANGLES</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauAnp}       normalize radians to range 0 to 2pi<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauAnpm}      normalize radians to range -pi to +pi<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauA2tf}      decompose radians into hms<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauA2af}      decompose radians into d ' "<br/>
-     {@link org.jastronomy.jsofa.JSOFA#jauD2tf}      decompose days into hms<br/>
+     {@link org.jastronomy.jsofa.JSOFA#jauAnp}       normalize radians to range 0 to 2pi<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAnpm}      normalize radians to range -pi to +pi<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauA2tf}      decompose radians into hms<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauA2af}      decompose radians into d ' "<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauD2tf}      decompose days into hms<br>
 
+ <h3>Gnomonic projection</h3>
+
+     {@link org.jastronomy.jsofa.JSOFA#jauTpors}     solve for tangent point, spherical<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTporv}     solve for tangent point, vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTpsts}     deproject tangent plane to celestial, spherical<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTpstv}     deproject tangent plane to celestial, vector<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTpxes}     project celestial to tangent plane, spherical<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauTpxev}     project celestial to tangent plane, vector<br>
+
+ <h3>Horizon/equatorial</h3>
+
+     {@link org.jastronomy.jsofa.JSOFA#jauAe2hd}     (azimuth, altitude) to (hour angle, declination)<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauHd2ae}     (hour angle, declination) to (azimuth, altitude)<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauHd2pa}     parallactic angle<br>
 
 
  * 
  * @since February 2010
  * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
  * <pre>
- * Copyright © 2017 Paul Harrison, University of Manchester.
+ * Copyright © 2018 Paul Harrison, University of Manchester.
  * 
  * This JSOFA software is derived from the official C release of the "Standards Of Fundamental Astronomy" (SOFA) library 
  * of the International Astronomical Union. The intention is to reproduce the functionality and algorithms of 
@@ -371,7 +385,7 @@
  * 
 *+----------------------------------------------------------------------
 *
-*  Copyright (C) 2017
+*  Copyright (C) 2018
 *  Standards Of Fundamental Astronomy Board
 *  of the International Astronomical Union.
 *

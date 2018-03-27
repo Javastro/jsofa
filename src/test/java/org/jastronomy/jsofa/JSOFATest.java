@@ -17,34 +17,9 @@ package org.jastronomy.jsofa;
 import static org.jastronomy.jsofa.JSOFA.*;
 import static org.junit.Assert.*;
 
-import org.jastronomy.jsofa.JSOFA.CalendarHMS;
-import org.jastronomy.jsofa.JSOFA.ObservedPosition;
-import org.jastronomy.jsofa.JSOFA.ObservedPositionEO;
-import org.jastronomy.jsofa.JSOFA.RefCos;
-import org.jastronomy.jsofa.JSOFA.SphericalCoordinateEO;
-import org.jastronomy.jsofa.JSOFA.Astrom;
 import org.jastronomy.jsofa.JSOFAException;
 import org.jastronomy.jsofa.JSOFAIllegalParameter;
 import org.jastronomy.jsofa.JSOFAInternalError;
-import org.jastronomy.jsofa.JSOFA.Calendar;
-import org.jastronomy.jsofa.JSOFA.CatalogCoords;
-import org.jastronomy.jsofa.JSOFA.CelestialIntermediatePole;
-import org.jastronomy.jsofa.JSOFA.EulerAngles;
-import org.jastronomy.jsofa.JSOFA.FWPrecessionAngles;
-import org.jastronomy.jsofa.JSOFA.FrameBias;
-import org.jastronomy.jsofa.JSOFA.GeodeticCoord;
-import org.jastronomy.jsofa.JSOFA.ICRFrame;
-import org.jastronomy.jsofa.JSOFA.JulianDate;
-import org.jastronomy.jsofa.JSOFA.NormalizedVector;
-import org.jastronomy.jsofa.JSOFA.NutationTerms;
-import org.jastronomy.jsofa.JSOFA.PVModulus;
-import org.jastronomy.jsofa.JSOFA.PrecessionAngles;
-import org.jastronomy.jsofa.JSOFA.PrecessionDeltaTerms;
-import org.jastronomy.jsofa.JSOFA.PrecessionNutation;
-import org.jastronomy.jsofa.JSOFA.ReferenceEllipsoid;
-import org.jastronomy.jsofa.JSOFA.SphericalCoordinate;
-import org.jastronomy.jsofa.JSOFA.SphericalPosition;
-import org.jastronomy.jsofa.JSOFA.SphericalPositionVelocity;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -67,8 +42,8 @@ public class JSOFATest {
     public void testversion() 
     {
         assertEquals("Jsofa release",  System.getProperty("SOFAVERSION"), JSOFA_RELEASE); // check that the correct version is being released - system properly set from POM
-        assertEquals("sofa release", "2017-04-20", SOFA_RELEASE);
-        assertEquals("sofa revision", "13", SOFA_REVISION);
+        assertEquals("sofa release", "2018-01-30", SOFA_RELEASE);
+        assertEquals("sofa revision", "14", SOFA_REVISION);
     }
 
     /*
@@ -7400,7 +7375,7 @@ public void t_apcg()
 }
 
 @Test
-    public void t_atoi13() throws JSOFAIllegalParameter, JSOFAInternalError
+public void t_atoi13() throws JSOFAIllegalParameter, JSOFAInternalError
 /**
 **  Test jauAtoi13 function.
 **
@@ -8240,6 +8215,317 @@ public void t_ltpequ()
 
 }
 
+/**
+**  - - - - - - - -
+**   t _ a e 2 h d
+**  - - - - - - - -
+**
+**  Test iauAe2hd function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauAe2hd and vvd
+**
+**  This revision:  2017 October 21
+*/
+@Test
+public void t_ae2hd()
+{
+   double a, e, p;
+
+
+   a = 5.5;
+   e = 1.1;
+   p = 0.7;
+
+  EquatorialCoordinate ec = jauAe2hd(a, e, p);
+
+   vvd(ec.ha, 0.5933291115507309663, 1e-14, "jauAe2hd", "h");
+   vvd(ec.dec, 0.9613934761647817620, 1e-14, "jauAe2hd", "d");
+
+}
+
+
+
+public void t_hd2ae()
+/*
+**  - - - - - - - -
+**   t _ h d 2 a e
+**  - - - - - - - -
+**
+**  Test jauHd2ae function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauHd2ae and vvd
+**
+**  This revision:  2017 October 21
+*/
+{
+   double h, d, p;
+
+
+   h = 1.1;
+   d = 1.2;
+   p = 0.3;
+
+   HorizonCoordinate hc = jauHd2ae(h, d, p);
+
+   vvd(hc.az, 5.916889243730066194, 1e-13, "jauHd2ae", "a");
+   vvd(hc.el, 0.4472186304990486228, 1e-14, "jauHd2ae", "e");
+
+}
+
+/**
+**  - - - - - - - -
+**   t _ h d 2 p a
+**  - - - - - - - -
+**
+**  Test jauHd2pa function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauHd2pa and vvd
+**
+**  This revision:  2017 October 21
+*/
+@Test
+public void t_hd2pa()
+{
+   double h, d, p, q;
+
+
+   h = 1.1;
+   d = 1.2;
+   p = 0.3;
+
+   q = jauHd2pa(h, d, p);
+
+   vvd(q, 1.906227428001995580, 1e-13, "jauHd2pa", "q");
+
+}
+
+/**
+**  - - - - - - - -
+**   t _ t p o r s
+**  - - - - - - - -
+**
+**  Test jauTpors function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauTpors, vvd, viv
+**
+**  This revision:  2017 October 21
+*/
+@Test
+public void t_tpors()
+{
+   double xi, eta, ra, dec;
+
+
+   xi = -0.03;
+   eta = 0.07;
+   ra = 1.3;
+   dec = 1.5;
+
+   TangentPointSolution tps = jauTpors(xi, eta, ra, dec);
+
+   vvd(tps.sol1.alpha, 1.736621577783208748, 1e-13, "jauTpors", "az1");
+   vvd(tps.sol1.delta, 1.436736561844090323, 1e-13, "jauTpors", "bz1");
+
+   vvd(tps.sol2.alpha, 4.004971075806584490, 1e-13, "jauTpors", "az2");
+   vvd(tps.sol2.delta, 1.565084088476417917, 1e-13, "jauTpors", "bz2");
+
+   viv(tps.nsolutions, 2, "jauTpors", "n");
+
+}
+
+/*
+**  - - - - - - - -
+**   t _ t p o r v
+**  - - - - - - - -
+**
+**  Test jauTporv function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauTporv, jauS2c, vvd, viv
+**
+**  This revision:  2017 October 21
+*/
+@Test
+public void t_tporv()
+{
+   double xi, eta, ra, dec, v[] = new double[3];
+
+
+   xi = -0.03;
+   eta = 0.07;
+   ra = 1.3;
+   dec = 1.5;
+   v = jauS2c(ra, dec);
+
+   TangentPointDirectionCosines tpc = jauTporv(xi, eta, v);
+
+   vvd(tpc.dc1[0], -0.02206252822366888610, 1e-15,
+       "jauTporv", "x1");
+   vvd(tpc.dc1[1], 0.1318251060359645016, 1e-14,
+       "jauTporv", "y1");
+   vvd(tpc.dc1[2], 0.9910274397144543895, 1e-14,
+       "jauTporv", "z1");
+
+   vvd(tpc.dc2[0], -0.003712211763801968173, 1e-16,
+       "jauTporv", "x2");
+   vvd(tpc.dc2[1], -0.004341519956299836813, 1e-16,
+       "jauTporv", "y2");
+   vvd(tpc.dc2[2], 0.9999836852110587012, 1e-14,
+       "jauTporv", "z2");
+
+   viv(tpc.nsolution, 2, "jauTporv", "n");
+
+}
+
+/**
+**  - - - - - - - -
+**   t _ t p s t s
+**  - - - - - - - -
+**
+**  Test jauTpsts function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauTpsts, vvd
+**
+**  This revision:  2017 October 21
+*/
+@Test
+public void t_tpsts()
+{
+   double xi, eta, raz, decz;
+
+
+   xi = -0.03;
+   eta = 0.07;
+   raz = 2.3;
+   decz = 1.5;
+
+   SphericalCoordinate sc = jauTpsts(xi, eta, raz, decz);
+
+   vvd(sc.alpha, 0.7596127167359629775, 1e-14, "jauTpsts", "ra");
+   vvd(sc.delta, 1.540864645109263028, 1e-13, "jauTpsts", "dec");
+
+}
+
+/**
+**  - - - - - - - -
+**   t _ t p s t v
+**  - - - - - - - -
+**
+**  Test jauTpstv function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauTpstv, jauS2c, vvd
+**
+**  This revision:  2017 October 21
+*/
+@Test
+public void t_tpstv()
+{
+   double xi, eta, raz, decz, vz[], v[];
+
+
+   xi = -0.03;
+   eta = 0.07;
+   raz = 2.3;
+   decz = 1.5;
+   vz = jauS2c(raz, decz);
+
+   v = jauTpstv(xi, eta, vz);
+
+   vvd(v[0], 0.02170030454907376677, 1e-15, "jauTpstv", "x");
+   vvd(v[1], 0.02060909590535367447, 1e-15, "jauTpstv", "y");
+   vvd(v[2], 0.9995520806583523804, 1e-14, "jauTpstv", "z");
+
+}
+
+/*
+**  - - - - - - - -
+**   t _ t p x e s
+**  - - - - - - - -
+**
+**  Test jauTpxes function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauTpxes, vvd, viv
+**
+**  This revision:  2017 October 21
+*/
+@Test
+public void t_tpxes()
+{
+   double ra, dec, raz, decz;
+
+
+   ra = 1.3;
+   dec = 1.55;
+   raz = 2.3;
+   decz = 1.5;
+
+   TangentPlaneCoordinate tpc = jauTpxes(ra, dec, raz, decz);
+
+   vvd(tpc.xi, -0.01753200983236980595, 1e-15, "jauTpxes", "xi");
+   vvd(tpc.eta, 0.05962940005778712891, 1e-15, "jauTpxes", "eta");
+
+   viv(tpc.status, 0, "jauTpxes", "j");
+
+}
+
+/**
+**  - - - - - - - -
+**   t _ t p x e v
+**  - - - - - - - -
+**
+**  Test jauTpxev function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  jauTpxev, jauS2c, vvd
+**
+**  This revision:  2017 October 21
+*/
+@Test
+public void t_tpxev()
+{
+   double ra, dec, raz, decz, v[], vz[];
+
+
+   ra = 1.3;
+   dec = 1.55;
+   raz = 2.3;
+   decz = 1.5;
+   v = jauS2c(ra, dec);
+   vz = jauS2c(raz, decz);
+
+   TangentPlaneCoordinate tpc = jauTpxev(v, vz);
+
+   vvd(tpc.xi, -0.01753200983236980595, 1e-15, "jauTpxev", "xi");
+   vvd(tpc.eta, 0.05962940005778712891, 1e-15, "jauTpxev", "eta");
+
+   viv(tpc.status, 0, "jauTpxev", "j");
+
+}
 
 
 
@@ -8247,7 +8533,7 @@ public void t_ltpequ()
 }
 
 /*
- * Copyright © 2016 Paul Harrison, University of Manchester.
+ * Copyright © 2018 Paul Harrison, University of Manchester.
  * 
  * This JSOFA software is derived from the official C release of the "Standards Of Fundamental Astronomy" (SOFA) library 
  * of the International Astronomical Union. The intention is to reproduce the functionality and algorithms of 
@@ -8266,7 +8552,7 @@ public void t_ltpequ()
 
 /*----------------------------------------------------------------------
 **
-**  Copyright (C) 2010
+**  Copyright (C) 2018
 **  Standards Of Fundamental Astronomy Board
 **  of the International Astronomical Union.
 **

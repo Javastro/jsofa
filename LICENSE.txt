@@ -1,5 +1,5 @@
 
-Copyright © 2017 Paul Harrison, University of Manchester.
+Copyright © 2018 Paul Harrison, University of Manchester.
 
 This JSOFA software is derived from the International Astronomical
 Union's (IAU) "Standards Of Fundamental Astronomy" (SOFA) library -
@@ -24,7 +24,7 @@ carried over as applicable.
 
 ---------------------------------------------------------------------
 
-  Copyright (C) 2017
+  Copyright (C) 2018
   Standards Of Fundamental Astronomy Board
   of the International Astronomical Union.
 

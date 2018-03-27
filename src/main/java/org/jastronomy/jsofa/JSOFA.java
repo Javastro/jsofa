@@ -16,18 +16,18 @@ import static java.lang.StrictMath.*;
  * This code has been created by hand translating the official C version.
  * 
  * @author Paul Harrison (paul.harrison@manchester.ac.uk) 02 Apr 2014
- * @version JSOFA Release 20170420
+ * @version JSOFA Release 20180130
  * @since 26 Jan 2010
  */
 public class JSOFA {
     /** tracked IAU SOFA release {@value}. */
-    public final static String SOFA_RELEASE = "2017-04-20";
+    public final static String SOFA_RELEASE = "2018-01-30";
     
     /** JSOFA release {@value}*/
-    public final static String JSOFA_RELEASE = "20170420";
+    public final static String JSOFA_RELEASE = "20180130";
 
     /** tracked IAU SOFA revision {@value}. */
-    public final static String SOFA_REVISION = "13";
+    public final static String SOFA_REVISION = "14";
 
     
 
@@ -116,6 +116,7 @@ public class JSOFA {
     /** TDB (s) at TAI 1977/1/1.0 */
     public final static double TDB0 = (-6.55e-5);
 
+    private final static double TANGENT_TINY = 1e-6;
 
     /** dint(A) - truncate to nearest whole number towards zero (double)  */
     private static double dint(final double A){ return ((A)<0.0?ceil(A):floor(A));}
@@ -126,7 +127,7 @@ public class JSOFA {
     /** dsign(A,B) - magnitude of A with sign of B (double) */
     private static double dsign(final double A, double B){return ((B)<0.0?-abs(A):abs(A));}
 
-
+     
     
     /**
      * Julian Date representation. The actual date is djm0+djm1, apportioned in any
@@ -305,7 +306,7 @@ public class JSOFA {
     
 
     /**
-    *  Normalize angle into the range {@literal 0 <= a < 2pi}.
+    *  Normalize angle into the range {@code 0 <= a < 2pi}.
     *
     *<p>This function is derived from the International Astronomical Union's
     *  SOFA (Standards Of Fundamental Astronomy) software collection.
@@ -338,7 +339,7 @@ public class JSOFA {
     
 
     /**
-    *  Normalize angle into the range  {@literal -pi <= a < +pi}.
+    *  Normalize angle into the range  {@code -pi <= a < +pi}.
     *
     *<p>This function is derived from the International Astronomical Union's
     *  SOFA (Standards Of Fundamental Astronomy) software collection.
@@ -461,7 +462,7 @@ public class JSOFA {
     *<p>Status:  canonical model.
     *
     *<!-- Given: -->
-    *     @param date1
+    *      @param date1  double          TT as a 2-part Julian Date (Note 1)
     *      @param date2   double          TT as a 2-part Julian Date (Note 1)
     *
     *<!-- Returned: -->
@@ -2022,7 +2023,9 @@ public class JSOFA {
     *<p>Status:  support function.
     *
     *<!-- Given: -->
-    *     @param iy,im,id   int      year, month, day in Gregorian calendar (Note 1)
+    *     @param iy  int      year in Gregorian calendar (Note 1)
+    *     @param im  int      month in Gregorian calendar (Note 1)
+    *     @param id   int     day in Gregorian calendar (Note 1)
     *
     *<!-- Returned: -->
     *     @return d MJD zero-point: always 2400000.5
@@ -2116,6 +2119,7 @@ public class JSOFA {
     *
     *<!-- Returned: -->
     *     @param c         double[3]       <u>given and returned</u> copy
+    *     @return  double[3]       <u>given and returned</u> copy
     *
     *@version 2008 May 11
     *
@@ -2145,9 +2149,10 @@ public class JSOFA {
     *
     *<!-- Given: -->
     *     @param pv      double[2][3]     position/velocity vector to be copied
+    *     @param c       double[2][3]      <u>returned</u> copy
     *
     *<!-- Returned: -->
-    *     @return c       double[2][3]      <u>returned</u> copy
+    *     @return        double[2][3]      <u>returned c</u> copy
     *
     *<p>Called:<ul>
     *     <li>{@link #jauCp} copy p-vector
@@ -2355,81 +2360,82 @@ public class JSOFA {
    }
    
 /**
-**
-**  Format for output a 2-part Julian Date (or in the case of UTC a
-**  quasi-JD form that includes special provision for leap seconds).
-**
-**<p>This function is derived from the International Astronomical Union's
-**  SOFA (Standards of Fundamental Astronomy) software collection.
-**
-**<p>Status:  support function.
-**
-**<!-- Given: -->
-**     scale     char[]  time scale ID (Note 1)
-**     ndp       int     resolution (Note 2)
-**     d1,d2     double  time as a 2-part Julian Date (Notes 3,4)
-**
-**<!-- Returned:-->
-**     iy,im,id  int     year, month, day in Gregorian calendar (Note 5)
-**     ihmsf     int[4]  hours, minutes, seconds, fraction (Note 1)
-**
-**  Returned (function value):
-**               int     status: +1 = dubious year (Note 5)
-**                                0 = OK
-**                               -1 = unacceptable date (Note 6)
-**
-**<p>Notes:
-**
-**  1) scale identifies the time scale.  Only the value "UTC" (in upper
-**     case) is significant, and enables handling of leap seconds (see
-**     Note 4).
-**
-**  2) ndp is the number of decimal places in the seconds field, and can
-**     have negative as well as positive values, such as:
-**
-**     ndp         resolution
-**     -4            1 00 00
-**     -3            0 10 00
-**     -2            0 01 00
-**     -1            0 00 10
-**      0            0 00 01
-**      1            0 00 00.1
-**      2            0 00 00.01
-**      3            0 00 00.001
-**
-**     The limits are platform dependent, but a safe range is -5 to +9.
-**
-**  3) d1+d2 is Julian Date, apportioned in any convenient way between
-**     the two arguments, for example where d1 is the Julian Day Number
-**     and d2 is the fraction of a day.  In the case of UTC, where the
-**     use of JD is problematical, special conventions apply:  see the
-**     next note.
-**
-**  4) JD cannot unambiguously represent UTC during a leap second unless
-**     special measures are taken.  The SOFA internal convention is that
-**     the quasi-JD day represents UTC days whether the length is 86399,
-**     86400 or 86401 SI seconds.  In the 1960-1972 era there were
-**     smaller jumps (in either direction) each time the linear UTC(TAI)
-**     expression was changed, and these "mini-leaps" are also included
-**     in the SOFA convention.
-**
-**  5) The warning status "dubious year" flags UTCs that predate the
-**     introduction of the time scale or that are too far in the future
-**     to be trusted.  See iauDat for further details.
-**
-**  6) For calendar conventions and limitations, see iauCal2jd.
-**
-**  Called:
-**     iauJd2cal    JD to Gregorian calendar
-**     iauD2tf      decompose days to hms
-**     iauDat       delta(AT) = TAI-UTC
-**
-**@version 2014 February 15
-**
-**@since JSOFA release 20131202
-**
-**  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
- * @throws JSOFAInternalError 
+*
+*  Format for output a 2-part Julian Date (or in the case of UTC a
+*  quasi-JD form that includes special provision for leap seconds).
+*
+*<p>This function is derived from the International Astronomical Union's
+*  SOFA (Standards of Fundamental Astronomy) software collection.
+*
+*<p>Status:  support function.
+*
+*<!-- Given: -->
+*     @param scale     char[]  time scale ID (Note 1)
+*     @param ndp       int     resolution (Note 2)
+*     @param d1     double  time as a 2-part Julian Date (Notes 3,4)
+*     @param d2     double  time as a 2-part Julian Date (Notes 3,4)
+*
+*<!-- Returned:-->
+*     iy,im,id  int     year, month, day in Gregorian calendar (Note 5)
+*     ihmsf     int[4]  hours, minutes, seconds, fraction (Note 1)
+*
+*  Returned (function value):
+*               int     status: +1 = dubious year (Note 5)
+*                                0 = OK
+*                               -1 = unacceptable date (Note 6)
+*
+*<p>Notes:
+*<ol>
+* <li> scale identifies the time scale.  Only the value "UTC" (in upper
+*     case) is significant, and enables handling of leap seconds (see
+*     Note 4).
+*
+* <li> ndp is the number of decimal places in the seconds field, and can
+*     have negative as well as positive values, such as:
+*
+*     ndp         resolution
+*     -4            1 00 00
+*     -3            0 10 00
+*     -2            0 01 00
+*     -1            0 00 10
+*      0            0 00 01
+*      1            0 00 00.1
+*      2            0 00 00.01
+*      3            0 00 00.001
+*
+*     The limits are platform dependent, but a safe range is -5 to +9.
+*
+* <li> d1+d2 is Julian Date, apportioned in any convenient way between
+*     the two arguments, for example where d1 is the Julian Day Number
+*     and d2 is the fraction of a day.  In the case of UTC, where the
+*     use of JD is problematical, special conventions apply:  see the
+*     next note.
+*
+* <li> JD cannot unambiguously represent UTC during a leap second unless
+*     special measures are taken.  The SOFA internal convention is that
+*     the quasi-JD day represents UTC days whether the length is 86399,
+*     86400 or 86401 SI seconds.  In the 1960-1972 era there were
+*     smaller jumps (in either direction) each time the linear UTC(TAI)
+*     expression was changed, and these "mini-leaps" are also included
+*     in the SOFA convention.
+*
+* <li> The warning status "dubious year" flags UTCs that predate the
+*     introduction of the time scale or that are too far in the future
+*     to be trusted.  See iauDat for further details.
+*
+* <li> For calendar conventions and limitations, see iauCal2jd.
+*</ol>
+*  Called:
+*     iauJd2cal    JD to Gregorian calendar
+*     iauD2tf      decompose days to hms
+*     iauDat       delta(AT) = TAI-UTC
+*
+*@version 2014 February 15
+*
+*@since JSOFA release 20131202
+*
+*  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
+ * @throws JSOFAInternalError an internal error has occured
  * @throws JSOFAIllegalParameter 
 */
 public static CalendarHMS jauD2dtf(final String scale, int ndp, double d1, double d2 ) throws JSOFAIllegalParameter, JSOFAInternalError
@@ -2535,84 +2541,87 @@ jauD2tf ( ndp, fd, ihmsf1 );
 }   
 
 /**
-**  Encode date and time fields into 2-part Julian Date (or in the case
-**  of UTC a quasi-JD form that includes special provision for leap
-**  seconds).
-**
-**<p>This function is derived from the International Astronomical Union's
-**  SOFA (Standards of Fundamental Astronomy) software collection.
-**
-**  Status:  support function.
-**
-**  Given:
-**    @param scale     char  time scale ID (Note 1)
-**    @param iy,im,id  int     year, month, day in Gregorian calendar (Note 2)
-**    @param ihr,imn   int     hour, minute
-**    @param sec       double  seconds
-**
-**  Returned:
-**     @return     2-part Julian Date (Notes 3,4)
-**
+*  Encode date and time fields into 2-part Julian Date (or in the case
+*  of UTC a quasi-JD form that includes special provision for leap
+*  seconds).
+*
+*<p>This function is derived from the International Astronomical Union's
+*  SOFA (Standards of Fundamental Astronomy) software collection.
+*
+*  <p>Status:  support function.
+*
+* <!-- Given: -->
+*    @param scale     char  time scale ID (Note 1)
+*    @param iy  int     year in Gregorian calendar (Note 2)
+*    @param im   int    month in Gregorian calendar (Note 2)
+*    @param id  int      day in Gregorian calendar (Note 2)
+*    @param ihr  int     hour
+*    @param imn   int    minute
+*    @param sec       double  seconds
+*
+* <!-- Returned: -->
+*     @return     2-part Julian Date (Notes 3,4)
+*
  * @throws JSOFAIllegalParameter 
- * @throws JSOFAInternalError 
-**          {@literal    status: +3 = both of next two
-**                               +2 = time is after end of day (Note 5)
-**                               +1 = dubious year (Note 6)
-**                                0 = OK
-**                               -1 = bad year
-**                               -2 = bad month
-**                               -3 = bad day
-**                               -4 = bad hour
-**                               -5 = bad minute
-**                               -6 = bad second (<0)}
-**
-**<p>Notes:
-**
-**  1) scale identifies the time scale.  Only the value "UTC" (in upper
-**     case) is significant, and enables handling of leap seconds (see
-**     Note 4).
-**
-**  2) For calendar conventions and limitations, see iauCal2jd.
-**
-**  3) The sum of the results, d1+d2, is Julian Date, where normally d1
-**     is the Julian Day Number and d2 is the fraction of a day.  In the
-**     case of UTC, where the use of JD is problematical, special
-**     conventions apply:  see the next note.
-**
-**  4) JD cannot unambiguously represent UTC during a leap second unless
-**     special measures are taken.  The SOFA internal convention is that
-**     the quasi-JD day represents UTC days whether the length is 86399,
-**     86400 or 86401 SI seconds.  In the 1960-1972 era there were
-**     smaller jumps (in either direction) each time the linear UTC(TAI)
-**     expression was changed, and these "mini-leaps" are also included
-**     in the SOFA convention.
-**
-**  5) The warning status "time is after end of day" usually means that
-**     the sec argument is greater than 60.0.  However, in a day ending
-**     in a leap second the limit changes to 61.0 (or 59.0 in the case
-**     of a negative leap second).
-**
-**  6) The warning status "dubious year" flags UTCs that predate the
-**     introduction of the time scale or that are too far in the future
-**     to be trusted.  See iauDat for further details.
-**
-**  7) Only in the case of continuous and regular time scales (TAI, TT,
-**     TCG, TCB and TDB) is the result d1+d2 a Julian Date, strictly
-**     speaking.  In the other cases (UT1 and UTC) the result must be
-**     used with circumspection;  in particular the difference between
-**     two such results cannot be interpreted as a precise time
-**     interval.
-**
-**  Called:
-**     iauCal2jd    Gregorian calendar to JD
-**     iauDat       delta(AT) = TAI-UTC
-**     iauJd2cal    JD to Gregorian calendar
-**
-**@version 2013 July 26
-**
-**@since JSOFA release 20131202
-**
-**  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
+ * 
+* @throws JSOFAInternalError          {@code    status: +3 = both of next two
+*                               +2 = time is after end of day (Note 5)
+*                               +1 = dubious year (Note 6)
+*                                0 = OK
+*                               -1 = bad year
+*                               -2 = bad month
+*                               -3 = bad day
+*                               -4 = bad hour
+*                               -5 = bad minute
+*                               -6 = bad second (<0)}
+*
+*<p>Notes:
+*<ol>
+* <li> scale identifies the time scale.  Only the value "UTC" (in upper
+*     case) is significant, and enables handling of leap seconds (see
+*     Note 4).
+*
+* <li> For calendar conventions and limitations, see iauCal2jd.
+*
+* <li> The sum of the results, d1+d2, is Julian Date, where normally d1
+*     is the Julian Day Number and d2 is the fraction of a day.  In the
+*     case of UTC, where the use of JD is problematical, special
+*     conventions apply:  see the next note.
+*
+* <li> JD cannot unambiguously represent UTC during a leap second unless
+*     special measures are taken.  The SOFA internal convention is that
+*     the quasi-JD day represents UTC days whether the length is 86399,
+*     86400 or 86401 SI seconds.  In the 1960-1972 era there were
+*     smaller jumps (in either direction) each time the linear UTC(TAI)
+*     expression was changed, and these "mini-leaps" are also included
+*     in the SOFA convention.
+*
+* <li> The warning status "time is after end of day" usually means that
+*     the sec argument is greater than 60.0.  However, in a day ending
+*     in a leap second the limit changes to 61.0 (or 59.0 in the case
+*     of a negative leap second).
+*
+* <li> The warning status "dubious year" flags UTCs that predate the
+*     introduction of the time scale or that are too far in the future
+*     to be trusted.  See iauDat for further details.
+*
+* <li> Only in the case of continuous and regular time scales (TAI, TT,
+*     TCG, TCB and TDB) is the result d1+d2 a Julian Date, strictly
+*     speaking.  In the other cases (UT1 and UTC) the result must be
+*     used with circumspection;  in particular the difference between
+*     two such results cannot be interpreted as a precise time
+*     interval.
+*</ol>
+*  Called:
+*     iauCal2jd    Gregorian calendar to JD
+*     iauDat       delta(AT) = TAI-UTC
+*     iauJd2cal    JD to Gregorian calendar
+*
+*@version 2013 July 26
+*
+*@since JSOFA release 20131202
+*
+*  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
 */
 public static JulianDate jauDtf2d(final String scale, int iy, int im, int id,
         int ihr, int imn, double sec) throws JSOFAIllegalParameter, JSOFAInternalError
@@ -4151,7 +4160,7 @@ static class LeapInfo {
     *<p>Called:<ul>
     *     <li>{@link #jauEect00} equation of the equinoxes complementary terms
     * </ul>
-    *<p>
+    *
     *
     *    <p>Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
     *     implement the IAU 2000 definition of UT1", Astronomy &amp;
@@ -4320,7 +4329,7 @@ static class LeapInfo {
     *     <li>{@link #jauNut00b} nutation, IAU 2000B
     *     <li>{@link #jauEe00} equation of the equinoxes, IAU 2000
     * </ul>
-    *<p>
+    *
     *
     *    <p>Capitaine, N., Wallace, P.T. and McCarthy, D.D., "Expressions to
     *     implement the IAU 2000 definition of UT1", Astronomy &amp;
@@ -8502,8 +8511,8 @@ static class LeapInfo {
     *<!-- Given: -->
     *     @param t      double     TDB, Julian centuries since J2000.0 (Note 1)
     *
-    *  Returned  (function value):
-    *           double    mean longitude of Uranus, radians (Note 2)
+    * <!-- Returned  (function value): -->
+    *      @return     double    mean longitude of Uranus, radians (Note 2)
     *
     * <p>Notes:
     * <ol>
@@ -8604,20 +8613,15 @@ static class LeapInfo {
     *<p>Status:  support function.
     *
     *  Given (all FK5, equinox J2000.0, epoch J2000.0):
-    *     r5      double    RA (radians)
-    *     d5      double    Dec (radians)
-    *     dr5     double    proper motion in RA (dRA/dt, rad/Jyear)
-    *     dd5     double    proper motion in Dec (dDec/dt, rad/Jyear)
-    *     px5     double    parallax (arcsec)
-    *     rv5     double    radial velocity (km/s, positive = receding)
+    *    @param r5      double    RA (radians)
+    *    @param d5      double    Dec (radians)
+    *    @param dr5     double    proper motion in RA (dRA/dt, rad/Jyear)
+    *    @param dd5     double    proper motion in Dec (dDec/dt, rad/Jyear)
+    *    @param px5     double    parallax (arcsec)
+    *    @param rv5     double    radial velocity (km/s, positive = receding)
     *
     *  Returned (all Hipparcos, epoch J2000.0):
-    *     rh      double    RA (radians)
-    *     dh      double    Dec (radians)
-    *     drh     double    proper motion in RA (dRA/dt, rad/Jyear)
-    *     ddh     double    proper motion in Dec (dDec/dt, rad/Jyear)
-    *     pxh     double    parallax (arcsec)
-    *     rvh     double    radial velocity (km/s, positive = receding)
+    *  @return catalogue coordinates
     *
     * <p>Notes:
     * <ol>
@@ -9414,8 +9418,8 @@ public static class SphericalCoordinateEO {
     *     @return xyz      double[3]    <u>returned</u> geocentric vector (Note 3)
     *
     * <!-- Returned (function value): -->
-    *  @throws JSOFAInternalError
-    *                            0 = OK
+    *  
+    *  @throws JSOFAInternalError  0 = OK
     *                           -1 = illegal case (Note 4)
     * <p>Notes:
     * <ol>
@@ -10243,12 +10247,12 @@ public static class SphericalCoordinateEO {
     *<p>Status:  support function.
     *
     *  Given (all Hipparcos, epoch J2000.0):
-    *     rh      double    RA (radians)
-    *     dh      double    Dec (radians)
-    *     drh     double    proper motion in RA (dRA/dt, rad/Jyear)
-    *     ddh     double    proper motion in Dec (dDec/dt, rad/Jyear)
-    *     pxh     double    parallax (arcsec)
-    *     rvh     double    radial velocity (km/s, positive = receding)
+    *    @param rh      double    RA (radians)
+    *    @param dh      double    Dec (radians)
+    *    @param drh     double    proper motion in RA (dRA/dt, rad/Jyear)
+    *    @param ddh     double    proper motion in Dec (dDec/dt, rad/Jyear)
+    *    @param pxh     double    parallax (arcsec)
+    *    @param rvh     double    radial velocity (km/s, positive = receding)
     *
     *  Returned (all FK5, equinox J2000.0, epoch J2000.0):
     *     r5      double    RA (radians)
@@ -17350,18 +17354,13 @@ public static class SphericalCoordinateEO {
     *<p>Status:  support function.
     *
     *  Given (Note 1):
-    *     pv     double[2][3]   pv-vector (au, au/day)
+    *    @param pv     double[2][3]   pv-vector (au, au/day)
     *
-    *  Returned (Note 2):
-    *     ra     double         right ascension (radians)
-    *     dec    double         declination (radians)
-    *     pmr    double         RA proper motion (radians/year)
-    *     pmd    double         Dec proper motion (radians/year)
-    *     px     double         parallax (arcsec)
-    *     rv     double         radial velocity (km/s, positive = receding)
-    *
+     *
     * <!-- Returned (function value): -->
-    *  @return int            status:
+    *  @return catalogue value
+    *  
+    *  int            status:
     *                              0 = OK
     *                             -1 = superluminal speed (Note 5)
     *                             -2 = null position vector
@@ -19550,15 +19549,15 @@ public static class SphericalCoordinateEO {
     *<p>Status:  support function.
     *
     *  Given (Note 1):
-    *     ra     double        right ascension (radians)
-    *     dec    double        declination (radians)
-    *     pmr    double        RA proper motion (radians/year)
-    *     pmd    double        Dec proper motion (radians/year)
-    *     px     double        parallax (arcseconds)
-    *     rv     double        radial velocity (km/s, positive = receding)
+    *   @param  ra     double        right ascension (radians)
+    *   @param  dec    double        declination (radians)
+    *   @param  pmr    double        RA proper motion (radians/year)
+    *   @param  pmd    double        Dec proper motion (radians/year)
+    *   @param  px     double        parallax (arcseconds)
+    *   @param  rv     double        radial velocity (km/s, positive = receding)
     *
     *  Returned (Note 2):
-    *     pv     double[2][3]  pv-vector (au, au/day)
+    *   @param  pv     double[2][3]  pv-vector (au, au/day)
     *
     * <!-- Returned (function value): -->
     *  @return int           status:
@@ -20015,7 +20014,7 @@ public static class SphericalCoordinateEO {
      *
      *  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAIllegalParameter 
-     * @throws JSOFAInternalError 
+     * @throws JSOFAInternalError an internal error has occured
      */
     public static JulianDate jauTaiutc(double tai1, double tai2) throws JSOFAIllegalParameter, JSOFAInternalError
     {
@@ -22236,10 +22235,11 @@ public static class SphericalCoordinateEO {
        *<p>Status:  canonical.
        *
        *<!-- Given: -->
-       *     tt1,tt2    double    TT as a 2-part Julian Date
+       *    @param tt1    double    TT as a 2-part Julian Date
+       *    @param tt2    double    TT as a 2-part Julian Date
        *
        *<!-- Returned:-->
-       *     tai1,tai2  double    TAI as a 2-part Julian Date
+       *     @return   TAI as a 2-part Julian Date
        *
        *  Returned (function value):
        *                int       status:  0 = OK
@@ -22296,10 +22296,11 @@ public static class SphericalCoordinateEO {
        *<p>Status:  canonical.
        *
        *<!-- Given: -->
-       *     tt1,tt2    double    TT as a 2-part Julian Date
+       *     @param tt1 double    TT as a 2-part Julian Date
+       *     @param tt2 double    TT as a 2-part Julian Date
        *
        *<!-- Returned:-->
-       *     tcg1,tcg2  double    TCG as a 2-part Julian Date
+       *     @return   TCG as a 2-part Julian Date
        *
        *  Returned (function value):
        *                int       status:  0 = OK
@@ -22360,11 +22361,12 @@ public static class SphericalCoordinateEO {
        *<p>Status:  canonical.
        *
        *<!-- Given: -->
-       *     tt1,tt2    double    TT as a 2-part Julian Date
-       *     dtr        double    TDB-TT in seconds
+       *     @param tt1    double    TT as a 2-part Julian Date
+       *     @param tt2    double    TT as a 2-part Julian Date
+       *     @param dtr        double    TDB-TT in seconds
        *
        *<!-- Returned:-->
-       *     tdb1,tdb2  double    TDB as a 2-part Julian Date
+       *     @return   TDB as a 2-part Julian Date
        *
        *  Returned (function value):
        *                int       status:  0 = OK
@@ -22432,11 +22434,12 @@ public static class SphericalCoordinateEO {
        *<p>Status:  canonical.
        *
        *<!-- Given: -->
-       *     tt1,tt2    double    TT as a 2-part Julian Date
-       *     dt         double    TT-UT1 in seconds
+       *    @param tt1    double    TT as a 2-part Julian Date
+       *    @param tt2    double    TT as a 2-part Julian Date
+       *    @param dt         double    TT-UT1 in seconds
        *
        *<!-- Returned:-->
-       *     ut11,ut12  double    UT1 as a 2-part Julian Date
+       *     @return   UT1 as a 2-part Julian Date
        *
        *  Returned (function value):
        *                int       status:  0 = OK
@@ -22493,11 +22496,12 @@ public static class SphericalCoordinateEO {
        *<p>Status:  canonical.
        *
        *<!-- Given: -->
-       *     ut11,ut12  double    UT1 as a 2-part Julian Date
-       *     dta        double    UT1-TAI in seconds
+       *   @param  ut11  double    UT1 as a 2-part Julian Date
+       *   @param  ut12  double    UT1 as a 2-part Julian Date
+       *   @param  dta        double    UT1-TAI in seconds
        *
        *<!-- Returned:-->
-       *     tai1,tai2  double    TAI as a 2-part Julian Date
+       *    @return    TAI as a 2-part Julian Date
        *
        *  Returned (function value):
        *                int       status:  0 = OK
@@ -22554,11 +22558,12 @@ public static class SphericalCoordinateEO {
        *<p>Status:  canonical.
        *
        *<!-- Given: -->
-       *     ut11,ut12  double    UT1 as a 2-part Julian Date
-       *     dt         double    TT-UT1 in seconds
+       *   @param  ut11  double    UT1 as a 2-part Julian Date
+       *   @param  ut12  double    UT1 as a 2-part Julian Date
+       *   @param  dt         double    TT-UT1 in seconds
        *
        *<!-- Returned:-->
-       *     tt1,tt2    double    TAI as a 2-part Julian Date
+       *     @return    TAI as a 2-part Julian Date
        *
        *  Returned (function value):
        *                int       status:  0 = OK
@@ -22615,9 +22620,9 @@ public static class SphericalCoordinateEO {
        *<p>Status:  canonical.
        *
        *<!-- Given: -->
-       *     @param ut11 double   UT1 as a 2-part Julian Date (Note 1)
-       *     @param ut12 double   UT1 as a 2-part Julian Date (Note 1) 
-       *     dut1       double   Delta UT1: UT1-UTC in seconds (Note 2)
+       *  @param ut11 double   UT1 as a 2-part Julian Date (Note 1)
+       *  @param ut12 double   UT1 as a 2-part Julian Date (Note 1) 
+       *  @param   dut1       double   Delta UT1: UT1-UTC in seconds (Note 2)
        *
        *<!-- Returned:-->
        *     @return  JulianDate   UTC as a 2-part quasi Julian Date (Notes 3,4)
@@ -22674,7 +22679,7 @@ public static class SphericalCoordinateEO {
        *
        *  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
        * @throws JSOFAIllegalParameter 
-       * @throws JSOFAInternalError 
+       * @throws JSOFAInternalError an internal error has occured
        */
       public static JulianDate jauUt1utc(double ut11, double ut12, double dut1) throws JSOFAIllegalParameter, JSOFAInternalError
 
@@ -22816,7 +22821,7 @@ public static class SphericalCoordinateEO {
        *@since SOFA release 2010-12-01
        *
        *  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
-     * @throws JSOFAInternalError 
+     * @throws JSOFAInternalError an internal error has occured
      * @throws JSOFAIllegalParameter 
        *
        */
@@ -22883,11 +22888,12 @@ public static class SphericalCoordinateEO {
        *<p>Status:  canonical.
        *
        *<!-- Given: -->
-       *     utc1,utc2  double   UTC as a 2-part quasi Julian Date (Notes 1-4)
-       *     dut1       double   Delta UT1 = UT1-UTC in seconds (Note 5)
+       *   @param  utc1  double   UTC as a 2-part quasi Julian Date (Notes 1-4)
+       *   @param  utc2  double   UTC as a 2-part quasi Julian Date (Notes 1-4)
+       *   @param  dut1       double   Delta UT1 = UT1-UTC in seconds (Note 5)
        *
        *<!-- Returned:-->
-       *     ut11,ut12  double   UT1 as a 2-part Julian Date (Note 6)
+       *     @return UT1 as a 2-part Julian Date (Note 6)
        *
        *  Returned (function value):
        *                int      status: +1 = dubious year (Note 7)
@@ -22944,7 +22950,7 @@ public static class SphericalCoordinateEO {
        *@since SOFA release 2010-12-01
        *
        *  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
-     * @throws JSOFAInternalError 
+     * @throws JSOFAInternalError an internal error has occured
      * @throws JSOFAIllegalParameter 
        */
       public static JulianDate jauUtcut1(double utc1, double utc2, double dut1) throws JSOFAIllegalParameter, JSOFAInternalError
@@ -24684,11 +24690,11 @@ public static class SphericalCoordinateEO {
      *
      *  <li> This is one of several functions that inserts into the astrom
      *     structure star-independent parameters needed for the chain of
-     *     astrometric transformations {@literal ICRS <-> GCRS <-> CIRS <-> observed}.
+     *     astrometric transformations {@code ICRS <-> GCRS <-> CIRS <-> observed}.
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
-     *     <pre>{@literal
+     *     <pre>{@code
      *          functions         observer        transformation
      *
      *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
@@ -24707,7 +24713,7 @@ public static class SphericalCoordinateEO {
      *     parallax, light deflection, and aberration.  From GCRS to CIRS
      *     comprises frame bias and precession-nutation.  From CIRS to
      *     observed takes account of Earth rotation, polar motion, diurnal
-     *     aberration and parallax (unless subsumed into the {@literal ICRS <-> GCRS}
+     *     aberration and parallax (unless subsumed into the {@code ICRS <-> GCRS}
      *     transformation), and atmospheric refraction.
      *
      *  <li> The context structure astrom produced by this function is used by
@@ -24799,12 +24805,12 @@ public static class SphericalCoordinateEO {
      *
      *  <li> This is one of several functions that inserts into the astrom
      *     structure star-independent parameters needed for the chain of
-     *     astrometric transformations {@literal ICRS <-> GCRS <-> CIRS <-> observed}.
+     *     astrometric transformations {@code ICRS <-> GCRS <-> CIRS <-> observed}.
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
      *     <pre>
-     *     {@literal
+     *     {@code
      *          functions         observer        transformation
      *
      *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
@@ -24823,7 +24829,7 @@ public static class SphericalCoordinateEO {
      *     parallax, light deflection, and aberration.  From GCRS to CIRS
      *     comprises frame bias and precession-nutation.  From CIRS to
      *     observed takes account of Earth rotation, polar motion, diurnal
-     *     aberration and parallax (unless subsumed into the {@literal ICRS <-> GCRS}
+     *     aberration and parallax (unless subsumed into the {@code ICRS <-> GCRS}
      *     transformation), and atmospheric refraction.
      *
      *  <li> The context structure astrom produced by this function is used by
@@ -24921,11 +24927,11 @@ public static class SphericalCoordinateEO {
      *
      *  <li> This is one of several functions that inserts into the astrom
      *     structure star-independent parameters needed for the chain of
-     *     astrometric transformations {@literal ICRS <-> GCRS <-> CIRS <-> observed.}
+     *     astrometric transformations {@code ICRS <-> GCRS <-> CIRS <-> observed.}
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
-     *     <pre>{@literal
+     *     <pre>{@code
      *          functions         observer        transformation
      *
      *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
@@ -24943,7 +24949,7 @@ public static class SphericalCoordinateEO {
      *     parallax, light deflection, and aberration.  From GCRS to CIRS
      *     comprises frame bias and precession-nutation.  From CIRS to
      *     observed takes account of Earth rotation, polar motion, diurnal
-     *     aberration and parallax (unless subsumed into the {@literal ICRS <-> GCRS}
+     *     aberration and parallax (unless subsumed into the {@code ICRS <-> GCRS}
      *     transformation), and atmospheric refraction.
      *
      *  <li> The context structure astrom produced by this function is used by
@@ -25053,11 +25059,11 @@ public static class SphericalCoordinateEO {
      *
      *  <li> This is one of several functions that inserts into the astrom
      *     structure star-independent parameters needed for the chain of
-     *     astrometric transformations {@literal ICRS <-> GCRS <-> CIRS <-> observed.}
+     *     astrometric transformations {@code ICRS <-> GCRS <-> CIRS <-> observed.}
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
-     *     <pre>{@literal
+     *     <pre>{@code
      *          functions         observer        transformation
      *
      *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
@@ -25075,7 +25081,7 @@ public static class SphericalCoordinateEO {
      *     parallax, light deflection, and aberration.  From GCRS to CIRS
      *     comprises frame bias and precession-nutation.  From CIRS to
      *     observed takes account of Earth rotation, polar motion, diurnal
-     *     aberration and parallax (unless subsumed into the {@literal ICRS <-> GCRS}
+     *     aberration and parallax (unless subsumed into the {@code ICRS <-> GCRS}
      *     transformation), and atmospheric refraction.
      *
      *  <li> The context structure astrom produced by this function is used by
@@ -25224,11 +25230,11 @@ public static class SphericalCoordinateEO {
      *
      *  <li> This is one of several functions that inserts into the astrom
      *     structure star-independent parameters needed for the chain of
-     *     astrometric transformations {@literal ICRS <-> GCRS <-> CIRS <-> observed.}
+     *     astrometric transformations {@code ICRS <-> GCRS <-> CIRS <-> observed.}
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
-     *     <pre>{@literal
+     *     <pre>{@code
      *          functions         observer        transformation
      *
      *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
@@ -25246,7 +25252,7 @@ public static class SphericalCoordinateEO {
      *     parallax, light deflection, and aberration.  From GCRS to CIRS
      *     comprises frame bias and precession-nutation.  From CIRS to
      *     observed takes account of Earth rotation, polar motion, diurnal
-     *     aberration and parallax (unless subsumed into the {@literal ICRS <-> GCRS}
+     *     aberration and parallax (unless subsumed into the {@code ICRS <-> GCRS}
      *     transformation), and atmospheric refraction.
      *
      *  <li> The context structure astrom produced by this function is used by
@@ -25268,7 +25274,7 @@ public static class SphericalCoordinateEO {
      *@since JSOFA release 20131202
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
-     * @throws JSOFAInternalError 
+     * @throws JSOFAInternalError an internal error has occured
      * @throws JSOFAIllegalParameter 
      */
     public static void jauApco(double date1, double date2,
@@ -25361,7 +25367,7 @@ public static class SphericalCoordinateEO {
      *     
      *     @return       double      <b>Returned</b> equation of the origins (ERA-GST)
      *
-     *  @throws JSOFAInternalError
+     *  @throws JSOFAInternalError an internal error has occured
      *  @throws JSOFAIllegalParameter
      *             int         status:   <b>Returned</b> +1 = dubious year (Note 2)
      *                                 0  =   <b>Returned</b> OK
@@ -25442,11 +25448,11 @@ public static class SphericalCoordinateEO {
      *
      *  <li> This is one of several functions that inserts into the astrom
      *      structure star-independent parameters needed for the chain of
-     *      astrometric transformations {@literal ICRS <-> GCRS <-> CIRS <-> observed.}
+     *      astrometric transformations {@code ICRS <-> GCRS <-> CIRS <-> observed.}
      *
      *      <p>The various functions support different classes of observer and
      *      portions of the transformation chain:
-     *      <pre>{@literal
+     *      <pre>{@code
      *          functions         observer        transformation
      *
      *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
@@ -25464,7 +25470,7 @@ public static class SphericalCoordinateEO {
      *      parallax, light deflection, and aberration.  From GCRS to CIRS
      *      comprises frame bias and precession-nutation.  From CIRS to
      *      observed takes account of Earth rotation, polar motion, diurnal
-     *      aberration and parallax (unless subsumed into the {@literal ICRS <-> GCRS}
+     *      aberration and parallax (unless subsumed into the {@code ICRS <-> GCRS}
      *      transformation), and atmospheric refraction.
      *
      *  <li> The context structure astrom produced by this function is used
@@ -25492,7 +25498,7 @@ public static class SphericalCoordinateEO {
      *@since JSOFA release 20131202
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
-     * @throws JSOFAInternalError 
+     * @throws JSOFAInternalError an internal error has occured
      * @throws JSOFAIllegalParameter 
      */
     public static double jauApco13(double utc1, double utc2, double dut1,
@@ -25616,12 +25622,12 @@ public static class SphericalCoordinateEO {
      *
      *  <li> This is one of several functions that inserts into the astrom
      *     structure star-independent parameters needed for the chain of
-     *     astrometric transformations {@literal ICRS <-> GCRS <-> CIRS <-> observed.}
+     *     astrometric transformations {@code ICRS <-> GCRS <-> CIRS <-> observed.}
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
      *
-     *     <pre>{@literal
+     *     <pre>{@code
      *          functions         observer        transformation
      *
      *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
@@ -25639,7 +25645,7 @@ public static class SphericalCoordinateEO {
      *     parallax, light deflection, and aberration.  From GCRS to CIRS
      *     comprises frame bias and precession-nutation.  From CIRS to
      *     observed takes account of Earth rotation, polar motion, diurnal
-     *     aberration and parallax (unless subsumed into the {@literal ICRS <-> GCRS}
+     *     aberration and parallax (unless subsumed into the {@code ICRS <-> GCRS}
      *     transformation), and atmospheric refraction.
      *
      *  <li> The context structure astrom produced by this function is used by
@@ -25775,11 +25781,11 @@ public static class SphericalCoordinateEO {
      *
      *  <li> This is one of several functions that inserts into the astrom
      *     structure star-independent parameters needed for the chain of
-     *     astrometric transformations {@literal ICRS <-> GCRS <-> CIRS <-> observed.}
+     *     astrometric transformations {@code ICRS <-> GCRS <-> CIRS <-> observed.}
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
-     *     <pre>{@literal
+     *     <pre>{@code
      *          functions         observer        transformation
      *
      *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
@@ -25797,7 +25803,7 @@ public static class SphericalCoordinateEO {
      *     parallax, light deflection, and aberration.  From GCRS to CIRS
      *     comprises frame bias and precession-nutation.  From CIRS to
      *     observed takes account of Earth rotation, polar motion, diurnal
-     *     aberration and parallax (unless subsumed into the {@literal ICRS <-> GCRS}
+     *     aberration and parallax (unless subsumed into the {@code ICRS <-> GCRS}
      *     transformation), and atmospheric refraction.
      *
      *  <li> The context structure astrom produced by this function is used by
@@ -25882,11 +25888,11 @@ public static class SphericalCoordinateEO {
      *
      *  <li> This is one of several functions that inserts into the astrom
      *     structure star-independent parameters needed for the chain of
-     *     astrometric transformations {@literal ICRS <-> GCRS <-> CIRS <-> observed.}
+     *     astrometric transformations {@code ICRS <-> GCRS <-> CIRS <-> observed.}
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
-     *     <pre>{@literal
+     *     <pre>{@code
      *          functions         observer        transformation
      *
      *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
@@ -25904,7 +25910,7 @@ public static class SphericalCoordinateEO {
      *     parallax, light deflection, and aberration.  From GCRS to CIRS
      *     comprises frame bias and precession-nutation.  From CIRS to
      *     observed takes account of Earth rotation, polar motion, diurnal
-     *     aberration and parallax (unless subsumed into the {@literal ICRS <-> GCRS}
+     *     aberration and parallax (unless subsumed into the {@code ICRS <-> GCRS}
      *     transformation), and atmospheric refraction.
      *
      * </ol>
@@ -25987,11 +25993,11 @@ public static class SphericalCoordinateEO {
      *
      *  <li> This is one of several functions that inserts into the astrom
      *     structure star-independent parameters needed for the chain of
-     *     astrometric transformations {@literal ICRS <-> GCRS <-> CIRS <-> observed.}
+     *     astrometric transformations {@code ICRS <-> GCRS <-> CIRS <-> observed.}
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
-     *     <pre>{@literal
+     *     <pre>{@code
      *          functions         observer        transformation
      *
      *       <p>iauApcg iauApcg13    geocentric      ICRS <-> GCRS
@@ -26009,7 +26015,7 @@ public static class SphericalCoordinateEO {
      *     parallax, light deflection, and aberration.  From GCRS to CIRS
      *     comprises frame bias and precession-nutation.  From CIRS to
      *     observed takes account of Earth rotation, polar motion, diurnal
-     *     aberration and parallax (unless subsumed into the {@literal ICRS <-> GCRS}
+     *     aberration and parallax (unless subsumed into the {@code ICRS <-> GCRS}
      *     transformation), and atmospheric refraction.
      *
      * </ol>
@@ -26098,11 +26104,11 @@ public static class SphericalCoordinateEO {
      *
      *  <li> This is one of several functions that inserts into the astrom
      *     structure star-independent parameters needed for the chain of
-     *     astrometric transformations {@literal ICRS <-> GCRS <-> CIRS <-> observed.}
+     *     astrometric transformations {@code ICRS <-> GCRS <-> CIRS <-> observed.}
      *
      *     <p>The various functions support different classes of observer and
      *     portions of the transformation chain:
-     *<pre>{@literal
+     *<pre>{@code
      *          functions         observer        transformation
      *
      *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
@@ -26120,7 +26126,7 @@ public static class SphericalCoordinateEO {
      *     parallax, light deflection, and aberration.  From GCRS to CIRS
      *     comprises frame bias and precession-nutation.  From CIRS to
      *     observed takes account of Earth rotation, polar motion, diurnal
-     *     aberration and parallax (unless subsumed into the {@literal ICRS <-> GCRS}
+     *     aberration and parallax (unless subsumed into the {@code ICRS <-> GCRS}
      *     transformation), and atmospheric refraction.
      *
      *  <li> The context structure astrom produced by this function is used by
@@ -26138,7 +26144,7 @@ public static class SphericalCoordinateEO {
      *@since JSOFA release 20131202
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
-     * @throws JSOFAInternalError 
+     * @throws JSOFAInternalError an internal error has occured
      * @throws JSOFAIllegalParameter 
      */
     public static void jauApio(double sp, double theta,
@@ -26207,7 +26213,7 @@ public static class SphericalCoordinateEO {
      *
      *<!-- Returned:-->
      *     @param astrom      <b>Returned</b> star-independent astrometry parameters:
-     *     @throws JSOFAInternalError
+     *     @throws JSOFAInternalError an internal error has occured
      *     @throws JSOFAIllegalParameter
      *                   
      *             int          status:   <b>Returned</b> +1 = dubious year (Note 2)
@@ -26289,11 +26295,11 @@ public static class SphericalCoordinateEO {
      *
      *  <li> This is one of several functions that inserts into the astrom
      *      structure star-independent parameters needed for the chain of
-     *      astrometric transformations {@literal ICRS <-> GCRS <-> CIRS <-> observed.}
+     *      astrometric transformations {@code ICRS <-> GCRS <-> CIRS <-> observed.}
      *
      *      <p>The various functions support different classes of observer and
      *      portions of the transformation chain:
-     *      <pre>{@literal
+     *      <pre>{@code
      *          functions         observer        transformation
      *
      *       iauApcg iauApcg13    geocentric      ICRS <-> GCRS
@@ -26311,7 +26317,7 @@ public static class SphericalCoordinateEO {
      *      parallax, light deflection, and aberration.  From GCRS to CIRS
      *      comprises frame bias and precession-nutation.  From CIRS to
      *      observed takes account of Earth rotation, polar motion, diurnal
-     *      aberration and parallax (unless subsumed into the {@literal ICRS <-> GCRS}
+     *      aberration and parallax (unless subsumed into the {@code ICRS <-> GCRS}
      *      transformation), and atmospheric refraction.
      *
      *  <li> The context structure astrom produced by this function is used
@@ -26334,7 +26340,7 @@ public static class SphericalCoordinateEO {
      *@since JSOFA release 20131202
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
-     * @throws JSOFAInternalError 
+     * @throws JSOFAInternalError an internal error has occured
      * @throws JSOFAIllegalParameter 
      */
     public static void jauApio13(double utc1, double utc2, double dut1,
@@ -26803,7 +26809,7 @@ public static class SphericalCoordinateEO {
      *             rob     double*    <b>Returned</b> observed right ascension (CIO-based, radians)
      *             eo      double*    <b>Returned</b> equation of the origins (ERA-GST)
      *
-     *  @throws JSOFAInternalError
+     *  @throws JSOFAInternalError an internal error has occured
      *  @throws JSOFAIllegalParameter
      *             int       status:   <b>Returned</b> +1 = dubious year (Note 4)
      *                               0  =   <b>Returned</b> OK
@@ -26920,7 +26926,7 @@ public static class SphericalCoordinateEO {
      *@since JSOFA release 20131202
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
-     * @throws JSOFAInternalError 
+     * @throws JSOFAInternalError an internal error has occured
      * @throws JSOFAIllegalParameter 
      */
     public static ObservedPositionEO jauAtco13(double rc, double dc,
@@ -27203,9 +27209,11 @@ public static class SphericalCoordinateEO {
      *     @param ri double       CIRS RA,Dec (radians)
      *     @param di double       CIRS RA,Dec (radians) 
      *     @param astrom     star-independent astrometry parameters:
+     *     @param n number of bodies.
+     *     @param b[] data for each of the n bodies.
      *
      *<!-- Returned:-->
-     *     @return rc,dc   double       <b>Returned</b> ICRS astrometric RA,Dec (radians)
+     *     @return        ICRS astrometric RA,Dec (radians)
      *
      *<p>Notes:
      * <ol>
@@ -27453,7 +27461,7 @@ public static class SphericalCoordinateEO {
      *             dob     double*    <b>Returned</b> observed declination (radians)
      *             rob     double*    <b>Returned</b> observed right ascension (CIO-based, radians)
      *
-     *  @throws JSOFAInternalError
+     *  @throws JSOFAInternalError an internal error has occured
      *  @throws JSOFAIllegalParameter
      *             int       status:   <b>Returned</b> +1 = dubious year (Note 2)
      *                              0  =   <b>Returned</b> OK
@@ -27561,7 +27569,7 @@ public static class SphericalCoordinateEO {
      *@since JSOFA release 20131202
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
-     * @throws JSOFAInternalError 
+     * @throws JSOFAInternalError an internal error has occured
      * @throws JSOFAIllegalParameter 
      */
     public static ObservedPosition jauAtio13(double ri, double di,
@@ -27788,7 +27796,7 @@ public static class SphericalCoordinateEO {
      *<!-- Returned:-->
      *     @return rc,dc   double     <b>Returned</b> ICRS astrometric RA,Dec (radians)
      *
-     *  @throws JSOFAInternalError
+     *  @throws JSOFAInternalError an internal error has occured
      *  @throws JSOFAIllegalParameter
      *                   int       status:   <b>Returned</b> +1 = dubious year (Note 4)
      *                               0  =   <b>Returned</b> OK
@@ -27906,7 +27914,7 @@ public static class SphericalCoordinateEO {
      *@since JSOFA release 20131202
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
-     * @throws JSOFAInternalError 
+     * @throws JSOFAInternalError an internal error has occured
      * @throws JSOFAIllegalParameter 
      */
     public static SphericalCoordinate jauAtoc13(String type, double ob1, double ob2,
@@ -27962,7 +27970,7 @@ public static class SphericalCoordinateEO {
      *     @return ri      double*    <b>Returned</b> CIRS right ascension (CIO-based, radians)
      *             di      double*    <b>Returned</b> CIRS declination (radians)
      *
-     *  @throws JSOFAInternalError
+     *  @throws JSOFAInternalError an internal error has occured
      *  @throws JSOFAIllegalParameter
      *             int       status:   <b>Returned</b> +1 = dubious year (Note 2)
      *                               0  =   <b>Returned</b> OK
@@ -28079,7 +28087,7 @@ public static class SphericalCoordinateEO {
      *@since JSOFA release 20131202
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
-     * @throws JSOFAInternalError 
+     * @throws JSOFAInternalError an internal error has occured
      * @throws JSOFAIllegalParameter 
      */
     public static SphericalCoordinate jauAtoi13(String type, double ob1, double ob2,
@@ -28722,8 +28730,8 @@ public static class SphericalCoordinateEO {
      *             px2     double        <b>Returned</b> parallax (arcseconds), after
      *             rv2     double        <b>Returned</b> radial velocity (km/s, +ve = receding), after
      *
-     *  @throws JSOFAInternalError
-     *            int         status:
+     *  
+     *  @throws JSOFAInternalError          int         status:
      *                         -1  =   <b>Returned</b> system error (should not occur)
      *                          0  =   <b>Returned</b> no warnings or errors
      *                          1  =   <b>Returned</b> distance overridden (Note 6)
@@ -28803,7 +28811,7 @@ public static class SphericalCoordinateEO {
      *@since JSOFA release 20131202
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
-     * @throws JSOFAInternalError 
+     * @throws JSOFAInternalError an internal error has occured
      */
     public static CatalogCoords jauPmsafe(double ra1, double dec1, double pmr1, double pmd1,
             double px1, double rv1,
@@ -28908,7 +28916,7 @@ public static class SphericalCoordinateEO {
      * @since JSOFA release 20131202
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
-     * @throws JSOFAInternalError 
+     * @throws JSOFAInternalError an internal error has occured
      * @throws JSOFAIllegalParameter 
      */
     public static double [][] jauPvtob(double elong, double phi, double hm,
@@ -28937,7 +28945,7 @@ public static class SphericalCoordinateEO {
      * @param theta    double        Earth rotation angle (radians, Note 3)
      * @return pv       double[2][3]   <b>Returned</b> position/velocity vector (m, m/s, CIRS)
      * @throws JSOFAIllegalParameter
-     * @throws JSOFAInternalError
+     * @throws JSOFAInternalError an internal error has occured
      */
     public static double [][] jauPvtob(double xyzm[],
             double xp, double yp, double sp, double theta
@@ -29861,7 +29869,8 @@ public static class SphericalCoordinateEO {
     *
     *  <!-- Given: -->
     *     @param epj     double     Julian epoch (TT)
-    *     @param dr,dd   double     ICRS right ascension and declination (radians)
+    *     @param dr   double     ICRS right ascension and declination (radians)
+    *     @param dd   double     ICRS right ascension and declination (radians)
     *
     * <!-- Returned: -->
     *     @return     ecliptic longitude and latitude (radians)
@@ -30335,11 +30344,1008 @@ public static class SphericalCoordinateEO {
        return veq;
 
     }
-   
+
+    /**
+     * Position consisting of (ha, declination) pairs in radians. Where ha is hour angle and dec is declination .
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
+     * 
+     * @since JSOFA release 20180130
+     */
+    public static class EquatorialCoordinate {
+        public double ha;
+        public double dec;
+        public EquatorialCoordinate(double ha, double dec){
+            this.ha = ha;
+            this.dec = dec;
+        }
+    }
+
+    /**
+     *
+     *  Horizon to equatorial coordinates:  transform azimuth and altitude
+     *  to hour angle and declination.
+     *
+     * <!-- Given: -->
+     *  @param  az       double       azimuth
+     *  @param  el       double       altitude (informally, elevation)
+     *  @param  phi      double       site latitude
+     *
+     * <!-- Returned: -->
+     *  @return   ha       double       hour angle (local)
+     *     dec      double       declination
+     *
+     * <p>Notes: <ol>
+     *
+     * <li>  All the arguments are angles in radians.
+     *
+     * <li>  The sign convention for azimuth is north zero, east +pi/2.
+     *
+     * <li>  HA is returned in the range +/-pi.  Declination is returned in
+     *      the range +/-pi/2.
+     *
+     * <li>  The latitude phi is pi/2 minus the angle between the Earth's
+     *      rotation axis and the adopted zenith.  In many applications it
+     *      will be sufficient to use the published geodetic latitude of the
+     *      site.  In very precise (sub-arcsecond) applications, phi can be
+     *      corrected for polar motion.
+     *
+     * <li>  The azimuth az must be with respect to the rotational north pole,
+     *      as opposed to the ITRS pole, and an azimuth with respect to north
+     *      on a map of the Earth's surface will need to be adjusted for
+     *      polar motion if sub-arcsecond accuracy is required.
+     *
+     * <li>  Should the user wish to work with respect to the astronomical
+     *      zenith rather than the geodetic zenith, phi will need to be
+     *      adjusted for deflection of the vertical (often tens of
+     *      arcseconds), and the zero point of ha will also be affected.
+     *
+     * <li>  The transformation is the same as Ve = Ry(phi-pi/2)*Rz(pi)*Vh,
+     *      where Ve and Vh are lefthanded unit vectors in the (ha,dec) and
+     *      (az,el) systems respectively and Rz and Ry are rotations about
+     *      first the z-axis and then the y-axis.  (n.b. Rz(pi) simply
+     *      reverses the signs of the x and y components.)  For efficiency,
+     *      the algorithm is written out rather than calling other utility
+     *      functions.  For applications that require even greater
+     *      efficiency, additional savings are possible if constant terms
+     *      such as functions of latitude are computed once and for all.
+     *
+     * <li>  Again for efficiency, no range checking of arguments is carried
+     *      out.
+     *</ol>
+     *  Last revision:   2017 September 12
+     *
+     * @since JSOFA release 20180130
+     *
+     */
+
+    public static  EquatorialCoordinate jauAe2hd (double az, double el, double phi)
+    {
+        double sa, ca, se, ce, sp, cp, x, y, z, r;
+
+
+        /* Useful trig functions. */
+        sa = sin(az);
+        ca = cos(az);
+        se = sin(el);
+        ce = cos(el);
+        sp = sin(phi);
+        cp = cos(phi);
+
+        /* HA,Dec unit vector. */
+        x = - ca*ce*sp + se*cp;
+        y = - sa*ce;
+        z = ca*ce*cp + se*sp;
+
+        /* To spherical. */
+        r = sqrt(x*x + y*y);
+        return new EquatorialCoordinate( (r != 0.0) ? atan2(y,x) : 0.0,
+                atan2(z,r));
+
+        /* Finished. */
+    }
+
+
+    /**
+     * Position consisting of (az, el) pairs in radians. Where az is the azimuth and el is elevation .
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 
+     * 
+     * @since JSOFA release 20180130
+     */
+    public static class HorizonCoordinate {
+        public double az;
+        public double el;
+        public HorizonCoordinate(double az, double el){
+            this.az = az;
+            this.el = el;
+        }
+    }
+
+
+    /**
+     *
+     *  Equatorial to horizon coordinates:  transform hour angle and
+     *  declination to azimuth and altitude.
+     *
+     *  <p>This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  <p>Status:  support function.
+     *
+     * <!-- Given: -->
+     *  @param   ha       double       hour angle (local)
+     *  @param   dec      double       declination
+     *  @param   phi      double       site latitude
+     *
+     * <!-- Returned: -->
+     *  @return   az      double       azimuth
+     *     el      double       altitude (informally, elevation)
+     *
+     * <p>Notes: <ol>
+     *
+     * <li>  All the arguments are angles in radians.
+     *
+     * <li>  Azimuth is returned in the range 0-2pi;  north is zero, and east
+     *      is +pi/2.  Altitude is returned in the range +/- pi/2.
+     *
+     * <li>  The latitude phi is pi/2 minus the angle between the Earth's
+     *      rotation axis and the adopted zenith.  In many applications it
+     *      will be sufficient to use the published geodetic latitude of the
+     *      site.  In very precise (sub-arcsecond) applications, phi can be
+     *      corrected for polar motion.
+     *
+     * <li>  The returned azimuth az is with respect to the rotational north
+     *      pole, as opposed to the ITRS pole, and for sub-arcsecond
+     *      accuracy will need to be adjusted for polar motion if it is to
+     *      be with respect to north on a map of the Earth's surface.
+     *
+     * <li>  Should the user wish to work with respect to the astronomical
+     *      zenith rather than the geodetic zenith, phi will need to be
+     *      adjusted for deflection of the vertical (often tens of
+     *      arcseconds), and the zero point of the hour angle ha will also
+     *      be affected.
+     *
+     * <li>  The transformation is the same as Vh = Rz(pi)*Ry(pi/2-phi)*Ve,
+     *      where Vh and Ve are lefthanded unit vectors in the (az,el) and
+     *      (ha,dec) systems respectively and Ry and Rz are rotations about
+     *      first the y-axis and then the z-axis.  (n.b. Rz(pi) simply
+     *      reverses the signs of the x and y components.)  For efficiency,
+     *      the algorithm is written out rather than calling other utility
+     *      functions.  For applications that require even greater
+     *      efficiency, additional savings are possible if constant terms
+     *      such as functions of latitude are computed once and for all.
+     *
+     * <li>  Again for efficiency, no range checking of arguments is carried
+     *      out.
+     *</ol>
+     *  Last revision:   2017 September 12
+     *
+     * @since JSOFA release 20180130
+     *
+     */
+    public static HorizonCoordinate jauHd2ae (double ha, double dec, double phi)
+    {
+        double sh, ch, sd, cd, sp, cp, x, y, z, r, a;
+
+
+        /* Useful trig functions. */
+        sh = sin(ha);
+        ch = cos(ha);
+        sd = sin(dec);
+        cd = cos(dec);
+        sp = sin(phi);
+        cp = cos(phi);
+
+        /* Az,Alt unit vector. */
+        x = - ch*cd*sp + sd*cp;
+        y = - sh*cd;
+        z = ch*cd*cp + sd*sp;
+
+        /* To spherical. */
+        r = sqrt(x*x + y*y);
+        a = (r != 0.0) ? atan2(y,x) : 0.0;
+        return new HorizonCoordinate((a < 0.0) ? a+D2PI : a,
+                atan2(z,r));
+
+        /* Finished. */
+    }
+
+
+    /**
+     *
+     *  Parallactic angle for a given hour angle and declination.
+     *
+     *  <p>This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  <p>Status:  support function.
+     *
+     * <!-- Given: -->
+     *  @param  ha     double     hour angle
+     *  @param  dec    double     declination
+     *  @param  phi    double     site latitude
+     *
+     *  Returned (function value):
+     *            double     parallactic angle
+     *
+     * <p>Notes: <ol>
+     *
+     * <li>  All the arguments are angles in radians.
+     *
+     * <li>  The parallactic angle at a point in the sky is the position
+     *      angle of the vertical, i.e. the angle between the directions to
+     *      the north celestial pole and to the zenith respectively.
+     *
+     * <li>  The result is returned in the range -pi to +pi.
+     *
+     * <li>  At the pole itself a zero result is returned.
+     *
+     * <li>  The latitude phi is pi/2 minus the angle between the Earth's
+     *      rotation axis and the adopted zenith.  In many applications it
+     *      will be sufficient to use the published geodetic latitude of the
+     *      site.  In very precise (sub-arcsecond) applications, phi can be
+     *      corrected for polar motion.
+     *
+     * <li>  Should the user wish to work with respect to the astronomical
+     *      zenith rather than the geodetic zenith, phi will need to be
+     *      adjusted for deflection of the vertical (often tens of
+     *      arcseconds), and the zero point of the hour angle ha will also
+     *      be affected.
+     *</ol>
+     *  Reference:
+     *     Smart, W.M., "Spherical Astronomy", Cambridge University Press,
+     *     6th edition (Green, 1977), p49.
+     *
+     *  Last revision:   2017 September 12
+     *
+     * @since JSOFA release 20180130
+     *
+     */
+    public static double jauHd2pa (double ha, double dec, double phi)
+    {
+        double cp, cqsz, sqsz;
+
+
+        cp = cos(phi);
+        sqsz = cp*sin(ha);
+        cqsz = sin(phi)*cos(dec) - cp*sin(dec)*cos(ha);
+        return ( ( sqsz != 0.0 || cqsz != 0.0 ) ? atan2(sqsz,cqsz) : 0.0 );
+
+        /* Finished. */
+    }
+
+
+    /**
+     * Tangent point soulutions. A class to contain tangent point soutions and an indication as to how many of the solutions are valid
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 
+     * @since JSOFA release 20180130
+     */
+    public static class TangentPointSolution
+    {
+        public SphericalCoordinate sol1;
+        public SphericalCoordinate sol2;
+
+        /** nsolutions. The number of useful solutions
+         */
+        public int nsolutions;
+        /**
+         * @param sol1
+         * @param sol2
+         * @param flag
+         */
+        public TangentPointSolution(SphericalCoordinate sol1,
+                SphericalCoordinate sol2, int flag) {
+            this.sol1 = sol1;
+            this.sol2 = sol2;
+            this.nsolutions = flag;
+        }
+        public TangentPointSolution()
+        {
+            this.sol1 = null;
+            this.sol2 = null;
+            this.nsolutions = 0;
+        }
+    }
+    /**
+     *
+     *  In the tangent plane projection, given the rectangular coordinates
+     *  of a star and its spherical coordinates, determine the spherical
+     *  coordinates of the tangent point.
+     *
+     *  <p>This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  <p>Status:  support function.
+     *
+     * <!-- Given: -->
+     *   @param  xi     double  rectangular coordinates of star image (Note 2)
+     *   @param  eta     double  rectangular coordinates of star image (Note 2)
+     *   @param  a        double  star's spherical coordinates (Note 3)
+     *   @param  b        double  star's spherical coordinates (Note 3)
+     *
+     * <!-- Returned: -->
+     *     @return  tangent point's spherical coordinate solutions
+     *
+     *  Returned (function value):
+     *                int     number of solutions:
+     *                        0 = no solutions returned (Note 5)
+     *                        1 = only the first solution is useful (Note 6)
+     *                        2 = both solutions are useful (Note 6)
+     *
+     * <p>Notes: <ol>
+     *
+     * <li> The tangent plane projection is also called the "gnomonic
+     *     projection" and the "central projection".
+     *
+     * <li> The eta axis points due north in the adopted coordinate system.
+     *     If the spherical coordinates are observed (RA,Dec), the tangent
+     *     plane coordinates (xi,eta) are conventionally called the
+     *     "standard coordinates".  If the spherical coordinates are with
+     *     respect to a right-handed triad, (xi,eta) are also right-handed.
+     *     The units of (xi,eta) are, effectively, radians at the tangent
+     *     point.
+     *
+     * <li> All angular arguments are in radians.
+     *
+     * <li> The angles a01 and a02 are returned in the range 0-2pi.  The
+     *     angles b01 and b02 are returned in the range +/-pi, but in the
+     *     usual, non-pole-crossing, case, the range is +/-pi/2.
+     *
+     * <li> Cases where there is no solution can arise only near the poles.
+     *     For example, it is clearly impossible for a star at the pole
+     *     itself to have a non-zero xi value, and hence it is meaningless
+     *     to ask where the tangent point would have to be to bring about
+     *     this combination of xi and dec.
+     *
+     * <li> Also near the poles, cases can arise where there are two useful
+     *     solutions.  The return value indicates whether the second of the
+     *     two solutions returned is useful;  1 indicates only one useful
+     *     solution, the usual case.
+     *
+     * <li> The basis of the algorithm is to solve the spherical triangle PSC,
+     *     where P is the north celestial pole, S is the star and C is the
+     *     tangent point.  The spherical coordinates of the tangent point are
+     *     [a0,b0];  writing rho^2 = (xi^2+eta^2) and r^2 = (1+rho^2), side c
+     *     is then (pi/2-b), side p is sqrt(xi^2+eta^2) and side s (to be
+     *     found) is (pi/2-b0).  Angle C is given by sin(C) = xi/rho and
+     *     cos(C) = eta/rho.  Angle P (to be found) is the longitude
+     *     difference between star and tangent point (a-a0).
+     *
+     * <li> This function is a member of the following set:
+     * <pre
+     *{@code
+     *         spherical      vector         solve for
+     *
+     *         iauTpxes      iauTpxev         xi,eta
+     *         iauTpsts      iauTpstv          star
+     *       > iauTpors <    iauTporv         origin
+     *}
+     *</ol>
+     *  Called:
+     *     iauAnp       normalize angle into range 0 to 2pi
+     *
+     *  References:
+     *
+     *     Calabretta M.R. &amp; Greisen, E.W., 2002, "Representations of
+     *     celestial coordinates in FITS", Astron.Astrophys. 395, 1077
+     *
+     *     Green, R.M., "Spherical Astronomy", Cambridge University Press,
+     *     1987, Chapter 13.
+     *
+     * @version   2018 January 2
+     *
+     * @since JSOFA release 20180130
+     *
+     */
+    public static TangentPointSolution jauTpors(double xi, double eta, double a, double b)
+    {
+        double xi2, r, sb, cb, rsb, rcb, w2, w, s, c;
+        double a01, b01, a02, b02;
+
+
+        xi2 = xi*xi;
+        r = sqrt(1.0 + xi2 + eta*eta);
+        sb = sin(b);
+        cb = cos(b);
+        rsb = r*sb;
+        rcb = r*cb;
+        w2 = rcb*rcb - xi2;
+        if ( w2 >= 0.0 ) {
+            w = sqrt(w2);
+            s = rsb - eta*w;
+            c = rsb*eta + w;
+            if ( xi == 0.0 && w == 0.0 ) w = 1.0;
+            a01 = jauAnp(a - atan2(xi,w));
+            b01 = atan2(s,c);
+            w = -w;
+            s = rsb - eta*w;
+            c = rsb*eta + w;
+            a02 = jauAnp(a - atan2(xi,w));
+            b02 = atan2(s,c);
+            return new TangentPointSolution(new SphericalCoordinate(a01, b01), new SphericalCoordinate(a02, b02), 
+                    (abs(rsb) < 1.0) ? 1 : 2);
+        } else {
+            return new TangentPointSolution();
+        }
+
+        /* Finished. */
+
+    }
+
+    /**
+     * Tangent point soutions as direction cosines. A container class for two possible solutiuons as well as an indication of the number of valid solutions.
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 
+     * @since 27 Mar 2018
+     */
+    public static class TangentPointDirectionCosines {
+        public double dc1[];
+        public double dc2[];
+        /** nsolution. number of valid solutions.
+         */
+        public int nsolution;
+        /**
+         * @param dc1 direction cosines 
+         * @param dc2 direction cosines
+         * @param nsolution number of valid solutions
+         */
+        public TangentPointDirectionCosines(double[] dc1, double[] dc2,
+                int nsolution) {
+            this.dc1 = dc1;
+            this.dc2 = dc2;
+            this.nsolution = nsolution;
+        }
+        /**
+         * 
+         */
+        public TangentPointDirectionCosines() {
+            this.nsolution = 0;
+        }
+
+    }
+    /**
+     *
+     *  In the tangent plane projection, given the rectangular coordinates
+     *  of a star and its direction cosines, determine the direction
+     *  cosines of the tangent point.
+     *
+     *  <p>This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  <p>Status:  support function.
+     *
+     * <!-- Given: -->
+     *     @param xi   double    rectangular coordinates of star image (Note 2)
+     *     @param eta     double    rectangular coordinates of star image (Note 2)
+     *     @param v        double[3] star's direction cosines (Note 3)
+     *
+     * <!-- Returned: -->
+     *     @return       tangent point's direction cosines, Solutions 1 &amp; 2 
+     *                   int     number of solutions:
+     *                        0 = no solutions returned (Note 4)
+     *                        1 = only the first solution is useful (Note 5)
+     *                        2 = both solutions are useful (Note 5)
+     *
+     * <p>Notes: <ol>
+     *
+     * <li> The tangent plane projection is also called the "gnomonic
+     *     projection" and the "central projection".
+     *
+     * <li> The eta axis points due north in the adopted coordinate system.
+     *     If the direction cosines represent observed (RA,Dec), the tangent
+     *     plane coordinates (xi,eta) are conventionally called the
+     *     "standard coordinates".  If the direction cosines are with
+     *     respect to a right-handed triad, (xi,eta) are also right-handed.
+     *     The units of (xi,eta) are, effectively, radians at the tangent
+     *     point.
+     *
+     * <li> The vector v must be of unit length or the result will be wrong.
+     *
+     * <li> Cases where there is no solution can arise only near the poles.
+     *     For example, it is clearly impossible for a star at the pole
+     *     itself to have a non-zero xi value, and hence it is meaningless
+     *     to ask where the tangent point would have to be.
+     *
+     * <li> Also near the poles, cases can arise where there are two useful
+     *     solutions.  The return value indicates whether the second of the
+     *     two solutions returned is useful;  1 indicates only one useful
+     *     solution, the usual case.
+     *
+     * <li> The basis of the algorithm is to solve the spherical triangle
+     *     PSC, where P is the north celestial pole, S is the star and C is
+     *     the tangent point.  Calling the celestial spherical coordinates
+     *     of the star and tangent point (a,b) and (a0,b0) respectively, and
+     *     writing rho^2 = (xi^2+eta^2) and r^2 = (1+rho^2), and
+     *     transforming the vector v into (a,b) in the normal way, side c is
+     *     then (pi/2-b), side p is sqrt(xi^2+eta^2) and side s (to be
+     *     found) is (pi/2-b0), while angle C is given by sin(C) = xi/rho
+     *     and cos(C) = eta/rho;  angle P (to be found) is (a-a0).  After
+     *     solving the spherical triangle, the result (a0,b0) can be
+     *     expressed in vector form as v0.
+     *
+     * <li> This function is a member of the following set:
+     * {@code
+     *         spherical      vector         solve for
+     *
+     *         iauTpxes      iauTpxev         xi,eta
+     *         iauTpsts      iauTpstv          star
+     *         iauTpors    > iauTporv <       origin
+     * }
+     *</ol>
+     *  References:
+     *
+     *     Calabretta M.R. &amp; Greisen, E.W., 2002, "Representations of
+     *     celestial coordinates in FITS", Astron.Astrophys. 395, 1077
+     *
+     *     Green, R.M., "Spherical Astronomy", Cambridge University Press,
+     *     1987, Chapter 13.
+     *
+     * @version   2018 January 2
+     *
+     * @since JSOFA release 20180130
+     *
+     */
+
+    public static TangentPointDirectionCosines jauTporv(double xi, double eta, double v[])
+    {
+        double x, y, z, rxy2, xi2, eta2p1, r, rsb, rcb, w2, w, c;
+        double v01[] = new double[3];
+        double v02[] = new double[3];
+
+        x = v[0];
+        y = v[1];
+        z = v[2];
+        rxy2 = x*x + y*y;
+        xi2 = xi*xi;
+        eta2p1 = eta*eta + 1.0;
+        r = sqrt(xi2 + eta2p1);
+        rsb = r*z;
+        rcb = r*sqrt(x*x + y*y);
+        w2 = rcb*rcb - xi2;
+        if ( w2 > 0.0 ) {
+            w = sqrt(w2);
+            c = (rsb*eta + w) / (eta2p1*sqrt(rxy2*(w2+xi2)));
+            v01[0] = c * (x*w + y*xi);
+            v01[1] = c * (y*w - x*xi);
+            v01[2] = (rsb - eta*w) / eta2p1;
+            w = - w;
+            c = (rsb*eta + w) / (eta2p1*sqrt(rxy2*(w2+xi2)));
+            v02[0] = c * (x*w + y*xi);
+            v02[1] = c * (y*w - x*xi);
+            v02[2] = (rsb - eta*w) / eta2p1;
+            return new TangentPointDirectionCosines(v01,v02,(abs(rsb) < 1.0) ? 1 : 2);
+        } else {
+            return new TangentPointDirectionCosines();
+        }
+
+        /* Finished. */
+    }
+
+    /**
+     *
+     *  In the tangent plane projection, given the star's rectangular
+     *  coordinates and the spherical coordinates of the tangent point,
+     *  solve for the spherical coordinates of the star.
+     *
+     *  <p>This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  <p>Status:  support function.
+     *
+     * <!-- Given: -->
+     *     @param xi    double  rectangular coordinates of star image (Note 2)
+     *     @param eta    double  rectangular coordinates of star image (Note 2)
+     *     @param a0     double  tangent point's spherical coordinates
+     *     @param b0     double  tangent point's spherical coordinates
+     *
+     * <!-- Returned: -->
+     *     @return     star's spherical coordinates
+     *<ol>
+     * <li> The tangent plane projection is also called the "gnomonic
+     *     projection" and the "central projection".
+     *
+     * <li> The eta axis points due north in the adopted coordinate system.
+     *     If the spherical coordinates are observed (RA,Dec), the tangent
+     *     plane coordinates (xi,eta) are conventionally called the
+     *     "standard coordinates".  If the spherical coordinates are with
+     *     respect to a right-handed triad, (xi,eta) are also right-handed.
+     *     The units of (xi,eta) are, effectively, radians at the tangent
+     *     point.
+     *
+     * <li> All angular arguments are in radians.
+     *
+     * <li> This function is a member of the following set:
+     *{@code
+     *         spherical      vector         solve for
+     *
+     *         iauTpxes      iauTpxev         xi,eta
+     *       > iauTpsts <    iauTpstv          star
+     *         iauTpors      iauTporv         origin
+     * }
+     *</ol>
+     *  Called:
+     *     iauAnp       normalize angle into range 0 to 2pi
+     *
+     *  References:
+     *
+     *     Calabretta M.R. &amp; Greisen, E.W., 2002, "Representations of
+     *     celestial coordinates in FITS", Astron.Astrophys. 395, 1077
+     *
+     *     Green, R.M., "Spherical Astronomy", Cambridge University Press,
+     *     1987, Chapter 13.
+     *
+     * @version   2018 January 2
+     *
+     * @since JSOFA release 20180130
+     *
+     */
+    public static SphericalCoordinate jauTpsts(double xi, double eta, double a0, double b0)
+    {
+        double sb0, cb0, d;
+
+        sb0 = sin(b0);
+        cb0 = cos(b0);
+        d = cb0 - eta*sb0;
+        return new SphericalCoordinate( jauAnp(atan2(xi,d) + a0),
+                atan2(sb0+eta*cb0, sqrt(xi*xi+d*d)));
+
+        /* Finished. */
+    }
+
+    /**
+     * Tangent Plane Position consisting of (xi, eta) pairs in radians.
+     * 
+     * 
+     * <p>Notes: <ol>
+     *
+     * <li> The tangent plane projection is also called the "gnomonic
+     *     projection" and the "central projection".
+     *
+     * <li> The eta axis points due north in the adopted coordinate system.
+     *     If the spherical coordinates are observed (RA,Dec), the tangent
+     *     plane coordinates (xi,eta) are conventionally called the
+     *     "standard coordinates".  For right-handed spherical coordinates,
+     *     (xi,eta) are also right-handed.  The units of (xi,eta) are,
+     *     effectively, radians at the tangent point.
+     *     </ol>
+     * @author Paul Harrison (paul.harrison@manchester.ac.uk) 
+     * 
+     * @since JSOFA release 20180130
+     */
+    public static class TangentPlaneCoordinate {
+        public double xi;
+        public double eta;
+        /** status.
+         *                         0 = OK
+         *                                1 = star too far from axis
+         *                                2 = antistar on tangent plane
+         *                                3 = antistar too far from axis
+         */
+        public int status;
+        public TangentPlaneCoordinate(double xi, double eta, int j){
+            this.xi = xi;
+            this.eta = eta;
+            this.status = j;
+        }
+    }
+
+
+    /**
+     *
+     *  In the tangent plane projection, given the star's rectangular
+     *  coordinates and the direction cosines of the tangent point, solve
+     *  for the direction cosines of the star.
+     *
+     *  <p>This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  <p>Status:  support function.
+     *
+     * <!-- Given: -->
+     *     @param xi  double     rectangular coordinates of star image (Note 2)
+     *     @param eta  double     rectangular coordinates of star image (Note 2)
+     *     @param v0      double[3]  tangent point's direction cosines
+     *
+     * <!-- Returned: -->
+     *     @return      double[3]  star's direction cosines
+     * <ol>
+     * <li> The tangent plane projection is also called the "gnomonic
+     *     projection" and the "central projection".
+     *
+     * <li> The eta axis points due north in the adopted coordinate system.
+     *     If the direction cosines represent observed (RA,Dec), the tangent
+     *     plane coordinates (xi,eta) are conventionally called the
+     *     "standard coordinates".  If the direction cosines are with
+     *     respect to a right-handed triad, (xi,eta) are also right-handed.
+     *     The units of (xi,eta) are, effectively, radians at the tangent
+     *     point.
+     *
+     * <li> The method used is to complete the star vector in the (xi,eta)
+     *     based triad and normalize it, then rotate the triad to put the
+     *     tangent point at the pole with the x-axis aligned to zero
+     *     longitude.  Writing (a0,b0) for the celestial spherical
+     *     coordinates of the tangent point, the sequence of rotations is
+     *     (b-pi/2) around the x-axis followed by (-a-pi/2) around the
+     *     z-axis.
+     *
+     * <li> If vector v0 is not of unit length, the returned vector v will
+     *     be wrong.
+     *
+     * <li> If vector v0 points at a pole, the returned vector v will be
+     *     based on the arbitrary assumption that the longitude coordinate
+     *     of the tangent point is zero.
+     *
+     * <li> This function is a member of the following set:
+     *{@code
+     *         spherical      vector         solve for
+     *
+     *         iauTpxes      iauTpxev         xi,eta
+     *         iauTpsts    > iauTpstv <        star
+     *         iauTpors      iauTporv         origin
+     * }
+     *</ol>
+     *  References:
+     *
+     *     Calabretta M.R. &amp; Greisen, E.W., 2002, "Representations of
+     *     celestial coordinates in FITS", Astron.Astrophys. 395, 1077
+     *
+     *     Green, R.M., "Spherical Astronomy", Cambridge University Press,
+     *     1987, Chapter 13.
+     *
+     * @version   2018 January 2
+     *
+     * @since JSOFA release 20180130
+     *
+     */
+    public static double[] jauTpstv(double xi, double eta, double v0[])
+    {
+        double x, y, z, f, r;
+        double v[] = new double[3];
+
+
+        /* Tangent point. */
+        x = v0[0];
+        y = v0[1];
+        z = v0[2];
+
+        /* Deal with polar case. */
+        r = sqrt(x*x + y*y);
+        if ( r == 0.0 ) {
+            r = 1e-20;
+            x = r;
+        }
+
+        /* Star vector length to tangent plane. */
+        f = sqrt(1.0 + xi*xi + eta*eta);
+
+        /* Apply the transformation and normalize. */
+        v[0] = (x - (xi*y + eta*x*z) / r) / f;
+        v[1] = (y + (xi*x - eta*y*z) / r) / f;
+        v[2] = (z + eta*r) / f;
+        return v;
+
+        /* Finished. */
+
+    }
+
+    /**
+     *
+     *  In the tangent plane projection, given celestial spherical
+     *  coordinates for a star and the tangent point, solve for the star's
+     *  rectangular coordinates in the tangent plane.
+     *
+     *  <p>This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  <p>Status:  support function.
+     *
+     * <!-- Given: -->
+     *     @param a       double  star's spherical coordinates
+     *     @param b       double  star's spherical coordinates
+     *     @param a0     double  tangent point's spherical coordinates
+     *     @param b0     double  tangent point's spherical coordinates
+     *
+     * <!-- Returned: -->
+     *     @return  rectangular coordinates of star image (Note 2)
+      *               int     status:  0 = OK
+     *                                1 = star too far from axis
+     *                                2 = antistar on tangent plane
+     *                                3 = antistar too far from axis
+     *
+     * <p>Notes: <ol>
+     *
+     * <li> The tangent plane projection is also called the "gnomonic
+     *     projection" and the "central projection".
+     *
+     * <li> The eta axis points due north in the adopted coordinate system.
+     *     If the spherical coordinates are observed (RA,Dec), the tangent
+     *     plane coordinates (xi,eta) are conventionally called the
+     *     "standard coordinates".  For right-handed spherical coordinates,
+     *     (xi,eta) are also right-handed.  The units of (xi,eta) are,
+     *     effectively, radians at the tangent point.
+     *
+     * <li> All angular arguments are in radians.
+     *
+     * <li> This function is a member of the following set:
+     *{@code
+     *         spherical      vector         solve for
+     *
+     *       > iauTpxes <    iauTpxev         xi,eta
+     *         iauTpsts      iauTpstv          star
+     *         iauTpors      iauTporv         origin
+     *}
+     *</ol>
+     *  References:
+     *
+     *     Calabretta M.R. &amp; Greisen, E.W., 2002, "Representations of
+     *     celestial coordinates in FITS", Astron.Astrophys. 395, 1077
+     *
+     *     Green, R.M., "Spherical Astronomy", Cambridge University Press,
+     *     1987, Chapter 13.
+     *
+     * @version   2018 January 2
+     *
+     * @since JSOFA release 20180130
+     *
+     */
+    public static TangentPlaneCoordinate jauTpxes(double a, double b, double a0, double b0)
+    {
+        int j;
+        double sb0, sb, cb0, cb, da, sda, cda, d;
+
+
+        /* Functions of the spherical coordinates. */
+        sb0 = sin(b0);
+        sb = sin(b);
+        cb0 = cos(b0);
+        cb = cos(b);
+        da = a - a0;
+        sda = sin(da);
+        cda = cos(da);
+
+        /* Reciprocal of star vector length to tangent plane. */
+        d = sb*sb0 + cb*cb0*cda;
+
+        /* Check for error cases. */
+        if ( d > TANGENT_TINY ) {
+            j = 0;
+        } else if ( d >= 0.0 ) {
+            j = 1;
+            d = TANGENT_TINY;
+        } else if ( d > -TANGENT_TINY ) {
+            j = 2;
+            d = -TANGENT_TINY;
+        } else {
+            j = 3;
+        }
+
+        /* Return the tangent plane coordinates (even in dubious cases). */
+        return new TangentPlaneCoordinate( cb*sda / d,
+                (sb*cb0 - cb*sb0*cda) / d, j);
+
+
+        /* Finished. */
+    }
+
+    /**
+     *
+     *  In the tangent plane projection, given celestial direction cosines
+     *  for a star and the tangent point, solve for the star's rectangular
+     *  coordinates in the tangent plane.
+     *
+     *  <p>This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *
+     *  <p>Status:  support function.
+     *
+     * <!-- Given: -->
+     *     @param v         double[3]  direction cosines of star (Note 4)
+     *     @param v0        double[3]  direction cosines of tangent point (Note 4)
+     *
+     * <!-- Returned: -->
+     *     @return     tangent plane coordinates of star
+     *               int        status: 0 = OK
+     *                                  1 = star too far from axis
+     *                                  2 = antistar on tangent plane
+     *                                  3 = antistar too far from axis
+     *
+     * <p>Notes: <ol>
+     *
+     * <li> The tangent plane projection is also called the "gnomonic
+     *     projection" and the "central projection".
+     *
+     * <li> The eta axis points due north in the adopted coordinate system.
+     *     If the direction cosines represent observed (RA,Dec), the tangent
+     *     plane coordinates (xi,eta) are conventionally called the
+     *     "standard coordinates".  If the direction cosines are with
+     *     respect to a right-handed triad, (xi,eta) are also right-handed.
+     *     The units of (xi,eta) are, effectively, radians at the tangent
+     *     point.
+     *
+     * <li> The method used is to extend the star vector to the tangent
+     *     plane and then rotate the triad so that (x,y) becomes (xi,eta).
+     *     Writing (a,b) for the celestial spherical coordinates of the
+     *     star, the sequence of rotations is (a+pi/2) around the z-axis
+     *     followed by (pi/2-b) around the x-axis.
+     *
+     * <li> If vector v0 is not of unit length, or if vector v is of zero
+     *     length, the results will be wrong.
+     *
+     * <li> If v0 points at a pole, the returned (xi,eta) will be based on
+     *     the arbitrary assumption that the longitude coordinate of the
+     *     tangent point is zero.
+     *
+     * <li> This function is a member of the following set:
+     *{@code
+     *         spherical      vector         solve for
+     *
+     *         iauTpxes    > iauTpxev <       xi,eta
+     *         iauTpsts      iauTpstv          star
+     *         iauTpors      iauTporv         origin
+     * }
+     *</ol>
+     *  References:
+     *
+     *     Calabretta M.R. &amp; Greisen, E.W., 2002, "Representations of
+     *     celestial coordinates in FITS", Astron.Astrophys. 395, 1077
+     *
+     *     Green, R.M., "Spherical Astronomy", Cambridge University Press,
+     *     1987, Chapter 13.
+     *
+     * @version   2018 January 2
+     *
+     * @since JSOFA release 20180130
+     *
+     */
+    public static TangentPlaneCoordinate jauTpxev(double v[], double v0[])
+    {
+        int j;
+        double x, y, z, x0, y0, z0, r2, r, w, d;
+
+
+        /* Star and tangent point. */
+        x = v[0];
+        y = v[1];
+        z = v[2];
+        x0 = v0[0];
+        y0 = v0[1];
+        z0 = v0[2];
+
+        /* Deal with polar case. */
+        r2 = x0*x0 + y0*y0;
+        r = sqrt(r2);
+        if ( r == 0.0 ) {
+            r = 1e-20;
+            x0 = r;
+        }
+
+        /* Reciprocal of star vector length to tangent plane. */
+        w = x*x0 + y*y0;
+        d = w + z*z0;
+
+        /* Check for error cases. */
+        if ( d > TANGENT_TINY ) {
+            j = 0;
+        } else if ( d >= 0.0 ) {
+            j = 1;
+            d = TANGENT_TINY;
+        } else if ( d > -TANGENT_TINY ) {
+            j = 2;
+            d = -TANGENT_TINY;
+        } else {
+            j = 3;
+        }
+
+        /* Return the tangent plane coordinates (even in dubious cases). */
+        d *= r;
+        return new TangentPlaneCoordinate( (y*x0 - x*y0) / d,
+                (z*r2 - z0*w) / d, j);
+
+
+        /* Finished. */
+    }
 }
 
 /*
- * Copyright © 2016 Paul Harrison, University of Manchester.
+ * Copyright © 2018 Paul Harrison, University of Manchester.
  * 
  * This JSOFA software is derived from the official C release of the "Standards Of Fundamental Astronomy" (SOFA) library 
  * of the International Astronomical Union. The intention is to reproduce the functionality and algorithms of 
@@ -30357,100 +31363,100 @@ public static class SphericalCoordinateEO {
  */
 
 /*----------------------------------------------------------------------
-**
-**  Copyright (C) 2016
-**  Standards Of Fundamental Astronomy Board
-**  of the International Astronomical Union.
-**
-**  =====================
-**  SOFA Software License
-**  =====================
-**
-**  NOTICE TO USER:
-**
-**  BY USING THIS SOFTWARE YOU ACCEPT THE FOLLOWING SIX TERMS AND
-**  CONDITIONS WHICH APPLY TO ITS USE.
-**
-**  1. The Software is owned by the IAU SOFA Board ("SOFA").
-**
-**  2. Permission is granted to anyone to use the SOFA software for any
-**     purpose, including commercial applications, free of charge and
-**     without payment of royalties, subject to the conditions and
-**     restrictions listed below.
-**
-**  3. You (the user) may copy and distribute SOFA source code to others,
-**     and use and adapt its code and algorithms in your own software,
-**     on a world-wide, royalty-free basis.  That portion of your
-**     distribution that does not consist of intact and unchanged copies
-**     of SOFA source code files is a "derived work" that must comply
-**     with the following requirements:
-**
-**     a) Your work shall be marked or carry a statement that it
-**        (i) uses routines and computations derived by you from
-**        software provided by SOFA under license to you; and
-**        (ii) does not itself constitute software provided by and/or
-**        endorsed by SOFA.
-**
-**     b) The source code of your derived work must contain descriptions
-**        of how the derived work is based upon, contains and/or differs
-**        from the original SOFA software.
-**
-**     c) The names of all routines in your derived work shall not
-**        include the prefix "iau" or "sofa" or trivial modifications
-**        thereof such as changes of case.
-**
-**     d) The origin of the SOFA components of your derived work must
-**        not be misrepresented;  you must not claim that you wrote the
-**        original software, nor file a patent application for SOFA
-**        software or algorithms embedded in the SOFA software.
-**
-**     e) These requirements must be reproduced intact in any source
-**        distribution and shall apply to anyone to whom you have
-**        granted a further right to modify the source code of your
-**        derived work.
-**
-**     Note that, as originally distributed, the SOFA software is
-**     intended to be a definitive implementation of the IAU standards,
-**     and consequently third-party modifications are discouraged.  All
-**     variations, no matter how minor, must be explicitly marked as
-**     such, as explained above.
-**
-**  4. You shall not cause the SOFA software to be brought into
-**     disrepute, either by misuse, or use for inappropriate tasks, or
-**     by inappropriate modification.
-**
-**  5. The SOFA software is provided "as is" and SOFA makes no warranty
-**     as to its use or performance.   SOFA does not and cannot warrant
-**     the performance or results which the user may obtain by using the
-**     SOFA software.  SOFA makes no warranties, express or implied, as
-**     to non-infringement of third party rights, merchantability, or
-**     fitness for any particular purpose.  In no event will SOFA be
-**     liable to the user for any consequential, incidental, or special
-**     damages, including any lost profits or lost savings, even if a
-**     SOFA representative has been advised of such damages, or for any
-**     claim by any third party.
-**
-**  6. The provision of any version of the SOFA software under the terms
-**     and conditions specified herein does not imply that future
-**     versions will also be made available under the same terms and
-**     conditions.
 *
-**  In any published work or commercial product which uses the SOFA
-**  software directly, acknowledgement (see www.iausofa.org) is
-**  appreciated.
-**
-**  Correspondence concerning SOFA software should be addressed as
-**  follows:
-**
-**      By email:  sofa@ukho.gov.uk
-**      By post:   IAU SOFA Center
-**                 HM Nautical Almanac Office
-**                 UK Hydrographic Office
-**                 Admiralty Way, Taunton
-**                 Somerset, TA1 2DN
-**                 United Kingdom
-**
-**--------------------------------------------------------------------*/
+*  Copyright (C) 2018
+*  Standards Of Fundamental Astronomy Board
+*  of the International Astronomical Union.
+*
+*  =====================
+*  SOFA Software License
+*  =====================
+*
+*  NOTICE TO USER:
+*
+*  BY USING THIS SOFTWARE YOU ACCEPT THE FOLLOWING SIX TERMS AND
+*  CONDITIONS WHICH APPLY TO ITS USE.
+*
+*  1. The Software is owned by the IAU SOFA Board ("SOFA").
+*
+*  2. Permission is granted to anyone to use the SOFA software for any
+*     purpose, including commercial applications, free of charge and
+*     without payment of royalties, subject to the conditions and
+*     restrictions listed below.
+*
+*  3. You (the user) may copy and distribute SOFA source code to others,
+*     and use and adapt its code and algorithms in your own software,
+*     on a world-wide, royalty-free basis.  That portion of your
+*     distribution that does not consist of intact and unchanged copies
+*     of SOFA source code files is a "derived work" that must comply
+*     with the following requirements:
+*
+*     a) Your work shall be marked or carry a statement that it
+*        (i) uses routines and computations derived by you from
+*        software provided by SOFA under license to you; and
+*        (ii) does not itself constitute software provided by and/or
+*        endorsed by SOFA.
+*
+*     b) The source code of your derived work must contain descriptions
+*        of how the derived work is based upon, contains and/or differs
+*        from the original SOFA software.
+*
+*     c) The names of all routines in your derived work shall not
+*        include the prefix "iau" or "sofa" or trivial modifications
+*        thereof such as changes of case.
+*
+*     d) The origin of the SOFA components of your derived work must
+*        not be misrepresented;  you must not claim that you wrote the
+*        original software, nor file a patent application for SOFA
+*        software or algorithms embedded in the SOFA software.
+*
+*     e) These requirements must be reproduced intact in any source
+*        distribution and shall apply to anyone to whom you have
+*        granted a further right to modify the source code of your
+*        derived work.
+*
+*     Note that, as originally distributed, the SOFA software is
+*     intended to be a definitive implementation of the IAU standards,
+*     and consequently third-party modifications are discouraged.  All
+*     variations, no matter how minor, must be explicitly marked as
+*     such, as explained above.
+*
+*  4. You shall not cause the SOFA software to be brought into
+*     disrepute, either by misuse, or use for inappropriate tasks, or
+*     by inappropriate modification.
+*
+*  5. The SOFA software is provided "as is" and SOFA makes no warranty
+*     as to its use or performance.   SOFA does not and cannot warrant
+*     the performance or results which the user may obtain by using the
+*     SOFA software.  SOFA makes no warranties, express or implied, as
+*     to non-infringement of third party rights, merchantability, or
+*     fitness for any particular purpose.  In no event will SOFA be
+*     liable to the user for any consequential, incidental, or special
+*     damages, including any lost profits or lost savings, even if a
+*     SOFA representative has been advised of such damages, or for any
+*     claim by any third party.
+*
+*  6. The provision of any version of the SOFA software under the terms
+*     and conditions specified herein does not imply that future
+*     versions will also be made available under the same terms and
+*     conditions.
+*
+*  In any published work or commercial product which uses the SOFA
+*  software directly, acknowledgement (see www.iausofa.org) is
+*  appreciated.
+*
+*  Correspondence concerning SOFA software should be addressed as
+*  follows:
+*
+*      By email:  sofa@ukho.gov.uk
+*      By post:   IAU SOFA Center
+*                 HM Nautical Almanac Office
+*                 UK Hydrographic Office
+*                 Admiralty Way, Taunton
+*                 Somerset, TA1 2DN
+*                 United Kingdom
+*
+*--------------------------------------------------------------------*/
 
 
 /*
