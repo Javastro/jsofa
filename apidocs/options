@@ -7,7 +7,7 @@
 '/Users/pharriso/Work/javastro/jsofa/src/main/java:/Users/pharriso/Work/javastro/jsofa/target/generated-sources/annotations'
 -author
 -bottom
-'Copyright &#169; 2010-2018 <a href="http://www.jb.man.ac.uk/">JBCA, University of Manchester</a>. All Rights Reserved.'
+'Copyright &#169; 2010-2019 <a href="http://www.jb.man.ac.uk/">JBCA, University of Manchester</a>. All Rights Reserved.'
 -charset
 'UTF-8'
 -d
@@ -15,10 +15,10 @@
 -docencoding
 'UTF-8'
 -doctitle
-'JSOFA 20180130 API'
+'JSOFA 20180130b API'
 -linkoffline
 'http://docs.oracle.com/javase/7/docs/api' '/Users/pharriso/Work/javastro/jsofa/target/javadoc-bundle-options'
 -use
 -version
 -windowtitle
-'JSOFA 20180130 API'
+'JSOFA 20180130b API'
