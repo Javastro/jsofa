@@ -39,11 +39,15 @@ public class JSOFATest {
     }
 
     @Test
-    public void testversion() 
+    public void testversion() throws JSOFAIllegalParameter 
     {
         assertEquals("Jsofa release",  System.getProperty("SOFAVERSION"), JSOFA_RELEASE); // check that the correct version is being released - system properly set from POM
         assertEquals("sofa release", "2018-01-30", SOFA_RELEASE);
         assertEquals("sofa revision", "14", SOFA_REVISION);
+        assertEquals("lastleap second", jauCal2jd(2017,1,1), lastLeapSecondDate());        
+        assertEquals("last omitted leap second", jauCal2jd(2019,7,1), latestConfirmedNoLeapSecondChange);
+        
+        
     }
 
     /*

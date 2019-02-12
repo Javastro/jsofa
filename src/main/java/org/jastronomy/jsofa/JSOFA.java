@@ -24,12 +24,81 @@ public class JSOFA {
     public final static String SOFA_RELEASE = "2018-01-30";
     
     /** JSOFA release {@value}*/
-    public final static String JSOFA_RELEASE = "20180130";
+    public final static String JSOFA_RELEASE = "20180130b";
 
     /** tracked IAU SOFA revision {@value}. */
     public final static String SOFA_REVISION = "14";
 
-    
+    /** Release year for this version of jauDat {@value} */
+public final static int IYV = 2019;
+    /** The latest confirmed omission of a leap second form IERS */
+public final static JulianDate latestConfirmedNoLeapSecondChange;
+static {
+    JulianDate tmpval = new JulianDate(0,0);
+    try {
+        tmpval = jauCal2jd(2019,7,1); // this is from the IERS
+    } catch (JSOFAIllegalParameter e) {
+        // should not happen
+        e.printStackTrace();
+    }
+    latestConfirmedNoLeapSecondChange = tmpval;
+}
+static class LeapInfo {
+    final public int iyear, month;
+    final public double delat;
+    public LeapInfo(int i, int m, double t) {
+       iyear = i;
+       month = m;
+       delat = t;
+    }
+ }
+
+/* Dates and Delta(AT)s */
+static final LeapInfo leapSeconds[] = {
+     new LeapInfo( 1960,  1,  1.4178180 ),
+     new LeapInfo( 1961,  1,  1.4228180 ),
+     new LeapInfo( 1961,  8,  1.3728180 ),
+     new LeapInfo( 1962,  1,  1.8458580 ),
+     new LeapInfo( 1963, 11,  1.9458580 ),
+     new LeapInfo( 1964,  1,  3.2401300 ),
+     new LeapInfo( 1964,  4,  3.3401300 ),
+     new LeapInfo( 1964,  9,  3.4401300 ),
+     new LeapInfo( 1965,  1,  3.5401300 ),
+     new LeapInfo( 1965,  3,  3.6401300 ),
+     new LeapInfo( 1965,  7,  3.7401300 ),
+     new LeapInfo( 1965,  9,  3.8401300 ),
+     new LeapInfo( 1966,  1,  4.3131700 ),
+     new LeapInfo( 1968,  2,  4.2131700 ),
+     new LeapInfo( 1972,  1, 10.0       ),
+     new LeapInfo( 1972,  7, 11.0       ),
+     new LeapInfo( 1973,  1, 12.0       ),
+     new LeapInfo( 1974,  1, 13.0       ),
+     new LeapInfo( 1975,  1, 14.0       ),
+     new LeapInfo( 1976,  1, 15.0       ),
+     new LeapInfo( 1977,  1, 16.0       ),
+     new LeapInfo( 1978,  1, 17.0       ),
+     new LeapInfo( 1979,  1, 18.0       ),
+     new LeapInfo( 1980,  1, 19.0       ),
+     new LeapInfo( 1981,  7, 20.0       ),
+     new LeapInfo( 1982,  7, 21.0       ),
+     new LeapInfo( 1983,  7, 22.0       ),
+     new LeapInfo( 1985,  7, 23.0       ),
+     new LeapInfo( 1988,  1, 24.0       ),
+     new LeapInfo( 1990,  1, 25.0       ),
+     new LeapInfo( 1991,  1, 26.0       ),
+     new LeapInfo( 1992,  7, 27.0       ),
+     new LeapInfo( 1993,  7, 28.0       ),
+     new LeapInfo( 1994,  7, 29.0       ),
+     new LeapInfo( 1996,  1, 30.0       ),
+     new LeapInfo( 1997,  7, 31.0       ),
+     new LeapInfo( 1999,  1, 32.0       ),
+     new LeapInfo( 2006,  1, 33.0       ),
+     new LeapInfo( 2009,  1, 34.0       ),
+     new LeapInfo( 2012,  7, 35.0       ),
+     new LeapInfo( 2015,  7, 36.0       ),
+     new LeapInfo( 2017,  1, 37.0       )
+  };
+
 
     /** Seconds of time to radians {@value} */
     public final static double DS2R = (7.272205216643039903848712e-5);
@@ -154,7 +223,7 @@ public class JSOFA {
      * 
      * 
      */
-    public static class JulianDate {
+    public static class JulianDate implements Comparable<JulianDate>{
         /**  MJD zero-point */
         public double djm0;  
         /** MJD offset */
@@ -162,6 +231,62 @@ public class JSOFA {
         public JulianDate(double d1, double d2) {
             djm0 = d1;
             djm1 = d2;
+        }
+        /**
+         * {@inheritDoc}
+         * overrides @see java.lang.Comparable#compareTo(java.lang.Object)
+         */
+        @Override
+        public int compareTo(JulianDate o) {
+            if(this == o) return 0;
+            final Double thismjd = this.djm0 + this.djm1;
+            final Double thatmjd = o.djm0 + o.djm1;
+
+            return thismjd.compareTo(thatmjd);
+        }
+        /**
+         * {@inheritDoc}
+         * overrides @see java.lang.Object#hashCode()
+         */
+        @Override
+        public int hashCode() {
+            final int prime = 31;
+            int result = 1;
+            long temp;
+            temp = Double.doubleToLongBits(djm0);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(djm1);
+            result = prime * result + (int) (temp ^ (temp >>> 32));
+            return result;
+        }
+        /**
+         * {@inheritDoc}
+         * overrides @see java.lang.Object#equals(java.lang.Object)
+         */
+        @Override
+        public boolean equals(Object obj) {
+            if (this == obj)
+                return true;
+            if (obj == null)
+                return false;
+            if (!(obj instanceof JulianDate))
+                return false;
+            JulianDate other = (JulianDate) obj;
+            if (Double.doubleToLongBits(djm0) != Double
+                    .doubleToLongBits(other.djm0))
+                return false;
+            if (Double.doubleToLongBits(djm1) != Double
+                    .doubleToLongBits(other.djm1))
+                return false;
+            return true;
+        }
+        /**
+         * {@inheritDoc}
+         * overrides @see java.lang.Object#toString()
+         */
+        @Override
+        public String toString() {
+            return String.format("MJD=%.9f", djm0 + djm1  - DJM0);
         }
     }
  
@@ -2690,65 +2815,24 @@ return new JulianDate(dj, time) ;
 
 }
 
-
- 
-/** Release year for this version of jauDat {@value} */
-public final static int IYV = 2016;
-static class LeapInfo {
-    final public int iyear, month;
-    final public double delat;
-    public LeapInfo(int i, int m, double t) {
-       iyear = i;
-       month = m;
-       delat = t;
+/**
+ * the date of the last leap second. Note that this is not a SOFA standard fumction.
+ * @return the {@link JulianDate} of the last leap second.
+ */
+public static JulianDate lastLeapSecondDate()
+{
+    final LeapInfo lastentry = leapSeconds[leapSeconds.length -1];
+    JulianDate retval = new JulianDate(0, 0);
+    try {
+        retval = jauCal2jd(lastentry.iyear,lastentry.month,1);
+    } catch (JSOFAIllegalParameter e) {
+        //should not happen
+         e.printStackTrace();
     }
- }
-
-/* Dates and Delta(AT)s */
-  static final LeapInfo leapSeconds[] = {
-     new LeapInfo( 1960,  1,  1.4178180 ),
-     new LeapInfo( 1961,  1,  1.4228180 ),
-     new LeapInfo( 1961,  8,  1.3728180 ),
-     new LeapInfo( 1962,  1,  1.8458580 ),
-     new LeapInfo( 1963, 11,  1.9458580 ),
-     new LeapInfo( 1964,  1,  3.2401300 ),
-     new LeapInfo( 1964,  4,  3.3401300 ),
-     new LeapInfo( 1964,  9,  3.4401300 ),
-     new LeapInfo( 1965,  1,  3.5401300 ),
-     new LeapInfo( 1965,  3,  3.6401300 ),
-     new LeapInfo( 1965,  7,  3.7401300 ),
-     new LeapInfo( 1965,  9,  3.8401300 ),
-     new LeapInfo( 1966,  1,  4.3131700 ),
-     new LeapInfo( 1968,  2,  4.2131700 ),
-     new LeapInfo( 1972,  1, 10.0       ),
-     new LeapInfo( 1972,  7, 11.0       ),
-     new LeapInfo( 1973,  1, 12.0       ),
-     new LeapInfo( 1974,  1, 13.0       ),
-     new LeapInfo( 1975,  1, 14.0       ),
-     new LeapInfo( 1976,  1, 15.0       ),
-     new LeapInfo( 1977,  1, 16.0       ),
-     new LeapInfo( 1978,  1, 17.0       ),
-     new LeapInfo( 1979,  1, 18.0       ),
-     new LeapInfo( 1980,  1, 19.0       ),
-     new LeapInfo( 1981,  7, 20.0       ),
-     new LeapInfo( 1982,  7, 21.0       ),
-     new LeapInfo( 1983,  7, 22.0       ),
-     new LeapInfo( 1985,  7, 23.0       ),
-     new LeapInfo( 1988,  1, 24.0       ),
-     new LeapInfo( 1990,  1, 25.0       ),
-     new LeapInfo( 1991,  1, 26.0       ),
-     new LeapInfo( 1992,  7, 27.0       ),
-     new LeapInfo( 1993,  7, 28.0       ),
-     new LeapInfo( 1994,  7, 29.0       ),
-     new LeapInfo( 1996,  1, 30.0       ),
-     new LeapInfo( 1997,  7, 31.0       ),
-     new LeapInfo( 1999,  1, 32.0       ),
-     new LeapInfo( 2006,  1, 33.0       ),
-     new LeapInfo( 2009,  1, 34.0       ),
-     new LeapInfo( 2012,  7, 35.0       ),
-     new LeapInfo( 2015,  7, 36.0       ),
-     new LeapInfo( 2017,  1, 37.0       )
-  };
+    return retval;
+    
+}
+ 
 
     /**
     *  For a given UTC date, calculate delta(AT) = TAI-UTC.

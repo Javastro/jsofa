@@ -6,7 +6,7 @@
    <artifactId>jsofa</artifactId>
    <name>JSOFA</name>
    <packaging>jar</packaging>
-   <version>20180130</version>
+   <version>20180130b</version>
    <properties>
       <github.global.server>github</github.global.server>
       <github.global.oauth2Token>${env.GITHUB_OAUTH_TOKEN}</github.global.oauth2Token>
