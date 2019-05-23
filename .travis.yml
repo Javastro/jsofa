@@ -1,11 +1,9 @@
 language: java
 jdk:
-- oraclejdk7
-- oraclejdk8
+- openjdk7
+- openjdk8
 sudo: false
 script: mvn clean verify
 #after_success:
 #- mvn clean site -X
-env:
-  global:
-    secure: cwWSowBvlXKlbezzxctCqJyw8YF8Q6DOXVzliSYa15ESMgWwHJkB7CYLcYD6xldlL1W/SiBKLDyOAUqyEvfMwE3UkmaAR5uT6I8Afu62Re7vP7W6TZL5oeR/aJsDtPF7bbN6URutsEBRc/u5HsV9QX68xwvRNEncaH+C1xV2CPefmYz736gS8UnWf7Kpss6scg3kjD0BIrwW/x8uFiTB2jrh/EsZH+oxz8bmAC/0k08pi/84N4Jb7RhOOnxQKpNKqP2DV7kDwtQqUJ3J+bcw1i01yXIxxQ4puj6d07ho4nd2LMgz94cdXEZ6VQWPQdThZdwv1qubod8fK2O3pWdjHkzJsU66BbeDQEMdepB5sOw2g06JAkgwFBhOlykNFjjPLXc0BOcvtTLhWjM+SFKublkqv9T+/YwEvJacwvagERzYisLf13AQiXzGNEpNsE6JVjWS6ZzpHb2K6KjqMLBKpVkT2X3E3Y6cDHb7Biq1AtDFae7S5J8oSV0gZR05XEdUIl0wqu2To2cM44zLdKRVwo64os8cfDIGgwapGouMK/ncMfCuuKGiGeWwl4joGB6I8fDBNyFwuUVWHK8CZffc6B/CQ75rElPnbzQ2QIMPm4JiuMz5wALx8JMgIlPsV515HCVNzAXLAZES9Fg8WuAHV4ol3FCJxpVI0eQ/nTLPTeY=
+
