@@ -21,13 +21,13 @@ import static java.lang.StrictMath.*;
  */
 public class JSOFA {
     /** tracked IAU SOFA release {@value}. */
-    public final static String SOFA_RELEASE = "2018-01-30";
+    public final static String SOFA_RELEASE = "2019-07-22";
     
     /** JSOFA release {@value}*/
-    public final static String JSOFA_RELEASE = "20180130b";
+    public final static String JSOFA_RELEASE = "20190722";
 
     /** tracked IAU SOFA revision {@value}. */
-    public final static String SOFA_REVISION = "14";
+    public final static String SOFA_REVISION = "15";
 
     /** Release year for this version of jauDat {@value} */
 public final static int IYV = 2019;
@@ -2501,6 +2501,7 @@ static final LeapInfo leapSeconds[] = {
 *     @param d2     double  time as a 2-part Julian Date (Notes 3,4)
 *
 *<!-- Returned:-->
+*   @return the date as a Gregorian calendar
 *     iy,im,id  int     year, month, day in Gregorian calendar (Note 5)
 *     ihmsf     int[4]  hours, minutes, seconds, fraction (Note 1)
 *
@@ -2687,8 +2688,8 @@ jauD2tf ( ndp, fd, ihmsf1 );
 * <!-- Returned: -->
 *     @return     2-part Julian Date (Notes 3,4)
 *
- * @throws JSOFAIllegalParameter 
- * 
+* @throws JSOFAIllegalParameter 
+* 
 * @throws JSOFAInternalError          {@code    status: +3 = both of next two
 *                               +2 = time is after end of day (Note 5)
 *                               +1 = dubious year (Note 6)
@@ -3073,7 +3074,7 @@ public static JulianDate lastLeapSecondDate()
     *     @param v              double   distance north of equatorial plane (km)
     *
     * <!-- Returned (function value): -->
-    *  @return @return             double  TDB-TT (seconds)
+    *  @return            double  TDB-TT (seconds)
     *
     * <p>Notes:
     * <ol>
@@ -4806,8 +4807,7 @@ public static JulianDate lastLeapSecondDate()
     *              f        double     <u>returned</u> flattening (Note 2)
     *
     * <!-- Returned (function value): -->
-    *  @throws JSOFAIllegalParameter
-    *                     int       status:
+    *  @throws JSOFAIllegalParameter int       status:
     *                          0 = OK
     *                         -1 = illegal identifier (Note 3)
     *
@@ -9204,8 +9204,7 @@ public static class SphericalCoordinateEO {
     *             height   double       <u>returned</u> height above ellipsoid (geodetic, Notes 2,3)
     *
     * <!-- Returned (function value): -->
-    *  @throws JSOFAIllegalParameter
-    *                          0 = OK
+    *  @throws JSOFAIllegalParameter 0 = OK
     *                         -1 = illegal identifier (Note 3)
     *                         -2 = internal error (Note 3)
     *
@@ -9275,8 +9274,7 @@ public static class SphericalCoordinateEO {
     *<!-- Returned: -->
     *     @return GeodeticCoord   logitude  (radians, east +ve) latitude (geodetic, radians)  height above ellipsoid (geodetic, Note 4)
     *
-    *  @throws JSOFAIllegalParameter 
-    *            int       status:
+    *  @throws JSOFAIllegalParameter int       status:
     *               
     *                         -1 = illegal a
     *                         -2 = illegal f
@@ -9429,8 +9427,7 @@ public static class SphericalCoordinateEO {
     *     @return xyz      double[3]    <u>returned</u> geocentric vector (Note 2)
     *
     * <!-- Returned (function value): -->
-    *  @throws JSOFAIllegalParameter
-    *                         -1 = illegal identifier (Note 3)
+    *  @throws JSOFAIllegalParameter    -1 = illegal identifier (Note 3)
     *                         -2 = illegal case (Note 3)
     *
     * <p>Notes:
@@ -10338,13 +10335,7 @@ public static class SphericalCoordinateEO {
     *    @param pxh     double    parallax (arcsec)
     *    @param rvh     double    radial velocity (km/s, positive = receding)
     *
-    *  Returned (all FK5, equinox J2000.0, epoch J2000.0):
-    *     r5      double    RA (radians)
-    *     d5      double    Dec (radians)
-    *     dr5     double    proper motion in RA (dRA/dt, rad/Jyear)
-    *     dd5     double    proper motion in Dec (dDec/dt, rad/Jyear)
-    *     px5     double    parallax (arcsec)
-    *     rv5     double    radial velocity (km/s, positive = receding)
+    *  @return  (all FK5, equinox J2000.0, epoch J2000.0):
     *
     * <p>Notes:
     * <ol>
@@ -14159,7 +14150,7 @@ public static class SphericalCoordinateEO {
     *     @param date1 double TT as a 2-part Julian Date (Note 1)
     *     @param date2 double TT as a 2-part Julian Date (Note 1)
     *
-    *  Returned (see Note 2):
+    *  @return (see Note 2):
     *     eps0          double   epsilon_0
     *     psia          double   psi_A
     *     oma           double   omega_A
@@ -19962,7 +19953,7 @@ public static class SphericalCoordinateEO {
 
         /* Result, safeguarding precision. */
         
-        if ( tai1 > tai2 ) {
+        if ( abs(tai1) > abs(tai2) ) {
             tt1 = tai1;
             tt2 = tai2 + dtat;
         } else {
@@ -20023,7 +20014,7 @@ public static class SphericalCoordinateEO {
 
         /* Result, safeguarding precision. */
         dtad = dta / DAYSEC;
-        if ( tai1 > tai2 ) {
+        if ( abs(tai1) > abs(tai2) ) {
             ut11 = tai1;
             ut12 = tai2 + dtad;
         } else {
@@ -20109,7 +20100,7 @@ public static class SphericalCoordinateEO {
 
 
         /* Put the two parts of the TAI into big-first order. */
-        big1 = ( tai1 >= tai2 );
+        big1 = ( abs(tai1) >= abs(tai2) );
         if ( big1 ) {
             a1 = tai1;
             a2 = tai2;
@@ -20241,7 +20232,7 @@ public static class SphericalCoordinateEO {
 
 
         /* Result, safeguarding precision. */
-        if ( tcb1 > tcb2 ) {
+        if ( abs(tcb1) > abs(tcb2) ) {
             d = tcb1 - t77td;
             tdb1 = tcb1;
             tdb2 = tcb2 + tdb0 - ( d + ( tcb2 - t77tf ) ) * ELB;
@@ -20301,7 +20292,7 @@ public static class SphericalCoordinateEO {
 
 
         /* Result, safeguarding precision. */
-        if ( tcg1 > tcg2 ) {
+        if ( abs(tcg1) > abs(tcg2) ) {
             tt1 = tcg1;
             tt2 = tcg2 - ( ( tcg1 - DJM0 ) + ( tcg2 - t77t ) ) * ELG;
         } else {
@@ -20382,7 +20373,7 @@ public static class SphericalCoordinateEO {
 
 
         /* Result, preserving date format but safeguarding precision. */
-        if ( tdb1 > tdb2 ) {
+        if ( abs(tdb1) > abs(tdb2) ) {
             d = t77td - tdb1;
             f  = tdb2 - tdb0;
             tcb1 = tdb1;
@@ -20390,7 +20381,7 @@ public static class SphericalCoordinateEO {
         } else {
             d = t77td - tdb2;
             f  = tdb1 - tdb0;
-            tcb1 = f + ( d - ( f - t77tf ) ) * elbb;
+            tcb1 = f - ( d - ( f - t77tf ) ) * elbb;
             tcb2 = tdb2;
         }
 
@@ -20458,7 +20449,7 @@ public static class SphericalCoordinateEO {
 
         /* Result, safeguarding precision. */
         dtrd = dtr / DAYSEC;
-        if ( tdb1 > tdb2 ) {
+        if ( abs(tdb1) > abs(tdb2) ) {
             tt1 = tdb1;
             tt2 = tdb2 - dtrd;
         } else {
@@ -20542,7 +20533,7 @@ public static class SphericalCoordinateEO {
      *     @param sec       double  seconds
      *
      *<!-- Returned:-->
-     *     days      double  interval in days
+     *     @return      double  interval in days
      *
      *  Returned (function value):
      *               int     status:  0 = OK
@@ -22357,7 +22348,7 @@ public static class SphericalCoordinateEO {
 
 
           /* Result, safeguarding precision. */
-          if ( tt1 > tt2 ) {
+          if ( abs(tt1) > abs(tt2) ) {
               tai1 = tt1;
               tai2 = tt2 - dtat;
           } else {
@@ -22422,7 +22413,7 @@ public static class SphericalCoordinateEO {
 
 
           /* Result, safeguarding precision. */
-          if ( tt1 > tt2 ) {
+          if ( abs(tt1) > abs(tt2) ) {
               tcg1 = tt1;
               tcg2 = tt2 + ( ( tt1 - DJM0 ) + ( tt2 - t77t ) ) * elgg;
           } else {
@@ -22495,7 +22486,7 @@ public static class SphericalCoordinateEO {
 
           /* Result, safeguarding precision. */
           dtrd = dtr / DAYSEC;
-          if ( tt1 > tt2 ) {
+          if ( abs(tt1) > abs(tt2) ) {
               tdb1 = tt1;
               tdb2 = tt2 + dtrd;
           } else {
@@ -22558,7 +22549,7 @@ public static class SphericalCoordinateEO {
 
           /* Result, safeguarding precision. */
           dtd = dt / DAYSEC;
-          if ( tt1 > tt2 ) {
+          if ( abs(tt1) > abs(tt2) ) {
               ut11 = tt1;
               ut12 = tt2 - dtd;
           } else {
@@ -22620,7 +22611,7 @@ public static class SphericalCoordinateEO {
 
           /* Result, safeguarding precision. */
           dtad = dta / DAYSEC;
-          if ( ut11 > ut12 ) {
+          if ( abs(ut11) > abs(ut12) ) {
               tai1 = ut11;
               tai2 = ut12 - dtad;
           } else {
@@ -22681,7 +22672,7 @@ public static class SphericalCoordinateEO {
 
           /* Result, safeguarding precision. */
           dtd = dt / DAYSEC;
-          if ( ut11 > ut12 ) {
+          if ( abs(ut11) > abs(ut12) ) {
               tt1 = ut11;
               tt2 = ut12 + dtd;
           } else {
@@ -22779,7 +22770,7 @@ public static class SphericalCoordinateEO {
           duts = dut1;
 
           /* Put the two parts of the UT1 into big-first order. */
-          big1 = ( ut11 >= ut12 );
+          big1 = ( abs(ut11) >= abs(ut12) );
           if ( big1 ) {
               u1 = ut11;
               u2 = ut12;
@@ -22918,7 +22909,7 @@ public static class SphericalCoordinateEO {
 
 
           /* Put the two parts of the UTC into big-first order. */
-          big1 = ( utc1 >= utc2 );
+          big1 = ( abs(utc1) >= abs(utc2) );
           if ( big1 ) {
               u1 = utc1;
               u2 = utc2;
@@ -25452,8 +25443,7 @@ public static class SphericalCoordinateEO {
      *     @return       double      <b>Returned</b> equation of the origins (ERA-GST)
      *
      *  @throws JSOFAInternalError an internal error has occured
-     *  @throws JSOFAIllegalParameter
-     *             int         status:   <b>Returned</b> +1 = dubious year (Note 2)
+     *  @throws JSOFAIllegalParameter int         status:   <b>Returned</b> +1 = dubious year (Note 2)
      *                                 0  =   <b>Returned</b> OK
      *                                -1  =   <b>Returned</b> unacceptable date
      *
@@ -26298,9 +26288,7 @@ public static class SphericalCoordinateEO {
      *<!-- Returned:-->
      *     @param astrom      <b>Returned</b> star-independent astrometry parameters:
      *     @throws JSOFAInternalError an internal error has occured
-     *     @throws JSOFAIllegalParameter
-     *                   
-     *             int          status:   <b>Returned</b> +1 = dubious year (Note 2)
+     *     @throws JSOFAIllegalParameter int          status:   <b>Returned</b> +1 = dubious year (Note 2)
      *                                  0  =   <b>Returned</b> OK
      *                                 -1  =   <b>Returned</b> unacceptable date
      *
@@ -26894,8 +26882,7 @@ public static class SphericalCoordinateEO {
      *             eo      double*    <b>Returned</b> equation of the origins (ERA-GST)
      *
      *  @throws JSOFAInternalError an internal error has occured
-     *  @throws JSOFAIllegalParameter
-     *             int       status:   <b>Returned</b> +1 = dubious year (Note 4)
+     *  @throws JSOFAIllegalParameter int       status:   <b>Returned</b> +1 = dubious year (Note 4)
      *                               0  =   <b>Returned</b> OK
      *                              -1  =   <b>Returned</b> unacceptable date
      *
@@ -27546,8 +27533,7 @@ public static class SphericalCoordinateEO {
      *             rob     double*    <b>Returned</b> observed right ascension (CIO-based, radians)
      *
      *  @throws JSOFAInternalError an internal error has occured
-     *  @throws JSOFAIllegalParameter
-     *             int       status:   <b>Returned</b> +1 = dubious year (Note 2)
+     *  @throws JSOFAIllegalParameter int       status:   <b>Returned</b> +1 = dubious year (Note 2)
      *                              0  =   <b>Returned</b> OK
      *                              -1  =   <b>Returned</b> unacceptable date
      *
@@ -27881,8 +27867,7 @@ public static class SphericalCoordinateEO {
      *     @return rc,dc   double     <b>Returned</b> ICRS astrometric RA,Dec (radians)
      *
      *  @throws JSOFAInternalError an internal error has occured
-     *  @throws JSOFAIllegalParameter
-     *                   int       status:   <b>Returned</b> +1 = dubious year (Note 4)
+     *  @throws JSOFAIllegalParameter int       status:   <b>Returned</b> +1 = dubious year (Note 4)
      *                               0  =   <b>Returned</b> OK
      *                              -1  =   <b>Returned</b> unacceptable date
      *
@@ -28055,8 +28040,7 @@ public static class SphericalCoordinateEO {
      *             di      double*    <b>Returned</b> CIRS declination (radians)
      *
      *  @throws JSOFAInternalError an internal error has occured
-     *  @throws JSOFAIllegalParameter
-     *             int       status:   <b>Returned</b> +1 = dubious year (Note 2)
+     *  @throws JSOFAIllegalParameter int       status:   <b>Returned</b> +1 = dubious year (Note 2)
      *                               0  =   <b>Returned</b> OK
      *                              -1  =   <b>Returned</b> unacceptable date
      *
@@ -30648,8 +30632,7 @@ public static class SphericalCoordinateEO {
      *  @param  dec    double     declination
      *  @param  phi    double     site latitude
      *
-     *  Returned (function value):
-     *            double     parallactic angle
+     *  @return     double     parallactic angle
      *
      * <p>Notes: <ol>
      *
@@ -31426,10 +31409,612 @@ public static class SphericalCoordinateEO {
 
         /* Finished. */
     }
+
+    /**
+     *  Convert B1950.0 FK4 star catalog data to J2000.0 FK5.
+     *  This function converts a star's catalog data from the old FK4
+     * (Bessel-Newcomb) system to the later IAU 1976 FK5 (Fricke) system.
+     *  
+     *  <p>This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *  
+     *  Status:  support function.
+     *  
+     * 
+     *  <!-- Given: --> (all B1950.0, FK4)
+     *     @param r1950    double   B1950.0 RA (rad)
+     *     @param d1950    double   B1950.0 Dec (rad)
+     *     @param dr1950  double   B1950.0 proper motions (rad/trop.yr)
+     *     @param dd1950  double   B1950.0 proper motions (rad/trop.yr)
+     *     @param p1950          double   parallax (arcsec)
+     *     @paramv1950          double   radial velocity (km/s, +ve = moving away)
+     *  Returned:
+     *  
+     *   @return  - catalogue coordinates (all J2000.0, FK5)
+     *   
+     * <p>Notes: <ol>
+     * 
+     * <li> The proper motions in RA are dRA/dt rather than cos(Dec)*dRA/dt,
+     *     and are per year rather than per century.
+     * <li> The conversion is somewhat complicated, for several reasons:
+     *     . Change of standard epoch from B1950.0 to J2000.0.
+     *     . An intermediate transition date of 1984 January 1.0 TT.
+     *     . A change of precession model.
+     *     . Change of time unit for proper motion (tropical to Julian).
+     *     . FK4 positions include the E-terms of aberration, to simplify
+     *       the hand computation of annual aberration.  FK5 positions
+     *       assume a rigorous aberration computation based on the Earth's
+     *       barycentric velocity.
+     *     . The E-terms also affect proper motions, and in particular cause
+     *       objects at large distances to exhibit fictitious proper
+     *       motions.
+     *     The algorithm is based on Smith et al. (1989) and Yallop et al.
+     *     (1989), which presented a matrix method due to Standish (1982) as
+     *     developed by Aoki et al. (1983), using Kinoshita's development of
+     *     Andoyer's post-Newcomb precession.  The numerical constants from
+     *     Seidelmann (1992) are used canonically.
+     * <li> Conversion from B1950.0 FK4 to J2000.0 FK5 only is provided for.
+     *     Conversions for different epochs and equinoxes would require
+     *     additional treatment for precession, proper motion and E-terms.
+     * <li> In the FK4 catalog the proper motions of stars within 10 degrees
+     *     of the poles do not embody differential E-terms effects and
+     *     should, strictly speaking, be handled in a different manner from
+     *     stars outside these regions.  However, given the general lack of
+     *     homogeneity of the star data available for routine astrometry,
+     *     the difficulties of handling positions that may have been
+     *     determined from astrometric fields spanning the polar and non-
+     *     polar regions, the likelihood that the differential E-terms
+     *     effect was not taken into account when allowing for proper motion
+     *     in past astrometry, and the undesirability of a discontinuity in
+     *     the algorithm, the decision has been made in this SOFA algorithm
+     *     to include the effects of differential E-terms on the proper
+     *     motions for all stars, whether polar or not.  At epoch J2000.0,
+     *     and measuring "on the sky" rather than in terms of RA change, the
+     *     errors resulting from this simplification are less than
+     *     1 milliarcsecond in position and 1 milliarcsecond per century in
+     *     proper motion.
+     * </ol>
+     *  Called:
+     *     iauAnp       normalize angle into range 0 to 2pi
+     *     iauPv2s      pv-vector to spherical coordinates
+     *     iauPdp       scalar product of two p-vectors
+     *     iauPvmpv     pv-vector minus pv_vector
+     *     iauPvppv     pv-vector plus pv_vector
+     *     iauS2pv      spherical coordinates to pv-vector
+     *     iauSxp       multiply p-vector by scalar
+     * <p> References: <ul>
+     * <li> Aoki, S. et al., 1983, "Conversion matrix of epoch B1950.0
+     *     FK4-based positions of stars to epoch J2000.0 positions in
+     *     accordance with the new IAU resolutions".  Astron.Astrophys.
+     *     128, 263-267.
+     *  <li>Seidelmann, P.K. (ed), 1992, "Explanatory Supplement to the
+     *     Astronomical Almanac", ISBN 0-935702-68-7.
+     * <li>Smith, C.A. et al., 1989, "The transformation of astrometric
+     *     catalog systems to the equinox J2000.0".  Astron.J. 97, 265.
+     * <li>Standish, E.M., 1982, "Conversion of positions and proper motions
+     *     from B1950.0 to the IAU system at J2000.0".  Astron.Astrophys.,
+     *     115, 1, 20-22.
+     * <li>Yallop, B.D. et al., 1989, "Transformation of mean star places
+     *     from FK4 B1950.0 to FK5 J2000.0 using matrices in 6-space".
+     *     Astron.J. 97, 274.
+     *     </ul>
+     *  @version   2018 December 5
+     *  @since SOFA release 2019-07-22
+     */
+    public static CatalogCoords jauFk425(double r1950, double d1950,
+            double dr1950, double dd1950,
+            double p1950, double v1950
+            )
+    {
+        /* Radians per year to arcsec per century */
+        final double PMF = 100.0*DR2AS;
+
+        /* Small number to avoid arithmetic problems */
+        final double TINY = 1e-30;
+
+        /* Miscellaneous */
+        double r, d, ur, ud, px, rv, pxvf, w;
+        int i, j, k, l;
+
+        /* Pv-vectors */
+        double r0[][], 
+        pv1[][], pv2[][] = new double[2][3];
+
+        /*
+         * CANONICAL CONSTANTS (Seidelmann 1992)
+         */
+
+        /* Km per sec to AU per tropical century */
+        /* = 86400 * 36524.2198782 / 149597870.7 */
+        final double VF = 21.095;
+
+        /* Constant pv-vector (cf. Seidelmann 3.591-2, vectors A and Adot) */
+        final double a[][] = new double[][] {
+            { -1.62557e-6, -0.31919e-6, -0.13843e-6 },
+            { +1.245e-3,   -1.580e-3,   -0.659e-3   }
+        };
+
+        /* 3x2 matrix of pv-vectors (cf. Seidelmann 3.591-4, matrix M) */
+        final double em[][][][] = new double [][][][] {
+
+            { { { +0.9999256782,     -0.0111820611,     -0.0048579477     },
+                { +0.00000242395018, -0.00000002710663, -0.00000001177656 } },
+
+                { { +0.0111820610,     +0.9999374784,     -0.0000271765     },
+                    { +0.00000002710663, +0.00000242397878, -0.00000000006587 } },
+
+                { { +0.0048579479,     -0.0000271474,     +0.9999881997,    },
+                        { +0.00000001177656, -0.00000000006582, +0.00000242410173 } } },
+
+            { { { -0.000551,         -0.238565,         +0.435739        },
+                { +0.99994704,       -0.01118251,       -0.00485767       } },
+
+                            { { +0.238514,         -0.002667,         -0.008541        },
+                    { +0.01118251,       +0.99995883,       -0.00002718       } },
+
+                            { { -0.435623,         +0.012254,         +0.002117         },
+                        { +0.00485767,       -0.00002714,       +1.00000956       } } }
+
+        };
+
+        /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+        /* The FK4 data (units radians and arcsec per tropical century). */
+        r = r1950;
+        d = d1950;
+        ur = dr1950*PMF;
+        ud = dd1950*PMF;
+        px = p1950;
+        rv = v1950;
+
+        /* Express as a pv-vector. */
+        pxvf = px*VF;
+        w = rv*pxvf;
+        r0 = jauS2pv(r, d, 1.0, ur, ud, w);
+
+        /* Allow for E-terms (cf. Seidelmann 3.591-2). */
+        pv1 = jauPvmpv(r0, a);
+        pv2[0] = jauSxp(jauPdp(r0[0], a[0]), r0[0]);
+        pv2[1] = jauSxp(jauPdp(r0[0], a[1]), r0[0]);
+        pv1 = jauPvppv(pv1, pv2);
+
+        /* Convert pv-vector to Fricke system (cf. Seidelmann 3.591-3). */
+        for ( i = 0; i < 2; i++ ) {
+            for ( j = 0; j < 3; j++ ) {
+                w = 0.0;
+                for ( k = 0; k < 2; k++ ) {
+                    for ( l = 0; l < 3; l++ ) {
+                        w += em[i][j][k][l] * pv1[k][l];
+                    }
+                }
+                pv2[i][j] = w;
+            }
+        }
+
+        /* Revert to catalog form. */
+        SphericalPositionVelocity sv = jauPv2s(pv2);//, &r, &d, &w, &ur, &ud, &rd);
+        if ( px > TINY ) {
+            rv = sv.vel.r/pxvf;
+            px = px/sv.pos.r;
+        }
+
+        /* Return the results. */
+        return new CatalogCoords(jauAnp(sv.pos.theta), sv.pos.phi, sv.vel.theta/PMF, sv.vel.phi/PMF, px, rv);
+
+    }  
+
+
+    /**
+     *  Convert a B1950.0 FK4 star position to J2000.0 FK5, assuming zero
+     *  proper motion in the FK5 system.
+     *  <p>This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *  Status:  support function.
+     *  This function converts a star's catalog data from the old FK4
+     *  (Bessel-Newcomb) system to the later IAU 1976 FK5 (Fricke) system,
+     *  in such a way that the FK5 proper motion is zero.  Because such a
+     *  star has, in general, a non-zero proper motion in the FK4 system,
+     *  the routine requires the epoch at which the position in the FK4
+     *  system was determined.
+     *  
+     *  <!-- Given: -->
+     *     @param r1950    double   B1950.0 FK4 RA at epoch (rad)
+     *     @param d1950    double   B1950.0 FK4 Dec at epoch (rad)
+     *     @param bepoch         double   Besselian epoch (e.g. 1979.3D0)
+     * <!-- Returned: -->
+     *     @return  J2000.0 FK5 RA,Dec (rad)
+     * <p>Notes: <ol>
+
+     * <li> The epoch bepoch is strictly speaking Besselian, but if a
+     *     Julian epoch is supplied the result will be affected only to a
+     *     negligible extent.
+     * <li> The method is from Appendix 2 of Aoki et al. (1983), but using
+     *     the constants of Seidelmann (1992).  See the routine iauFk425
+     *     for a general introduction to the FK4 to FK5 conversion.
+     * <li> Conversion from equinox B1950.0 FK4 to equinox J2000.0 FK5 only
+     *     is provided for.  Conversions for different starting and/or
+     *     ending epochs would require additional treatment for precession,
+     *     proper motion and E-terms.
+     * <li> In the FK4 catalog the proper motions of stars within 10 degrees
+     *     of the poles do not embody differential E-terms effects and
+     *     should, strictly speaking, be handled in a different manner from
+     *     stars outside these regions.  However, given the general lack of
+     *     homogeneity of the star data available for routine astrometry,
+     *     the difficulties of handling positions that may have been
+     *     determined from astrometric fields spanning the polar and non-
+     *     polar regions, the likelihood that the differential E-terms
+     *     effect was not taken into account when allowing for proper motion
+     *     in past astrometry, and the undesirability of a discontinuity in
+     *     the algorithm, the decision has been made in this SOFA algorithm
+     *     to include the effects of differential E-terms on the proper
+     *     motions for all stars, whether polar or not.  At epoch 2000.0,
+     *     and measuring "on the sky" rather than in terms of RA change, the
+     *     errors resulting from this simplification are less than
+     *     1 milliarcsecond in position and 1 milliarcsecond per century in
+     *     proper motion.
+     * </ol>
+     * <p> References: <ul>
+     * <li>Aoki, S. et al., 1983, "Conversion matrix of epoch B1950.0
+     *     FK4-based positions of stars to epoch J2000.0 positions in
+     *     accordance with the new IAU resolutions".  Astron.Astrophys.
+     *     128, 263-267.
+     * <li>Seidelmann, P.K. (ed), 1992, "Explanatory Supplement to the
+     *     Astronomical Almanac", ISBN 0-935702-68-7.
+     * </ul>
+     *  Called:
+     *     iauAnp       normalize angle into range 0 to 2pi
+     *     iauC2s       p-vector to spherical
+     *     iauEpb2jd    Besselian epoch to Julian date
+     *     iauEpj       Julian date to Julian epoch
+     *     iauPdp       scalar product of two p-vectors
+     *     iauPmp       p-vector minus p-vector
+     *     iauPpsp      p-vector plus scaled p-vector
+     *     iauPvu       update a pv-vector
+     *     iauS2c       spherical to p-vector
+     *  @version   2018 December 5
+     *  @since SOFA release 2019-07-22
+     */
+    public static SphericalCoordinate jauFk45z(double r1950, double d1950, double bepoch)
+    {
+        /* Radians per year to arcsec per century */
+        final double PMF = 100.0*DR2AS;
+
+        /* Position and position+velocity vectors */
+        double r0[], p[], pv[][] = new double[2][3];
+
+        /* Miscellaneous */
+        double w;
+        int i, j, k;
+
+        /*
+         * CANONICAL CONSTANTS (Seidelmann 1992)
+         */
+
+        /* Vectors A and Adot (Seidelmann 3.591-2) */
+        final double a[]  = new double[]{ -1.62557e-6, -0.31919e-6, -0.13843e-6 };
+        final double ad[] = new double[]{ +1.245e-3,   -1.580e-3,   -0.659e-3   };
+
+        /* 3x2 matrix of p-vectors (cf. Seidelmann 3.591-4, matrix M) */
+        final double em[][][] = new double[][][] {
+            { { +0.9999256782, -0.0111820611, -0.0048579477 },
+                { +0.0111820610, +0.9999374784, -0.0000271765 },
+                { +0.0048579479, -0.0000271474, +0.9999881997 } },
+            { { -0.000551,     -0.238565,     +0.435739     },
+                    { +0.238514,     -0.002667,     -0.008541     },
+                    { -0.435623,     +0.012254,     +0.002117     } }
+        };
+
+        /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+        /* Spherical coordinates to p-vector. */
+        r0 = jauS2c(r1950, d1950);
+
+        /* Adjust p-vector A to give zero proper motion in FK5. */
+        w  = (bepoch - 1950) / PMF;
+        p = jauPpsp(a, w, ad );
+
+        /* Remove E-terms. */
+        p = jauPpsp(p, -jauPdp(r0,p), r0);
+        p = jauPmp(r0, p);
+
+        /* Convert to Fricke system pv-vector (cf. Seidelmann 3.591-3). */
+        for ( i = 0; i < 2; i++ ) {
+            for ( j = 0; j < 3; j++ ) {
+                w = 0.0;
+                for ( k = 0; k < 3; k++ ) {
+                    w += em[i][j][k] * p[k];
+                }
+                pv[i][j] = w;
+            }
+        }
+
+        /* Allow for fictitious proper motion. */
+        JulianDate jd = jauEpb2jd(bepoch);
+        w = (jauEpj(jd.djm0,jd.djm1)-2000.0) / PMF;
+        pv = jauPvu(w, pv);
+
+        /* Revert to spherical coordinates. */
+        SphericalCoordinate sc = jauC2s(pv[0]);
+        sc.alpha = jauAnp(sc.alpha);
+        return sc;
+
+    }
+
+
+    /**
+     *  Convert J2000.0 FK5 star catalog data to B1950.0 FK4.
+      *  <p>This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *  Status:  support function.
+     *  <!--Given: (all J2000.0, FK5) -->
+     *     @param r2000   double   J2000.0 RA (rad)
+     *     @param d2000    double   J2000.0 Dec (rad)
+     *     @param dr2000  double   J2000.0 proper motions (rad/Jul.yr)
+     *     @param dd2000  double   J2000.0 proper motions (rad/Jul.yr)
+     *     @param p2000          double   parallax (arcsec)
+     *     @param v2000          double   radial velocity (km/s, +ve = moving away)
+     *  
+     *   @return (all B1950.0, FK4)
+     * <p>Notes: <ol>
+
+     * <li> The proper motions in RA are dRA/dt rather than cos(Dec)*dRA/dt,
+     *     and are per year rather than per century.
+     * <li> The conversion is somewhat complicated, for several reasons:
+     *     . Change of standard epoch from J2000.0 to B1950.0.
+     *     . An intermediate transition date of 1984 January 1.0 TT.
+     *     . A change of precession model.
+     *     . Change of time unit for proper motion (Julian to tropical).
+     *     . FK4 positions include the E-terms of aberration, to simplify
+     *       the hand computation of annual aberration.  FK5 positions
+     *       assume a rigorous aberration computation based on the Earth's
+     *       barycentric velocity.
+     *     . The E-terms also affect proper motions, and in particular cause
+     *       objects at large distances to exhibit fictitious proper
+     *       motions.
+     *     The algorithm is based on Smith et al. (1989) and Yallop et al.
+     *     (1989), which presented a matrix method due to Standish (1982) as
+     *     developed by Aoki et al. (1983), using Kinoshita's development of
+     *     Andoyer's post-Newcomb precession.  The numerical constants from
+     *     Seidelmann (1992) are used canonically.
+     * <li> In the FK4 catalog the proper motions of stars within 10 degrees
+     *     of the poles do not embody differential E-terms effects and
+     *     should, strictly speaking, be handled in a different manner from
+     *     stars outside these regions.  However, given the general lack of
+     *     homogeneity of the star data available for routine astrometry,
+     *     the difficulties of handling positions that may have been
+     *     determined from astrometric fields spanning the polar and non-
+     *     polar regions, the likelihood that the differential E-terms
+     *     effect was not taken into account when allowing for proper motion
+     *     in past astrometry, and the undesirability of a discontinuity in
+     *     the algorithm, the decision has been made in this SOFA algorithm
+     *     to include the effects of differential E-terms on the proper
+     *     motions for all stars, whether polar or not.  At epoch J2000.0,
+     *     and measuring "on the sky" rather than in terms of RA change, the
+     *     errors resulting from this simplification are less than
+     *     1 milliarcsecond in position and 1 milliarcsecond per century in
+     *     proper motion.
+     * </ol>
+     *  Called:
+     *     iauAnp       normalize angle into range 0 to 2pi
+     *     iauPdp       scalar product of two p-vectors
+     *     iauPm        modulus of p-vector
+     *     iauPmp       p-vector minus p-vector
+     *     iauPpp       p-vector pluus p-vector
+     *     iauPv2s      pv-vector to spherical coordinates
+     *     iauS2pv      spherical coordinates to pv-vector
+     *     iauSxp       multiply p-vector by scalar
+     * <p> References: <ul>
+     * <li>Aoki, S. et al., 1983, "Conversion matrix of epoch B1950.0
+     *     FK4-based positions of stars to epoch J2000.0 positions in
+     *     accordance with the new IAU resolutions".  Astron.Astrophys.
+     *     128, 263-267.
+     * <li>Seidelmann, P.K. (ed), 1992, "Explanatory Supplement to the
+     *     Astronomical Almanac", ISBN 0-935702-68-7.
+     * <li>Smith, C.A. et al., 1989, "The transformation of astrometric
+     *     catalog systems to the equinox J2000.0".  Astron.J. 97, 265.
+     * <li>Standish, E.M., 1982, "Conversion of positions and proper motions
+     *     from B1950.0 to the IAU system at J2000.0".  Astron.Astrophys.,
+     *     115, 1, 20-22.
+     * <li>Yallop, B.D. et al., 1989, "Transformation of mean star places
+     *     from FK4 B1950.0 to FK5 J2000.0 using matrices in 6-space".
+     *     Astron.J. 97, 274.
+     *     </ul>
+     *  @version   2018 December 5
+     *  @since SOFA release 2019-07-22
+     */
+    public static CatalogCoords jauFk524(double r2000, double d2000,
+            double dr2000, double dd2000,
+            double p2000, double v2000)
+    {
+        /* Radians per year to arcsec per century */
+        final double PMF = 100.0*DR2AS;
+
+        /* Small number to avoid arithmetic problems */
+        final double TINY = 1e-30;
+
+        /* Miscellaneous */
+        double r, d, ur, ud, px, rv, pxvf, w;
+        int i, j, k, l;
+
+        /* Vectors, p and pv */
+        double r0[][], r1[][] = new double[2][3], p1[], p2[], pv[][] = new double[2][3];
+
+        /*
+         * CANONICAL CONSTANTS (Seidelmann 1992)
+         */
+
+        /* Km per sec to AU per tropical century */
+        /* = 86400 * 36524.2198782 / 149597870.7 */
+        final double VF = 21.095;
+
+        /* Constant pv-vector (cf. Seidelmann 3.591-2, vectors A and Adot) */
+        final double a[][] = new double[][] {
+            { -1.62557e-6, -0.31919e-6, -0.13843e-6 },
+            { +1.245e-3,   -1.580e-3,   -0.659e-3   }
+        };
+
+        /* 3x2 matrix of pv-vectors (cf. Seidelmann 3.592-1, matrix M^-1) */
+        final double em[][][][] = new double[][][][] {
+
+            { { { +0.9999256795,     +0.0111814828,     +0.0048590039,    },
+                { -0.00000242389840, -0.00000002710544, -0.00000001177742 } },
+
+                { { -0.0111814828,     +0.9999374849,     -0.0000271771,    },
+                    { +0.00000002710544, -0.00000242392702, +0.00000000006585 } },
+
+                { { -0.0048590040,     -0.0000271557,     +0.9999881946,    },
+                        { +0.00000001177742, +0.00000000006585, -0.00000242404995 } } },
+
+            { { { -0.000551,         +0.238509,         -0.435614,        },
+                { +0.99990432,       +0.01118145,       +0.00485852       } },
+
+                            { { -0.238560,         -0.002667,         +0.012254,        },
+                    { -0.01118145,       +0.99991613,       -0.00002717       } },
+
+                            { { +0.435730,         -0.008541,         +0.002117,        },
+                        { -0.00485852,       -0.00002716,       +0.99996684       } } }
+
+        };
+
+        /*- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+        /* The FK5 data (units radians and arcsec per Julian century). */
+        r = r2000;
+        d = d2000;
+        ur = dr2000*PMF;
+        ud = dd2000*PMF;
+        px = p2000;
+        rv = v2000;
+
+        /* Express as a pv-vector. */
+        pxvf = px * VF;
+        w = rv * pxvf;
+        r0 = jauS2pv(r, d, 1.0, ur, ud, w);
+
+        /* Convert pv-vector to Bessel-Newcomb system (cf. Seidelmann 3.592-1). */
+        for ( i = 0; i < 2; i++ ) {
+            for ( j = 0; j < 3; j++ ) {
+                w = 0.0;
+                for ( k = 0; k < 2; k++ ) {
+                    for ( l = 0; l < 3; l++ ) {
+                        w += em[i][j][k][l] * r0[k][l];
+                    }
+                }
+                r1[i][j] = w;
+            }
+        }
+
+        /* Apply E-terms (equivalent to Seidelmann 3.592-3, two iterations). */
+
+        /* Direction. */
+        w = jauPm(r1[0]);
+        p1 =jauSxp(jauPdp(r1[0],a[0]), r1[0]);
+        p2 = jauSxp(w, a[0]);
+        p1 = jauPmp(p2, p1);
+        p1 = jauPpp(r1[0], p1);
+
+        /* Recompute length. */
+        w = jauPm(p1);
+
+        /* Direction. */
+        p1 = jauSxp(jauPdp(r1[0],a[0]), r1[0]);
+        p2 = jauSxp(w, a[0]);
+        p1 = jauPmp(p2, p1);
+        pv[0] = jauPpp(r1[0], p1);
+
+        /* Derivative. */
+        p1 =jauSxp(jauPdp(r1[0],a[1]), pv[0]);
+        p2 = jauSxp(w, a[1]);
+        p1 = jauPmp(p2, p1);
+        pv[1] = jauPpp(r1[1], p1);
+
+        /* Revert to catalog form. */
+        SphericalPositionVelocity sv = jauPv2s(pv);//, &r, &d, &w, &ur, &ud, &rd);
+        if ( px > TINY ) {
+            rv = sv.vel.r/pxvf;
+            px = px/sv.pos.r;
+        }
+
+        /* Return the results. */
+        return new CatalogCoords(jauAnp(sv.pos.theta), sv.pos.phi, sv.vel.theta/PMF, sv.vel.phi/PMF, px, rv);
+    }
+
+    /**
+     *  Convert a J2000.0 FK5 star position to B1950.0 FK4, assuming zero
+     *  proper motion in FK5 and parallax.
+     *  <p>This function is derived from the International Astronomical Union's
+     *  SOFA (Standards of Fundamental Astronomy) software collection.
+     *  Status:  support function.
+     *     @param r2000    double   J2000.0 FK5 RA (rad)
+     *     @param d2000    double   J2000.0 FK5 Dec (rad)
+     *     @param bepoch         double   Besselian epoch (e.g. 1950.0)
+     *     @return    B1950.0 FK4 RA,Dec (rad) at epoch BEPOCH
+     * 
+     * <p>Notes: <ol>
+
+     * <li> In contrast to the iauFk524  routine, here the FK5 proper
+     *     motions, the parallax and the radial velocity are presumed zero.
+     * <li> This function converts a star position from the IAU 1976 FK5
+     *    (Fricke) system to the former FK4 (Bessel-Newcomb) system, for
+     *     cases such as distant radio sources where it is presumed there is
+     *     zero parallax and no proper motion.  Because of the E-terms of
+     *     aberration, such objects have (in general) non-zero proper motion
+     *     in FK4, and the present routine returns those fictitious proper
+     *     motions.
+     * <li> Conversion from B1950.0 FK4 to J2000.0 FK5 only is provided for.
+     *     Conversions involving other equinoxes would require additional
+     *     treatment for precession.
+     * <li> The position returned by this routine is in the B1950.0 FK4
+     *     reference system but at Besselian epoch BEPOCH.  For comparison
+     *     with catalogs the BEPOCH argument will frequently be 1950.0. (In
+     *     this context the distinction between Besselian and Julian epoch
+     *     is insignificant.)
+     * <li> The RA component of the returned (fictitious) proper motion is
+     *     dRA/dt rather than cos(Dec)*dRA/dt.
+     * </ol>
+     *  Called:
+     *     jauAnp       normalize angle into range 0 to 2pi
+     *     jauC2s       p-vector to spherical
+     *     jauFk524     FK4 to FK5
+     *     jauS2c       spherical to p-vector
+     *  @version   2018 December 5
+     *  @since SOFA release 2019-07-22
+     */
+    public static CatalogCoords jauFk54z(double r2000, double d2000, double bepoch)
+    {
+        double  p[], w, v[]= new double[3];
+        int i;
+
+
+        /* FK5 equinox J2000.0 to FK4 equinox B1950.0. */
+        CatalogCoords cc = jauFk524(r2000, d2000, 0.0, 0.0, 0.0, 0.0);
+
+        /* Spherical to Cartesian. */
+        p = jauS2c(cc.pos.alpha, cc.pos.delta );
+
+        /* Fictitious proper motion (radians per year). */
+        v[0] = - cc.pm.alpha*p[1] - cc.pm.delta*cos(cc.pos.alpha)*sin(cc.pos.delta);
+        v[1] =   cc.pm.alpha*p[0] - cc.pm.delta*sin(cc.pos.alpha)*sin(cc.pos.delta);
+        v[2] =             cc.pm.delta*cos(cc.pos.delta);
+
+        /* Apply the motion. */
+        w = bepoch - 1950.0;
+        for ( i = 0; i < 3; i++ ) {
+            p[i] += w*v[i];
+        }
+
+        /* Cartesian to spherical. */
+        SphericalCoordinate sp = jauC2s(p);
+        cc.pos.alpha = jauAnp(sp.alpha);
+        cc.pos.delta = sp.delta;
+
+        return cc;
+
+    }
 }
 
 /*
- * Copyright © 2018 Paul Harrison, University of Manchester.
+ * Copyright © 2019 Paul Harrison, University of Manchester.
  * 
  * This JSOFA software is derived from the official C release of the "Standards Of Fundamental Astronomy" (SOFA) library 
  * of the International Astronomical Union. The intention is to reproduce the functionality and algorithms of 
@@ -31448,7 +32033,7 @@ public static class SphericalCoordinateEO {
 
 /*----------------------------------------------------------------------
 *
-*  Copyright (C) 2018
+*  Copyright (C) 2019
 *  Standards Of Fundamental Astronomy Board
 *  of the International Astronomical Union.
 *

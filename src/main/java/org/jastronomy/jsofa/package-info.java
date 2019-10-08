@@ -227,6 +227,10 @@
 
   <h3>Star catalog conversions</h3>
 
+     {@link org.jastronomy.jsofa.JSOFA#jauFk425}     convert B1950.0 FK4 star catalog data to J2000.0 FK5<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFk45z}     convert a B1950.0 FK4 star position to J2000.0 FK5, assuming zero proper motion in the FK5 system<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFk524}     convert J2000.0 FK5 star catalog data to B1950.0 FK4<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFk54z}     convert a J2000.0 FK5 star position to B1950.0 FK4, assuming zero proper motion in FK5 system and zero parallax<br>
      {@link org.jastronomy.jsofa.JSOFA#jauFk52h}     transform FK5 star data into the Hipparcos system<br>
      {@link org.jastronomy.jsofa.JSOFA#jauFk5hip}    FK5 to Hipparcos rotation and spin<br>
      {@link org.jastronomy.jsofa.JSOFA#jauFk5hz}     FK5 to Hipparcos assuming zero Hipparcos proper motion<br>
@@ -367,7 +371,7 @@
  * @since February 2010
  * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
  * <pre>
- * Copyright © 2018 Paul Harrison, University of Manchester.
+ * Copyright © 2019 Paul Harrison, University of Manchester.
  * 
  * This JSOFA software is derived from the official C release of the "Standards Of Fundamental Astronomy" (SOFA) library 
  * of the International Astronomical Union. The intention is to reproduce the functionality and algorithms of 
@@ -385,7 +389,7 @@
  * 
 *+----------------------------------------------------------------------
 *
-*  Copyright (C) 2018
+*  Copyright (C) 2019
 *  Standards Of Fundamental Astronomy Board
 *  of the International Astronomical Union.
 *

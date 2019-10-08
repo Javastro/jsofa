@@ -17,6 +17,8 @@ package org.jastronomy.jsofa;
 import static org.jastronomy.jsofa.JSOFA.*;
 import static org.junit.Assert.*;
 
+import org.jastronomy.jsofa.JSOFA.CatalogCoords;
+import org.jastronomy.jsofa.JSOFA.SphericalCoordinate;
 import org.jastronomy.jsofa.JSOFAException;
 import org.jastronomy.jsofa.JSOFAIllegalParameter;
 import org.jastronomy.jsofa.JSOFAInternalError;
@@ -41,11 +43,11 @@ public class JSOFATest {
     @Test
     public void testversion() throws JSOFAIllegalParameter 
     {
-        assertEquals("Jsofa release",  System.getProperty("SOFAVERSION"), JSOFA_RELEASE); // check that the correct version is being released - system properly set from POM
-        assertEquals("sofa release", "2018-01-30", SOFA_RELEASE);
-        assertEquals("sofa revision", "14", SOFA_REVISION);
+        assertEquals("sofa release", "2019-07-22", SOFA_RELEASE);
+        assertEquals("sofa revision", "15", SOFA_REVISION);
         assertEquals("lastleap second", jauCal2jd(2017,1,1), lastLeapSecondDate());        
         assertEquals("last omitted leap second", jauCal2jd(2019,7,1), latestConfirmedNoLeapSecondChange);
+        assertEquals("Jsofa release",  System.getProperty("SOFAVERSION"), JSOFA_RELEASE); // check that the correct version is being released - system properly set from POM
         
         
     }
@@ -3939,6 +3941,12 @@ public class JSOFATest {
        vvd(rpom[2][0], -0.2550602379741215021e-6, 1e-16,"jauPom00", "31");
        vvd(rpom[2][1], 0.1860359247002414021e-5, 1e-16,"jauPom00", "32");
        vvd(rpom[2][2], 0.9999999999982370039, 1e-12,"jauPom00", "33");
+       
+       double vec[]= {0,0,1};
+       double vec2[] = jauRxp(rpom,vec);
+       for (double d : vec2) {
+        System.out.println(d);
+    }
 
     }
 
@@ -8529,8 +8537,166 @@ public void t_tpxev()
 
    viv(tpc.status, 0, "jauTpxev", "j");
 
+   
+}
+/**
+**  - - - - - - - -
+**   t _ f k 4 2 5
+**  - - - - - - - -
+**
+**  Test iauFk425 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauFk425, vvd
+**
+**  This revision:  2018 December 6
+*/
+@Test
+public void t_fk425()
+{
+   double r1950, d1950, dr1950, dd1950, p1950, v1950;
+
+
+   r1950 = 0.07626899753879587532;
+   d1950 = -1.137405378399605780;
+   dr1950 = 0.1973749217849087460e-4;
+   dd1950 = 0.5659714913272723189e-5;
+   p1950 = 0.134;
+   v1950 = 8.7;
+
+   CatalogCoords c = jauFk425(r1950, d1950, dr1950, dd1950, p1950, v1950);
+
+   vvd(c.pos.alpha, 0.08757989933556446040, 1e-14,
+       "iauFk425", "r2000");
+   vvd(c.pos.delta, -1.132279113042091895, 1e-12,
+       "iauFk425", "d2000");
+   vvd(c.pm.alpha, 0.1953670614474396139e-4, 1e-17,
+       "iauFk425", "dr2000");
+   vvd(c.pm.delta, 0.5637686678659640164e-5, 1e-18,
+       "iauFk425", "dd2000");
+   vvd(c.px, 0.1339919950582767871, 1e-13, "iauFk425", "p2000");
+   vvd(c.rv, 8.736999669183529069, 1e-12, "iauFk425", "v2000");
+
 }
 
+/**
+**  - - - - - - - -
+**   t _ f k 4 5 z
+**  - - - - - - - -
+**
+**  Test iauFk45z function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauFk45z, vvd
+**
+**  This revision:  2018 December 6
+*/
+@Test
+public void t_fk45z()
+{
+   double r1950, d1950, bepoch;
+
+
+   r1950 = 0.01602284975382960982;
+   d1950 = -0.1164347929099906024;
+   bepoch = 1954.677617625256806;
+
+   SphericalCoordinate r = jauFk45z(r1950, d1950, bepoch);
+
+   vvd(r.alpha, 0.02719295911606862303, 1e-15,
+       "iauFk45z", "r2000");
+   vvd(r.delta, -0.1115766001565926892, 1e-13,
+       "iauFk45z", "d2000");
+
+}
+
+/**
+**  - - - - - - - -
+**   t _ f k 5 2 4
+**  - - - - - - - -
+**
+**  Test iauFk524 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauFk524, vvd
+**
+**  This revision:  2018 December 6
+*/
+@Test
+public void t_fk524()
+{
+   double r2000, d2000, dr2000, dd2000, p2000, v2000;
+
+
+   r2000 = 0.8723503576487275595;
+   d2000 = -0.7517076365138887672;
+   dr2000 = 0.2019447755430472323e-4;
+   dd2000 = 0.3541563940505160433e-5;
+   p2000 = 0.1559;
+   v2000 = 86.87;
+
+   CatalogCoords r = jauFk524(r2000, d2000, dr2000, dd2000, p2000, v2000);
+
+   vvd(r.pos.alpha, 0.8636359659799603487, 1e-13,
+       "iauFk524", "r1950");
+   vvd(r.pos.delta, -0.7550281733160843059, 1e-13,
+       "iauFk524", "d1950");
+   vvd(r.pm.alpha, 0.2023628192747172486e-4, 1e-17,
+       "iauFk524", "dr1950");
+   vvd(r.pm.delta, 0.3624459754935334718e-5, 1e-18,
+       "iauFk524", "dd1950");
+   vvd(r.px, 0.1560079963299390241, 1e-13,
+       "iauFk524", "p1950");
+   vvd(r.rv, 86.79606353469163751, 1e-11, "iauFk524", "v1950");
+
+}
+
+/**
+**  - - - - - - - -
+**   t _ f k 5 4 z
+**  - - - - - - - -
+**
+**  Test iauFk54z function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauFk54z, vvd
+**
+**  This revision:  2018 December 6
+*/
+@Test
+public void t_fk54z()
+{
+   double r2000, d2000, bepoch;
+
+
+   r2000 = 0.02719026625066316119;
+   d2000 = -0.1115815170738754813;
+   bepoch = 1954.677308160316374;
+
+   CatalogCoords r = jauFk54z(r2000, d2000, bepoch);
+
+   vvd(r.pos.alpha, 0.01602015588390065476, 1e-14,
+       "iauFk54z", "r1950");
+   vvd(r.pos.delta, -0.1164397101110765346, 1e-13,
+       "iauFk54z", "d1950");
+   vvd(r.pm.alpha, -0.1175712648471090704e-7, 1e-20,
+       "iauFk54z", "dr1950");
+   vvd(r.pm.delta, 0.2108109051316431056e-7, 1e-20,
+       "iauFk54z", "dd1950");
+   vvd(r.px, 0, 1e-13,
+       "iauFk54z", "p1950");
+   vvd(r.rv, 0, 1e-11, "iauFk54z", "v1950");
+
+
+}
 
 
 //end of tests
