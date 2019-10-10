@@ -15,10 +15,10 @@
 -docencoding
 'UTF-8'
 -doctitle
-'JSOFA 20180130b API'
+'JSOFA 20190722 API'
 -linkoffline
 'http://docs.oracle.com/javase/7/docs/api' '/Users/pharriso/Work/javastro/jsofa/target/javadoc-bundle-options'
 -use
 -version
 -windowtitle
-'JSOFA 20180130b API'
+'JSOFA 20190722 API'
