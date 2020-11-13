@@ -8,7 +8,24 @@
 
 package org.jastronomy.jsofa;
 
-import static java.lang.StrictMath.*; 
+import static java.lang.Math.cos;
+import static java.lang.Math.sin;
+import static java.lang.Math.atan;
+import static java.lang.Math.atan2;
+import static java.lang.Math.min;
+import static java.lang.Math.max;
+import static java.lang.Math.ceil;
+import static java.lang.Math.floor;
+import static java.lang.Math.sqrt;
+import static java.lang.Math.abs;
+import static java.lang.Math.pow;
+
+
+
+
+
+
+
 
 /**
  * Java implementation of Standards of Fundamental Astronomy. <a href="http://www.iausofa.org/">http://www.iausofa.org/</a>
@@ -285,8 +302,8 @@ static final LeapInfo leapSeconds[] = {
          * overrides @see java.lang.Object#toString()
          */
         @Override
-        public String toString() {
-            return String.format("MJD=%.9f", djm0 + djm1  - DJM0);
+        public String toString() {        
+            return "MJD=" +Double.toString(djm0 + djm1  - DJM0);
         }
     }
  
@@ -11097,6 +11114,76 @@ public static class SphericalCoordinateEO {
             this.deps = deps;
         }
     }
+    private static final class NutationModel {
+          int nl,nlp,nf,nd,nom; /* coefficients of l,l',F,D,Om */
+          double sp,spt,cp;     /* longitude sin, t*sin, cos coefficients */
+          double ce,cet,se;     /* obliquity cos, t*cos, sin coefficients */
+          public NutationModel(int nl,int nlp,int nf,int nd, int nom,
+          double sp,double spt,double cp,     
+          double ce,double cet,double se ) {
+           this.nl = nl;
+           this.nlp = nlp;
+           this.nf = nf;
+           this.nd = nd;
+           this.nom = nom;
+           this.sp = sp;
+           this.spt = spt;
+           this.cp = cp;
+           this.ce = ce;
+           this.cet = cet;
+           this.se = se;
+        }
+       }
+        private final static class PlanetaryNutModel {
+         final int nl,               /* coefficients of l, F, D and Omega */
+              nf,
+              nd,
+              nom,
+              nme,              /* coefficients of planetary longitudes */
+              nve,
+              nea,
+              nma,
+              nju,
+              nsa,
+              nur,
+              nne,
+              npa;              /* coefficient of general precession */
+          final int sp,cp;            /* longitude sin, cos coefficients */
+          final int se,ce;            /* obliquity sin, cos coefficients */
+          public PlanetaryNutModel(          int nl,               
+                  int nf,
+                  int nd,
+                  int nom,
+                  int nme,     
+                  int nve,
+                  int nea,
+                  int nma,
+                  int nju,
+                  int nsa,
+                  int nur,
+                  int nne,
+                  int npa,              
+              int sp,int cp,           
+              int se,int ce           
+) {
+              this.nl = nl;               /* coefficients of l, F, D and Omega */
+              this.nf = nf;
+              this.nd = nd;
+              this.nom = nom;
+              this.nme = nme;              /* coefficients of planetary longitudes */
+              this.nve = nve;
+              this.nea = nea;
+              this.nma = nma;
+              this.nju = nju;
+              this.nsa = nsa;
+              this.nur = nur;
+              this.nne = nne;
+              this.npa = npa;              /* coefficient of general precession */
+           this.sp = sp; this.cp = cp;            /* longitude sin, cos coefficients */
+           this.se = se; this.ce = ce;            /* obliquity sin, cos coefficients */
+      
+        }
+       }
     /**
     *  Nutation, IAU 2000A model (MHB2000 luni-solar and planetary nutation
     *  with free core nutation omitted).
@@ -11271,26 +11358,6 @@ public static class SphericalCoordinateEO {
     /* The units for the sine and cosine coefficients are */
     /* 0.1 microarcsecond and the same per Julian century */
 
-       final class NutationModel {
-          int nl,nlp,nf,nd,nom; /* coefficients of l,l',F,D,Om */
-          double sp,spt,cp;     /* longitude sin, t*sin, cos coefficients */
-          double ce,cet,se;     /* obliquity cos, t*cos, sin coefficients */
-          public NutationModel(int nl,int nlp,int nf,int nd, int nom,
-          double sp,double spt,double cp,     
-          double ce,double cet,double se ) {
-           this.nl = nl;
-           this.nlp = nlp;
-           this.nf = nf;
-           this.nd = nd;
-           this.nom = nom;
-           this.sp = sp;
-           this.spt = spt;
-           this.cp = cp;
-           this.ce = ce;
-           this.cet = cet;
-           this.se = se;
-        }
-       }
        
        NutationModel xls[] = {
 
@@ -12114,63 +12181,13 @@ public static class SphericalCoordinateEO {
     /* Number of terms in the luni-solar nutation model */
        final int NLS = xls.length;
 
-    /* ------------------------ */
+    /* ------------------------
     /* Planetary nutation model */
     /* ------------------------ */
 
     /* The units for the sine and cosine coefficients are */
     /* 0.1 microarcsecond                                 */
 
-        final class PlanetaryNutModel {
-         final int nl,               /* coefficients of l, F, D and Omega */
-              nf,
-              nd,
-              nom,
-              nme,              /* coefficients of planetary longitudes */
-              nve,
-              nea,
-              nma,
-              nju,
-              nsa,
-              nur,
-              nne,
-              npa;              /* coefficient of general precession */
-          final int sp,cp;            /* longitude sin, cos coefficients */
-          final int se,ce;            /* obliquity sin, cos coefficients */
-          public PlanetaryNutModel(          int nl,               
-                  int nf,
-                  int nd,
-                  int nom,
-                  int nme,     
-                  int nve,
-                  int nea,
-                  int nma,
-                  int nju,
-                  int nsa,
-                  int nur,
-                  int nne,
-                  int npa,              
-              int sp,int cp,           
-              int se,int ce           
-) {
-              this.nl = nl;               /* coefficients of l, F, D and Omega */
-              this.nf = nf;
-              this.nd = nd;
-              this.nom = nom;
-              this.nme = nme;              /* coefficients of planetary longitudes */
-              this.nve = nve;
-              this.nea = nea;
-              this.nma = nma;
-              this.nju = nju;
-              this.nsa = nsa;
-              this.nur = nur;
-              this.nne = nne;
-              this.npa = npa;              /* coefficient of general precession */
-           this.sp = sp; this.cp = cp;            /* longitude sin, cos coefficients */
-           this.se = se; this.ce = ce;            /* obliquity sin, cos coefficients */
-      
-        }
-       }
        
        PlanetaryNutModel xpl[] = {
 
@@ -13145,6 +13162,21 @@ public static class SphericalCoordinateEO {
                                depsls + depspl);
        }
     
+     private final static class LSNutationModel 
+        {
+          final int nl,nlp,nf,nd,nom; /* coefficients of l,l',F,D,Om */
+          final double ps,pst,pc;     /* longitude sin, t*sin, cos coefficients */
+          final double ec,ect,es;     /* obliquity cos, t*cos, sin coefficients */
+          
+          public LSNutationModel( int nl,int nlp,int nf,int nd,int nom,
+          double ps, double pst, double pc,    
+          double ec, double ect, double es    ) {
+               this.nl = nl;this.nlp = nlp;this.nf = nf;this.nd = nd;this.nom = nom;
+               this.ps = ps;this.pst = pst;this.pc = pc;    
+               this.ec = ec;this.ect = ect; this.es= es;    
+        }
+
+       }
 
     /**
     *  Nutation, IAU 2000B model.
@@ -13293,21 +13325,6 @@ public static class SphericalCoordinateEO {
     /* The units for the sine and cosine coefficients are */
     /* 0.1 microarcsec and the same per Julian century    */
 
-        final class LSNutationModel 
-        {
-          final int nl,nlp,nf,nd,nom; /* coefficients of l,l',F,D,Om */
-          final double ps,pst,pc;     /* longitude sin, t*sin, cos coefficients */
-          final double ec,ect,es;     /* obliquity cos, t*cos, sin coefficients */
-          
-          public LSNutationModel( int nl,int nlp,int nf,int nd,int nom,
-          double ps, double pst, double pc,    
-          double ec, double ect, double es    ) {
-               this.nl = nl;this.nlp = nlp;this.nf = nf;this.nd = nd;this.nom = nom;
-               this.ps = ps;this.pst = pst;this.pc = pc;    
-               this.ec = ec;this.ect = ect; this.es= es;    
-        }
-
-       }
         LSNutationModel x[] = {
 
        /* 1-10 */
@@ -13579,7 +13596,20 @@ public static class SphericalCoordinateEO {
 
      }
     
-    /**
+     private final static class NutationModel2 {
+          final int nl,nlp,nf,nd,nom; /* coefficients of l,l',F,D,Om */
+          final double sp,spt;        /* longitude sine, 1 and t coefficients */
+          final double ce,cet;        /* obliquity cosine, 1 and t coefficients */
+          
+          public NutationModel2(int nl,int nlp,int nf,int nd,int nom,
+          double sp,double spt,       
+          double ce,double cet       ) {
+               this.nl = nl;this.nlp = nlp;this.nf = nf;this.nd = nd;this.nom = nom;
+               this.sp = sp;this.spt = spt;      
+               this.ce = ce;this.cet = cet;     
+        }
+       }
+   /**
     *  Nutation, IAU 1980 model.
     *
     *<p>This function is derived from the International Astronomical Union's
@@ -13650,148 +13680,135 @@ public static class SphericalCoordinateEO {
     /* The units for the sine and cosine coefficients are 0.1 mas and */
     /* the same per Julian century */
 
-       final class NutationModel {
-          final int nl,nlp,nf,nd,nom; /* coefficients of l,l',F,D,Om */
-          final double sp,spt;        /* longitude sine, 1 and t coefficients */
-          final double ce,cet;        /* obliquity cosine, 1 and t coefficients */
-          
-          public NutationModel(int nl,int nlp,int nf,int nd,int nom,
-          double sp,double spt,       
-          double ce,double cet       ) {
-               this.nl = nl;this.nlp = nlp;this.nf = nf;this.nd = nd;this.nom = nom;
-               this.sp = sp;this.spt = spt;      
-               this.ce = ce;this.cet = cet;     
-        }
-       }
-       NutationModel x[] = {
+       NutationModel2 x[] = {
 
        /* 1-10 */
-          new NutationModel(  0,  0,  0,  0,  1, -171996.0, -174.2,  92025.0,    8.9 ),
-          new NutationModel(  0,  0,  0,  0,  2,    2062.0,    0.2,   -895.0,    0.5 ),
-          new NutationModel( -2,  0,  2,  0,  1,      46.0,    0.0,    -24.0,    0.0 ),
-          new NutationModel(  2,  0, -2,  0,  0,      11.0,    0.0,      0.0,    0.0 ),
-          new NutationModel( -2,  0,  2,  0,  2,      -3.0,    0.0,      1.0,    0.0 ),
-          new NutationModel(  1, -1,  0, -1,  0,      -3.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0, -2,  2, -2,  1,      -2.0,    0.0,      1.0,    0.0 ),
-          new NutationModel(  2,  0, -2,  0,  1,       1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  0,  2, -2,  2,  -13187.0,   -1.6,   5736.0,   -3.1 ),
-          new NutationModel(  0,  1,  0,  0,  0,    1426.0,   -3.4,     54.0,   -0.1 ),
+          new NutationModel2(  0,  0,  0,  0,  1, -171996.0, -174.2,  92025.0,    8.9 ),
+          new NutationModel2(  0,  0,  0,  0,  2,    2062.0,    0.2,   -895.0,    0.5 ),
+          new NutationModel2( -2,  0,  2,  0,  1,      46.0,    0.0,    -24.0,    0.0 ),
+          new NutationModel2(  2,  0, -2,  0,  0,      11.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2( -2,  0,  2,  0,  2,      -3.0,    0.0,      1.0,    0.0 ),
+          new NutationModel2(  1, -1,  0, -1,  0,      -3.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0, -2,  2, -2,  1,      -2.0,    0.0,      1.0,    0.0 ),
+          new NutationModel2(  2,  0, -2,  0,  1,       1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  0,  2, -2,  2,  -13187.0,   -1.6,   5736.0,   -3.1 ),
+          new NutationModel2(  0,  1,  0,  0,  0,    1426.0,   -3.4,     54.0,   -0.1 ),
 
        /* 11-20 */
-          new NutationModel(  0,  1,  2, -2,  2,    -517.0,    1.2,    224.0,   -0.6 ),
-          new NutationModel(  0, -1,  2, -2,  2,     217.0,   -0.5,    -95.0,    0.3 ),
-          new NutationModel(  0,  0,  2, -2,  1,     129.0,    0.1,    -70.0,    0.0 ),
-          new NutationModel(  2,  0,  0, -2,  0,      48.0,    0.0,      1.0,    0.0 ),
-          new NutationModel(  0,  0,  2, -2,  0,     -22.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  2,  0,  0,  0,      17.0,   -0.1,      0.0,    0.0 ),
-          new NutationModel(  0,  1,  0,  0,  1,     -15.0,    0.0,      9.0,    0.0 ),
-          new NutationModel(  0,  2,  2, -2,  2,     -16.0,    0.1,      7.0,    0.0 ),
-          new NutationModel(  0, -1,  0,  0,  1,     -12.0,    0.0,      6.0,    0.0 ),
-          new NutationModel( -2,  0,  0,  2,  1,      -6.0,    0.0,      3.0,    0.0 ),
+          new NutationModel2(  0,  1,  2, -2,  2,    -517.0,    1.2,    224.0,   -0.6 ),
+          new NutationModel2(  0, -1,  2, -2,  2,     217.0,   -0.5,    -95.0,    0.3 ),
+          new NutationModel2(  0,  0,  2, -2,  1,     129.0,    0.1,    -70.0,    0.0 ),
+          new NutationModel2(  2,  0,  0, -2,  0,      48.0,    0.0,      1.0,    0.0 ),
+          new NutationModel2(  0,  0,  2, -2,  0,     -22.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  2,  0,  0,  0,      17.0,   -0.1,      0.0,    0.0 ),
+          new NutationModel2(  0,  1,  0,  0,  1,     -15.0,    0.0,      9.0,    0.0 ),
+          new NutationModel2(  0,  2,  2, -2,  2,     -16.0,    0.1,      7.0,    0.0 ),
+          new NutationModel2(  0, -1,  0,  0,  1,     -12.0,    0.0,      6.0,    0.0 ),
+          new NutationModel2( -2,  0,  0,  2,  1,      -6.0,    0.0,      3.0,    0.0 ),
 
        /* 21-30 */
-          new NutationModel(  0, -1,  2, -2,  1,      -5.0,    0.0,      3.0,    0.0 ),
-          new NutationModel(  2,  0,  0, -2,  1,       4.0,    0.0,     -2.0,    0.0 ),
-          new NutationModel(  0,  1,  2, -2,  1,       4.0,    0.0,     -2.0,    0.0 ),
-          new NutationModel(  1,  0,  0, -1,  0,      -4.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  2,  1,  0, -2,  0,       1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  0, -2,  2,  1,       1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  1, -2,  2,  0,      -1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  1,  0,  0,  2,       1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel( -1,  0,  0,  1,  1,       1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  1,  2, -2,  0,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0, -1,  2, -2,  1,      -5.0,    0.0,      3.0,    0.0 ),
+          new NutationModel2(  2,  0,  0, -2,  1,       4.0,    0.0,     -2.0,    0.0 ),
+          new NutationModel2(  0,  1,  2, -2,  1,       4.0,    0.0,     -2.0,    0.0 ),
+          new NutationModel2(  1,  0,  0, -1,  0,      -4.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  2,  1,  0, -2,  0,       1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  0, -2,  2,  1,       1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  1, -2,  2,  0,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  1,  0,  0,  2,       1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2( -1,  0,  0,  1,  1,       1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  1,  2, -2,  0,      -1.0,    0.0,      0.0,    0.0 ),
 
        /* 31-40 */
-          new NutationModel(  0,  0,  2,  0,  2,   -2274.0,   -0.2,    977.0,   -0.5 ),
-          new NutationModel(  1,  0,  0,  0,  0,     712.0,    0.1,     -7.0,    0.0 ),
-          new NutationModel(  0,  0,  2,  0,  1,    -386.0,   -0.4,    200.0,    0.0 ),
-          new NutationModel(  1,  0,  2,  0,  2,    -301.0,    0.0,    129.0,   -0.1 ),
-          new NutationModel(  1,  0,  0, -2,  0,    -158.0,    0.0,     -1.0,    0.0 ),
-          new NutationModel( -1,  0,  2,  0,  2,     123.0,    0.0,    -53.0,    0.0 ),
-          new NutationModel(  0,  0,  0,  2,  0,      63.0,    0.0,     -2.0,    0.0 ),
-          new NutationModel(  1,  0,  0,  0,  1,      63.0,    0.1,    -33.0,    0.0 ),
-          new NutationModel( -1,  0,  0,  0,  1,     -58.0,   -0.1,     32.0,    0.0 ),
-          new NutationModel( -1,  0,  2,  2,  2,     -59.0,    0.0,     26.0,    0.0 ),
+          new NutationModel2(  0,  0,  2,  0,  2,   -2274.0,   -0.2,    977.0,   -0.5 ),
+          new NutationModel2(  1,  0,  0,  0,  0,     712.0,    0.1,     -7.0,    0.0 ),
+          new NutationModel2(  0,  0,  2,  0,  1,    -386.0,   -0.4,    200.0,    0.0 ),
+          new NutationModel2(  1,  0,  2,  0,  2,    -301.0,    0.0,    129.0,   -0.1 ),
+          new NutationModel2(  1,  0,  0, -2,  0,    -158.0,    0.0,     -1.0,    0.0 ),
+          new NutationModel2( -1,  0,  2,  0,  2,     123.0,    0.0,    -53.0,    0.0 ),
+          new NutationModel2(  0,  0,  0,  2,  0,      63.0,    0.0,     -2.0,    0.0 ),
+          new NutationModel2(  1,  0,  0,  0,  1,      63.0,    0.1,    -33.0,    0.0 ),
+          new NutationModel2( -1,  0,  0,  0,  1,     -58.0,   -0.1,     32.0,    0.0 ),
+          new NutationModel2( -1,  0,  2,  2,  2,     -59.0,    0.0,     26.0,    0.0 ),
 
        /* 41-50 */
-          new NutationModel(  1,  0,  2,  0,  1,     -51.0,    0.0,     27.0,    0.0 ),
-          new NutationModel(  0,  0,  2,  2,  2,     -38.0,    0.0,     16.0,    0.0 ),
-          new NutationModel(  2,  0,  0,  0,  0,      29.0,    0.0,     -1.0,    0.0 ),
-          new NutationModel(  1,  0,  2, -2,  2,      29.0,    0.0,    -12.0,    0.0 ),
-          new NutationModel(  2,  0,  2,  0,  2,     -31.0,    0.0,     13.0,    0.0 ),
-          new NutationModel(  0,  0,  2,  0,  0,      26.0,    0.0,     -1.0,    0.0 ),
-          new NutationModel( -1,  0,  2,  0,  1,      21.0,    0.0,    -10.0,    0.0 ),
-          new NutationModel( -1,  0,  0,  2,  1,      16.0,    0.0,     -8.0,    0.0 ),
-          new NutationModel(  1,  0,  0, -2,  1,     -13.0,    0.0,      7.0,    0.0 ),
-          new NutationModel( -1,  0,  2,  2,  1,     -10.0,    0.0,      5.0,    0.0 ),
+          new NutationModel2(  1,  0,  2,  0,  1,     -51.0,    0.0,     27.0,    0.0 ),
+          new NutationModel2(  0,  0,  2,  2,  2,     -38.0,    0.0,     16.0,    0.0 ),
+          new NutationModel2(  2,  0,  0,  0,  0,      29.0,    0.0,     -1.0,    0.0 ),
+          new NutationModel2(  1,  0,  2, -2,  2,      29.0,    0.0,    -12.0,    0.0 ),
+          new NutationModel2(  2,  0,  2,  0,  2,     -31.0,    0.0,     13.0,    0.0 ),
+          new NutationModel2(  0,  0,  2,  0,  0,      26.0,    0.0,     -1.0,    0.0 ),
+          new NutationModel2( -1,  0,  2,  0,  1,      21.0,    0.0,    -10.0,    0.0 ),
+          new NutationModel2( -1,  0,  0,  2,  1,      16.0,    0.0,     -8.0,    0.0 ),
+          new NutationModel2(  1,  0,  0, -2,  1,     -13.0,    0.0,      7.0,    0.0 ),
+          new NutationModel2( -1,  0,  2,  2,  1,     -10.0,    0.0,      5.0,    0.0 ),
 
        /* 51-60 */
-          new NutationModel(  1,  1,  0, -2,  0,      -7.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  1,  2,  0,  2,       7.0,    0.0,     -3.0,    0.0 ),
-          new NutationModel(  0, -1,  2,  0,  2,      -7.0,    0.0,      3.0,    0.0 ),
-          new NutationModel(  1,  0,  2,  2,  2,      -8.0,    0.0,      3.0,    0.0 ),
-          new NutationModel(  1,  0,  0,  2,  0,       6.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  2,  0,  2, -2,  2,       6.0,    0.0,     -3.0,    0.0 ),
-          new NutationModel(  0,  0,  0,  2,  1,      -6.0,    0.0,      3.0,    0.0 ),
-          new NutationModel(  0,  0,  2,  2,  1,      -7.0,    0.0,      3.0,    0.0 ),
-          new NutationModel(  1,  0,  2, -2,  1,       6.0,    0.0,     -3.0,    0.0 ),
-          new NutationModel(  0,  0,  0, -2,  1,      -5.0,    0.0,      3.0,    0.0 ),
+          new NutationModel2(  1,  1,  0, -2,  0,      -7.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  1,  2,  0,  2,       7.0,    0.0,     -3.0,    0.0 ),
+          new NutationModel2(  0, -1,  2,  0,  2,      -7.0,    0.0,      3.0,    0.0 ),
+          new NutationModel2(  1,  0,  2,  2,  2,      -8.0,    0.0,      3.0,    0.0 ),
+          new NutationModel2(  1,  0,  0,  2,  0,       6.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  2,  0,  2, -2,  2,       6.0,    0.0,     -3.0,    0.0 ),
+          new NutationModel2(  0,  0,  0,  2,  1,      -6.0,    0.0,      3.0,    0.0 ),
+          new NutationModel2(  0,  0,  2,  2,  1,      -7.0,    0.0,      3.0,    0.0 ),
+          new NutationModel2(  1,  0,  2, -2,  1,       6.0,    0.0,     -3.0,    0.0 ),
+          new NutationModel2(  0,  0,  0, -2,  1,      -5.0,    0.0,      3.0,    0.0 ),
 
        /* 61-70 */
-          new NutationModel(  1, -1,  0,  0,  0,       5.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  2,  0,  2,  0,  1,      -5.0,    0.0,      3.0,    0.0 ),
-          new NutationModel(  0,  1,  0, -2,  0,      -4.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  1,  0, -2,  0,  0,       4.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  0,  0,  1,  0,      -4.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  1,  1,  0,  0,  0,      -3.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  1,  0,  2,  0,  0,       3.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  1, -1,  2,  0,  2,      -3.0,    0.0,      1.0,    0.0 ),
-          new NutationModel( -1, -1,  2,  2,  2,      -3.0,    0.0,      1.0,    0.0 ),
-          new NutationModel( -2,  0,  0,  0,  1,      -2.0,    0.0,      1.0,    0.0 ),
+          new NutationModel2(  1, -1,  0,  0,  0,       5.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  2,  0,  2,  0,  1,      -5.0,    0.0,      3.0,    0.0 ),
+          new NutationModel2(  0,  1,  0, -2,  0,      -4.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  1,  0, -2,  0,  0,       4.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  0,  0,  1,  0,      -4.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  1,  1,  0,  0,  0,      -3.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  1,  0,  2,  0,  0,       3.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  1, -1,  2,  0,  2,      -3.0,    0.0,      1.0,    0.0 ),
+          new NutationModel2( -1, -1,  2,  2,  2,      -3.0,    0.0,      1.0,    0.0 ),
+          new NutationModel2( -2,  0,  0,  0,  1,      -2.0,    0.0,      1.0,    0.0 ),
 
        /* 71-80 */
-          new NutationModel(  3,  0,  2,  0,  2,      -3.0,    0.0,      1.0,    0.0 ),
-          new NutationModel(  0, -1,  2,  2,  2,      -3.0,    0.0,      1.0,    0.0 ),
-          new NutationModel(  1,  1,  2,  0,  2,       2.0,    0.0,     -1.0,    0.0 ),
-          new NutationModel( -1,  0,  2, -2,  1,      -2.0,    0.0,      1.0,    0.0 ),
-          new NutationModel(  2,  0,  0,  0,  1,       2.0,    0.0,     -1.0,    0.0 ),
-          new NutationModel(  1,  0,  0,  0,  2,      -2.0,    0.0,      1.0,    0.0 ),
-          new NutationModel(  3,  0,  0,  0,  0,       2.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  0,  2,  1,  2,       2.0,    0.0,     -1.0,    0.0 ),
-          new NutationModel( -1,  0,  0,  0,  2,       1.0,    0.0,     -1.0,    0.0 ),
-          new NutationModel(  1,  0,  0, -4,  0,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  3,  0,  2,  0,  2,      -3.0,    0.0,      1.0,    0.0 ),
+          new NutationModel2(  0, -1,  2,  2,  2,      -3.0,    0.0,      1.0,    0.0 ),
+          new NutationModel2(  1,  1,  2,  0,  2,       2.0,    0.0,     -1.0,    0.0 ),
+          new NutationModel2( -1,  0,  2, -2,  1,      -2.0,    0.0,      1.0,    0.0 ),
+          new NutationModel2(  2,  0,  0,  0,  1,       2.0,    0.0,     -1.0,    0.0 ),
+          new NutationModel2(  1,  0,  0,  0,  2,      -2.0,    0.0,      1.0,    0.0 ),
+          new NutationModel2(  3,  0,  0,  0,  0,       2.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  0,  2,  1,  2,       2.0,    0.0,     -1.0,    0.0 ),
+          new NutationModel2( -1,  0,  0,  0,  2,       1.0,    0.0,     -1.0,    0.0 ),
+          new NutationModel2(  1,  0,  0, -4,  0,      -1.0,    0.0,      0.0,    0.0 ),
 
        /* 81-90 */
-          new NutationModel( -2,  0,  2,  2,  2,       1.0,    0.0,     -1.0,    0.0 ),
-          new NutationModel( -1,  0,  2,  4,  2,      -2.0,    0.0,      1.0,    0.0 ),
-          new NutationModel(  2,  0,  0, -4,  0,      -1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  1,  1,  2, -2,  2,       1.0,    0.0,     -1.0,    0.0 ),
-          new NutationModel(  1,  0,  2,  2,  1,      -1.0,    0.0,      1.0,    0.0 ),
-          new NutationModel( -2,  0,  2,  4,  2,      -1.0,    0.0,      1.0,    0.0 ),
-          new NutationModel( -1,  0,  4,  0,  2,       1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  1, -1,  0, -2,  0,       1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  2,  0,  2, -2,  1,       1.0,    0.0,     -1.0,    0.0 ),
-          new NutationModel(  2,  0,  2,  2,  2,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2( -2,  0,  2,  2,  2,       1.0,    0.0,     -1.0,    0.0 ),
+          new NutationModel2( -1,  0,  2,  4,  2,      -2.0,    0.0,      1.0,    0.0 ),
+          new NutationModel2(  2,  0,  0, -4,  0,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  1,  1,  2, -2,  2,       1.0,    0.0,     -1.0,    0.0 ),
+          new NutationModel2(  1,  0,  2,  2,  1,      -1.0,    0.0,      1.0,    0.0 ),
+          new NutationModel2( -2,  0,  2,  4,  2,      -1.0,    0.0,      1.0,    0.0 ),
+          new NutationModel2( -1,  0,  4,  0,  2,       1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  1, -1,  0, -2,  0,       1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  2,  0,  2, -2,  1,       1.0,    0.0,     -1.0,    0.0 ),
+          new NutationModel2(  2,  0,  2,  2,  2,      -1.0,    0.0,      0.0,    0.0 ),
 
        /* 91-100 */
-          new NutationModel(  1,  0,  0,  2,  1,      -1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  0,  4, -2,  2,       1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  3,  0,  2, -2,  2,       1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  1,  0,  2, -2,  0,      -1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  1,  2,  0,  1,       1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel( -1, -1,  0,  2,  1,       1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  0, -2,  0,  1,      -1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  0,  2, -1,  2,      -1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  1,  0,  2,  0,      -1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  1,  0, -2, -2,  0,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  1,  0,  0,  2,  1,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  0,  4, -2,  2,       1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  3,  0,  2, -2,  2,       1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  1,  0,  2, -2,  0,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  1,  2,  0,  1,       1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2( -1, -1,  0,  2,  1,       1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  0, -2,  0,  1,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  0,  2, -1,  2,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  1,  0,  2,  0,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  1,  0, -2, -2,  0,      -1.0,    0.0,      0.0,    0.0 ),
 
        /* 101-106 */
-          new NutationModel(  0, -1,  2,  0,  1,      -1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  1,  1,  0, -2,  1,      -1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  1,  0, -2,  2,  0,      -1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  2,  0,  0,  2,  0,       1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  0,  2,  4,  2,      -1.0,    0.0,      0.0,    0.0 ),
-          new NutationModel(  0,  1,  0,  1,  0,       1.0,    0.0,      0.0,    0.0 )
+          new NutationModel2(  0, -1,  2,  0,  1,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  1,  1,  0, -2,  1,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  1,  0, -2,  2,  0,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  2,  0,  0,  2,  0,       1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  0,  2,  4,  2,      -1.0,    0.0,      0.0,    0.0 ),
+          new NutationModel2(  0,  1,  0,  1,  0,       1.0,    0.0,      0.0,    0.0 )
        };
 
     /* Number of terms in the series */
@@ -20564,7 +20581,7 @@ public static class SphericalCoordinateEO {
                         ( (double) abs(imin) ) ) +
                         abs(sec) ) / DAYSEC;
 
-        /* FIXME Validate arguments and return status. */
+        /*  Validate arguments and return status. */
         if ( ihour < 0 || ihour > 23 )  throw new JSOFAIllegalParameter("bad hour", 1);
         if ( imin < 0 || imin > 59 )    throw new JSOFAIllegalParameter("bad minute", 2);
         if ( sec < 0.0 || sec >= 60.0 ) throw new JSOFAIllegalParameter("bad second", 3);
