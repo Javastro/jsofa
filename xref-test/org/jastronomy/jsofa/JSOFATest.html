@@ -53,10 +53,10 @@
 <a class="jxr_linenumber" name="43" href="#43">43</a>      @Test
 <a class="jxr_linenumber" name="44" href="#44">44</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testversion() <strong class="jxr_keyword">throws</strong> JSOFAIllegalParameter 
 <a class="jxr_linenumber" name="45" href="#45">45</a>      {
-<a class="jxr_linenumber" name="46" href="#46">46</a>          assertEquals(<span class="jxr_string">"sofa release"</span>, <span class="jxr_string">"2019-07-22"</span>, SOFA_RELEASE);
-<a class="jxr_linenumber" name="47" href="#47">47</a>          assertEquals(<span class="jxr_string">"sofa revision"</span>, <span class="jxr_string">"15"</span>, SOFA_REVISION);
+<a class="jxr_linenumber" name="46" href="#46">46</a>          assertEquals(<span class="jxr_string">"sofa release"</span>, <span class="jxr_string">"2020-07-21"</span>, SOFA_RELEASE);
+<a class="jxr_linenumber" name="47" href="#47">47</a>          assertEquals(<span class="jxr_string">"sofa revision"</span>, <span class="jxr_string">"16"</span>, SOFA_REVISION);
 <a class="jxr_linenumber" name="48" href="#48">48</a>          assertEquals(<span class="jxr_string">"lastleap second"</span>, jauCal2jd(2017,1,1), lastLeapSecondDate());        
-<a class="jxr_linenumber" name="49" href="#49">49</a>          assertEquals(<span class="jxr_string">"last omitted leap second"</span>, jauCal2jd(2019,7,1), latestConfirmedNoLeapSecondChange);
+<a class="jxr_linenumber" name="49" href="#49">49</a>          assertEquals(<span class="jxr_string">"last omitted leap second"</span>, jauCal2jd(2020,12,31), latestConfirmedNoLeapSecondChange);
 <a class="jxr_linenumber" name="50" href="#50">50</a>          assertEquals(<span class="jxr_string">"Jsofa release"</span>,  System.getProperty(<span class="jxr_string">"SOFAVERSION"</span>), JSOFA_RELEASE); <em class="jxr_comment">// check that the correct version is being released - system properly set from POM</em>
 <a class="jxr_linenumber" name="51" href="#51">51</a>          
 <a class="jxr_linenumber" name="52" href="#52">52</a>          
@@ -2898,7 +2898,7 @@
 <a class="jxr_linenumber" name="2888" href="#2888">2888</a>        vvd(pa.za, 0.2921789846651790546e-3, 1e-14,<span class="jxr_string">"jauP06e"</span>, <span class="jxr_string">"za"</span>);
 <a class="jxr_linenumber" name="2889" href="#2889">2889</a>        vvd(pa.zetaa, 0.3178773290332009310e-3, 1e-14,<span class="jxr_string">"jauP06e"</span>, <span class="jxr_string">"zetaa"</span>);
 <a class="jxr_linenumber" name="2890" href="#2890">2890</a>        vvd(pa.thetaa, 0.2650932701657497181e-3, 1e-14,<span class="jxr_string">"jauP06e"</span>, <span class="jxr_string">"thetaa"</span>);
-<a class="jxr_linenumber" name="2891" href="#2891">2891</a>        vvd( pa.pa, 0.6651637681381016344e-3, 1e-14,<span class="jxr_string">"jauP06e"</span>, <span class="jxr_string">"pa"</span>);
+<a class="jxr_linenumber" name="2891" href="#2891">2891</a>        vvd(pa.pa, 0.6651637681381016288e-3, 1e-14,<span class="jxr_string">"jauP06e"</span>, <span class="jxr_string">"pa"</span>);
 <a class="jxr_linenumber" name="2892" href="#2892">2892</a>        vvd(pa.gam, 0.1398077115963754987e-5, 1e-14,<span class="jxr_string">"jauP06e"</span>, <span class="jxr_string">"gam"</span>);
 <a class="jxr_linenumber" name="2893" href="#2893">2893</a>        vvd(pa.phi, 0.4090864090837462602, 1e-14,<span class="jxr_string">"jauP06e"</span>, <span class="jxr_string">"phi"</span>);
 <a class="jxr_linenumber" name="2894" href="#2894">2894</a>        vvd(pa.psi, 0.6664464807480920325e-3, 1e-14,<span class="jxr_string">"jauP06e"</span>, <span class="jxr_string">"psi"</span>);
