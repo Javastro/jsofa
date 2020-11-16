@@ -38,22 +38,22 @@ import static java.lang.Math.pow;
  */
 public class JSOFA {
     /** tracked IAU SOFA release {@value}. */
-    public final static String SOFA_RELEASE = "2019-07-22";
+    public final static String SOFA_RELEASE = "2020-07-21";
     
     /** JSOFA release {@value}*/
-    public final static String JSOFA_RELEASE = "20190722";
+    public final static String JSOFA_RELEASE = "20200721";
 
     /** tracked IAU SOFA revision {@value}. */
-    public final static String SOFA_REVISION = "15";
+    public final static String SOFA_REVISION = "16";
 
     /** Release year for this version of jauDat {@value} */
-public final static int IYV = 2019;
+public final static int IYV = 2020;
     /** The latest confirmed omission of a leap second form IERS */
 public final static JulianDate latestConfirmedNoLeapSecondChange;
 static {
     JulianDate tmpval = new JulianDate(0,0);
     try {
-        tmpval = jauCal2jd(2019,7,1); // this is from the IERS
+        tmpval = jauCal2jd(2020,12,31); // this is from the IERS
     } catch (JSOFAIllegalParameter e) {
         // should not happen
         e.printStackTrace();
@@ -204,11 +204,14 @@ static final LeapInfo leapSeconds[] = {
 
     private final static double TANGENT_TINY = 1e-6;
 
+    private static final double DBL_EPSILON = Math.ulp(1.0);
+
     /** dint(A) - truncate to nearest whole number towards zero (double)  */
     private static double dint(final double A){ return ((A)<0.0?ceil(A):floor(A));}
 
     /** dnint(A) - round to nearest whole number (double)  */
-    private static double dnint(final double A){return ((A)<0.0?ceil((A)-0.5):floor((A)+0.5));}
+    private static double dnint(final double A){return (abs(A)<0.5?0.0
+                                :((A)<0.0?ceil((A)-0.5):floor((A)+0.5)));}
 
     /** dsign(A,B) - magnitude of A with sign of B (double) */
     private static double dsign(final double A, double B){return ((B)<0.0?-abs(A):abs(A));}
@@ -8882,7 +8885,6 @@ public static JulianDate lastLeapSecondDate()
  * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
  * 
  * @since AIDA Stage 1
- * @TODO needs better name cf {@link SphericalPosition}
  */
 public static class SphericalCoordinate {
       public double alpha;
@@ -9065,13 +9067,15 @@ public static class SphericalCoordinateEO {
     *
     *        NxPxB = R_1(-eps).R_3(-psi).R_1(phib).R_3(gamb)
     *
-    * <li> Three different matrices can be constructed, depending on the
-    *     supplied angles:
+    * <li> Three different matrices can be constructed, depending on which angles are supplied as the arguments gamb,
+    *      phib, psi and eps:
     *
     *     o  To obtain the nutation x precession x frame bias matrix,
-    *        generate the four precession angles, generate the nutation
-    *        components and add them to the psi_bar and epsilon_A angles,
-    *        and call the present function.
+    *        first generate the four precession angles known conventionally
+    *        as gamma_bar, phi_bar, psi_bar and epsilon_A, then generate
+    *        the nutation components Dpsi and Depsilon and add them to
+    *        psi_bar and epsilon_A, and finally call the present function
+    *        using those four angles as arguments.
     *
     *     o  To obtain the precession x frame bias matrix, generate the
     *        four precession angles and call the present function.
@@ -9087,11 +9091,12 @@ public static class SphericalCoordinateEO {
     *     <li>{@link #jauRz} rotate around Z-axis
     *     <li>{@link #jauRx} rotate around X-axis
     * </ul>
-    *<p>Reference:
+    *<p>References:
     *
+    *     Capitaine, N. &amp; Wallace, P.T., 2006, Astron.Astrophys. 450, 855
     *     Hilton, J. et al., 2006, Celest.Mech.Dyn.Astron. 94, 351
     *
-    *@version 2009 December 17
+    *@version 2020 November 13
     *
     *  @since Release 20101201
     *
@@ -9854,7 +9859,7 @@ public static class SphericalCoordinateEO {
        double C = 0.093104;
        double D =  -6.2e-6;
 
-    /* Note: the first constant, A, has to be adjusted by 12 hours */
+    /* The first constant, A, has to be adjusted by 12 hours */
     /* because the UT1 is supplied as a Julian date, which begins  */
     /* at noon.                                                    */
 
@@ -10634,6 +10639,10 @@ public static class SphericalCoordinateEO {
     *         2400000.5       50123.2       (MJD method)
     *         2450123.5           0.2       (date &amp; time method)
     *</pre>
+    *     Separating integer and fraction uses the "compensated summation"
+    *     algorithm of Kahan-Neumaier to preserve as much precision as
+    *     possible irrespective of the jd1+jd2 apportionment.
+    *     
     * <li> In early eras the conversion is from the "proleptic Gregorian
     *     calendar";  no account is taken of the date(s) of adoption of
     *     the Gregorian calendar, nor is the AD/BC numbering convention
@@ -10644,8 +10653,10 @@ public static class SphericalCoordinateEO {
     *     <p>Explanatory Supplement to the Astronomical Almanac,
     *     P. Kenneth Seidelmann (ed), University Science Books (1992),
     *     Section 12.92 (p604).
+    *     <p> Klein, A., A Generalized Kahan-Babuska-Summation-Algorithm.
+    *         Computing 76, 279-293 (2006), Section 3.
     *
-    *@version 2008 May 26
+    *   @version 2020 Nov 13
     *
     *  @since Release 20101201
     *
@@ -10653,37 +10664,71 @@ public static class SphericalCoordinateEO {
     */
     public static Calendar jauJd2cal(double dj1, double dj2) throws JSOFAIllegalParameter
     {
-    /* Minimum and maximum allowed JD */
-       final double djmin = -68569.5;
-       final double djmax = 1e9;
+        /* Minimum and maximum allowed JD */
+        final double djmin = -68569.5;
+        final double djmax = 1e9;
 
-       long jd, l, n, i, k;
-       double dj, d1, d2, f1, f2, f, d;
+        long jd, i , l, n,  k;
+        double dj, f1, f2, d, s, cs, v[]=new double[2], x, t, f;
 
 
-    /* Verify date is acceptable. */
-       dj = dj1 + dj2;
-       if (dj < djmin || dj > djmax) throw new JSOFAIllegalParameter("input julian date out of range", -1);
+        /* Verify date is acceptable. */
+        dj = dj1 + dj2;
+        if (dj < djmin || dj > djmax) throw new JSOFAIllegalParameter("input julian date out of range", -1);
 
-    /* Copy the date, big then small, and re-align to midnight. */
-       if (dj1 >= dj2) {
-          d1 = dj1;
-          d2 = dj2;
-       } else {
-          d1 = dj2;
-          d2 = dj1;
-       }
-       d2 -= 0.5;
+        /* Separate day and fraction (where -0.5 <= fraction < 0.5). */
+        d = dnint(dj1);
+        f1 = dj1 - d;
+        jd = (long) d;
+        d = dnint(dj2);
+        f2 = dj2 - d;
+        jd += (long) d;
 
-    /* Separate day and fraction. */
-       f1 = fmod(d1, 1.0);
-       f2 = fmod(d2, 1.0);
-       f = fmod(f1 + f2, 1.0);
-       if (f < 0.0) f += 1.0;
-       d = floor(d1 - f1) + floor(d2 - f2) + floor(f1 + f2 - f);
-       jd = (long) floor(d) + 1L;
+        /* Compute f1+f2+0.5 using compensated summation (Klein 2006). */
+        s = 0.5;
+        cs = 0.0;
+        v[0] = f1;
+        v[1] = f2;
+        for ( int i1 = 0; i1 < 2; i1++ ) {
+            x = v[i1];
+            t = s + x;
+            cs += abs(s) >= abs(x) ? (s-t) + x : (x-t) + s;
+            s = t;
+            if ( s >= 1.0 ) {
+                jd++;
+                s -= 1.0;
+            }
+        }
+        f = s + cs;
+        cs = f - s;
 
-    /* Express day in Gregorian calendar. */
+        /* Deal with negative f. */
+        if ( f < 0.0 ) {
+
+            /* Compensated summation: assume that |s| <= 1.0. */
+            f = s + 1.0;
+            cs += (1.0-f) + s;
+            s  = f;
+            f = s + cs;
+            cs = f - s;
+            jd--;
+        }
+
+        /* Deal with f that is 1.0 or more (when rounded to double). */
+        if ( (f-1.0) >= -DBL_EPSILON/4.0 ) {
+
+            /* Compensated summation: assume that |s| <= 1.0. */
+            t = s - 1.0;
+            cs += (s-t) - 1.0;
+            s = t;
+            f = s + cs;
+            if ( -DBL_EPSILON/2.0 < f ) {
+                jd++;
+                f = gmax(f, 0.0);
+            }
+        }
+
+        /* Express day in Gregorian calendar. */
        l = jd + 68569L;
        n = (4L * l) / 146097L;
        l -= (146097L * n + 3L) / 4L;
@@ -10700,6 +10745,16 @@ public static class SphericalCoordinateEO {
 
         }
      
+    /**
+     *  larger (most +ve) of two numbers (generic).
+     * @param A
+     * @param B
+     * @return
+     */
+    private static double gmax(double A, double B) {
+          return (((A)>(B))?(A):(B)) ;      
+    }
+
     /**
     *  Julian Date to Gregorian Calendar, expressed in a form convenient
     *  for formatting messages:  rounded to a specified precision.
@@ -10757,7 +10812,7 @@ public static class SphericalCoordinateEO {
     *     P. Kenneth Seidelmann (ed), University Science Books (1992),
     *     Section 12.92 (p604).
     *
-    *@version 2008 October 28
+    * @version 2020 Nov 13
     *
     *  @since Release 20101201
     *
@@ -10765,56 +10820,67 @@ public static class SphericalCoordinateEO {
     */
     public static int jauJdcalf(int ndp, double dj1, double dj2, int iymdf[])
     {
-       int j;
-       double denom, d1, d2, f1, f2, f;
+        int j;
+        double denom, d1, d2, f1, f2, d, djd, f, rf;
 
 
-    /* Denominator of fraction (e.g. 100 for 2 decimal places). */
-       if ((ndp >= 0) && (ndp <= 9)) {
-          j = 0;
-          denom = pow(10.0, ndp);
-       } else {
-          j = 1;
-          denom = 1.0;
-       }
-
-    /* Copy the date, big then small, and realign to midnight. */
-       if (dj1 >= dj2) {
-          d1 = dj1;
-          d2 = dj2;
-       } else {
-          d1 = dj2;
-          d2 = dj1;
-       }
-       d2 -= 0.5;
-
-    /* Separate days and fractions. */
-       f1 = fmod(d1, 1.0);
-       f2 = fmod(d2, 1.0);
-       d1 = floor(d1 - f1);
-       d2 = floor(d2 - f2);
-
-    /* Round the total fraction to the specified number of places. */
-       f = floor((f1 + f2) * denom) / denom;
-
-    /* Re-assemble the rounded date and re-align to noon. */
-       d2 += f + 0.5;
-
-       /* Convert to Gregorian Calendar. */
-       try {
-           Calendar cal = jauJd2cal(d1, d2);
-           iymdf[0] = cal.iy;
-           iymdf[1] = cal.im;
-           iymdf[2] = cal.id;
-           iymdf[3] = (int) (cal.fd * denom);
-       } catch (JSOFAIllegalParameter e) {
-           j = -1;
-       }
-
-    /* Return the status. */
-       return j;
-
+        /* Denominator of fraction (e.g. 100 for 2 decimal places). */
+        if ((ndp >= 0) && (ndp <= 9)) {
+            j = 0;
+            denom = pow(10.0, ndp);
+        } else {
+            j = 1;
+            denom = 1.0;
         }
+
+        /* Copy the date, big then small. */
+        if (abs(dj1) >= abs(dj2)) {
+            d1 = dj1;
+            d2 = dj2;
+        } else {
+            d1 = dj2;
+            d2 = dj1;
+        }
+
+        /* Realign to midnight (without rounding error). */
+        d1 -= 0.5;
+
+        /* Separate day and fraction (as precisely as possible). */
+        d = dnint(d1);
+        f1 = d1 - d;
+        djd = d;
+        d = dnint(d2);
+        f2 = d2 - d;
+        djd += d;
+        d = dnint(f1 + f2);
+        f = (f1 - d) + f2;
+        if (f < 0.0) {
+            f += 1.0;
+            d -= 1.0;
+        }
+        djd += d;
+
+        /* Round the total fraction to the specified number of places. */
+        rf = dnint(f*denom) / denom;
+
+        /* Re-align to noon. */
+        djd += 0.5;
+
+        /* Convert to Gregorian Calendar. */
+        try {
+            Calendar cal = jauJd2cal(djd, rf);
+            iymdf[0] = cal.iy;
+            iymdf[1] = cal.im;
+            iymdf[2] = cal.id;
+            iymdf[3] = (int) dnint(cal.fd * denom);
+        } catch (JSOFAIllegalParameter e) {
+            j = -1;
+        }
+
+        /* Return the status. */
+        return j;
+
+    }
     
 
     /**
@@ -14223,12 +14289,15 @@ public static class SphericalCoordinateEO {
     *     za     z_A         equatorial precession: -3rd 323 Euler angle
     *     zetaa  zeta_A      equatorial precession: -1st 323 Euler angle
     *     thetaa theta_A     equatorial precession: 2nd 323 Euler angle
-    *     pa     p_A         general precession
+    *     pa     p_A         general precession (see note below)
     *     gam    gamma_J2000 J2000.0 RA difference of ecliptic poles
     *     phi    phi_J2000   J2000.0 codeclination of ecliptic pole
     *     psi    psi_J2000   longitude difference of equator poles, J2000.0
     *
     *     The returned values are all radians.
+    *     
+    *  <li>Note that the t^5 coefficient in the series for p_A from
+    *   Capitaine et al. (2003) is incorrectly signed in Hilton et al. (2006).
     *
     * <li> Hilton et al. (2006) Table 1 also contains angles that depend on
     *     models distinct from the P03 precession theory itself, namely the
@@ -14266,14 +14335,14 @@ public static class SphericalCoordinateEO {
     * <li> It is permissible to re-use the same variable in the returned
     *     arguments.  The quantities are stored in the stated order.
     *</ol>
-    *<p>Reference:
-    *
-    *     Hilton, J. et al., 2006, Celest.Mech.Dyn.Astron. 94, 351
-    *
+    *<p>References:<ol>
+    *   <li> Capitaine, N., Wallace, P.T. &amp; Chapront, J., 2003, Astron.Astrophys., 412, 567
+    *   <li> Hilton, J. et al., 2006, Celest.Mech.Dyn.Astron. 94, 351
+    *</ol>
     *<p>Called:<ul>
     *     <li>{@link #jauObl06} mean obliquity, IAU 2006
     * </ul>
-    *@version 2009 December 17
+    *@version 2020 Nov 13
     *
     *  @since Release 20101201
     *
@@ -14398,7 +14467,7 @@ public static class SphericalCoordinateEO {
              (    1.1054348    +
              (    0.00007964   +
              (   -0.000023857  +
-             (    0.0000000383 )
+             (   -0.0000000383 )
              * t) * t) * t) * t) * t * DAS2R;
 
     /* Fukushima-Williams angles for precession. */
@@ -14737,29 +14806,37 @@ public static class SphericalCoordinateEO {
     */
     public static EulerAngles jauPb06(double date1, double date2)
     {
-       double r[][] = new double[3][3], r31, r32;
+        double r[][] = new double[3][3], y, x;
 
 
-    /* Precession matrix via Fukushima-Williams angles. */
-       r = jauPmat06(date1, date2);
+        /* Precession matrix via Fukushima-Williams angles. */
+        r = jauPmat06(date1, date2);
 
-    /* Solve for z. */
-       double bz = atan2(r[1][2], r[0][2]);
-
-    /* Remove it from the matrix. */
-       jauRz(bz, r);
-
-    /* Solve for the remaining two angles. */
-       double bzeta = atan2 (r[1][0], r[1][1]);
-       r31 = r[2][0];
-       r32 = r[2][1];
-       double btheta = atan2(-dsign(sqrt(r31 * r31 + r32 * r32), r[0][2]),
-                       r[2][2]);
-
-       return new EulerAngles(bzeta, bz, btheta);
-
+        /* Solve for z, choosing the +/- pi alternative. */
+        y = r[1][2];
+        x = -r[0][2];
+        if ( x < 0.0 ) {
+            y = -y;
+            x = -x;
         }
-    
+        double bz = ( x != 0.0 || y != 0.0 ) ? - atan2(y,x) : 0.0;
+
+        /* Derotate it out of the matrix. */
+        jauRz ( bz, r );
+
+        /* Solve for the remaining two angles. */
+        y = r[0][2];
+        x = r[2][2];
+        double btheta = ( x != 0.0 || y != 0.0 ) ? - atan2(y,x) : 0.0;
+
+        y = -r[1][0];
+        x = r[1][1];
+        double bzeta = ( x != 0.0 || y != 0.0 ) ? - atan2(y,x) : 0.0;
+
+        return new EulerAngles(bzeta, bz, btheta);
+
+    }
+
 
     /**
     *  p-vector inner (=scalar=dot) product.
@@ -30795,7 +30872,7 @@ public static class SphericalCoordinateEO {
      *     difference between star and tangent point (a-a0).
      *
      * <li> This function is a member of the following set:
-     * <pre
+     * 
      *{@code
      *         spherical      vector         solve for
      *
@@ -31444,7 +31521,7 @@ public static class SphericalCoordinateEO {
      *     @param dr1950  double   B1950.0 proper motions (rad/trop.yr)
      *     @param dd1950  double   B1950.0 proper motions (rad/trop.yr)
      *     @param p1950          double   parallax (arcsec)
-     *     @paramv1950          double   radial velocity (km/s, +ve = moving away)
+     *     @param v1950          double   radial velocity (km/s, +ve = moving away)
      *  Returned:
      *  
      *   @return  - catalogue coordinates (all J2000.0, FK5)
@@ -31921,7 +31998,7 @@ public static class SphericalCoordinateEO {
             }
         }
 
-        /* Apply E-terms (equivalent to Seidelmann 3.592-3, two iterations). */
+        /* Apply E-terms (equivalent to Seidelmann 3.592-3, one iteration). */
 
         /* Direction. */
         w = jauPm(r1[0]);

@@ -33,17 +33,16 @@ mvn nexus-staging:release -P release
 
 * Deploying the site
 
-   The maven site is now deployed to {{https://javastro.github.com/jsofa/}} using
-   the {{{https://github.github.com/maven-plugins/site-plugin/}github site plug-in}}
+   The maven site is now deployed to {{https://javastro.github.com/jsofa/}} 
 
 +---+
 mvn site
 +---+
 
-  will create the site and 
+  will create the site to test that it is ok - then to deploy
 
 +---+
-mvn site-deploy -P release
+./ghsite.sh
 +---+
 
-  will deploy the site - it can take a long time!
+  will prepare site ready for git push in a temporary directory - follow the commands suggested

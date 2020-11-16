@@ -1,7 +1,7 @@
 JSOFA
 =====
 
-[![Build Status](https://travis-ci.org/javastro/jsofa.svg?branch=master)](https://travis-ci.org/javastro/jsofa)
+[![CI build of JSOFA](../../workflows/Java%20CI%20with%20Maven/badge.svg)](../../actions)
 
 [![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.javastro/jsofa/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.javastro/jsofa/)
 

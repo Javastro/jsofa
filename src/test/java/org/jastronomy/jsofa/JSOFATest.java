@@ -43,10 +43,10 @@ public class JSOFATest {
     @Test
     public void testversion() throws JSOFAIllegalParameter 
     {
-        assertEquals("sofa release", "2019-07-22", SOFA_RELEASE);
-        assertEquals("sofa revision", "15", SOFA_REVISION);
+        assertEquals("sofa release", "2020-07-21", SOFA_RELEASE);
+        assertEquals("sofa revision", "16", SOFA_REVISION);
         assertEquals("lastleap second", jauCal2jd(2017,1,1), lastLeapSecondDate());        
-        assertEquals("last omitted leap second", jauCal2jd(2019,7,1), latestConfirmedNoLeapSecondChange);
+        assertEquals("last omitted leap second", jauCal2jd(2020,12,31), latestConfirmedNoLeapSecondChange);
         assertEquals("Jsofa release",  System.getProperty("SOFAVERSION"), JSOFA_RELEASE); // check that the correct version is being released - system properly set from POM
         
         
@@ -2888,7 +2888,7 @@ public class JSOFATest {
        vvd(pa.za, 0.2921789846651790546e-3, 1e-14,"jauP06e", "za");
        vvd(pa.zetaa, 0.3178773290332009310e-3, 1e-14,"jauP06e", "zetaa");
        vvd(pa.thetaa, 0.2650932701657497181e-3, 1e-14,"jauP06e", "thetaa");
-       vvd( pa.pa, 0.6651637681381016344e-3, 1e-14,"jauP06e", "pa");
+       vvd(pa.pa, 0.6651637681381016288e-3, 1e-14,"jauP06e", "pa");
        vvd(pa.gam, 0.1398077115963754987e-5, 1e-14,"jauP06e", "gam");
        vvd(pa.phi, 0.4090864090837462602, 1e-14,"jauP06e", "phi");
        vvd(pa.psi, 0.6664464807480920325e-3, 1e-14,"jauP06e", "psi");

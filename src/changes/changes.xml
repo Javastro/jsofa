@@ -6,6 +6,19 @@
     <author email="paul.harrison@manchester.ac.uk">Paul Harrison</author>
   </properties>
   <body>
+    <release version="20200721" description="tracking updates of SOFA">
+       <action  dev="pah" type="update" issue="https://github.com/Javastro/jsofa/issues/6" >
+        Update to be in line with IAU sofa 2020-07-21 (see http://www.iausofa.org/changes_2020_0721.html)
+       </action>
+       <action dev="pah" type="update">
+       Now compiled to need a version 1.8 of Java as a minimum - difficult to test on earlier than this now.
+       In addition there has been some other rearrangement of private nested classes, that does not alter 
+       functionality not the API
+       
+       </action>
+       
+       
+    </release>
     <release version="20190722" description="tracking updates of SOFA">
        <action  dev="pah" type="update" issue="https://github.com/Javastro/jsofa/issues/4" >
         Update to be in line with IAU sofa 2019-07-22 (see http://www.iausofa.org/changes_2019_0722.html)
