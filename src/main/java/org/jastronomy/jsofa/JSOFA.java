@@ -38,13 +38,13 @@ import static java.lang.Math.pow;
  */
 public class JSOFA {
     /** tracked IAU SOFA release {@value}. */
-    public final static String SOFA_RELEASE = "2020-07-21";
+    public final static String SOFA_RELEASE = "2021-01-25";
     
     /** JSOFA release {@value}*/
-    public final static String JSOFA_RELEASE = "20200721";
+    public final static String JSOFA_RELEASE = "20210125";
 
     /** tracked IAU SOFA revision {@value}. */
-    public final static String SOFA_REVISION = "16";
+    public final static String SOFA_REVISION = "17a";
 
     /** Release year for this version of jauDat {@value} */
 public final static int IYV = 2020;
@@ -53,7 +53,7 @@ public final static JulianDate latestConfirmedNoLeapSecondChange;
 static {
     JulianDate tmpval = new JulianDate(0,0);
     try {
-        tmpval = jauCal2jd(2020,12,31); // this is from the IERS
+        tmpval = jauCal2jd(2021,06,30); // this is from the IERS
     } catch (JSOFAIllegalParameter e) {
         // should not happen
         e.printStackTrace();
@@ -530,8 +530,8 @@ static final LeapInfo leapSeconds[] = {
     };
 
     /**
-    *  Frame bias components of IAU 2000 precession-nutation models (part
-    *  of MHB2000 with additions).
+    *  Frame bias components of IAU 2000 precession-nutation models part
+    *  of the Mathews-Herring-Buffett (MHB2000) nutation series, with additions.
     *
     *<p>This function is derived from the International Astronomical Union's
     *  SOFA (Standards Of Fundamental Astronomy) software collection.
@@ -937,7 +937,7 @@ static final LeapInfo leapSeconds[] = {
     *     Reference System (see IERS Conventions 2003), ERA is the Earth
     *     Rotation Angle and RPOM is the polar motion matrix.
     *
-    * <li> A faster, but slightly less accurate result (about 1 mas), can be
+    * <li> A faster, but slightly less accurate, result (about 1 mas), can be
     *     obtained by using instead the jauC2i00b function.
     *</ol>
     *<p>Called:<ul>
@@ -1473,8 +1473,8 @@ static final LeapInfo leapSeconds[] = {
     *     @param ttb double          TT as a 2-part Julian Date (Note 1) 
     *     @param uta double          UT1 as a 2-part Julian Date (Note 1)
     *     @param utb double          UT1 as a 2-part Julian Date (Note 1) 
-    *     @param xp double          coordinates of the pole (radians, Note 2)
-    *     @param yp double          coordinates of the pole (radians, Note 2) 
+    *     @param xp double          CIP coordinates (radians, Note 2)
+    *     @param yp double          CIP coordinates (radians, Note 2) 
     *
     *<!-- Returned: -->
     *     @return rc2t      double[3][3]     <u>returned</u> celestial-to-terrestrial matrix (Note 3)
@@ -1506,7 +1506,7 @@ static final LeapInfo leapSeconds[] = {
     *  <li> The arguments xp and yp are the coordinates (in radians) of the
     *     Celestial Intermediate Pole with respect to the International
     *     Terrestrial Reference System (see IERS Conventions 2003),
-    *     measured along the meridians to 0 and 90 deg west respectively.
+    *     measured along the meridians 0 and 90 deg west respectively.
     *
     * <li> The matrix rc2t transforms from celestial to terrestrial
     *     coordinates:
@@ -1521,7 +1521,7 @@ static final LeapInfo leapSeconds[] = {
     *     celestial-to-intermediate matrix, ERA is the Earth rotation
     *     angle and RPOM is the polar motion matrix.
     *
-    * <li> A faster, but slightly less accurate result (about 1 mas), can
+    * <li> A faster, but slightly less accurate, result (about 1 mas), can
     *     be obtained by using instead the jauC2t00b function.
     *</ol>
     *<p>Called:<ul>
@@ -1570,7 +1570,7 @@ static final LeapInfo leapSeconds[] = {
 
     /**
     *  Form the celestial to terrestrial matrix given the date, the UT1 and
-    *  the polar motion, using the IAU 2000B nutation model.
+    *  the polar motion, using the IAU 2000B precession-nutation model.
     *
     *<p>This function is derived from the International Astronomical Union's
     *  SOFA (Standards Of Fundamental Astronomy) software collection.
@@ -1615,7 +1615,7 @@ static final LeapInfo leapSeconds[] = {
     * <li> The arguments xp and yp are the coordinates (in radians) of the
     *     Celestial Intermediate Pole with respect to the International
     *     Terrestrial Reference System (see IERS Conventions 2003),
-    *     measured along the meridians to 0 and 90 deg west respectively.
+    *     measured along the meridians 0 and 90 deg west respectively.
     *
     * <li> The matrix rc2t transforms from celestial to terrestrial
     *     coordinates:
@@ -1675,8 +1675,8 @@ static final LeapInfo leapSeconds[] = {
 
     /**
     *  Form the celestial to terrestrial matrix given the date, the UT1 and
-    *  the polar motion, using the IAU 2006 precession and IAU 2000A
-    *  nutation models.
+    *  the polar motion, using the IAU 2006/2000A precession-nutation
+    *  nutation model.
     *
     *<p>This function is derived from the International Astronomical Union's
     *  SOFA (Standards Of Fundamental Astronomy) software collection.
@@ -1721,7 +1721,7 @@ static final LeapInfo leapSeconds[] = {
     * <li> The arguments xp and yp are the coordinates (in radians) of the
     *     Celestial Intermediate Pole with respect to the International
     *     Terrestrial Reference System (see IERS Conventions 2003),
-    *     measured along the meridians to 0 and 90 deg west respectively.
+    *     measured along the meridians 0 and 90 deg west respectively.
     *
     * <li> The matrix rc2t transforms from celestial to terrestrial
     *     coordinates:
@@ -1981,7 +1981,7 @@ static final LeapInfo leapSeconds[] = {
     * <li> The arguments xp and yp are the coordinates (in radians) of the
     *     Celestial Intermediate Pole with respect to the International
     *     Terrestrial Reference System (see IERS Conventions 2003),
-    *     measured along the meridians to 0 and 90 deg west respectively.
+    *     measured along the meridians 0 and 90 deg west respectively.
     *
     * <li> The matrix rc2t transforms from celestial to terrestrial
     *     coordinates:
@@ -2099,7 +2099,7 @@ static final LeapInfo leapSeconds[] = {
     * <li> The arguments xp and yp are the coordinates (in radians) of the
     *     Celestial Intermediate Pole with respect to the International
     *     Terrestrial Reference System (see IERS Conventions 2003),
-    *     measured along the meridians to 0 and 90 deg west respectively.
+    *     measured along the meridians 0 and 90 deg west respectively.
     *
     * <li> The matrix rc2t transforms from celestial to terrestrial
     *     coordinates:
@@ -2582,7 +2582,7 @@ static final LeapInfo leapSeconds[] = {
 *
 *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
  * @throws JSOFAInternalError an internal error has occured
- * @throws JSOFAIllegalParameter 
+ * @throws JSOFAIllegalParameter unacceptable date (notes 5,6)
 */
 public static CalendarHMS jauD2dtf(final String scale, int ndp, double d1, double d2 ) throws JSOFAIllegalParameter, JSOFAInternalError
 {
@@ -2623,7 +2623,7 @@ public static CalendarHMS jauD2dtf(final String scale, int ndp, double d1, doubl
     dleap = dat24 - (2.0*dat12 - dat0);
 
  /* If leap second day, scale the fraction of a day into SI. */
-    leap = (dleap != 0.0);
+    leap = (abs(dleap) > 0.5);
     if (leap) fd += fd * dleap/DAYSEC;
  }
 
@@ -2708,7 +2708,7 @@ jauD2tf ( ndp, fd, ihmsf1 );
 * <!-- Returned: -->
 *     @return     2-part Julian Date (Notes 3,4)
 *
-* @throws JSOFAIllegalParameter 
+* @throws JSOFAIllegalParameter bad year
 * 
 * @throws JSOFAInternalError          {@code    status: +3 = both of next two
 *                               +2 = time is after end of day (Note 5)
@@ -2911,6 +2911,8 @@ public static JulianDate lastLeapSecondDate()
     *                      -2 = bad month
     *                      -3 = bad day (Note 3)
     *                      -4 = bad fraction (Note 4)
+    *                      
+    * @throws JSOFAInternalError
     *
     * <p>Notes:
     * <ol>
@@ -3016,7 +3018,7 @@ public static JulianDate lastLeapSecondDate()
        JulianDate jd = jauCal2jd(iy, im, id);
        djm = jd.djm1;
 
-    /* If pre-UTC year, set warning status and give up. */
+    /* If pre-UTC year, set warning status and give up. */ 
        if (iy < leapSeconds[0].iyear) throw new JSOFAInternalError("year before UTC start", 1);
 
     /* If suspiciously late year, set warning status but proceed. */
@@ -4424,7 +4426,7 @@ public static JulianDate lastLeapSecondDate()
     *        Greenwich apparent ST = GMST + equation of the equinoxes
     *
     * <li> The result is compatible with the IAU 2000 resolutions except
-    *     that accuracy has been compromised for the sake of speed.  For
+    *     that accuracy has been compromised (1 mas) for the sake of speed.  For
     *     further details, see McCarthy &amp; Luzum (2001), IERS Conventions
     *     2003 and Capitaine et al. (2003).
     *</ol>
@@ -4928,7 +4930,7 @@ public static JulianDate lastLeapSecondDate()
     *     @param date2 double TT as a 2-part Julian Date (Note 1)
     *
     * <!-- Returned (function value): -->
-    *  @return double    equation of the origins in radians
+    *  @return double    the equation of the origins in radians
     *
     * <p>Notes:
     * <ol>
@@ -5010,7 +5012,7 @@ public static JulianDate lastLeapSecondDate()
     *
     *<!-- Given: -->
     *     @param rnpb   double[3][3]   classical nutation x precession x bias matrix
-    *     @param s      double         the quantity s (the CIO locator)
+    *     @param s      double         the quantity s (the CIO locator) in radians
     *
     * <!-- Returned (function value): -->
     *  @return double        the equation of the origins in radians.
@@ -8904,8 +8906,8 @@ public static class SphericalCoordinateEO {
     public SphericalCoordinate pos;
     public double eo;
     /**
-     * @param pos
-     * @param eo
+     * @param pos the spherical position.
+     * @param eo the equation of thr origins.
      */
     public SphericalCoordinateEO(SphericalCoordinate pos, double eo) {
         this.pos = pos;
@@ -9617,7 +9619,7 @@ public static class SphericalCoordinateEO {
     *
     * <li> The UT1 and TT dates uta+utb and tta+ttb respectively, are both
     *     Julian Dates, apportioned in any convenient way between the
-    *     argument pairs.  For example, JD=2450123.7 could be expressed in
+    *     argument pairs.  For example, JD(UT1)=2450123.7 could be expressed in
     *     any of these ways, among others:
     *<pre>
     *            Part A         Part B
@@ -9715,10 +9717,10 @@ public static class SphericalCoordinateEO {
     *
     * <li> The UT1 and TT dates uta+utb and tta+ttb respectively, are both
     *     Julian Dates, apportioned in any convenient way between the
-    *     argument pairs.  For example, JD=2450123.7 could be expressed in
+    *     argument pairs.  For example, JD(UT1)=450123.7 could be expressed in
     *     any of these ways, among others:
     *<pre>
-    *            Part A        Part B
+    *            u1a              utb
     *
     *         2450123.7           0.0       (JD method)
     *         2451545.0       -1421.3       (J2000 method)
@@ -10028,7 +10030,7 @@ public static class SphericalCoordinateEO {
     *       component of GMST and the equation of the equinoxes.  This
     *       results in errors of order 0.1 mas at present.
     *
-    *     . The IAU 2000B abridged nutation model (McCarthy &amp; Luzum, 2001)
+    *     . The IAU 2000B abridged nutation model (McCarthy &amp; Luzum, 2003)
     *       is used, introducing errors of up to 1 mas.
     *
     * <li> This GAST is compatible with the IAU 2000 resolutions and must be
@@ -10104,7 +10106,7 @@ public static class SphericalCoordinateEO {
     *     argument pairs.  For example, JD=2450123.7 could be expressed in
     *     any of these ways, among others:
     *<pre>
-    *            Part A        Part B
+    *            uta              utb
     *
     *         2450123.7           0.0       (JD method)
     *         2451545.0       -1421.3       (J2000 method)
@@ -10198,7 +10200,7 @@ public static class SphericalCoordinateEO {
     *     argument pairs.  For example, JD=2450123.7 could be expressed in
     *     any of these ways, among others:
     *<pre>
-    *            Part A        Part B
+    *            uta             utb
     *
     *         2450123.7           0.0       (JD method)
     *         2451545.0       -1421.3       (J2000 method)
@@ -10586,6 +10588,7 @@ public static class SphericalCoordinateEO {
     *  @since Release 20101201
     *
     *  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
+    *  TODO - this would be better returning a new array in java....
     */
     public static void jauIr(double r[][])
     {
@@ -10800,7 +10803,7 @@ public static class SphericalCoordinateEO {
     *
     * <li> Refer to the function jauJd2cal.
     *
-    * <li> NDP should be 4 or less if internal overflows are to be
+    * <li> the number of decimal places (npd) should be 4 or less if internal overflows are to be
     *     avoided on machines which use 16-bit integers.
     *</ol>
     *<p>Called:<ul>
@@ -10925,7 +10928,7 @@ public static class SphericalCoordinateEO {
     *     of date and the p-vector V(mean) is with respect to the mean
     *     equatorial triad of date.
     *
-    * <li> A faster, but slightly less accurate result (about 1 mas), can be
+    * <li> A faster, but slightly less accurate, result (about 1 mas), can be
     *     obtained by using instead the jauNum00b function.
     *</ol>
     *<p>Called:<ul>
@@ -15635,6 +15638,8 @@ public static class SphericalCoordinateEO {
     *    <p>Capitaine, N. &amp; Wallace, P.T., 2006, Astron.Astrophys. 450, 855
     *
     *    <p>Wallace, P.T. &amp; Capitaine, N., 2006, Astron.Astrophys. 459, 981
+    *    
+    *    <p>IAU: Trans. International Astronomical Union, Vol. XXIVB;  Proc. 24th General Assembly, Manchester, UK.  Resolutions B1.3, B1.6.(2000)
     *
     *@version 2009 December 21
     *
@@ -15934,7 +15939,7 @@ public static class SphericalCoordinateEO {
     *     bias, precession and nutation in that order.
     *
     * <li> It is permissible to re-use the same array in the returned
-    *     arguments.  The arrays are filled in the order given.
+    *     arguments.  The arrays are filled in the stated order.
     *</ol>
     *<p>Called:<ul>
     *     <li>{@link #jauPr00} IAU 2000 precession adjustments
@@ -16271,7 +16276,7 @@ public static class SphericalCoordinateEO {
     *            rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
     *            rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 6)
     *            rn            double[3][3]      <u>returned</u> nutation matrix (Note 7)
-    *            rbpn          double[3][3]      <u>returned</u> GCRS-to-true matrix (Note 8)
+    *            rbpn          double[3][3]      <u>returned</u> GCRS-to-true matrix (Note 8,9)
     *
     * <p>Notes:
     * <ol>
@@ -16500,7 +16505,7 @@ public static class SphericalCoordinateEO {
     *     @param date2 double TT as a 2-part Julian Date (Note 1)
     *
     *<!-- Returned: -->
-    *     @return rbpn          double[3][3]      <u>returned</u> classical NPB matrix (Note 2)
+    *     @return rbpn          double[3][3]      <u>returned</u> bias-precession-nutation matrix (Note 2)
     *
     * <p>Notes:
     * <ol>
@@ -16529,7 +16534,7 @@ public static class SphericalCoordinateEO {
     *     of date date1+date2 and the p-vector V(GCRS) is with respect to
     *     the Geocentric Celestial Reference System (IAU, 2000).
     *
-    * <li> A faster, but slightly less accurate result (about 1 mas), can be
+    * <li> A faster, but slightly less accurate, result (about 1 mas), can be
     *     obtained by using instead the jauPnm00b function.
     *</ol>
     *<p>Called:<ul>
@@ -16631,7 +16636,7 @@ public static class SphericalCoordinateEO {
 
     /**
     *  Form the matrix of precession-nutation for a given date (including
-    *  frame bias), IAU 2006 precession and IAU 2000A nutation models.
+    *  frame bias), equinox based, IAU 2006 precession and IAU 2000A nutation models.
     *
     *<p>This function is derived from the International Astronomical Union's
     *  SOFA (Standards Of Fundamental Astronomy) software collection.
@@ -16643,7 +16648,7 @@ public static class SphericalCoordinateEO {
     *     @param date2 double TT as a 2-part Julian Date (Note 1)
     *
     *<!-- Returned: -->
-    *     @return rnpb         double[3][3]   <u>returned</u> bias-precession-nutation matrix (Note 2)
+    *     @return rbpn         double[3][3]   <u>returned</u> bias-precession-nutation matrix (Note 2)
     *
     * <p>Notes:
     * <ol>
@@ -16667,7 +16672,7 @@ public static class SphericalCoordinateEO {
     *     optimum resolution.  The MJD method and the date &amp; time methods
     *     are both good compromises between resolution and convenience.
     *
-    * <li> The matrix operates in the sense V(date) = rnpb * V(GCRS), where
+    * <li> The matrix operates in the sense V(date) = rbpn * V(GCRS), where
     *     the p-vector V(date) is with respect to the true equatorial triad
     *     of date date1+date2 and the p-vector V(GCRS) is with respect to
     *     the Geocentric Celestial Reference System (IAU, 2000).
@@ -16697,9 +16702,9 @@ public static class SphericalCoordinateEO {
        NutationTerms nut = jauNut06a(date1, date2);
 
     /* Equinox based nutation x precession x bias matrix. */
-       double[][] rnpb = jauFw2m(fw.gamb, fw.phib, fw.psib + nut.dpsi, fw.epsa + nut.deps);
+       double[][] rbpn = jauFw2m(fw.gamb, fw.phib, fw.psib + nut.dpsi, fw.epsa + nut.deps);
 
-       return rnpb;
+       return rbpn;
 
         }
     
@@ -16805,7 +16810,7 @@ public static class SphericalCoordinateEO {
     * <li> The arguments xp and yp are the coordinates (in radians) of the
     *     Celestial Intermediate Pole with respect to the International
     *     Terrestrial Reference System (see IERS Conventions 2003),
-    *     measured along the meridians to 0 and 90 deg west respectively.
+    *     measured along the meridians 0 and 90 deg west respectively.
     *
     * <li> The argument sp is the TIO locator s', in radians, which
     *     positions the Terrestrial Intermediate Origin on the equator.  It
@@ -17944,7 +17949,7 @@ public static class SphericalCoordinateEO {
     *     supplied to This function has the same direction as the Euler
     *     axis, and its magnitude is the angle in radians.
     *
-    * <li> If w is null, the unit matrix is returned.
+    * <li> If w is null, the identity matrix is returned.
     *
     * <li> The reference frame rotates clockwise as seen looking along the
     *     rotation vector from the origin.
@@ -18064,7 +18069,14 @@ public static class SphericalCoordinateEO {
     *     @return rp        double[3]         <u>returned</u> r * p
     *
     *  Note:
-    *     It is permissible for p and rp to be the same array.
+    *  <ol>
+    *    <li> The algorithm is for the simple case where the r-matrix r is not
+    *     a function of time.  The case where r is a function of time leads
+    *    to an additional velocity component equal to the product of the
+    *    derivative of r and the position vector.
+    *
+    *    <li> It is permissible for p and rp to be the same array.
+    *  </ol>
     *
     *<p>Called:<ul>
     *     <li>{@link #jauCp} copy p-vector
@@ -24321,7 +24333,7 @@ public static class SphericalCoordinateEO {
     * <li> The CIO locator s (in radians) positions the Celestial
     *     Intermediate Origin on the equator of the CIP.
     *
-    * <li> A faster, but slightly less accurate result (about 1 mas for
+    * <li> A faster, but slightly less accurate, result (about 1 mas for
     *     X,Y), can be obtained by using instead the jauXys00b function.
     *</ol>
     *<p>Called:<ul>
@@ -24677,7 +24689,7 @@ public static class SphericalCoordinateEO {
        public double bm1;        
 /** bias-precession-nutation matrix [3][3] */
        public double bpn[][] = new double[3][3];  
-/** longitude + s' + dERA(DUT) (radians) */
+/** adjusted longitude  (radians) */
        public double along;      
 /** geodetic latitude (radians) */
        public double phi;        
@@ -25370,6 +25382,10 @@ public static class SphericalCoordinateEO {
      *     CONVENTION:  the longitude required by the present function is
      *     right-handed, i.e. east-positive, in accordance with geographical
      *     convention.
+     *     
+     *     The adjusted longitude stored in the astrom array takes into
+     *     account the TIO locator and polar motion.
+
      *
      *  <li> xp and yp are the coordinates (in radians) of the Celestial
      *     Intermediate Pole with respect to the International Terrestrial
@@ -25454,17 +25470,32 @@ public static class SphericalCoordinateEO {
             double refa, double refb,
             Astrom astrom) throws JSOFAIllegalParameter, JSOFAInternalError
     {
-        double sl, cl, r[][], pvc[][], pv[][];
+        double a, b, eral, c, r[][] = new double[3][3], pvc[][], pv[][];
 
 
-        /* Longitude with adjustment for TIO locator s'. */
-        astrom.along = elong + sp;
+        /* Form the rotation matrix, CIRS to apparent [HA,Dec]. */
+        jauIr(r);
+        jauRz(theta+sp, r);
+        jauRy(-xp, r);
+        jauRx(-yp, r);
+        jauRz(elong, r);
 
-        /* Polar motion, rotated onto the local meridian. */
-        sl = sin(astrom.along);
-        cl = cos(astrom.along);
-        astrom.xpl = xp*cl - yp*sl;
-        astrom.ypl = xp*sl + yp*cl;
+        /* Solve for local Earth rotation angle. */
+        a = r[0][0];
+        b = r[0][1];
+        eral = ( a != 0.0 || b != 0.0 ) ?  atan2(b, a) : 0.0;
+        astrom.eral = eral;
+
+        /* Solve for polar motion [X,Y] with respect to local meridian. */
+        a = r[0][0];
+        c = r[0][2];
+        astrom.xpl = atan2(c, sqrt(a*a+b*b));
+        a = r[1][2];
+        b = r[2][2];
+        astrom.ypl = ( a != 0.0 || b != 0.0 ) ? -atan2(a, b) : 0.0;
+
+        /* Adjusted longitude. */
+        astrom.along = jauAnpm(eral - theta);
 
         /* Functions of latitude. */
         astrom.sphi = sin(phi);
@@ -25473,9 +25504,6 @@ public static class SphericalCoordinateEO {
         /* Refraction constants. */
         astrom.refa = refa;
         astrom.refb = refb;
-
-        /* Local Earth rotation angle. */
-        jauAper(theta, astrom);
 
         /* Disable the (redundant) diurnal aberration step. */
         astrom.diurab = 0.0;
@@ -26320,17 +26348,32 @@ public static class SphericalCoordinateEO {
             double refa, double refb,
             Astrom astrom) throws JSOFAIllegalParameter, JSOFAInternalError
     {
-        double sl, cl, pv[][];
+        double r[][]=new double[3][3], a, b, eral, c, pv[][];
 
 
-        /* Longitude with adjustment for TIO locator s'. */
-        astrom.along = elong + sp;
+        /* Form the rotation matrix, CIRS to apparent [HA,Dec]. */
+        jauIr(r);
+        jauRz(theta+sp, r);
+        jauRy(-xp, r);
+        jauRx(-yp, r);
+        jauRz(elong, r);
 
-        /* Polar motion, rotated onto the local meridian. */
-        sl = sin(astrom.along);
-        cl = cos(astrom.along);
-        astrom.xpl = xp*cl - yp*sl;
-        astrom.ypl = xp*sl + yp*cl;
+        /* Solve for local Earth rotation angle. */
+        a = r[0][0];
+        b = r[0][1];
+        eral = ( a != 0.0 || b != 0.0 ) ?  atan2(b, a) : 0.0;
+        astrom.eral = eral;
+
+        /* Solve for polar motion [X,Y] with respect to local meridian. */
+        a = r[0][0];
+        c = r[0][2];
+        astrom.xpl = atan2(c, sqrt(a*a+b*b));
+        a = r[1][2];
+        b = r[2][2];
+        astrom.ypl = ( a != 0.0 || b != 0.0 ) ? -atan2(a, b) : 0.0;
+
+        /* Adjusted longitude. */
+        astrom.along = jauAnpm(eral - theta);
 
         /* Functions of latitude. */
         astrom.sphi = sin(phi);
@@ -26345,9 +26388,6 @@ public static class SphericalCoordinateEO {
         /* Refraction constants. */
         astrom.refa = refa;
         astrom.refb = refb;
-
-        /* Local Earth rotation angle. */
-        jauAper(theta, astrom);
 
         /* Finished. */
 
@@ -27581,8 +27621,8 @@ public static class SphericalCoordinateEO {
          */
         public double eo;
         /**
-         * @param op
-         * @param eo
+         * @param op the observed position.
+         * @param eo the equation of the origins.
          */
         public ObservedPositionEO(ObservedPosition op, double eo) {
             this.op = op;
@@ -27849,9 +27889,9 @@ public static class SphericalCoordinateEO {
         final double CELMIN = 1e-6;
         final double SELMIN = 0.05;
 
-        double v[] = new double[3], x, y, z, xhd, yhd, zhd, f, xhdt, yhdt, zhdt,
-                xaet, yaet, zaet, azobs, r, tz, w, del, cosdel,
-                xaeo, yaeo, zaeo, zdobs, hmobs, dcobs, raobs;
+        double v[] = new double[3], x, y, z, sx, cx, sy, cy, xhd, yhd, zhd, f,
+          xhdt, yhdt, zhdt, xaet, yaet, zaet, azobs, r, tz, w, del,
+          cosdel, xaeo, yaeo, zaeo, zdobs, hmobs, dcobs, raobs;
 
         /*--------------------------------------------------------------------*/
 
@@ -27862,9 +27902,13 @@ public static class SphericalCoordinateEO {
         z = v[2];
 
         /* Polar motion. */
-        xhd = x + astrom.xpl*z;
-        yhd = y - astrom.ypl*z;
-        zhd = z - astrom.xpl*x + astrom.ypl*y;
+        sx = sin(astrom.xpl);
+        cx = cos(astrom.xpl);
+        sy = sin(astrom.ypl);
+        cy = cos(astrom.ypl);
+        xhd = cx*x + sx*z;
+        yhd = sx*sy*x + cy*y - cx*sy*z;
+        zhd = -sx*cy*x + sy*y + cx*cy*z;
 
         /* Diurnal aberration. */
         f = ( 1.0 - astrom.diurab*yhd );
@@ -28321,11 +28365,11 @@ public static class SphericalCoordinateEO {
      *  <li> The accuracy of the result is limited by the corrections for
      *     refraction, which use a simple A*tan(z) + B*tan^3(z) model.
      *     Providing the meteorological parameters are known accurately and
-     *     there are no gross local effects, the predicted observed
+     *     there are no gross local effects, the predicted intermediate
      *     coordinates should be within 0.05 arcsec (optical) or 1 arcsec
      *     (radio) for a zenith distance of less than 70 degrees, better
      *     than 30 arcsec (optical or radio) at 85 degrees and better than
-     *     20 arcmin (optical) or 30 arcmin (radio) at the horizon.
+     *     20 arcmin (optical) or 25 arcmin (radio) at the horizon.
      *
      *     <p>Without refraction, the complementary functions iauAtioq and
      *     iauAtoiq are self-consistent to better than 1 microarcsecond all
@@ -28355,11 +28399,13 @@ public static class SphericalCoordinateEO {
             double ob1, double ob2, Astrom astrom
             )
     {
+        /** Minimum sin(alt) for refraction purposes */
+        final double SELMIN = 0.05;
         char c;
         double c1, c2, sphi, cphi, ce, xaeo, yaeo, zaeo, v[] = new double[3],
         xmhdo, ymhdo, zmhdo, az, sz, zdo, refa, refb, tz, dref,
         zdt, xaet, yaet, zaet, xmhda, ymhda, zmhda,
-        f, xhd, yhd, zhd, xpl, ypl, w;
+        f, xhd, yhd, zhd, sx, cx, sy, cy, hma;
 
 
         /* Coordinate type. */
@@ -28421,7 +28467,7 @@ public static class SphericalCoordinateEO {
         /* Fast algorithm using two constant model. */
         refa = astrom.refa;
         refb = astrom.refb;
-        tz = sz / zaeo;
+        tz = sz / ( zaeo > SELMIN ? zaeo : SELMIN );
         dref = ( refa + refb*tz*tz ) * tz;
         zdt = zdo + dref;
 
@@ -28443,12 +28489,13 @@ public static class SphericalCoordinateEO {
         zhd = f * zmhda;
 
         /* Polar motion. */
-        xpl = astrom.xpl;
-        ypl = astrom.ypl;
-        w = xpl*xhd - ypl*yhd + zhd;
-        v[0] = xhd - xpl*w;
-        v[1] = yhd + ypl*w;
-        v[2] = w - ( xpl*xpl + ypl*ypl ) * zhd;
+        sx = sin(astrom.xpl);
+        cx = cos(astrom.xpl);
+        sy = sin(astrom.ypl);
+        cy = cos(astrom.ypl);
+        v[0] = cx*xhd + sx*sy*yhd - sx*cy*zhd;
+        v[1] = cy*yhd + sy*zhd;
+        v[2] = sx*xhd - cx*sy*yhd + cx*cy*zhd;
 
         /* To spherical -HA,Dec. */
         SphericalCoordinate co = jauC2s(v);
@@ -29279,6 +29326,7 @@ public static class SphericalCoordinateEO {
      *        total pressure, water-vapour pressure and, in the case
      *        of optical/IR, wavelength.  The formulae for the two cases are
      *        developed from Hohenkerk &amp; Sinclair (1985) and Rueger (2002).
+     *        The IAG (1999) optical refractivity for dry air is used.
      *
      *     <p>d) The formula for beta, the ratio of the scale height of the
      *        atmosphere to the geocentric distance of the observer, is
@@ -29306,6 +29354,9 @@ public static class SphericalCoordinateEO {
      *
      * <li> Hohenkerk, C.Y., &amp; Sinclair, A.T., NAO Technical Note No. 63,
      *     1985.
+     *     
+     * <li> IAG Resolutions adopted at the XXIIth General Assembly in
+     *     Birmingham, 1999, Resolution 3.
      *
      * <li> Rueger, J.M., "Refractive Index Formulae for Electronic Distance
      *     Measurement with Radio and Millimetre Waves", in Unisurv Report
@@ -31714,7 +31765,7 @@ public static class SphericalCoordinateEO {
      *  <!-- Given: -->
      *     @param r1950    double   B1950.0 FK4 RA at epoch (rad)
      *     @param d1950    double   B1950.0 FK4 Dec at epoch (rad)
-     *     @param bepoch         double   Besselian epoch (e.g. 1979.3D0)
+     *     @param bepoch         double   Besselian epoch (e.g. 1979.3)
      * <!-- Returned: -->
      *     @return  J2000.0 FK5 RA,Dec (rad)
      * <p>Notes: <ol>

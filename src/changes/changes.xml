@@ -6,6 +6,12 @@
     <author email="paul.harrison@manchester.ac.uk">Paul Harrison</author>
   </properties>
   <body>
+   <release version="20200721" description="tracking updates of SOFA">
+       <action  dev="pah" type="update" issue="https://github.com/Javastro/jsofa/issues/8" >
+        Update to be in line with IAU sofa 2021-01-25 (as updated  2021-02-24) (see https://www.iausofa.org/changes_2021_0125.html)
+       </action>     
+       
+    </release>
     <release version="20200721" description="tracking updates of SOFA">
        <action  dev="pah" type="update" issue="https://github.com/Javastro/jsofa/issues/6" >
         Update to be in line with IAU sofa 2020-07-21 (see http://www.iausofa.org/changes_2020_0721.html)

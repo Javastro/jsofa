@@ -43,10 +43,10 @@ public class JSOFATest {
     @Test
     public void testversion() throws JSOFAIllegalParameter 
     {
-        assertEquals("sofa release", "2020-07-21", SOFA_RELEASE);
-        assertEquals("sofa revision", "16", SOFA_REVISION);
+        assertEquals("sofa release", "2021-01-25", SOFA_RELEASE);
+        assertEquals("sofa revision", "17a", SOFA_REVISION);
         assertEquals("lastleap second", jauCal2jd(2017,1,1), lastLeapSecondDate());        
-        assertEquals("last omitted leap second", jauCal2jd(2020,12,31), latestConfirmedNoLeapSecondChange);
+        assertEquals("last omitted leap second", jauCal2jd(2021,06,30), latestConfirmedNoLeapSecondChange);
         assertEquals("Jsofa release",  System.getProperty("SOFAVERSION"), JSOFA_RELEASE); // check that the correct version is being released - system properly set from POM
         
         
@@ -1891,7 +1891,7 @@ public class JSOFATest {
 
        vvd(cat.pos.alpha, 1.767794226299947632, 1e-14,"jauFk52h", "ra");
        vvd(cat.pos.delta,  -0.2917516070530391757, 1e-14,"jauFk52h", "dec");
-       vvd(cat.pm.alpha, -0.19618741256057224e-6,1e-19,"jauFk52h", "dr5");
+       vvd(cat.pm.alpha, -0.1961874125605721270e-6,1e-19,"jauFk52h", "dr5");
        vvd(cat.pm.delta, -0.58459905176693911e-5, 1e-19,"jauFk52h", "dd5");
        vvd(cat.px,  0.37921, 1e-14,"jauFk52h", "px");
        vvd(cat.rv, -7.6000000940000254, 1e-11,"jauFk52h", "rv");
@@ -4368,9 +4368,9 @@ public class JSOFATest {
 
        upv = jauPvu(2920.0, pv);
 
-       vvd(upv[0][0], 126656.7598605317105, 1e-12,"jauPvu", "p1");
-       vvd(upv[0][1], 2118.531271155726332, 1e-12,"jauPvu", "p2");
-       vvd(upv[0][2], -245216.5048590656190, 1e-12,"jauPvu", "p3");
+       vvd(upv[0][0], 126656.7598605317105, 1e-6,"jauPvu", "p1");
+       vvd(upv[0][1], 2118.531271155726332, 1e-8,"jauPvu", "p2");
+       vvd(upv[0][2], -245216.5048590656190, 1e-6,"jauPvu", "p3");
 
        vvd(upv[1][0], -0.4051854035740713039e-2, 1e-12,"jauPvu", "v1");
        vvd(upv[1][1], -0.6253919754866175788e-2, 1e-12,"jauPvu", "v2");
@@ -6485,11 +6485,11 @@ public void t_apcg()
                              "jauApco", "bpn(2,3)");
        vvd(astrom.bpn[2][2], 0.9999991386008323373, 1e-12,
                              "jauApco", "bpn(3,3)");
-       vvd(astrom.along, -0.5278008060301974337, 1e-12,
+       vvd(astrom.along, -0.5278008060295995734, 1e-12,
                          "jauApco", "along");
-       vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
+       vvd(astrom.xpl, 0.1133427418130752958e-5, 1e-17,
                        "jauApco", "xpl");
-       vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
+       vvd(astrom.ypl, 0.1453347595780646207e-5, 1e-17,
                        "jauApco", "ypl");
        vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
                         "jauApco", "sphi");
@@ -6497,7 +6497,7 @@ public void t_apcg()
                         "jauApco", "cphi");
        vvd(astrom.diurab, 0, 0,
                           "jauApco", "diurab");
-       vvd(astrom.eral, 2.617608903969802566, 1e-12,
+       vvd(astrom.eral, 2.617608903970400427, 1e-12,
                         "jauApco", "eral");
        vvd(astrom.refa, 0.2014187790000000000e-3, 1e-15,
                         "jauApco", "refa");
@@ -6584,11 +6584,11 @@ public void t_apcg()
                          "jauApco13", "bpn(2,3)");
    vvd(astrom.bpn[2][2], 0.9999991386008312212, 1e-12,
                          "jauApco13", "bpn(3,3)");
-   vvd(astrom.along, -0.5278008060301974337, 1e-12,
+   vvd(astrom.along, -0.5278008060295995733, 1e-12,
                      "jauApco13", "along");
-   vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
+   vvd(astrom.xpl, 0.1133427418130752958e-5, 1e-17,
                    "jauApco13", "xpl");
-   vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
+   vvd(astrom.ypl, 0.1453347595780646207e-5, 1e-17,
                    "jauApco13", "ypl");
    vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
                     "jauApco13", "sphi");
@@ -6596,7 +6596,7 @@ public void t_apcg()
                     "jauApco13", "cphi");
    vvd(astrom.diurab, 0, 0,
                       "jauApco13", "diurab");
-   vvd(astrom.eral, 2.617608909189066140, 1e-12,
+   vvd(astrom.eral, 2.617608909189664000, 1e-12,
                     "jauApco13", "eral");
    vvd(astrom.refa, 0.2014187785940396921e-3, 1e-15,
                     "jauApco13", "refa");
@@ -6843,11 +6843,11 @@ public void t_apcg()
 
    jauApio(sp, theta, elong, phi, hm, xp, yp, refa, refb, astrom);
 
-   vvd(astrom.along, -0.5278008060301974337, 1e-12,
+   vvd(astrom.along, -0.5278008060295995734, 1e-12,
                      "jauApio", "along");
-   vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
+   vvd(astrom.xpl, 0.1133427418130752958e-5, 1e-17,
                    "jauApio", "xpl");
-   vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
+   vvd(astrom.ypl, 0.1453347595780646207e-5, 1e-17,
                    "jauApio", "ypl");
    vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
                     "jauApio", "sphi");
@@ -6855,7 +6855,7 @@ public void t_apcg()
                     "jauApio", "cphi");
    vvd(astrom.diurab, 0.5135843661699913529e-6, 1e-12,
                       "jauApio", "diurab");
-   vvd(astrom.eral, 2.617608903969802566, 1e-12,
+   vvd(astrom.eral, 2.617608903970400427, 1e-12,
                     "jauApio", "eral");
    vvd(astrom.refa, 0.2014187790000000000e-3, 1e-15,
                     "jauApio", "refa");
@@ -6898,11 +6898,11 @@ public void t_apcg()
    jauApio13(utc1, utc2, dut1, elong, phi, hm, xp, yp,
                  phpa, tc, rh, wl, astrom);
 
-   vvd(astrom.along, -0.5278008060301974337, 1e-12,
+   vvd(astrom.along,  -0.5278008060295995733, 1e-12,
                      "jauApio13", "along");
-   vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
+   vvd(astrom.xpl, 0.1133427418130752958e-5, 1e-17,
                    "jauApio13", "xpl");
-   vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
+   vvd(astrom.ypl, 0.1453347595780646207e-5, 1e-17,
                    "jauApio13", "ypl");
    vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
                     "jauApio13", "sphi");
@@ -6910,7 +6910,7 @@ public void t_apcg()
                     "jauApio13", "cphi");
    vvd(astrom.diurab, 0.5135843661699913529e-6, 1e-12,
                       "jauApio13", "diurab");
-   vvd(astrom.eral, 2.617608909189066140, 1e-12,
+   vvd(astrom.eral, 2.617608909189664000, 1e-12,
                     "jauApio13", "eral");
    vvd(astrom.refa, 0.2014187785940396921e-3, 1e-15,
                     "jauApio13", "refa");
@@ -7118,11 +7118,11 @@ public void t_apcg()
                  utc1, utc2, dut1, elong, phi, hm, xp, yp,
                  phpa, tc, rh, wl);
 
-   vvd(ope.op.aob, 0.09251774485385390973, 1e-12, "jauAtco13", "aob");
-   vvd(ope.op.zob, 1.407661405256671703, 1e-12, "jauAtco13", "zob");
-   vvd(ope.op.hob, -0.09265154431430045141, 1e-12, "jauAtco13", "hob");
-   vvd(ope.op.dob, 0.1716626560074556029, 1e-12, "jauAtco13", "dob");
-   vvd(ope.op.rob, 2.710260453503366591, 1e-12, "jauAtco13", "rob");
+   vvd(ope.op.aob, 0.9251774485485515207e-1, 1e-12, "jauAtco13", "aob");
+   vvd(ope.op.zob, 1.407661405256499357, 1e-12, "jauAtco13", "zob");
+   vvd(ope.op.hob, -0.9265154431529724692e-1, 1e-12, "jauAtco13", "hob");
+   vvd(ope.op.dob, 0.1716626560072526200, 1e-12, "jauAtco13", "dob");
+   vvd(ope.op.rob, 2.710260453504961012, 1e-12, "jauAtco13", "rob");
    vvd(ope.eo, -0.003020548354802412839, 1e-14, "jauAtco13", "eo");
 
 }
@@ -7278,11 +7278,11 @@ public void t_apcg()
                  xp, yp, phpa, tc, rh, wl
                  );
 
-   vvd(o.aob, 0.09233952224794989993, 1e-12, "jauAtio13", "aob");
-   vvd(o.zob, 1.407758704513722461, 1e-12, "jauAtio13", "zob");
-   vvd(o.hob, -0.09247619879782006106, 1e-12, "jauAtio13", "hob");
-   vvd(o.dob, 0.1717653435758265198, 1e-12, "jauAtio13", "dob");
-   vvd(o.rob, 2.710085107986886201, 1e-12, "jauAtio13", "rob");
+   vvd(o.aob, 0.9233952224895122499e-1, 1e-12, "jauAtio13", "aob");
+   vvd(o.zob, 1.407758704513549991, 1e-12, "jauAtio13", "zob");
+   vvd(o.hob, -0.9247619879881698140e-1, 1e-12, "jauAtio13", "hob");
+   vvd(o.dob, 0.1717653435756234676, 1e-12, "jauAtio13", "dob");
+   vvd(o.rob, 2.710085107988480746, 1e-12, "jauAtio13", "rob");
 
 }
 
@@ -7323,11 +7323,11 @@ public void t_apcg()
 
    ObservedPosition o = jauAtioq(ri, di, astrom);
 
-   vvd(o.aob, 0.09233952224794989993, 1e-12, "jauAtioq", "aob");
-   vvd(o.zob, 1.407758704513722461, 1e-12, "jauAtioq", "zob");
-   vvd(o.hob, -0.09247619879782006106, 1e-12, "jauAtioq", "hob");
-   vvd(o.dob, 0.1717653435758265198, 1e-12, "jauAtioq", "dob");
-   vvd(o.rob, 2.710085107986886201, 1e-12, "jauAtioq", "rob");
+   vvd(o.aob, 0.9233952224895122499e-1, 1e-12, "jauAtioq", "aob");
+   vvd(o.zob, 1.407758704513549991, 1e-12, "jauAtioq", "zob");
+   vvd(o.hob, -0.9247619879881698140e-1, 1e-12, "jauAtioq", "hob");
+   vvd(o.dob, 0.1717653435756234676, 1e-12, "jauAtioq", "dob");
+   vvd(o.rob, 2.710085107988480746, 1e-12, "jauAtioq", "rob");
 
 }
 
@@ -7367,22 +7367,22 @@ public void t_apcg()
    SphericalCoordinate oc = jauAtoc13 ( "R", ob1, ob2, utc1, utc2, dut1,
                    elong, phi, hm, xp, yp, phpa, tc, rh, wl
                    );
-   vvd(oc.alpha, 2.709956744660731630, 1e-12, "jauAtoc13", "R/rc");
-   vvd(oc.delta, 0.1741696500896438967, 1e-12, "jauAtoc13", "R/dc");
+   vvd(oc.alpha, 2.709956744659136129, 1e-12, "jauAtoc13", "R/rc");
+   vvd(oc.delta, 0.1741696500898471362, 1e-12, "jauAtoc13", "R/dc");
 
    ob1 = -0.09247619879782006106;
    ob2 = 0.1717653435758265198;
    oc = jauAtoc13 ( "H", ob1, ob2, utc1, utc2, dut1,
                    elong, phi, hm, xp, yp, phpa, tc, rh, wl);
-   vvd(oc.alpha, 2.709956744660731630, 1e-12, "jauAtoc13", "H/rc");
-   vvd(oc.delta, 0.1741696500896438967, 1e-12, "jauAtoc13", "H/dc");
+   vvd(oc.alpha, 2.709956744659734086, 1e-12, "jauAtoc13", "H/rc");
+   vvd(oc.delta, 0.1741696500898471362, 1e-12, "jauAtoc13", "H/dc");
 
    ob1 = 0.09233952224794989993;
    ob2 = 1.407758704513722461;
    oc = jauAtoc13 ( "A", ob1, ob2, utc1, utc2, dut1,
                    elong, phi, hm, xp, yp, phpa, tc, rh, wl);
-   vvd(oc.alpha, 2.709956744660731630, 1e-12, "jauAtoc13", "A/rc");
-   vvd(oc.delta, 0.1741696500896438970, 1e-12, "jauAtoc13", "A/dc");
+   vvd(oc.alpha, 2.709956744659734086, 1e-12, "jauAtoc13", "A/rc");
+   vvd(oc.delta, 0.1741696500898471366, 1e-12, "jauAtoc13", "A/dc");
 
 }
 
@@ -7421,22 +7421,22 @@ public void t_atoi13() throws JSOFAIllegalParameter, JSOFAInternalError
    ob2 = 0.1717653435758265198;
    SphericalCoordinate co = jauAtoi13( "R", ob1, ob2, utc1, utc2, dut1,
                    elong, phi, hm, xp, yp, phpa, tc, rh, wl);
-   vvd(co.alpha, 2.710121574449135955, 1e-12, "jauAtoi13", "R/ri");
-   vvd(co.delta, 0.1729371839114567725, 1e-12, "jauAtoi13", "R/di");
+   vvd(co.alpha, 2.710121574447540810, 1e-12, "jauAtoi13", "R/ri");
+   vvd(co.delta, 0.1729371839116608778, 1e-12, "jauAtoi13", "R/di");
 
    ob1 = -0.09247619879782006106;
    ob2 = 0.1717653435758265198;
    co = jauAtoi13( "H", ob1, ob2, utc1, utc2, dut1,
                    elong, phi, hm, xp, yp, phpa, tc, rh, wl);
-   vvd(co.alpha, 2.710121574449135955, 1e-12, "jauAtoi13", "H/ri");
-   vvd(co.delta, 0.1729371839114567725, 1e-12, "jauAtoi13", "H/di");
+   vvd(co.alpha, 2.710121574448138676, 1e-12, "jauAtoi13", "H/ri");
+   vvd(co.delta, 0.1729371839116608778, 1e-12, "jauAtoi13", "H/di");
 
    ob1 = 0.09233952224794989993;
    ob2 = 1.407758704513722461;
    co = jauAtoi13( "A", ob1, ob2, utc1, utc2, dut1,
                    elong, phi, hm, xp, yp, phpa, tc, rh, wl);
-   vvd(co.alpha, 2.710121574449135955, 1e-12, "jauAtoi13", "A/ri");
-   vvd(co.delta, 0.1729371839114567728, 1e-12, "jauAtoi13", "A/di");
+   vvd(co.alpha, 2.710121574448138676, 1e-12, "jauAtoi13", "A/ri");
+   vvd(co.delta, 0.1729371839116608781, 1e-12, "jauAtoi13", "A/di");
 
 }
 
@@ -7476,25 +7476,25 @@ public void t_atoi13() throws JSOFAIllegalParameter, JSOFAInternalError
    ob1 = 2.710085107986886201;
    ob2 = 0.1717653435758265198;
    SphericalCoordinate co = jauAtoiq("R", ob1, ob2, astrom);
-   vvd(co.alpha, 2.710121574449135955, 1e-12,
+   vvd(co.alpha, 2.710121574447540810, 1e-12,
            "jauAtoiq", "R/ri");
-   vvd(co.delta, 0.1729371839114567725, 1e-12,
+   vvd(co.delta, 0.17293718391166087785, 1e-12,
            "jauAtoiq", "R/di");
 
    ob1 = -0.09247619879782006106;
    ob2 = 0.1717653435758265198;
    co = jauAtoiq("H", ob1, ob2, astrom);
-   vvd(co.alpha, 2.710121574449135955, 1e-12,
+   vvd(co.alpha, 2.710121574448138676, 1e-12,
            "jauAtoiq", "H/ri");
-   vvd(co.delta, 0.1729371839114567725, 1e-12,
+   vvd(co.delta, 0.1729371839116608778, 1e-12,
            "jauAtoiq", "H/di");
 
    ob1 = 0.09233952224794989993;
    ob2 = 1.407758704513722461;
    co = jauAtoiq("A", ob1, ob2, astrom);
-   vvd(co.alpha, 2.710121574449135955, 1e-12,
+   vvd(co.alpha, 2.710121574448138676, 1e-12,
            "jauAtoiq", "A/ri");
-   vvd(co.delta, 0.1729371839114567728, 1e-12,
+   vvd(co.delta, 0.1729371839116608781, 1e-12,
            "jauAtoiq", "A/di");
 
 }
