@@ -53,10 +53,10 @@
 <a class="jxr_linenumber" name="43" href="#43">43</a>      @Test
 <a class="jxr_linenumber" name="44" href="#44">44</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testversion() <strong class="jxr_keyword">throws</strong> JSOFAIllegalParameter 
 <a class="jxr_linenumber" name="45" href="#45">45</a>      {
-<a class="jxr_linenumber" name="46" href="#46">46</a>          assertEquals(<span class="jxr_string">"sofa release"</span>, <span class="jxr_string">"2020-07-21"</span>, SOFA_RELEASE);
-<a class="jxr_linenumber" name="47" href="#47">47</a>          assertEquals(<span class="jxr_string">"sofa revision"</span>, <span class="jxr_string">"16"</span>, SOFA_REVISION);
+<a class="jxr_linenumber" name="46" href="#46">46</a>          assertEquals(<span class="jxr_string">"sofa release"</span>, <span class="jxr_string">"2021-01-25"</span>, SOFA_RELEASE);
+<a class="jxr_linenumber" name="47" href="#47">47</a>          assertEquals(<span class="jxr_string">"sofa revision"</span>, <span class="jxr_string">"17a"</span>, SOFA_REVISION);
 <a class="jxr_linenumber" name="48" href="#48">48</a>          assertEquals(<span class="jxr_string">"lastleap second"</span>, jauCal2jd(2017,1,1), lastLeapSecondDate());        
-<a class="jxr_linenumber" name="49" href="#49">49</a>          assertEquals(<span class="jxr_string">"last omitted leap second"</span>, jauCal2jd(2020,12,31), latestConfirmedNoLeapSecondChange);
+<a class="jxr_linenumber" name="49" href="#49">49</a>          assertEquals(<span class="jxr_string">"last omitted leap second"</span>, jauCal2jd(2021,06,30), latestConfirmedNoLeapSecondChange);
 <a class="jxr_linenumber" name="50" href="#50">50</a>          assertEquals(<span class="jxr_string">"Jsofa release"</span>,  System.getProperty(<span class="jxr_string">"SOFAVERSION"</span>), JSOFA_RELEASE); <em class="jxr_comment">// check that the correct version is being released - system properly set from POM</em>
 <a class="jxr_linenumber" name="51" href="#51">51</a>          
 <a class="jxr_linenumber" name="52" href="#52">52</a>          
@@ -1901,7 +1901,7 @@
 <a class="jxr_linenumber" name="1891" href="#1891">1891</a> 
 <a class="jxr_linenumber" name="1892" href="#1892">1892</a>        vvd(cat.pos.alpha, 1.767794226299947632, 1e-14,<span class="jxr_string">"jauFk52h"</span>, <span class="jxr_string">"ra"</span>);
 <a class="jxr_linenumber" name="1893" href="#1893">1893</a>        vvd(cat.pos.delta,  -0.2917516070530391757, 1e-14,<span class="jxr_string">"jauFk52h"</span>, <span class="jxr_string">"dec"</span>);
-<a class="jxr_linenumber" name="1894" href="#1894">1894</a>        vvd(cat.pm.alpha, -0.19618741256057224e-6,1e-19,<span class="jxr_string">"jauFk52h"</span>, <span class="jxr_string">"dr5"</span>);
+<a class="jxr_linenumber" name="1894" href="#1894">1894</a>        vvd(cat.pm.alpha, -0.1961874125605721270e-6,1e-19,<span class="jxr_string">"jauFk52h"</span>, <span class="jxr_string">"dr5"</span>);
 <a class="jxr_linenumber" name="1895" href="#1895">1895</a>        vvd(cat.pm.delta, -0.58459905176693911e-5, 1e-19,<span class="jxr_string">"jauFk52h"</span>, <span class="jxr_string">"dd5"</span>);
 <a class="jxr_linenumber" name="1896" href="#1896">1896</a>        vvd(cat.px,  0.37921, 1e-14,<span class="jxr_string">"jauFk52h"</span>, <span class="jxr_string">"px"</span>);
 <a class="jxr_linenumber" name="1897" href="#1897">1897</a>        vvd(cat.rv, -7.6000000940000254, 1e-11,<span class="jxr_string">"jauFk52h"</span>, <span class="jxr_string">"rv"</span>);
@@ -4378,9 +4378,9 @@
 <a class="jxr_linenumber" name="4368" href="#4368">4368</a> 
 <a class="jxr_linenumber" name="4369" href="#4369">4369</a>        upv = jauPvu(2920.0, pv);
 <a class="jxr_linenumber" name="4370" href="#4370">4370</a> 
-<a class="jxr_linenumber" name="4371" href="#4371">4371</a>        vvd(upv[0][0], 126656.7598605317105, 1e-12,<span class="jxr_string">"jauPvu"</span>, <span class="jxr_string">"p1"</span>);
-<a class="jxr_linenumber" name="4372" href="#4372">4372</a>        vvd(upv[0][1], 2118.531271155726332, 1e-12,<span class="jxr_string">"jauPvu"</span>, <span class="jxr_string">"p2"</span>);
-<a class="jxr_linenumber" name="4373" href="#4373">4373</a>        vvd(upv[0][2], -245216.5048590656190, 1e-12,<span class="jxr_string">"jauPvu"</span>, <span class="jxr_string">"p3"</span>);
+<a class="jxr_linenumber" name="4371" href="#4371">4371</a>        vvd(upv[0][0], 126656.7598605317105, 1e-6,<span class="jxr_string">"jauPvu"</span>, <span class="jxr_string">"p1"</span>);
+<a class="jxr_linenumber" name="4372" href="#4372">4372</a>        vvd(upv[0][1], 2118.531271155726332, 1e-8,<span class="jxr_string">"jauPvu"</span>, <span class="jxr_string">"p2"</span>);
+<a class="jxr_linenumber" name="4373" href="#4373">4373</a>        vvd(upv[0][2], -245216.5048590656190, 1e-6,<span class="jxr_string">"jauPvu"</span>, <span class="jxr_string">"p3"</span>);
 <a class="jxr_linenumber" name="4374" href="#4374">4374</a> 
 <a class="jxr_linenumber" name="4375" href="#4375">4375</a>        vvd(upv[1][0], -0.4051854035740713039e-2, 1e-12,<span class="jxr_string">"jauPvu"</span>, <span class="jxr_string">"v1"</span>);
 <a class="jxr_linenumber" name="4376" href="#4376">4376</a>        vvd(upv[1][1], -0.6253919754866175788e-2, 1e-12,<span class="jxr_string">"jauPvu"</span>, <span class="jxr_string">"v2"</span>);
@@ -6495,11 +6495,11 @@
 <a class="jxr_linenumber" name="6485" href="#6485">6485</a>                              <span class="jxr_string">"jauApco"</span>, <span class="jxr_string">"bpn(2,3)"</span>);
 <a class="jxr_linenumber" name="6486" href="#6486">6486</a>        vvd(astrom.bpn[2][2], 0.9999991386008323373, 1e-12,
 <a class="jxr_linenumber" name="6487" href="#6487">6487</a>                              <span class="jxr_string">"jauApco"</span>, <span class="jxr_string">"bpn(3,3)"</span>);
-<a class="jxr_linenumber" name="6488" href="#6488">6488</a>        vvd(astrom.along, -0.5278008060301974337, 1e-12,
+<a class="jxr_linenumber" name="6488" href="#6488">6488</a>        vvd(astrom.along, -0.5278008060295995734, 1e-12,
 <a class="jxr_linenumber" name="6489" href="#6489">6489</a>                          <span class="jxr_string">"jauApco"</span>, <span class="jxr_string">"along"</span>);
-<a class="jxr_linenumber" name="6490" href="#6490">6490</a>        vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
+<a class="jxr_linenumber" name="6490" href="#6490">6490</a>        vvd(astrom.xpl, 0.1133427418130752958e-5, 1e-17,
 <a class="jxr_linenumber" name="6491" href="#6491">6491</a>                        <span class="jxr_string">"jauApco"</span>, <span class="jxr_string">"xpl"</span>);
-<a class="jxr_linenumber" name="6492" href="#6492">6492</a>        vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
+<a class="jxr_linenumber" name="6492" href="#6492">6492</a>        vvd(astrom.ypl, 0.1453347595780646207e-5, 1e-17,
 <a class="jxr_linenumber" name="6493" href="#6493">6493</a>                        <span class="jxr_string">"jauApco"</span>, <span class="jxr_string">"ypl"</span>);
 <a class="jxr_linenumber" name="6494" href="#6494">6494</a>        vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
 <a class="jxr_linenumber" name="6495" href="#6495">6495</a>                         <span class="jxr_string">"jauApco"</span>, <span class="jxr_string">"sphi"</span>);
@@ -6507,7 +6507,7 @@
 <a class="jxr_linenumber" name="6497" href="#6497">6497</a>                         <span class="jxr_string">"jauApco"</span>, <span class="jxr_string">"cphi"</span>);
 <a class="jxr_linenumber" name="6498" href="#6498">6498</a>        vvd(astrom.diurab, 0, 0,
 <a class="jxr_linenumber" name="6499" href="#6499">6499</a>                           <span class="jxr_string">"jauApco"</span>, <span class="jxr_string">"diurab"</span>);
-<a class="jxr_linenumber" name="6500" href="#6500">6500</a>        vvd(astrom.eral, 2.617608903969802566, 1e-12,
+<a class="jxr_linenumber" name="6500" href="#6500">6500</a>        vvd(astrom.eral, 2.617608903970400427, 1e-12,
 <a class="jxr_linenumber" name="6501" href="#6501">6501</a>                         <span class="jxr_string">"jauApco"</span>, <span class="jxr_string">"eral"</span>);
 <a class="jxr_linenumber" name="6502" href="#6502">6502</a>        vvd(astrom.refa, 0.2014187790000000000e-3, 1e-15,
 <a class="jxr_linenumber" name="6503" href="#6503">6503</a>                         <span class="jxr_string">"jauApco"</span>, <span class="jxr_string">"refa"</span>);
@@ -6594,11 +6594,11 @@
 <a class="jxr_linenumber" name="6584" href="#6584">6584</a>                          <span class="jxr_string">"jauApco13"</span>, <span class="jxr_string">"bpn(2,3)"</span>);
 <a class="jxr_linenumber" name="6585" href="#6585">6585</a>    vvd(astrom.bpn[2][2], 0.9999991386008312212, 1e-12,
 <a class="jxr_linenumber" name="6586" href="#6586">6586</a>                          <span class="jxr_string">"jauApco13"</span>, <span class="jxr_string">"bpn(3,3)"</span>);
-<a class="jxr_linenumber" name="6587" href="#6587">6587</a>    vvd(astrom.along, -0.5278008060301974337, 1e-12,
+<a class="jxr_linenumber" name="6587" href="#6587">6587</a>    vvd(astrom.along, -0.5278008060295995733, 1e-12,
 <a class="jxr_linenumber" name="6588" href="#6588">6588</a>                      <span class="jxr_string">"jauApco13"</span>, <span class="jxr_string">"along"</span>);
-<a class="jxr_linenumber" name="6589" href="#6589">6589</a>    vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
+<a class="jxr_linenumber" name="6589" href="#6589">6589</a>    vvd(astrom.xpl, 0.1133427418130752958e-5, 1e-17,
 <a class="jxr_linenumber" name="6590" href="#6590">6590</a>                    <span class="jxr_string">"jauApco13"</span>, <span class="jxr_string">"xpl"</span>);
-<a class="jxr_linenumber" name="6591" href="#6591">6591</a>    vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
+<a class="jxr_linenumber" name="6591" href="#6591">6591</a>    vvd(astrom.ypl, 0.1453347595780646207e-5, 1e-17,
 <a class="jxr_linenumber" name="6592" href="#6592">6592</a>                    <span class="jxr_string">"jauApco13"</span>, <span class="jxr_string">"ypl"</span>);
 <a class="jxr_linenumber" name="6593" href="#6593">6593</a>    vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
 <a class="jxr_linenumber" name="6594" href="#6594">6594</a>                     <span class="jxr_string">"jauApco13"</span>, <span class="jxr_string">"sphi"</span>);
@@ -6606,7 +6606,7 @@
 <a class="jxr_linenumber" name="6596" href="#6596">6596</a>                     <span class="jxr_string">"jauApco13"</span>, <span class="jxr_string">"cphi"</span>);
 <a class="jxr_linenumber" name="6597" href="#6597">6597</a>    vvd(astrom.diurab, 0, 0,
 <a class="jxr_linenumber" name="6598" href="#6598">6598</a>                       <span class="jxr_string">"jauApco13"</span>, <span class="jxr_string">"diurab"</span>);
-<a class="jxr_linenumber" name="6599" href="#6599">6599</a>    vvd(astrom.eral, 2.617608909189066140, 1e-12,
+<a class="jxr_linenumber" name="6599" href="#6599">6599</a>    vvd(astrom.eral, 2.617608909189664000, 1e-12,
 <a class="jxr_linenumber" name="6600" href="#6600">6600</a>                     <span class="jxr_string">"jauApco13"</span>, <span class="jxr_string">"eral"</span>);
 <a class="jxr_linenumber" name="6601" href="#6601">6601</a>    vvd(astrom.refa, 0.2014187785940396921e-3, 1e-15,
 <a class="jxr_linenumber" name="6602" href="#6602">6602</a>                     <span class="jxr_string">"jauApco13"</span>, <span class="jxr_string">"refa"</span>);
@@ -6853,11 +6853,11 @@
 <a class="jxr_linenumber" name="6843" href="#6843">6843</a> 
 <a class="jxr_linenumber" name="6844" href="#6844">6844</a>    jauApio(sp, theta, elong, phi, hm, xp, yp, refa, refb, astrom);
 <a class="jxr_linenumber" name="6845" href="#6845">6845</a> 
-<a class="jxr_linenumber" name="6846" href="#6846">6846</a>    vvd(astrom.along, -0.5278008060301974337, 1e-12,
+<a class="jxr_linenumber" name="6846" href="#6846">6846</a>    vvd(astrom.along, -0.5278008060295995734, 1e-12,
 <a class="jxr_linenumber" name="6847" href="#6847">6847</a>                      <span class="jxr_string">"jauApio"</span>, <span class="jxr_string">"along"</span>);
-<a class="jxr_linenumber" name="6848" href="#6848">6848</a>    vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
+<a class="jxr_linenumber" name="6848" href="#6848">6848</a>    vvd(astrom.xpl, 0.1133427418130752958e-5, 1e-17,
 <a class="jxr_linenumber" name="6849" href="#6849">6849</a>                    <span class="jxr_string">"jauApio"</span>, <span class="jxr_string">"xpl"</span>);
-<a class="jxr_linenumber" name="6850" href="#6850">6850</a>    vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
+<a class="jxr_linenumber" name="6850" href="#6850">6850</a>    vvd(astrom.ypl, 0.1453347595780646207e-5, 1e-17,
 <a class="jxr_linenumber" name="6851" href="#6851">6851</a>                    <span class="jxr_string">"jauApio"</span>, <span class="jxr_string">"ypl"</span>);
 <a class="jxr_linenumber" name="6852" href="#6852">6852</a>    vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
 <a class="jxr_linenumber" name="6853" href="#6853">6853</a>                     <span class="jxr_string">"jauApio"</span>, <span class="jxr_string">"sphi"</span>);
@@ -6865,7 +6865,7 @@
 <a class="jxr_linenumber" name="6855" href="#6855">6855</a>                     <span class="jxr_string">"jauApio"</span>, <span class="jxr_string">"cphi"</span>);
 <a class="jxr_linenumber" name="6856" href="#6856">6856</a>    vvd(astrom.diurab, 0.5135843661699913529e-6, 1e-12,
 <a class="jxr_linenumber" name="6857" href="#6857">6857</a>                       <span class="jxr_string">"jauApio"</span>, <span class="jxr_string">"diurab"</span>);
-<a class="jxr_linenumber" name="6858" href="#6858">6858</a>    vvd(astrom.eral, 2.617608903969802566, 1e-12,
+<a class="jxr_linenumber" name="6858" href="#6858">6858</a>    vvd(astrom.eral, 2.617608903970400427, 1e-12,
 <a class="jxr_linenumber" name="6859" href="#6859">6859</a>                     <span class="jxr_string">"jauApio"</span>, <span class="jxr_string">"eral"</span>);
 <a class="jxr_linenumber" name="6860" href="#6860">6860</a>    vvd(astrom.refa, 0.2014187790000000000e-3, 1e-15,
 <a class="jxr_linenumber" name="6861" href="#6861">6861</a>                     <span class="jxr_string">"jauApio"</span>, <span class="jxr_string">"refa"</span>);
@@ -6908,11 +6908,11 @@
 <a class="jxr_linenumber" name="6898" href="#6898">6898</a>    jauApio13(utc1, utc2, dut1, elong, phi, hm, xp, yp,
 <a class="jxr_linenumber" name="6899" href="#6899">6899</a>                  phpa, tc, rh, wl, astrom);
 <a class="jxr_linenumber" name="6900" href="#6900">6900</a> 
-<a class="jxr_linenumber" name="6901" href="#6901">6901</a>    vvd(astrom.along, -0.5278008060301974337, 1e-12,
+<a class="jxr_linenumber" name="6901" href="#6901">6901</a>    vvd(astrom.along,  -0.5278008060295995733, 1e-12,
 <a class="jxr_linenumber" name="6902" href="#6902">6902</a>                      <span class="jxr_string">"jauApio13"</span>, <span class="jxr_string">"along"</span>);
-<a class="jxr_linenumber" name="6903" href="#6903">6903</a>    vvd(astrom.xpl, 0.1133427418174939329e-5, 1e-17,
+<a class="jxr_linenumber" name="6903" href="#6903">6903</a>    vvd(astrom.xpl, 0.1133427418130752958e-5, 1e-17,
 <a class="jxr_linenumber" name="6904" href="#6904">6904</a>                    <span class="jxr_string">"jauApio13"</span>, <span class="jxr_string">"xpl"</span>);
-<a class="jxr_linenumber" name="6905" href="#6905">6905</a>    vvd(astrom.ypl, 0.1453347595745898629e-5, 1e-17,
+<a class="jxr_linenumber" name="6905" href="#6905">6905</a>    vvd(astrom.ypl, 0.1453347595780646207e-5, 1e-17,
 <a class="jxr_linenumber" name="6906" href="#6906">6906</a>                    <span class="jxr_string">"jauApio13"</span>, <span class="jxr_string">"ypl"</span>);
 <a class="jxr_linenumber" name="6907" href="#6907">6907</a>    vvd(astrom.sphi, -0.9440115679003211329, 1e-12,
 <a class="jxr_linenumber" name="6908" href="#6908">6908</a>                     <span class="jxr_string">"jauApio13"</span>, <span class="jxr_string">"sphi"</span>);
@@ -6920,7 +6920,7 @@
 <a class="jxr_linenumber" name="6910" href="#6910">6910</a>                     <span class="jxr_string">"jauApio13"</span>, <span class="jxr_string">"cphi"</span>);
 <a class="jxr_linenumber" name="6911" href="#6911">6911</a>    vvd(astrom.diurab, 0.5135843661699913529e-6, 1e-12,
 <a class="jxr_linenumber" name="6912" href="#6912">6912</a>                       <span class="jxr_string">"jauApio13"</span>, <span class="jxr_string">"diurab"</span>);
-<a class="jxr_linenumber" name="6913" href="#6913">6913</a>    vvd(astrom.eral, 2.617608909189066140, 1e-12,
+<a class="jxr_linenumber" name="6913" href="#6913">6913</a>    vvd(astrom.eral, 2.617608909189664000, 1e-12,
 <a class="jxr_linenumber" name="6914" href="#6914">6914</a>                     <span class="jxr_string">"jauApio13"</span>, <span class="jxr_string">"eral"</span>);
 <a class="jxr_linenumber" name="6915" href="#6915">6915</a>    vvd(astrom.refa, 0.2014187785940396921e-3, 1e-15,
 <a class="jxr_linenumber" name="6916" href="#6916">6916</a>                     <span class="jxr_string">"jauApio13"</span>, <span class="jxr_string">"refa"</span>);
@@ -7128,11 +7128,11 @@
 <a class="jxr_linenumber" name="7118" href="#7118">7118</a>                  utc1, utc2, dut1, elong, phi, hm, xp, yp,
 <a class="jxr_linenumber" name="7119" href="#7119">7119</a>                  phpa, tc, rh, wl);
 <a class="jxr_linenumber" name="7120" href="#7120">7120</a> 
-<a class="jxr_linenumber" name="7121" href="#7121">7121</a>    vvd(ope.op.aob, 0.09251774485385390973, 1e-12, <span class="jxr_string">"jauAtco13"</span>, <span class="jxr_string">"aob"</span>);
-<a class="jxr_linenumber" name="7122" href="#7122">7122</a>    vvd(ope.op.zob, 1.407661405256671703, 1e-12, <span class="jxr_string">"jauAtco13"</span>, <span class="jxr_string">"zob"</span>);
-<a class="jxr_linenumber" name="7123" href="#7123">7123</a>    vvd(ope.op.hob, -0.09265154431430045141, 1e-12, <span class="jxr_string">"jauAtco13"</span>, <span class="jxr_string">"hob"</span>);
-<a class="jxr_linenumber" name="7124" href="#7124">7124</a>    vvd(ope.op.dob, 0.1716626560074556029, 1e-12, <span class="jxr_string">"jauAtco13"</span>, <span class="jxr_string">"dob"</span>);
-<a class="jxr_linenumber" name="7125" href="#7125">7125</a>    vvd(ope.op.rob, 2.710260453503366591, 1e-12, <span class="jxr_string">"jauAtco13"</span>, <span class="jxr_string">"rob"</span>);
+<a class="jxr_linenumber" name="7121" href="#7121">7121</a>    vvd(ope.op.aob, 0.9251774485485515207e-1, 1e-12, <span class="jxr_string">"jauAtco13"</span>, <span class="jxr_string">"aob"</span>);
+<a class="jxr_linenumber" name="7122" href="#7122">7122</a>    vvd(ope.op.zob, 1.407661405256499357, 1e-12, <span class="jxr_string">"jauAtco13"</span>, <span class="jxr_string">"zob"</span>);
+<a class="jxr_linenumber" name="7123" href="#7123">7123</a>    vvd(ope.op.hob, -0.9265154431529724692e-1, 1e-12, <span class="jxr_string">"jauAtco13"</span>, <span class="jxr_string">"hob"</span>);
+<a class="jxr_linenumber" name="7124" href="#7124">7124</a>    vvd(ope.op.dob, 0.1716626560072526200, 1e-12, <span class="jxr_string">"jauAtco13"</span>, <span class="jxr_string">"dob"</span>);
+<a class="jxr_linenumber" name="7125" href="#7125">7125</a>    vvd(ope.op.rob, 2.710260453504961012, 1e-12, <span class="jxr_string">"jauAtco13"</span>, <span class="jxr_string">"rob"</span>);
 <a class="jxr_linenumber" name="7126" href="#7126">7126</a>    vvd(ope.eo, -0.003020548354802412839, 1e-14, <span class="jxr_string">"jauAtco13"</span>, <span class="jxr_string">"eo"</span>);
 <a class="jxr_linenumber" name="7127" href="#7127">7127</a> 
 <a class="jxr_linenumber" name="7128" href="#7128">7128</a> }
@@ -7288,11 +7288,11 @@
 <a class="jxr_linenumber" name="7278" href="#7278">7278</a>                  xp, yp, phpa, tc, rh, wl
 <a class="jxr_linenumber" name="7279" href="#7279">7279</a>                  );
 <a class="jxr_linenumber" name="7280" href="#7280">7280</a> 
-<a class="jxr_linenumber" name="7281" href="#7281">7281</a>    vvd(o.aob, 0.09233952224794989993, 1e-12, <span class="jxr_string">"jauAtio13"</span>, <span class="jxr_string">"aob"</span>);
-<a class="jxr_linenumber" name="7282" href="#7282">7282</a>    vvd(o.zob, 1.407758704513722461, 1e-12, <span class="jxr_string">"jauAtio13"</span>, <span class="jxr_string">"zob"</span>);
-<a class="jxr_linenumber" name="7283" href="#7283">7283</a>    vvd(o.hob, -0.09247619879782006106, 1e-12, <span class="jxr_string">"jauAtio13"</span>, <span class="jxr_string">"hob"</span>);
-<a class="jxr_linenumber" name="7284" href="#7284">7284</a>    vvd(o.dob, 0.1717653435758265198, 1e-12, <span class="jxr_string">"jauAtio13"</span>, <span class="jxr_string">"dob"</span>);
-<a class="jxr_linenumber" name="7285" href="#7285">7285</a>    vvd(o.rob, 2.710085107986886201, 1e-12, <span class="jxr_string">"jauAtio13"</span>, <span class="jxr_string">"rob"</span>);
+<a class="jxr_linenumber" name="7281" href="#7281">7281</a>    vvd(o.aob, 0.9233952224895122499e-1, 1e-12, <span class="jxr_string">"jauAtio13"</span>, <span class="jxr_string">"aob"</span>);
+<a class="jxr_linenumber" name="7282" href="#7282">7282</a>    vvd(o.zob, 1.407758704513549991, 1e-12, <span class="jxr_string">"jauAtio13"</span>, <span class="jxr_string">"zob"</span>);
+<a class="jxr_linenumber" name="7283" href="#7283">7283</a>    vvd(o.hob, -0.9247619879881698140e-1, 1e-12, <span class="jxr_string">"jauAtio13"</span>, <span class="jxr_string">"hob"</span>);
+<a class="jxr_linenumber" name="7284" href="#7284">7284</a>    vvd(o.dob, 0.1717653435756234676, 1e-12, <span class="jxr_string">"jauAtio13"</span>, <span class="jxr_string">"dob"</span>);
+<a class="jxr_linenumber" name="7285" href="#7285">7285</a>    vvd(o.rob, 2.710085107988480746, 1e-12, <span class="jxr_string">"jauAtio13"</span>, <span class="jxr_string">"rob"</span>);
 <a class="jxr_linenumber" name="7286" href="#7286">7286</a> 
 <a class="jxr_linenumber" name="7287" href="#7287">7287</a> }
 <a class="jxr_linenumber" name="7288" href="#7288">7288</a> 
@@ -7333,11 +7333,11 @@
 <a class="jxr_linenumber" name="7323" href="#7323">7323</a> 
 <a class="jxr_linenumber" name="7324" href="#7324">7324</a>    ObservedPosition o = jauAtioq(ri, di, astrom);
 <a class="jxr_linenumber" name="7325" href="#7325">7325</a> 
-<a class="jxr_linenumber" name="7326" href="#7326">7326</a>    vvd(o.aob, 0.09233952224794989993, 1e-12, <span class="jxr_string">"jauAtioq"</span>, <span class="jxr_string">"aob"</span>);
-<a class="jxr_linenumber" name="7327" href="#7327">7327</a>    vvd(o.zob, 1.407758704513722461, 1e-12, <span class="jxr_string">"jauAtioq"</span>, <span class="jxr_string">"zob"</span>);
-<a class="jxr_linenumber" name="7328" href="#7328">7328</a>    vvd(o.hob, -0.09247619879782006106, 1e-12, <span class="jxr_string">"jauAtioq"</span>, <span class="jxr_string">"hob"</span>);
-<a class="jxr_linenumber" name="7329" href="#7329">7329</a>    vvd(o.dob, 0.1717653435758265198, 1e-12, <span class="jxr_string">"jauAtioq"</span>, <span class="jxr_string">"dob"</span>);
-<a class="jxr_linenumber" name="7330" href="#7330">7330</a>    vvd(o.rob, 2.710085107986886201, 1e-12, <span class="jxr_string">"jauAtioq"</span>, <span class="jxr_string">"rob"</span>);
+<a class="jxr_linenumber" name="7326" href="#7326">7326</a>    vvd(o.aob, 0.9233952224895122499e-1, 1e-12, <span class="jxr_string">"jauAtioq"</span>, <span class="jxr_string">"aob"</span>);
+<a class="jxr_linenumber" name="7327" href="#7327">7327</a>    vvd(o.zob, 1.407758704513549991, 1e-12, <span class="jxr_string">"jauAtioq"</span>, <span class="jxr_string">"zob"</span>);
+<a class="jxr_linenumber" name="7328" href="#7328">7328</a>    vvd(o.hob, -0.9247619879881698140e-1, 1e-12, <span class="jxr_string">"jauAtioq"</span>, <span class="jxr_string">"hob"</span>);
+<a class="jxr_linenumber" name="7329" href="#7329">7329</a>    vvd(o.dob, 0.1717653435756234676, 1e-12, <span class="jxr_string">"jauAtioq"</span>, <span class="jxr_string">"dob"</span>);
+<a class="jxr_linenumber" name="7330" href="#7330">7330</a>    vvd(o.rob, 2.710085107988480746, 1e-12, <span class="jxr_string">"jauAtioq"</span>, <span class="jxr_string">"rob"</span>);
 <a class="jxr_linenumber" name="7331" href="#7331">7331</a> 
 <a class="jxr_linenumber" name="7332" href="#7332">7332</a> }
 <a class="jxr_linenumber" name="7333" href="#7333">7333</a> 
@@ -7377,22 +7377,22 @@
 <a class="jxr_linenumber" name="7367" href="#7367">7367</a>    SphericalCoordinate oc = jauAtoc13 ( <span class="jxr_string">"R"</span>, ob1, ob2, utc1, utc2, dut1,
 <a class="jxr_linenumber" name="7368" href="#7368">7368</a>                    elong, phi, hm, xp, yp, phpa, tc, rh, wl
 <a class="jxr_linenumber" name="7369" href="#7369">7369</a>                    );
-<a class="jxr_linenumber" name="7370" href="#7370">7370</a>    vvd(oc.alpha, 2.709956744660731630, 1e-12, <span class="jxr_string">"jauAtoc13"</span>, <span class="jxr_string">"R/rc"</span>);
-<a class="jxr_linenumber" name="7371" href="#7371">7371</a>    vvd(oc.delta, 0.1741696500896438967, 1e-12, <span class="jxr_string">"jauAtoc13"</span>, <span class="jxr_string">"R/dc"</span>);
+<a class="jxr_linenumber" name="7370" href="#7370">7370</a>    vvd(oc.alpha, 2.709956744659136129, 1e-12, <span class="jxr_string">"jauAtoc13"</span>, <span class="jxr_string">"R/rc"</span>);
+<a class="jxr_linenumber" name="7371" href="#7371">7371</a>    vvd(oc.delta, 0.1741696500898471362, 1e-12, <span class="jxr_string">"jauAtoc13"</span>, <span class="jxr_string">"R/dc"</span>);
 <a class="jxr_linenumber" name="7372" href="#7372">7372</a> 
 <a class="jxr_linenumber" name="7373" href="#7373">7373</a>    ob1 = -0.09247619879782006106;
 <a class="jxr_linenumber" name="7374" href="#7374">7374</a>    ob2 = 0.1717653435758265198;
 <a class="jxr_linenumber" name="7375" href="#7375">7375</a>    oc = jauAtoc13 ( <span class="jxr_string">"H"</span>, ob1, ob2, utc1, utc2, dut1,
 <a class="jxr_linenumber" name="7376" href="#7376">7376</a>                    elong, phi, hm, xp, yp, phpa, tc, rh, wl);
-<a class="jxr_linenumber" name="7377" href="#7377">7377</a>    vvd(oc.alpha, 2.709956744660731630, 1e-12, <span class="jxr_string">"jauAtoc13"</span>, <span class="jxr_string">"H/rc"</span>);
-<a class="jxr_linenumber" name="7378" href="#7378">7378</a>    vvd(oc.delta, 0.1741696500896438967, 1e-12, <span class="jxr_string">"jauAtoc13"</span>, <span class="jxr_string">"H/dc"</span>);
+<a class="jxr_linenumber" name="7377" href="#7377">7377</a>    vvd(oc.alpha, 2.709956744659734086, 1e-12, <span class="jxr_string">"jauAtoc13"</span>, <span class="jxr_string">"H/rc"</span>);
+<a class="jxr_linenumber" name="7378" href="#7378">7378</a>    vvd(oc.delta, 0.1741696500898471362, 1e-12, <span class="jxr_string">"jauAtoc13"</span>, <span class="jxr_string">"H/dc"</span>);
 <a class="jxr_linenumber" name="7379" href="#7379">7379</a> 
 <a class="jxr_linenumber" name="7380" href="#7380">7380</a>    ob1 = 0.09233952224794989993;
 <a class="jxr_linenumber" name="7381" href="#7381">7381</a>    ob2 = 1.407758704513722461;
 <a class="jxr_linenumber" name="7382" href="#7382">7382</a>    oc = jauAtoc13 ( <span class="jxr_string">"A"</span>, ob1, ob2, utc1, utc2, dut1,
 <a class="jxr_linenumber" name="7383" href="#7383">7383</a>                    elong, phi, hm, xp, yp, phpa, tc, rh, wl);
-<a class="jxr_linenumber" name="7384" href="#7384">7384</a>    vvd(oc.alpha, 2.709956744660731630, 1e-12, <span class="jxr_string">"jauAtoc13"</span>, <span class="jxr_string">"A/rc"</span>);
-<a class="jxr_linenumber" name="7385" href="#7385">7385</a>    vvd(oc.delta, 0.1741696500896438970, 1e-12, <span class="jxr_string">"jauAtoc13"</span>, <span class="jxr_string">"A/dc"</span>);
+<a class="jxr_linenumber" name="7384" href="#7384">7384</a>    vvd(oc.alpha, 2.709956744659734086, 1e-12, <span class="jxr_string">"jauAtoc13"</span>, <span class="jxr_string">"A/rc"</span>);
+<a class="jxr_linenumber" name="7385" href="#7385">7385</a>    vvd(oc.delta, 0.1741696500898471366, 1e-12, <span class="jxr_string">"jauAtoc13"</span>, <span class="jxr_string">"A/dc"</span>);
 <a class="jxr_linenumber" name="7386" href="#7386">7386</a> 
 <a class="jxr_linenumber" name="7387" href="#7387">7387</a> }
 <a class="jxr_linenumber" name="7388" href="#7388">7388</a> 
@@ -7431,22 +7431,22 @@
 <a class="jxr_linenumber" name="7421" href="#7421">7421</a>    ob2 = 0.1717653435758265198;
 <a class="jxr_linenumber" name="7422" href="#7422">7422</a>    SphericalCoordinate co = jauAtoi13( <span class="jxr_string">"R"</span>, ob1, ob2, utc1, utc2, dut1,
 <a class="jxr_linenumber" name="7423" href="#7423">7423</a>                    elong, phi, hm, xp, yp, phpa, tc, rh, wl);
-<a class="jxr_linenumber" name="7424" href="#7424">7424</a>    vvd(co.alpha, 2.710121574449135955, 1e-12, <span class="jxr_string">"jauAtoi13"</span>, <span class="jxr_string">"R/ri"</span>);
-<a class="jxr_linenumber" name="7425" href="#7425">7425</a>    vvd(co.delta, 0.1729371839114567725, 1e-12, <span class="jxr_string">"jauAtoi13"</span>, <span class="jxr_string">"R/di"</span>);
+<a class="jxr_linenumber" name="7424" href="#7424">7424</a>    vvd(co.alpha, 2.710121574447540810, 1e-12, <span class="jxr_string">"jauAtoi13"</span>, <span class="jxr_string">"R/ri"</span>);
+<a class="jxr_linenumber" name="7425" href="#7425">7425</a>    vvd(co.delta, 0.1729371839116608778, 1e-12, <span class="jxr_string">"jauAtoi13"</span>, <span class="jxr_string">"R/di"</span>);
 <a class="jxr_linenumber" name="7426" href="#7426">7426</a> 
 <a class="jxr_linenumber" name="7427" href="#7427">7427</a>    ob1 = -0.09247619879782006106;
 <a class="jxr_linenumber" name="7428" href="#7428">7428</a>    ob2 = 0.1717653435758265198;
 <a class="jxr_linenumber" name="7429" href="#7429">7429</a>    co = jauAtoi13( <span class="jxr_string">"H"</span>, ob1, ob2, utc1, utc2, dut1,
 <a class="jxr_linenumber" name="7430" href="#7430">7430</a>                    elong, phi, hm, xp, yp, phpa, tc, rh, wl);
-<a class="jxr_linenumber" name="7431" href="#7431">7431</a>    vvd(co.alpha, 2.710121574449135955, 1e-12, <span class="jxr_string">"jauAtoi13"</span>, <span class="jxr_string">"H/ri"</span>);
-<a class="jxr_linenumber" name="7432" href="#7432">7432</a>    vvd(co.delta, 0.1729371839114567725, 1e-12, <span class="jxr_string">"jauAtoi13"</span>, <span class="jxr_string">"H/di"</span>);
+<a class="jxr_linenumber" name="7431" href="#7431">7431</a>    vvd(co.alpha, 2.710121574448138676, 1e-12, <span class="jxr_string">"jauAtoi13"</span>, <span class="jxr_string">"H/ri"</span>);
+<a class="jxr_linenumber" name="7432" href="#7432">7432</a>    vvd(co.delta, 0.1729371839116608778, 1e-12, <span class="jxr_string">"jauAtoi13"</span>, <span class="jxr_string">"H/di"</span>);
 <a class="jxr_linenumber" name="7433" href="#7433">7433</a> 
 <a class="jxr_linenumber" name="7434" href="#7434">7434</a>    ob1 = 0.09233952224794989993;
 <a class="jxr_linenumber" name="7435" href="#7435">7435</a>    ob2 = 1.407758704513722461;
 <a class="jxr_linenumber" name="7436" href="#7436">7436</a>    co = jauAtoi13( <span class="jxr_string">"A"</span>, ob1, ob2, utc1, utc2, dut1,
 <a class="jxr_linenumber" name="7437" href="#7437">7437</a>                    elong, phi, hm, xp, yp, phpa, tc, rh, wl);
-<a class="jxr_linenumber" name="7438" href="#7438">7438</a>    vvd(co.alpha, 2.710121574449135955, 1e-12, <span class="jxr_string">"jauAtoi13"</span>, <span class="jxr_string">"A/ri"</span>);
-<a class="jxr_linenumber" name="7439" href="#7439">7439</a>    vvd(co.delta, 0.1729371839114567728, 1e-12, <span class="jxr_string">"jauAtoi13"</span>, <span class="jxr_string">"A/di"</span>);
+<a class="jxr_linenumber" name="7438" href="#7438">7438</a>    vvd(co.alpha, 2.710121574448138676, 1e-12, <span class="jxr_string">"jauAtoi13"</span>, <span class="jxr_string">"A/ri"</span>);
+<a class="jxr_linenumber" name="7439" href="#7439">7439</a>    vvd(co.delta, 0.1729371839116608781, 1e-12, <span class="jxr_string">"jauAtoi13"</span>, <span class="jxr_string">"A/di"</span>);
 <a class="jxr_linenumber" name="7440" href="#7440">7440</a> 
 <a class="jxr_linenumber" name="7441" href="#7441">7441</a> }
 <a class="jxr_linenumber" name="7442" href="#7442">7442</a> 
@@ -7486,25 +7486,25 @@
 <a class="jxr_linenumber" name="7476" href="#7476">7476</a>    ob1 = 2.710085107986886201;
 <a class="jxr_linenumber" name="7477" href="#7477">7477</a>    ob2 = 0.1717653435758265198;
 <a class="jxr_linenumber" name="7478" href="#7478">7478</a>    SphericalCoordinate co = jauAtoiq(<span class="jxr_string">"R"</span>, ob1, ob2, astrom);
-<a class="jxr_linenumber" name="7479" href="#7479">7479</a>    vvd(co.alpha, 2.710121574449135955, 1e-12,
+<a class="jxr_linenumber" name="7479" href="#7479">7479</a>    vvd(co.alpha, 2.710121574447540810, 1e-12,
 <a class="jxr_linenumber" name="7480" href="#7480">7480</a>            <span class="jxr_string">"jauAtoiq"</span>, <span class="jxr_string">"R/ri"</span>);
-<a class="jxr_linenumber" name="7481" href="#7481">7481</a>    vvd(co.delta, 0.1729371839114567725, 1e-12,
+<a class="jxr_linenumber" name="7481" href="#7481">7481</a>    vvd(co.delta, 0.17293718391166087785, 1e-12,
 <a class="jxr_linenumber" name="7482" href="#7482">7482</a>            <span class="jxr_string">"jauAtoiq"</span>, <span class="jxr_string">"R/di"</span>);
 <a class="jxr_linenumber" name="7483" href="#7483">7483</a> 
 <a class="jxr_linenumber" name="7484" href="#7484">7484</a>    ob1 = -0.09247619879782006106;
 <a class="jxr_linenumber" name="7485" href="#7485">7485</a>    ob2 = 0.1717653435758265198;
 <a class="jxr_linenumber" name="7486" href="#7486">7486</a>    co = jauAtoiq(<span class="jxr_string">"H"</span>, ob1, ob2, astrom);
-<a class="jxr_linenumber" name="7487" href="#7487">7487</a>    vvd(co.alpha, 2.710121574449135955, 1e-12,
+<a class="jxr_linenumber" name="7487" href="#7487">7487</a>    vvd(co.alpha, 2.710121574448138676, 1e-12,
 <a class="jxr_linenumber" name="7488" href="#7488">7488</a>            <span class="jxr_string">"jauAtoiq"</span>, <span class="jxr_string">"H/ri"</span>);
-<a class="jxr_linenumber" name="7489" href="#7489">7489</a>    vvd(co.delta, 0.1729371839114567725, 1e-12,
+<a class="jxr_linenumber" name="7489" href="#7489">7489</a>    vvd(co.delta, 0.1729371839116608778, 1e-12,
 <a class="jxr_linenumber" name="7490" href="#7490">7490</a>            <span class="jxr_string">"jauAtoiq"</span>, <span class="jxr_string">"H/di"</span>);
 <a class="jxr_linenumber" name="7491" href="#7491">7491</a> 
 <a class="jxr_linenumber" name="7492" href="#7492">7492</a>    ob1 = 0.09233952224794989993;
 <a class="jxr_linenumber" name="7493" href="#7493">7493</a>    ob2 = 1.407758704513722461;
 <a class="jxr_linenumber" name="7494" href="#7494">7494</a>    co = jauAtoiq(<span class="jxr_string">"A"</span>, ob1, ob2, astrom);
-<a class="jxr_linenumber" name="7495" href="#7495">7495</a>    vvd(co.alpha, 2.710121574449135955, 1e-12,
+<a class="jxr_linenumber" name="7495" href="#7495">7495</a>    vvd(co.alpha, 2.710121574448138676, 1e-12,
 <a class="jxr_linenumber" name="7496" href="#7496">7496</a>            <span class="jxr_string">"jauAtoiq"</span>, <span class="jxr_string">"A/ri"</span>);
-<a class="jxr_linenumber" name="7497" href="#7497">7497</a>    vvd(co.delta, 0.1729371839114567728, 1e-12,
+<a class="jxr_linenumber" name="7497" href="#7497">7497</a>    vvd(co.delta, 0.1729371839116608781, 1e-12,
 <a class="jxr_linenumber" name="7498" href="#7498">7498</a>            <span class="jxr_string">"jauAtoiq"</span>, <span class="jxr_string">"A/di"</span>);
 <a class="jxr_linenumber" name="7499" href="#7499">7499</a> 
 <a class="jxr_linenumber" name="7500" href="#7500">7500</a> }
