@@ -38,16 +38,16 @@ import static java.lang.Math.pow;
  */
 public class JSOFA {
     /** tracked IAU SOFA release {@value}. */
-    public final static String SOFA_RELEASE = "2021-01-25";
+    public final static String SOFA_RELEASE = "2021-05-12";
     
     /** JSOFA release {@value}*/
-    public final static String JSOFA_RELEASE = "20210125";
+    public final static String JSOFA_RELEASE = "20210512";
 
     /** tracked IAU SOFA revision {@value}. */
-    public final static String SOFA_REVISION = "17a";
+    public final static String SOFA_REVISION = "18";
 
     /** Release year for this version of jauDat {@value} */
-public final static int IYV = 2020;
+public final static int IYV = 2021;
     /** The latest confirmed omission of a leap second form IERS */
 public final static JulianDate latestConfirmedNoLeapSecondChange;
 static {
@@ -10245,7 +10245,7 @@ public static class SphericalCoordinateEO {
     */
     public static double jauGst06a(double uta, double utb, double tta, double ttb)
     {
-       double rnpb[][] = new double[3][3], gst;
+       double rnpb[][], gst;
 
 
     /* Classical nutation x precession x bias matrix, IAU 2000A. */
@@ -10359,7 +10359,7 @@ public static class SphericalCoordinateEO {
     *    @param pxh     double    parallax (arcsec)
     *    @param rvh     double    radial velocity (km/s, positive = receding)
     *
-    *  @return  (all FK5, equinox J2000.0, epoch J2000.0):
+    *  @return cc CatalogCoords all FK5, equinox J2000.0, epoch J2000.0:
     *
     * <p>Notes:
     * <ol>
@@ -10457,11 +10457,8 @@ public static class SphericalCoordinateEO {
     *     @param date2 double     TDB date (Note 1) 
     *
     * FIXME original did not return the parallax and radial velocity of the CatalogCoords type.
-    *  Returned (all FK5, equinox J2000.0, date date1+date2):
-    *     r5            double    RA (radians)
-    *     d5            double    Dec (radians)
-    *     dr5           double    FK5 RA proper motion (rad/year, Note 4)
-    *     dd5           double    Dec proper motion (rad/year, Note 4)
+    *  @return cc CatalogCoords (all FK5, equinox J2000.0, date date1+date2)
+    *        RA (radians),  Dec (radians), FK5 RA proper motion (rad/year, Note 4), Dec proper motion (rad/year, Note 4)
     *
     * <p>Notes:
     * <ol>
@@ -10592,15 +10589,30 @@ public static class SphericalCoordinateEO {
     */
     public static void jauIr(double r[][])
     {
-       jauZr(r);
-       r[0][0] = 1.0;
-       r[1][1] = 1.0;
-       r[2][2] = 1.0;
+        jauZr(r);
+        r[0][0] = 1.0;
+        r[1][1] = 1.0;
+        r[2][2] = 1.0;
 
-       return;
+        return;
 
-        }
-    
+    }
+
+    /**
+     * return a new r-matrix as the identity matrix.
+     * This is a convenience method that is an 
+     * overload of the official SOFA API {@link #jauIr(double[][])} that does not require 
+     * the vector to be passed in.
+     * @return r        double[3][3]  
+     */
+    public static double[][] jauIr()
+    {
+        double [][] r = new double[3][3];
+        jauZr(r);
+        return r ;
+
+    }
+
 
     /**
     *  Julian Date to Gregorian year, month, day, and fraction of a day.
@@ -10621,10 +10633,9 @@ public static class SphericalCoordinateEO {
     *     fd        double   fraction of day
     *
     * <!-- Returned (function value): -->
-    *  @return int      status:
-    *                           0 = OK
-    *                          -1 = unacceptable date (Note 3)
+    *  @return Calendar the date represented in Java. 
     *
+    *@throws JSOFAIllegalParameter unacceptable date (Note 3)
     * <p>Notes:
     * <ol>
     *
@@ -15017,14 +15028,17 @@ public static class SphericalCoordinateEO {
     
 
     /**
-    *<p>This function is derived from the International Astronomical Union's
-    *  SOFA (Standards Of Fundamental Astronomy) software collection.
-    *
-    *<p>Status:  support function.
     *
     *  Approximate heliocentric position and velocity of a nominated major
     *  planet:  Mercury, Venus, EMB, Mars, Jupiter, Saturn, Uranus or
     *  Neptune (but not the Earth itself).
+    *  
+    *  n.b. Not IAU-endorsed and without canonical status.
+    *  
+    *<p>This function is derived from the International Astronomical Union's
+    *  SOFA (Standards Of Fundamental Astronomy) software collection.
+    *
+    *<p>Status:  support function.
     *
     *<!-- Given: -->
     *     @param date1   double        TDB date part A (Note 1)
@@ -15033,13 +15047,8 @@ public static class SphericalCoordinateEO {
     *                                  5=Jupiter,  6=Saturn,  7=Uranus, 8=Neptune)
     *
     *  Returned (argument):
-    *     @param  pv     double[2][3] (returned) planet p,v (heliocentric, J2000.0, au,au/d)
+    *     @return  pv     double[2][3] (returned) planet p,v (heliocentric, J2000.0, au,au/d)
     *
-    * <!-- Returned (function value): -->
-    *  @return int          status: -1 = illegal NP (outside 1-8)
-    *                                  0 = OK
-    *                                 +1 = warning: year outside 1000-3000
-    *                                 +2 = warning: failed to converge
     *
     * <p>Notes:
     * <ol>
@@ -15065,8 +15074,7 @@ public static class SphericalCoordinateEO {
     *     accuracy of the present algorithm is such that any of the methods
     *     is satisfactory.
     *
-    * <li> If an np value outside the range 1-8 is supplied, an error status
-    *     (function value -1) is returned and the pv vector set to zeroes.
+    * <li> If an np value outside the range 1-8 is supplied, an exception is thrown.
     *
     * <li> For np=3 the result is for the Earth-Moon Barycenter.  To obtain
     *     the heliocentric position and velocity of the Earth, use instead
@@ -15175,13 +15183,15 @@ public static class SphericalCoordinateEO {
     *              Astron. Astrophys. 282, 663 (1994).
     *
     *@version 2009 December 17
+    * @throws JSOFAIllegalParameter for a bad np (planet number)
     *
     *  @since Release 20101201
     *
     *  <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
     */
-    public static int jauPlan94(double date1, double date2, int np, double pv[][])
+    public static double[][] jauPlan94(double date1, double date2, int np) throws JSOFAIllegalParameter
     {
+       double pv[][] = new double[2][3];
     /* Gaussian constant */
        final double GK = 0.017202098950;
 
@@ -15360,14 +15370,7 @@ public static class SphericalCoordinateEO {
 
     /* Validate the planet number. */
        if ((np < 1) || (np > 8)) {
-          jstat = -1;
-
-       /* Reset the result in case of failure. */
-          for (k = 0; k < 2; k++) {
-             for (i = 0; i < 3; i++) {
-                pv[k][i] = 0.0;
-             }
-          }
+          throw new JSOFAIllegalParameter("planet number out of range", -1);
 
        } else {
 
@@ -15379,6 +15382,7 @@ public static class SphericalCoordinateEO {
 
        /* OK status unless remote date. */
           jstat = abs(t) <= 1.0 ? 0 : 1;
+       // do not signal as error..   if(jstat != 0) throw new JSOFAIllegalParameter("Date too remote", jstat);
 
        /* Compute the mean elements. */
           da = a[np][0] +
@@ -15476,8 +15480,8 @@ public static class SphericalCoordinateEO {
 
        }
 
-    /* Return the status. */
-       return jstat;
+    /* Return the value. */
+       return pv;
 
         }
     
@@ -17534,10 +17538,8 @@ public static class SphericalCoordinateEO {
     * <!-- Returned (function value): -->
     *  @return catalogue value
     *  
-    *  int            status:
-    *                              0 = OK
-    *                             -1 = superluminal speed (Note 5)
-    *                             -2 = null position vector
+    * 
+    * @throws    JSOFAInternalError  superluminal speed (Note 5), or null position vector
     *
     * <p>Notes:
     * <ol>
@@ -20585,8 +20587,6 @@ public static class SphericalCoordinateEO {
      *<!-- Returned:-->
      *     @return      double  angle in radians
      *@throws JSOFAIllegalParameter illegal parameter of some form
-     *  Returned (function value):
-     *               int     status:  0 = OK
      *                                1 = ihour outside range 0-23
      *                                2 = imin outside range 0-59
      *                                3 = sec outside range 0-59.999...
@@ -20659,7 +20659,7 @@ public static class SphericalCoordinateEO {
      *@since SOFA release 2010-12-01
      *
      *  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
-     * @throws JSOFAIllegalParameter 
+     * @throws JSOFAIllegalParameter whne the inputs outside range - hour outside range 0-23, imin outside range 0-59, sec outside range 0-59.999... 
      */
     public static double jauTf2d(char s, int ihour, int imin, double sec) throws JSOFAIllegalParameter
     {
@@ -22859,7 +22859,7 @@ public static class SphericalCoordinateEO {
        *@since SOFA release 2010-12-01
        *
        *  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
-       * @throws JSOFAIllegalParameter 
+       * @throws JSOFAIllegalParameter unacceptable date
        * @throws JSOFAInternalError an internal error has occured
        */
       public static JulianDate jauUt1utc(double ut11, double ut12, double dut1) throws JSOFAIllegalParameter, JSOFAInternalError
@@ -23003,7 +23003,7 @@ public static class SphericalCoordinateEO {
        *
        *  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError an internal error has occured
-     * @throws JSOFAIllegalParameter 
+     * @throws JSOFAIllegalParameter unaccaptable date
        *
        */
       public static JulianDate jauUtctai(double utc1, double utc2) throws JSOFAIllegalParameter, JSOFAInternalError
@@ -23132,7 +23132,7 @@ public static class SphericalCoordinateEO {
        *
        *  <!-- Copyright (C) 2010 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError an internal error has occured
-     * @throws JSOFAIllegalParameter 
+     * @throws JSOFAIllegalParameter unaccepatble date
        */
       public static JulianDate jauUtcut1(double utc1, double utc2, double dut1) throws JSOFAIllegalParameter, JSOFAInternalError
       {
@@ -24586,8 +24586,21 @@ public static class SphericalCoordinateEO {
 
        return;
 
-        }
-    
+    }
+    /**
+     * Return Zero p-vector. This is a convenience method that is an 
+     * overload of the official SOFA API {@link #jauZp(double[])} that does not require 
+     * the vector to be passed in.
+     * 
+     * @return double[3] a zero vector.
+     *
+     */
+    public static double[] jauZp()
+    {
+        double p[] = new double[3];
+        jauZp(p);
+        return p;
+    }
 
     /**
     *  Zero a pv-vector.
@@ -24617,6 +24630,22 @@ public static class SphericalCoordinateEO {
        return;
 
         }
+    
+    /**
+     *  A Zero pv-vector.
+     *  
+     * This is a convenience method that is an 
+     * overload of the official SOFA API {@link #jauZpv(double[][])} that does not require 
+     * the vector to be passed in.
+     *  
+     * @return pv    double[2][3]  pv-vector
+     */
+    public static double[][] jauZpv() {
+        double pv[][] = new double[2][3];
+        jauZpv(pv);
+        return pv;
+    }
+
     
 
     /**
@@ -24649,8 +24678,22 @@ public static class SphericalCoordinateEO {
 
        return;
 
-        }
-    
+     }
+     /**
+      * Initialize an r-matrix to the null matrix. 
+      * 
+      * This is a convenience method that is an 
+     * overload of the official SOFA API {@link #jauZr(double[][])} that does not require 
+     * the vector to be passed in.
+     * @return null r matrix.
+     */
+    public static double[][] jauZr()
+     {
+         double r[][] = new double[2][3];
+         jauZr(r);
+         return r;
+     }
+   
 
     /**
      * returns the first argument modulo the second.
@@ -25460,7 +25503,7 @@ public static class SphericalCoordinateEO {
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError an internal error has occured
-     * @throws JSOFAIllegalParameter 
+     * @throws JSOFAIllegalParameter unacceptable date
      */
     public static void jauApco(double date1, double date2,
             double ebpv[][], double ehp[],
@@ -25695,7 +25738,7 @@ public static class SphericalCoordinateEO {
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError an internal error has occured
-     * @throws JSOFAIllegalParameter 
+     * @throws JSOFAIllegalParameter unacceptable date.
      */
     public static double jauApco13(double utc1, double utc2, double dut1,
             double elong, double phi, double hm, double xp, double yp,
@@ -26341,7 +26384,7 @@ public static class SphericalCoordinateEO {
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError an internal error has occured
-     * @throws JSOFAIllegalParameter 
+     * @throws JSOFAIllegalParameter unacceptable date.
      */
     public static void jauApio(double sp, double theta,
             double elong, double phi, double hm, double xp, double yp,
@@ -26547,7 +26590,7 @@ public static class SphericalCoordinateEO {
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError an internal error has occured
-     * @throws JSOFAIllegalParameter 
+     * @throws JSOFAIllegalParameter unacceptable date.
      */
     public static void jauApio13(double utc1, double utc2, double dut1,
             double elong, double phi, double hm, double xp, double yp,
@@ -27132,7 +27175,7 @@ public static class SphericalCoordinateEO {
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError an internal error has occured
-     * @throws JSOFAIllegalParameter 
+     * @throws JSOFAIllegalParameter unacceptable date.
      */
     public static ObservedPositionEO jauAtco13(double rc, double dc,
             double pr, double pd, double px, double rv,
@@ -27774,7 +27817,7 @@ public static class SphericalCoordinateEO {
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError an internal error has occured
-     * @throws JSOFAIllegalParameter 
+     * @throws JSOFAIllegalParameter unacceptable date.
      */
     public static ObservedPosition jauAtio13(double ri, double di,
             double utc1, double utc2, double dut1,
@@ -28122,7 +28165,7 @@ public static class SphericalCoordinateEO {
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError an internal error has occured
-     * @throws JSOFAIllegalParameter 
+     * @throws JSOFAIllegalParameter unacceptable date.
      */
     public static SphericalCoordinate jauAtoc13(String type, double ob1, double ob2,
             double utc1, double utc2, double dut1,
@@ -28294,7 +28337,7 @@ public static class SphericalCoordinateEO {
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError an internal error has occured
-     * @throws JSOFAIllegalParameter 
+     * @throws JSOFAIllegalParameter unacceptable date.
      */
     public static SphericalCoordinate jauAtoi13(String type, double ob1, double ob2,
             double utc1, double utc2, double dut1,
@@ -29126,7 +29169,7 @@ public static class SphericalCoordinateEO {
      *
      *  <!-- Copyright (C) 2013 IAU SOFA Board.  See notes at end. -->
      * @throws JSOFAInternalError an internal error has occured
-     * @throws JSOFAIllegalParameter 
+     * @throws JSOFAIllegalParameter unacceptable date.
      */
     public static double [][] jauPvtob(double elong, double phi, double hm,
             double xp, double yp, double sp, double theta
@@ -29153,7 +29196,7 @@ public static class SphericalCoordinateEO {
      * @param sp       double        the TIO locator s' (radians, Note 2)
      * @param theta    double        Earth rotation angle (radians, Note 3)
      * @return pv       double[2][3]   <b>Returned</b> position/velocity vector (m, m/s, CIRS)
-     * @throws JSOFAIllegalParameter
+     * @throws JSOFAIllegalParameter unacceptable date.
      * @throws JSOFAInternalError an internal error has occured
      */
     public static double [][] jauPvtob(double xyzm[],
@@ -29494,8 +29537,8 @@ public static class SphericalCoordinateEO {
     *
     *  P = 192.85948    right ascension of the Galactic north pole in ICRS
     *  Q =  27.12825    declination of the Galactic north pole in ICRS
-    *  R =  32.93192    longitude of the ascending node of the Galactic
-    *                   plane on the ICRS equator
+    *  R =  32.93192    Galactic longitude of the ascending node of
+    *                   the Galactic equator on the ICRS equator
     *
     *  ICRS to galactic rotation matrix, obtained by computing
     *  R_3(-R) R_1(pi/2-Q) R_3(pi/2+P) to the full precision shown:
@@ -30843,6 +30886,7 @@ public static class SphericalCoordinateEO {
          * @param sol1
          * @param sol2
          * @param flag
+
          */
         public TangentPointSolution(SphericalCoordinate sol1,
                 SphericalCoordinate sol2, int flag) {
@@ -32156,10 +32200,729 @@ public static class SphericalCoordinateEO {
         return cc;
 
     }
-}
 
 /*
- * Copyright © 2019 Paul Harrison, University of Manchester.
+* Coefficients for Moon longitude and distance series
+*/
+   private static class Termlr {
+      int nd;           /* multiple of D  in argument           */
+      int nem;          /*     "    "  M   "    "               */
+      int nemp;         /*     "    "  M'  "    "               */
+      int nf;           /*     "    "  F   "    "               */
+      double coefl;     /* coefficient of L sine argument (deg) */
+      double coefr;     /* coefficient of R cosine argument (m) */
+    public Termlr(int nd, int nem, int nemp, int nf, double coefl,
+            double coefr) {
+        this.nd = nd;
+        this.nem = nem;
+        this.nemp = nemp;
+        this.nf = nf;
+        this.coefl = coefl;
+        this.coefr = coefr;
+    }
+   };
+
+/*
+* Coefficients for Moon latitude series
+*/
+   private static class Termb {
+      int nd;           /* multiple of D  in argument           */
+      int nem;          /*     "    "  M   "    "               */
+      int nemp;         /*     "    "  M'  "    "               */
+      int nf;           /*     "    "  F   "    "               */
+      double coefb;     /* coefficient of B sine argument (deg) */
+    public Termb(int nd, int nem, int nemp, int nf, double coefb) {
+        this.nd = nd;
+        this.nem = nem;
+        this.nemp = nemp;
+        this.nf = nf;
+        this.coefb = coefb;
+    }
+   };
+
+
+   /**
+    *
+    *  Approximate geocentric position and velocity of the Moon.
+    *
+    *  This function is part of the International Astronomical Union's
+    *  SOFA (Standards Of Fundamental Astronomy) software collection.
+    *
+    *  <p>Status:  support function.
+    *
+    *  <p>n.b. Not IAU-endorsed and without canonical status.
+    *
+    *  <!-- Given: -->
+    *  @param   date1  double         TT date part A (Notes 1,4)
+    *  @param   date2  double         TT date part B (Notes 1,4)
+    *
+    *  <!-- Returned: -->
+    *  @return   pv     double[2][3]   Moon p,v, GCRS (AU, AU/d, Note 5)
+    *
+    *  <p>Notes:
+    *  <ol>
+    *  <li>The TT date date1+date2 is a Julian Date, apportioned in any
+    *     convenient way between the two arguments.  For example,
+    *     JD(TT)=2450123.7 could be expressed in any of these ways, among
+    *     others:
+    *
+    *            date1          date2
+    *
+    *         2450123.7           0.0       (JD method)
+    *         2451545.0       -1421.3       (J2000 method)
+    *         2400000.5       50123.2       (MJD method)
+    *         2450123.5           0.2       (date &amp; time method)
+    *
+    *     The JD method is the most natural and convenient to use in cases
+    *     where the loss of several decimal digits of resolution is
+    *     acceptable.  The J2000 method is best matched to the way the
+    *     argument is handled internally and will deliver the optimum
+    *     resolution.  The MJD method and the date &amp; time methods are both
+    *     good compromises between resolution and convenience.  The limited
+    *     accuracy of the present algorithm is such that any of the methods
+    *     is satisfactory.
+    *
+    *  <li> This function is a full implementation of the algorithm
+    *     published by Meeus (see reference) except that the light-time
+    *     correction to the Moon's mean longitude has been omitted.
+    *
+    *  <li> Comparisons with ELP/MPP02 over the interval 1950-2100 gave RMS
+    *     errors of 2.9 arcsec in geocentric direction, 6.1 km in position
+    *     and 36 mm/s in velocity.  The worst case errors were 18.3 arcsec
+    *     in geocentric direction, 31.7 km in position and 172 mm/s in
+    *     velocity.
+    *
+    *  <li> The original algorithm is expressed in terms of "dynamical time",
+    *     which can either be TDB or TT without any significant change in
+    *     accuracy.  UT cannot be used without incurring significant errors
+    *     (30 arcsec in the present era) due to the Moon's 0.5 arcsec/sec
+    *     movement.
+    *
+    *  <li> The result is with respect to the GCRS (the same as J2000.0 mean
+    *     equator and equinox to within 23 mas).
+    *
+    *  <li> Velocity is obtained by a complete analytical differentiation
+    *     of the Meeus model.
+    *
+    *  <li> The Meeus algorithm generates position and velocity in mean
+    *     ecliptic coordinates of date, which the present function then
+    *     rotates into GCRS.  Because the ecliptic system is precessing,
+    *     there is a coupling between this spin (about 1.4 degrees per
+    *     century) and the Moon position that produces a small velocity
+    *     contribution.  In the present function this effect is neglected
+    *     as it corresponds to a maximum difference of less than 3 mm/s and
+    *     increases the RMS error by only 0.4%.
+    *  </ol>
+    *  <p>References:
+    *  <ul>
+    *  <li>   Meeus, J., Astronomical Algorithms, 2nd edition, Willmann-Bell,
+    *     1998, p337.
+    *
+    *  <li>   Simon, J.L., Bretagnon, P., Chapront, J., Chapront-Touze, M.,
+    *     Francou, G. &amp; Laskar, J., Astron.Astrophys., 1994, 282, 663
+    *  </ul>
+    *  Defined in sofam.h:
+    *     DAU           astronomical unit (m)
+    *     DJC           days per Julian century
+    *     DJ00          reference epoch (J2000.0), Julian Date
+    *     DD2R          degrees to radians
+    *
+    *  Called:
+    *     iauS2pv      spherical coordinates to pv-vector
+    *     iauPfw06     bias-precession F-W angles, IAU 2006
+    *     iauIr        initialize r-matrix to identity
+    *     iauRz        rotate around Z-axis
+    *     iauRx        rotate around X-axis
+    *     iauRxpv      product of r-matrix and pv-vector
+    *
+    *  @version  2021 May 11
+    *
+    *  @since SOFA release 2021-05-12
+    *
+    *  <!-- Copyright (C) 2021 IAU SOFA Board.  See notes at end. -->
+    */
+   public static double[][] jauMoon98 ( double date1, double date2 )
+   {
+       /*
+        **  Coefficients for fundamental arguments:
+        **
+        **  . Powers of time in Julian centuries
+        **  . Units are degrees.
+        */
+
+       /* Moon's mean longitude (wrt mean equinox and ecliptic of date) */
+       final double elp0 = 218.31665436,        /* Simon et al. (1994). */
+               elp1 = 481267.88123421,
+               elp2 = -0.0015786,
+               elp3 = 1.0 / 538841.0,
+               elp4 = -1.0 / 65194000.0;
+       double elp, delp;
+
+       /* Moon's mean elongation */
+       final double d0 = 297.8501921,
+               d1 = 445267.1114034,
+               d2 = -0.0018819,
+               d3 = 1.0 / 545868.0,
+               d4 = 1.0 / 113065000.0;
+       double d, dd;
+
+       /* Sun's mean anomaly */
+       final double em0 = 357.5291092,
+               em1 = 35999.0502909,
+               em2 = -0.0001536,
+               em3 = 1.0 / 24490000.0,
+               em4 = 0.0;
+       double em, dem;
+
+       /* Moon's mean anomaly */
+       final double emp0 = 134.9633964,
+               emp1 = 477198.8675055,
+               emp2 = 0.0087414,
+               emp3 = 1.0 / 69699.0,
+               emp4 = -1.0 / 14712000.0;
+       double emp, demp;
+
+       /* Mean distance of the Moon from its ascending node */
+       final double f0 = 93.2720950,
+               f1 = 483202.0175233,
+               f2 = -0.0036539,
+               f3 = 1.0 / 3526000.0,
+               f4 = 1.0 / 863310000.0;
+       double f, df;
+
+       /*
+        ** Other arguments
+        */
+
+       /* Meeus A_1, due to Venus (deg) */
+       final double a10 = 119.75,
+               a11 = 131.849;
+       double a1, da1;
+
+       /* Meeus A_2, due to Jupiter (deg) */
+       final double a20 = 53.09,
+               a21 = 479264.290;
+       double a2, da2;
+
+       /* Meeus A_3, due to sidereal motion of the Moon in longitude (deg) */
+       final double a30 = 313.45,
+               a31 = 481266.484;
+       double a3, da3;
+
+       /* Coefficients for Meeus "additive terms" (deg) */
+       final double al1 =  0.003958,
+               al2 =  0.001962,
+               al3 =  0.000318;
+       final double ab1 = -0.002235,
+               ab2 =  0.000382,
+               ab3 =  0.000175,
+               ab4 =  0.000175,
+               ab5 =  0.000127,
+               ab6 = -0.000115;
+
+       /* Fixed term in distance (m) */
+       final double r0 = 385000560.0;
+
+       /* Coefficients for (dimensionless) E factor */
+       final double e1 = -0.002516,
+               e2 = -0.0000074;
+       double e, de, esq, desq;
+
+
+       final Termlr tlr[] = {     new Termlr(0,  0,  1,  0,  6.288774, -20905355.0),
+               new Termlr(2,  0, -1,  0,  1.274027,  -3699111.0),
+               new Termlr(2,  0,  0,  0,  0.658314,  -2955968.0),
+               new Termlr(0,  0,  2,  0,  0.213618,   -569925.0),
+               new Termlr(0,  1,  0,  0, -0.185116,     48888.0),
+               new Termlr(0,  0,  0,  2, -0.114332,     -3149.0),
+               new Termlr(2,  0, -2,  0,  0.058793,    246158.0),
+               new Termlr(2, -1, -1,  0,  0.057066,   -152138.0),
+               new Termlr(2,  0,  1,  0,  0.053322,   -170733.0),
+               new Termlr(2, -1,  0,  0,  0.045758,   -204586.0),
+               new Termlr(0,  1, -1,  0, -0.040923,   -129620.0),
+               new Termlr(1,  0,  0,  0, -0.034720,    108743.0),
+               new Termlr(0,  1,  1,  0, -0.030383,    104755.0),
+               new Termlr(2,  0,  0, -2,  0.015327,     10321.0),
+               new Termlr(0,  0,  1,  2, -0.012528,         0.0),
+               new Termlr(0,  0,  1, -2,  0.010980,     79661.0),
+               new Termlr(4,  0, -1,  0,  0.010675,    -34782.0),
+               new Termlr(0,  0,  3,  0,  0.010034,    -23210.0),
+               new Termlr(4,  0, -2,  0,  0.008548,    -21636.0),
+               new Termlr(2,  1, -1,  0, -0.007888,     24208.0),
+               new Termlr(2,  1,  0,  0, -0.006766,     30824.0),
+               new Termlr(1,  0, -1,  0, -0.005163,     -8379.0),
+               new Termlr(1,  1,  0,  0,  0.004987,    -16675.0),
+               new Termlr(2, -1,  1,  0,  0.004036,    -12831.0),
+               new Termlr(2,  0,  2,  0,  0.003994,    -10445.0),
+               new Termlr(4,  0,  0,  0,  0.003861,    -11650.0),
+               new Termlr(2,  0, -3,  0,  0.003665,     14403.0),
+               new Termlr(0,  1, -2,  0, -0.002689,     -7003.0),
+               new Termlr(2,  0, -1,  2, -0.002602,         0.0),
+               new Termlr(2, -1, -2,  0,  0.002390,     10056.0),
+               new Termlr(1,  0,  1,  0, -0.002348,      6322.0),
+               new Termlr(2, -2,  0,  0,  0.002236,     -9884.0),
+               new Termlr(0,  1,  2,  0, -0.002120,      5751.0),
+               new Termlr(0,  2,  0,  0, -0.002069,         0.0),
+               new Termlr(2, -2, -1,  0,  0.002048,     -4950.0),
+               new Termlr(2,  0,  1, -2, -0.001773,      4130.0),
+               new Termlr(2,  0,  0,  2, -0.001595,         0.0),
+               new Termlr(4, -1, -1,  0,  0.001215,     -3958.0),
+               new Termlr(0,  0,  2,  2, -0.001110,         0.0),
+               new Termlr(3,  0, -1,  0, -0.000892,      3258.0),
+               new Termlr(2,  1,  1,  0, -0.000810,      2616.0),
+               new Termlr(4, -1, -2,  0,  0.000759,     -1897.0),
+               new Termlr(0,  2, -1,  0, -0.000713,     -2117.0),
+               new Termlr(2,  2, -1,  0, -0.000700,      2354.0),
+               new Termlr(2,  1, -2,  0,  0.000691,         0.0),
+               new Termlr(2, -1,  0, -2,  0.000596,         0.0),
+               new Termlr(4,  0,  1,  0,  0.000549,     -1423.0),
+               new Termlr(0,  0,  4,  0,  0.000537,     -1117.0),
+               new Termlr(4, -1,  0,  0,  0.000520,     -1571.0),
+               new Termlr(1,  0, -2,  0, -0.000487,     -1739.0),
+               new Termlr(2,  1,  0, -2, -0.000399,         0.0),
+               new Termlr(0,  0,  2, -2, -0.000381,     -4421.0),
+               new Termlr(1,  1,  1,  0,  0.000351,         0.0),
+               new Termlr(3,  0, -2,  0, -0.000340,         0.0),
+               new Termlr(4,  0, -3,  0,  0.000330,         0.0),
+               new Termlr(2, -1,  2,  0,  0.000327,         0.0),
+               new Termlr(0,  2,  1,  0, -0.000323,      1165.0),
+               new Termlr(1,  1, -1,  0,  0.000299,         0.0),
+               new Termlr(2,  0,  3,  0,  0.000294,         0.0),
+               new Termlr(2,  0, -1, -2,  0.000000,      8752.0)};
+
+       final int NLR = tlr.length;
+
+
+
+       final  Termb tb[] = {    new Termb(0,  0,  0,  1,  5.128122),
+               new Termb(0,  0,  1,  1,  0.280602),
+               new Termb(0,  0,  1, -1,  0.277693),
+               new Termb(2,  0,  0, -1,  0.173237),
+               new Termb(2,  0, -1,  1,  0.055413),
+               new Termb(2,  0, -1, -1,  0.046271),
+               new Termb(2,  0,  0,  1,  0.032573),
+               new Termb(0,  0,  2,  1,  0.017198),
+               new Termb(2,  0,  1, -1,  0.009266),
+               new Termb(0,  0,  2, -1,  0.008822),
+               new Termb(2, -1,  0, -1,  0.008216),
+               new Termb(2,  0, -2, -1,  0.004324),
+               new Termb(2,  0,  1,  1,  0.004200),
+               new Termb(2,  1,  0, -1, -0.003359),
+               new Termb(2, -1, -1,  1,  0.002463),
+               new Termb(2, -1,  0,  1,  0.002211),
+               new Termb(2, -1, -1, -1,  0.002065),
+               new Termb(0,  1, -1, -1, -0.001870),
+               new Termb(4,  0, -1, -1,  0.001828),
+               new Termb(0,  1,  0,  1, -0.001794),
+               new Termb(0,  0,  0,  3, -0.001749),
+               new Termb(0,  1, -1,  1, -0.001565),
+               new Termb(1,  0,  0,  1, -0.001491),
+               new Termb(0,  1,  1,  1, -0.001475),
+               new Termb(0,  1,  1, -1, -0.001410),
+               new Termb(0,  1,  0, -1, -0.001344),
+               new Termb(1,  0,  0, -1, -0.001335),
+               new Termb(0,  0,  3,  1,  0.001107),
+               new Termb(4,  0,  0, -1,  0.001021),
+               new Termb(4,  0, -1,  1,  0.000833),
+               new Termb(0,  0,  1, -3,  0.000777),
+               new Termb(4,  0, -2,  1,  0.000671),
+               new Termb(2,  0,  0, -3,  0.000607),
+               new Termb(2,  0,  2, -1,  0.000596),
+               new Termb(2, -1,  1, -1,  0.000491),
+               new Termb(2,  0, -2,  1, -0.000451),
+               new Termb(0,  0,  3, -1,  0.000439),
+               new Termb(2,  0,  2,  1,  0.000422),
+               new Termb(2,  0, -3, -1,  0.000421),
+               new Termb(2,  1, -1,  1, -0.000366),
+               new Termb(2,  1,  0,  1, -0.000351),
+               new Termb(4,  0,  0,  1,  0.000331),
+               new Termb(2, -1,  1,  1,  0.000315),
+               new Termb(2, -2,  0, -1,  0.000302),
+               new Termb(0,  0,  1,  3, -0.000283),
+               new Termb(2,  1,  1, -1, -0.000229),
+               new Termb(1,  1,  0, -1,  0.000223),
+               new Termb(1,  1,  0,  1,  0.000223),
+               new Termb(0,  1, -2, -1, -0.000220),
+               new Termb(2,  1, -1, -1, -0.000220),
+               new Termb(1,  0,  1,  1, -0.000185),
+               new Termb(2, -1, -2, -1,  0.000181),
+               new Termb(0,  1,  2,  1, -0.000177),
+               new Termb(4,  0, -2, -1,  0.000176),
+               new Termb(4, -1, -1, -1,  0.000166),
+               new Termb(1,  0,  1, -1, -0.000164),
+               new Termb(4,  0,  1, -1,  0.000132),
+               new Termb(1,  0, -1, -1, -0.000119),
+               new Termb(4, -1,  0, -1,  0.000115),
+               new Termb(2, -2,  0,  1,  0.000107)};
+
+       final int NB = tb.length;
+
+       /* Miscellaneous */
+       int n, i;
+       double t, elpmf, delpmf, vel, vdel, vr, vdr, a1mf, da1mf, a1pf,
+       da1pf, dlpmp, slpmp, vb, vdb, v, dv, emn, empn, dn, fn, en,
+       den, arg, darg, farg, coeff, el, del, r, dr, b, db, rm[][]= new double[3][3];
+
+       /* ------------------------------------------------------------------ */
+
+       /* Centuries since J2000.0 */
+       t = ((date1 - DJ00) + date2) / DJC;
+
+       /* --------------------- */
+       /* Fundamental arguments */
+       /* --------------------- */
+
+       /* Arguments (radians) and derivatives (radians per Julian century)
+   for the current date. */
+
+       /* Moon's mean longitude. */
+       elp = DD2R * fmod ( elp0
+               + ( elp1
+                       + ( elp2
+                               + ( elp3
+                                       +   elp4 * t ) * t ) * t ) * t, 360.0 );
+       delp = DD2R * (     elp1
+               + ( elp2 * 2.0
+                       + ( elp3 * 3.0
+                               +   elp4 * 4.0 * t ) * t ) * t );
+
+       /* Moon's mean elongation. */
+       d = DD2R * fmod ( d0
+               + ( d1
+                       + ( d2
+                               + ( d3
+                                       +   d4 * t ) * t ) * t ) * t, 360.0 );
+       dd = DD2R * (     d1
+               + ( d2 * 2.0
+                       + ( d3 * 3.0
+                               +   d4 * 4.0 * t ) * t ) * t );
+
+       /* Sun's mean anomaly. */
+       em = DD2R * fmod ( em0
+               + ( em1
+                       + ( em2
+                               + ( em3
+                                       +   em4 * t ) * t ) * t ) * t, 360.0 );
+       dem = DD2R * (     em1
+               + ( em2 * 2.0
+                       + ( em3 * 3.0
+                               +   em4 * 4.0 * t ) * t ) * t );
+
+       /* Moon's mean anomaly. */
+       emp = DD2R * fmod ( emp0
+               + ( emp1
+                       + ( emp2
+                               + ( emp3
+                                       +   emp4 * t ) * t ) * t ) * t, 360.0 );
+       demp = DD2R * (     emp1
+               + ( emp2 * 2.0
+                       + ( emp3 * 3.0
+                               +   emp4 * 4.0 * t ) * t ) * t );
+
+       /* Mean distance of the Moon from its ascending node. */
+       f = DD2R * fmod ( f0
+               + ( f1
+                       + ( f2
+                               + ( f3
+                                       +   f4 * t ) * t ) * t ) * t, 360.0 );
+       df = DD2R * (     f1
+               + ( f2 * 2.0
+                       + ( f3 * 3.0
+                               +   f4 * 4.0 * t ) * t ) * t );
+
+       /* Meeus further arguments. */
+       a1 = DD2R * ( a10 + a11*t );
+       da1 = DD2R * al1;
+       a2 = DD2R * ( a20 + a21*t );
+       da2 = DD2R * a21;
+       a3 = DD2R * ( a30 + a31*t );
+       da3 = DD2R * a31;
+
+       /* E-factor, and square. */
+       e = 1.0 + ( e1 + e2*t ) * t;
+       de = e1 + 2.0*e2*t;
+       esq = e*e;
+       desq = 2.0*e*de;
+
+       /* Use the Meeus additive terms (deg) to start off the summations. */
+       elpmf = elp - f;
+       delpmf = delp - df;
+       vel = al1 * sin(a1)
+               + al2 * sin(elpmf)
+               + al3 * sin(a2);
+       vdel = al1 * cos(a1) * da1
+               + al2 * cos(elpmf) * delpmf
+               + al3 * cos(a2) * da2;
+
+       vr = 0.0;
+       vdr = 0.0;
+
+       a1mf = a1 - f;
+       da1mf = da1 - df;
+       a1pf = a1 + f;
+       da1pf = da1 + df;
+       dlpmp = elp - emp;
+       slpmp = elp + emp;
+       vb = ab1 * sin(elp)
+               + ab2 * sin(a3)
+               + ab3 * sin(a1mf)
+               + ab4 * sin(a1pf)
+               + ab5 * sin(dlpmp)
+               + ab6 * sin(slpmp);
+       vdb = ab1 * cos(elp) * delp
+               + ab2 * cos(a3) * da3
+               + ab3 * cos(a1mf) * da1mf
+               + ab4 * cos(a1pf) * da1pf
+               + ab5 * cos(dlpmp) * (delp-demp)
+               + ab6 * cos(slpmp) * (delp+demp);
+
+       /* ----------------- */
+       /* Series expansions */
+       /* ----------------- */
+
+       /* Longitude and distance plus derivatives. */
+       for ( n = NLR-1; n >= 0; n-- ) {
+           dn = (double) tlr[n].nd;
+           emn = (double) ( i = tlr[n].nem );
+           empn = (double) tlr[n].nemp;
+           fn = (double) tlr[n].nf;
+           switch ( abs(i) ) {
+           case 1:
+               en = e;
+               den = de;
+               break;
+           case 2:
+               en = esq;
+               den = desq;
+               break;
+           default:
+               en = 1.0;
+               den = 0.0;
+           }
+           arg = dn*d + emn*em + empn*emp + fn*f;
+           darg = dn*dd + emn*dem + empn*demp + fn*df;
+           farg = sin(arg);
+           v = farg * en;
+           dv = cos(arg)*darg*en + farg*den;
+           coeff = tlr[n].coefl;
+           vel += coeff * v;
+           vdel += coeff * dv;
+           farg = cos(arg);
+           v = farg * en;
+           dv = -sin(arg)*darg*en + farg*den;
+           coeff = tlr[n].coefr;
+           vr += coeff * v;
+           vdr += coeff * dv;
+       }
+       el = elp + DD2R*vel;
+       del = ( delp + DD2R*vdel ) / DJC;
+       r = ( vr + r0 ) / DAU;
+       dr = vdr / DAU / DJC;
+
+       /* Latitude plus derivative. */
+       for ( n = NB-1; n >= 0; n-- ) {
+           dn = (double) tb[n].nd;
+           emn = (double) ( i = tb[n].nem );
+           empn = (double) tb[n].nemp;
+           fn = (double) tb[n].nf;
+           switch ( abs(i) ) {
+           case 1:
+               en = e;
+               den = de;
+               break;
+           case 2:
+               en = esq;
+               den = desq;
+               break;
+           default:
+               en = 1.0;
+               den = 0.0;
+           }
+           arg = dn*d + emn*em + empn*emp + fn*f;
+           darg = dn*dd + emn*dem + empn*demp + fn*df;
+           farg = sin(arg);
+           v = farg * en;
+           dv = cos(arg)*darg*en + farg*den;
+           coeff = tb[n].coefb;
+           vb += coeff * v;
+           vdb += coeff * dv;
+       }
+       b = vb * DD2R;
+       db = vdb * DD2R / DJC;
+
+       /* ------------------------------ */
+       /* Transformation into final form */
+       /* ------------------------------ */
+
+       /* Longitude, latitude to x, y, z (AU). */
+       double[][] pv = jauS2pv ( el, b, r, del, db, dr );
+
+       /* IAU 2006 Fukushima-Williams bias+precession angles. */
+       FWPrecessionAngles fw = jauPfw06 ( date1, date2 );  
+
+       /* Mean ecliptic coordinates to GCRS rotation matrix. */
+       jauIr ( rm );
+       jauRz ( fw.psib, rm );
+       jauRx ( -fw.phib, rm );
+       jauRz ( -fw.gamb, rm );
+
+       /* Rotate the Moon position and velocity into GCRS (Note 6). */
+       return jauRxpv ( rm, pv);
+   }
+
+   /**
+    *  Transform a star's ICRS catalog entry (epoch J2000.0) into ICRS
+    *  astrometric place.
+    *
+    *  This function is part of the International Astronomical Union's
+    *  SOFA (Standards of Fundamental Astronomy) software collection.
+    *
+    *  Status:  support function.
+    *
+    * <!-- Given: -->
+    *  @param   rc     double   ICRS right ascension at J2000.0 (radians, Note 1)
+    *  @param   dc     double   ICRS declination at J2000.0 (radians, Note 1)
+    *  @param   pr     double   RA proper motion (radians/year, Note 2)
+    *  @param   pd     double   Dec proper motion (radians/year)
+    *  @param   px     double   parallax (arcsec)
+    *  @param   rv     double   radial velocity (km/s, +ve if receding)
+    *  @param   date1  double   TDB as a 2-part...
+    *  @param   date2  double   ...Julian Date (Note 3)
+    *
+    * <!-- Returned:-->
+    *  @return   ra,da  double*  ICRS astrometric RA,Dec (radians)
+    *
+    *  <p>Notes:
+    *  <ol>
+    *  <li> Star data for an epoch other than J2000.0 (for example from the
+    *     Hipparcos catalog, which has an epoch of J1991.25) will require a
+    *     preliminary call to iauPmsafe before use.
+    *
+    *  <li> The proper motion in RA is dRA/dt rather than cos(Dec)*dRA/dt.
+    *
+    *  <li> The TDB date date1+date2 is a Julian Date, apportioned in any
+    *     convenient way between the two arguments.  For example,
+    *     JD(TDB)=2450123.7 could be expressed in any of these ways, among
+    *     others:
+    *
+    *            date1          date2
+    *
+    *         2450123.7           0.0       (JD method)
+    *         2451545.0       -1421.3       (J2000 method)
+    *         2400000.5       50123.2       (MJD method)
+    *         2450123.5           0.2       (date &amp; time method)
+    *
+    *     The JD method is the most natural and convenient to use in cases
+    *     where the loss of several decimal digits of resolution is
+    *     acceptable.  The J2000 method is best matched to the way the
+    *     argument is handled internally and will deliver the optimum
+    *     resolution.  The MJD method and the date &amp; time methods are both
+    *     good compromises between resolution and convenience.  For most
+    *     applications of this function the choice will not be at all
+    *     critical.
+    *
+    *     TT can be used instead of TDB without any significant impact on
+    *     accuracy.
+    * </ol>
+    *  Called:
+    *     iauApci13    astrometry parameters, ICRS-CIRS, 2013
+    *     iauAtccq     quick catalog ICRS to astrometric
+    *
+    *  @version  2021 April 18
+    *
+    *  @since SOFA release 2021-05-12
+    *
+    * <!--  Copyright (C) 2021 IAU SOFA Board.  See notes at end. -->
+    */
+   public static SphericalCoordinate jauAtcc13(double rc, double dc,
+           double pr, double pd, double px, double rv,
+           double date1, double date2)
+   {
+       /* Star-independent astrometry parameters */
+       Astrom astrom = new Astrom();
+
+       /* The transformation parameters. */
+       jauApci13(date1, date2, astrom);
+
+       /* Catalog ICRS (epoch J2000.0) to astrometric. */
+       return jauAtccq(rc, dc, pr, pd, px, rv, astrom);
+
+       /* Finished. */
+   }
+
+   /**
+    *  Quick transformation of a star's ICRS catalog entry (epoch J2000.0)
+    *  into ICRS astrometric place, given precomputed star-independent
+    *  astrometry parameters.
+    *
+    *  Use of this function is appropriate when efficiency is important and
+    *  where many star positions are to be transformed for one date.  The
+    *  star-independent parameters can be obtained by calling one of the
+    *  functions iauApci[13], iauApcg[13], iauApco[13] or iauApcs[13].
+    *
+    *  If the parallax and proper motions are zero the transformation has
+    *  no effect.
+    *
+    *  This function is part of the International Astronomical Union's
+    *  SOFA (Standards of Fundamental Astronomy) software collection.
+    *
+    *  Status:  support function.
+    *
+    * <!-- Given: -->
+    *  @param   rc  double     ICRS RA at J2000.0 (radians)
+    *  @param   dc  double     ICRS Dec at J2000.0 (radians)
+    *  @param   pr     double     RA proper motion (radians/year, Note 3)
+    *  @param   pd     double     Dec proper motion (radians/year)
+    *  @param   px     double     parallax (arcsec)
+    *  @param   rv     double     radial velocity (km/s, +ve if receding)
+    *  @param   astrom Astrom star-independent astrometry parameters:
+    *
+    *  <!-- Returned: -->
+    *   @return  ra,da  SphericalCoordinate    ICRS astrometric RA,Dec (radians)
+    *
+    *  <p>Notes:
+    *  <ol>
+    *  <li> All the vectors are with respect to BCRS axes.
+    *
+    *  <li> Star data for an epoch other than J2000.0 (for example from the
+    *     Hipparcos catalog, which has an epoch of J1991.25) will require a
+    *     preliminary call to iauPmsafe before use.
+    *
+    *  <li> The proper motion in RA is dRA/dt rather than cos(Dec)*dRA/dt.
+    *</ol>
+    *  Called:
+    *     iauPmpx      proper motion and parallax
+    *     iauC2s       p-vector to spherical
+    *     iauAnp       normalize angle into range 0 to 2pi
+    *
+    *  @version  2021 April 18
+    *
+    *  @since SOFA release 2021-05-12
+    *
+    *  <!-- Copyright (C) 2021 IAU SOFA Board.  See notes at end. -->
+    */
+   public static SphericalCoordinate jauAtccq(double rc, double dc,
+           double pr, double pd, double px, double rv,
+           Astrom astrom)
+   {
+       double p[];
+
+
+       /* Proper motion and parallax, giving BCRS coordinate direction. */
+       p = jauPmpx(rc, dc, pr, pd, px, rv, astrom.pmt, astrom.eb);
+
+       /* ICRS astrometric RA,Dec. */
+       SphericalCoordinate co = jauC2s(p);
+       co.alpha = jauAnp(co.alpha);
+       return co;
+
+       /* Finished. */
+   }
+
+} // end of JSOFA Class
+
+/*
+ * Copyright © 2021 Paul Harrison, University of Manchester.
  * 
  * This JSOFA software is derived from the official C release of the "Standards Of Fundamental Astronomy" (SOFA) library 
  * of the International Astronomical Union. The intention is to reproduce the functionality and algorithms of 
@@ -32178,7 +32941,7 @@ public static class SphericalCoordinateEO {
 
 /*----------------------------------------------------------------------
 *
-*  Copyright (C) 2019
+*  Copyright (C) 2021
 *  Standards Of Fundamental Astronomy Board
 *  of the International Astronomical Union.
 *

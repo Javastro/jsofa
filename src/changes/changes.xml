@@ -6,6 +6,21 @@
     <author email="paul.harrison@manchester.ac.uk">Paul Harrison</author>
   </properties>
   <body>
+    <release version="20210512" description="tracking updates of SOFA">
+       <action  dev="pah" type="update" issue="https://github.com/Javastro/jsofa/issues/9" >
+        Update to be in line with IAU sofa 2021-05-12 (see https://www.iausofa.org/2021_0512_C.html)
+       </action>   
+       <action dev="pah" type="update">
+         the positions and velocities for the planets for jauPlan94 are returned as the function value rather than being 
+         given as a parameter - this is an incompatible API change, but seems more natural. The other consequence is that "dubious" dates\
+         (i.e. outside the range that give the most accurate results) are no longer flagged.
+       </action>  
+       
+       <action dev="pah" type="update">
+         some convienience overloaded vector initialization methods have been added that create vectors internally, rather than having to pass them
+         in, as for the official API.
+       </action>  
+    </release>
    <release version="20200721" description="tracking updates of SOFA">
        <action  dev="pah" type="update" issue="https://github.com/Javastro/jsofa/issues/8" >
         Update to be in line with IAU sofa 2021-01-25 (as updated  2021-02-24) (see https://www.iausofa.org/changes_2021_0125.html)
@@ -19,7 +34,7 @@
        <action dev="pah" type="update">
        Now compiled to need a version 1.8 of Java as a minimum - difficult to test on earlier than this now.
        In addition there has been some other rearrangement of private nested classes, that does not alter 
-       functionality not the API
+       functionality nor the API
        
        </action>
        

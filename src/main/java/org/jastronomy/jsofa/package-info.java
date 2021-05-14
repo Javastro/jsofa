@@ -55,6 +55,8 @@
      {@link org.jastronomy.jsofa.JSOFA#jauAper13}   update context for Earth rotation<br>
      {@link org.jastronomy.jsofa.JSOFA#jauApio}     prepare for CIRS &lt;-&gt; observed, terrestrial, special<br>
      {@link org.jastronomy.jsofa.JSOFA#jauApio13}   prepare for CIRS &lt;-&gt; observed, terrestrial<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtcc13}   catalog -&gt; ICRS<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauAtccq}    quick catalog -&gt; ICRS<br>
      {@link org.jastronomy.jsofa.JSOFA#jauAtci13}   catalog -&gt; CIRS<br>
      {@link org.jastronomy.jsofa.JSOFA#jauAtciq}    quick ICRS -&gt; CIRS<br>
      {@link org.jastronomy.jsofa.JSOFA#jauAtciqn}   quick ICRS -&gt; CIRS, multiple deflections<br>
@@ -139,6 +141,7 @@
 
      {@link org.jastronomy.jsofa.JSOFA#jauEpv00}     Earth position and velocity<br>
      {@link org.jastronomy.jsofa.JSOFA#jauPlan94}    major-planet position and velocity<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauMoon98}    moon position and velocity<br>
 
   <h3>Precession, nutation, polar motion</h3>
 

@@ -43,8 +43,8 @@ public class JSOFATest {
     @Test
     public void testversion() throws JSOFAIllegalParameter 
     {
-        assertEquals("sofa release", "2021-01-25", SOFA_RELEASE);
-        assertEquals("sofa revision", "17a", SOFA_REVISION);
+        assertEquals("sofa release", "2021-05-12", SOFA_RELEASE);
+        assertEquals("sofa revision", "18", SOFA_REVISION);
         assertEquals("lastleap second", jauCal2jd(2017,1,1), lastLeapSecondDate());        
         assertEquals("last omitted leap second", jauCal2jd(2021,06,30), latestConfirmedNoLeapSecondChange);
         assertEquals("Jsofa release",  System.getProperty("SOFAVERSION"), JSOFA_RELEASE); // check that the correct version is being released - system properly set from POM
@@ -3117,49 +3117,49 @@ public class JSOFATest {
     **  This revision:  2008 November 28
     */
     {
-       double pv[][] = new double[2][3];
-    
+        double pv[][];
 
 
-       int j = jauPlan94(2400000.5, 1e6, 0, pv);
 
-       vvd(pv[0][0], 0.0, 0.0, "jauPlan94", "x 1");
-       vvd(pv[0][1], 0.0, 0.0, "jauPlan94", "y 1");
-       vvd(pv[0][2], 0.0, 0.0, "jauPlan94", "z 1");
+        try {
+            pv = jauPlan94(2400000.5, 1e6, 0);
+            fail("did not throw all the illegal argument for bad planet number");
+        } catch (JSOFAIllegalParameter e) {
+            // do nothing
+        }
 
-       vvd(pv[1][0], 0.0, 0.0, "jauPlan94", "xd 1");
-       vvd(pv[1][1], 0.0, 0.0, "jauPlan94", "yd 1");
-       vvd(pv[1][2], 0.0, 0.0, "jauPlan94", "zd 1");
+        try {
+            pv = jauPlan94(2400000.5, 1e6, 10);
+            fail("did not throw all the illegal argument for bad planet number");
+        } catch (JSOFAIllegalParameter e) {
+            // do nothing
+        }
 
-       viv(j, -1, "jauPlan94", "j 1");
+        try {
+            pv = jauPlan94(2400000.5, -320000, 3);
 
-       j = jauPlan94(2400000.5, 1e6, 10, pv);
+            vvd(pv[0][0], 0.9308038666832975759, 1e-11,"jauPlan94", "x 3");
+            vvd(pv[0][1], 0.3258319040261346000, 1e-11,"jauPlan94", "y 3");
+            vvd(pv[0][2], 0.1422794544481140560, 1e-11,"jauPlan94", "z 3");
 
-       viv(j, -1, "jauPlan94", "j 2");
+            vvd(pv[1][0], -0.6429458958255170006e-2, 1e-11,"jauPlan94", "xd 3");
+            vvd(pv[1][1], 0.1468570657704237764e-1, 1e-11,"jauPlan94", "yd 3");
+            vvd(pv[1][2], 0.6406996426270981189e-2, 1e-11,"jauPlan94", "zd 3");
 
-       j = jauPlan94(2400000.5, -320000, 3, pv);
 
-       vvd(pv[0][0], 0.9308038666832975759, 1e-11,"jauPlan94", "x 3");
-       vvd(pv[0][1], 0.3258319040261346000, 1e-11,"jauPlan94", "y 3");
-       vvd(pv[0][2], 0.1422794544481140560, 1e-11,"jauPlan94", "z 3");
+            pv = jauPlan94(2400000.5, 43999.9, 1);
 
-       vvd(pv[1][0], -0.6429458958255170006e-2, 1e-11,"jauPlan94", "xd 3");
-       vvd(pv[1][1], 0.1468570657704237764e-1, 1e-11,"jauPlan94", "yd 3");
-       vvd(pv[1][2], 0.6406996426270981189e-2, 1e-11,"jauPlan94", "zd 3");
+            vvd(pv[0][0], 0.2945293959257430832, 1e-11,"jauPlan94", "x 4");
+            vvd(pv[0][1], -0.2452204176601049596, 1e-11,"jauPlan94", "y 4");
+            vvd(pv[0][2], -0.1615427700571978153, 1e-11,"jauPlan94", "z 4");
 
-       viv(j, 1, "jauPlan94", "j 3");
+            vvd(pv[1][0], 0.1413867871404614441e-1, 1e-11,"jauPlan94", "xd 4");
+            vvd(pv[1][1], 0.1946548301104706582e-1, 1e-11,"jauPlan94", "yd 4");
+            vvd(pv[1][2], 0.8929809783898904786e-2, 1e-11,"jauPlan94", "zd 4");
+        } catch (JSOFAIllegalParameter e) {
+            fail("legal call threw exception");
+        }
 
-       j = jauPlan94(2400000.5, 43999.9, 1, pv);
-
-       vvd(pv[0][0], 0.2945293959257430832, 1e-11,"jauPlan94", "x 4");
-       vvd(pv[0][1], -0.2452204176601049596, 1e-11,"jauPlan94", "y 4");
-       vvd(pv[0][2], -0.1615427700571978153, 1e-11,"jauPlan94", "z 4");
-
-       vvd(pv[1][0], 0.1413867871404614441e-1, 1e-11,"jauPlan94", "xd 4");
-       vvd(pv[1][1], 0.1946548301104706582e-1, 1e-11,"jauPlan94", "yd 4");
-       vvd(pv[1][2], 0.8929809783898904786e-2, 1e-11,"jauPlan94", "zd 4");
-
-       viv(j, 0, "jauPlan94", "j 4");
 
     }
 
@@ -8698,7 +8698,115 @@ public void t_fk54z()
 
 }
 
+/**
+**  - - - - - - - - -
+**   t _ a t c c 1 3
+**  - - - - - - - - -
+**
+**  Test iauAtcc13 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauAtcc13, vvd
+**
+**  This revision:  2021 April 18
+*/
+@Test
+public void t_atcc13()
+{
+   double rc, dc, pr, pd, px, rv, date1, date2;
 
+
+   rc = 2.71;
+   dc = 0.174;
+   pr = 1e-5;
+   pd = 5e-6;
+   px = 0.1;
+   rv = 55.0;
+   date1 = 2456165.5;
+   date2 = 0.401182685;
+
+   SphericalCoordinate co = jauAtcc13(rc, dc, pr, pd, px, rv, date1, date2);
+
+   vvd(co.alpha,  2.710126504531372384, 1e-12,
+           "iauAtcc13", "ra");
+   vvd(co.delta, 0.1740632537628350152, 1e-12,
+           "iauAtcc13", "da");
+
+}
+
+/**
+**  - - - - - - - -
+**   t _ a t c c q
+**  - - - - - - - -
+**
+**  Test iauAtccq function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauApcc13, iauAtccq, vvd
+**
+**  This revision:  2021 April 18
+*/
+@Test
+public  void t_atccq()
+{
+   double date1, date2, eo, rc, dc, pr, pd, px, rv;
+   Astrom astrom = new Astrom();
+
+   date1 = 2456165.5;
+   date2 = 0.401182685;
+   eo = jauApci13(date1, date2, astrom);
+   rc = 2.71;
+   dc = 0.174;
+   pr = 1e-5;
+   pd = 5e-6;
+   px = 0.1;
+   rv = 55.0;
+
+   SphericalCoordinate co = jauAtccq(rc, dc, pr, pd, px, rv, astrom);
+
+   vvd(co.alpha, 2.710126504531372384, 1e-12, "iauAtccq", "ra");
+   vvd(co.delta, 0.1740632537628350152, 1e-12, "iauAtccq", "da");
+
+}
+
+/**
+**  - - - - - - - - -
+**   t _ m o o n 9 8
+**  - - - - - - - - -
+**
+**  Test iauMoon98 function.
+**
+**  Returned:
+**     status    int         FALSE = success, TRUE = fail
+**
+**  Called:  iauMoon98, vvd, viv
+**
+**  This revision:  2021 April 12
+*/
+@Test
+public void t_moon98()
+{
+   double pv[][] = jauMoon98(2400000.5, 43999.9);
+
+   vvd(pv[0][0], -0.2601295959971044180e-2, 1e-11,
+       "iauMoon98", "x 4");
+   vvd(pv[0][1], 0.6139750944302742189e-3, 1e-11,
+       "iauMoon98", "y 4");
+   vvd(pv[0][2], 0.2640794528229828909e-3, 1e-11,
+       "iauMoon98", "z 4");
+
+   vvd(pv[1][0], -0.1244321506649895021e-3, 1e-11,
+       "iauMoon98", "xd 4");
+   vvd(pv[1][1], -0.5219076942678119398e-3, 1e-11,
+       "iauMoon98", "yd 4");
+   vvd(pv[1][2], -0.1716132214378462047e-3, 1e-11,
+       "iauMoon98", "zd 4");
+
+}
 //end of tests
 }
 
