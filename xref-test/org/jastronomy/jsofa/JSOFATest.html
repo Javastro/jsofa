@@ -53,8 +53,8 @@
 <a class="jxr_linenumber" name="43" href="#43">43</a>      @Test
 <a class="jxr_linenumber" name="44" href="#44">44</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testversion() <strong class="jxr_keyword">throws</strong> JSOFAIllegalParameter 
 <a class="jxr_linenumber" name="45" href="#45">45</a>      {
-<a class="jxr_linenumber" name="46" href="#46">46</a>          assertEquals(<span class="jxr_string">"sofa release"</span>, <span class="jxr_string">"2021-01-25"</span>, SOFA_RELEASE);
-<a class="jxr_linenumber" name="47" href="#47">47</a>          assertEquals(<span class="jxr_string">"sofa revision"</span>, <span class="jxr_string">"17a"</span>, SOFA_REVISION);
+<a class="jxr_linenumber" name="46" href="#46">46</a>          assertEquals(<span class="jxr_string">"sofa release"</span>, <span class="jxr_string">"2021-05-12"</span>, SOFA_RELEASE);
+<a class="jxr_linenumber" name="47" href="#47">47</a>          assertEquals(<span class="jxr_string">"sofa revision"</span>, <span class="jxr_string">"18"</span>, SOFA_REVISION);
 <a class="jxr_linenumber" name="48" href="#48">48</a>          assertEquals(<span class="jxr_string">"lastleap second"</span>, jauCal2jd(2017,1,1), lastLeapSecondDate());        
 <a class="jxr_linenumber" name="49" href="#49">49</a>          assertEquals(<span class="jxr_string">"last omitted leap second"</span>, jauCal2jd(2021,06,30), latestConfirmedNoLeapSecondChange);
 <a class="jxr_linenumber" name="50" href="#50">50</a>          assertEquals(<span class="jxr_string">"Jsofa release"</span>,  System.getProperty(<span class="jxr_string">"SOFAVERSION"</span>), JSOFA_RELEASE); <em class="jxr_comment">// check that the correct version is being released - system properly set from POM</em>
@@ -3127,49 +3127,49 @@
 <a class="jxr_linenumber" name="3117" href="#3117">3117</a> <em class="jxr_javadoccomment">    **  This revision:  2008 November 28</em>
 <a class="jxr_linenumber" name="3118" href="#3118">3118</a> <em class="jxr_javadoccomment">    */</em>
 <a class="jxr_linenumber" name="3119" href="#3119">3119</a>     {
-<a class="jxr_linenumber" name="3120" href="#3120">3120</a>        <strong class="jxr_keyword">double</strong> pv[][] = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[2][3];
-<a class="jxr_linenumber" name="3121" href="#3121">3121</a>     
+<a class="jxr_linenumber" name="3120" href="#3120">3120</a>         <strong class="jxr_keyword">double</strong> pv[][];
+<a class="jxr_linenumber" name="3121" href="#3121">3121</a> 
 <a class="jxr_linenumber" name="3122" href="#3122">3122</a> 
 <a class="jxr_linenumber" name="3123" href="#3123">3123</a> 
-<a class="jxr_linenumber" name="3124" href="#3124">3124</a>        <strong class="jxr_keyword">int</strong> j = jauPlan94(2400000.5, 1e6, 0, pv);
-<a class="jxr_linenumber" name="3125" href="#3125">3125</a> 
-<a class="jxr_linenumber" name="3126" href="#3126">3126</a>        vvd(pv[0][0], 0.0, 0.0, <span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"x 1"</span>);
-<a class="jxr_linenumber" name="3127" href="#3127">3127</a>        vvd(pv[0][1], 0.0, 0.0, <span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"y 1"</span>);
-<a class="jxr_linenumber" name="3128" href="#3128">3128</a>        vvd(pv[0][2], 0.0, 0.0, <span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"z 1"</span>);
-<a class="jxr_linenumber" name="3129" href="#3129">3129</a> 
-<a class="jxr_linenumber" name="3130" href="#3130">3130</a>        vvd(pv[1][0], 0.0, 0.0, <span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"xd 1"</span>);
-<a class="jxr_linenumber" name="3131" href="#3131">3131</a>        vvd(pv[1][1], 0.0, 0.0, <span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"yd 1"</span>);
-<a class="jxr_linenumber" name="3132" href="#3132">3132</a>        vvd(pv[1][2], 0.0, 0.0, <span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"zd 1"</span>);
-<a class="jxr_linenumber" name="3133" href="#3133">3133</a> 
-<a class="jxr_linenumber" name="3134" href="#3134">3134</a>        viv(j, -1, <span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"j 1"</span>);
-<a class="jxr_linenumber" name="3135" href="#3135">3135</a> 
-<a class="jxr_linenumber" name="3136" href="#3136">3136</a>        j = jauPlan94(2400000.5, 1e6, 10, pv);
+<a class="jxr_linenumber" name="3124" href="#3124">3124</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="3125" href="#3125">3125</a>             pv = jauPlan94(2400000.5, 1e6, 0);
+<a class="jxr_linenumber" name="3126" href="#3126">3126</a>             fail(<span class="jxr_string">"did not throw all the illegal argument for bad planet number"</span>);
+<a class="jxr_linenumber" name="3127" href="#3127">3127</a>         } <strong class="jxr_keyword">catch</strong> (JSOFAIllegalParameter e) {
+<a class="jxr_linenumber" name="3128" href="#3128">3128</a>             <em class="jxr_comment">// do nothing</em>
+<a class="jxr_linenumber" name="3129" href="#3129">3129</a>         }
+<a class="jxr_linenumber" name="3130" href="#3130">3130</a> 
+<a class="jxr_linenumber" name="3131" href="#3131">3131</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="3132" href="#3132">3132</a>             pv = jauPlan94(2400000.5, 1e6, 10);
+<a class="jxr_linenumber" name="3133" href="#3133">3133</a>             fail(<span class="jxr_string">"did not throw all the illegal argument for bad planet number"</span>);
+<a class="jxr_linenumber" name="3134" href="#3134">3134</a>         } <strong class="jxr_keyword">catch</strong> (JSOFAIllegalParameter e) {
+<a class="jxr_linenumber" name="3135" href="#3135">3135</a>             <em class="jxr_comment">// do nothing</em>
+<a class="jxr_linenumber" name="3136" href="#3136">3136</a>         }
 <a class="jxr_linenumber" name="3137" href="#3137">3137</a> 
-<a class="jxr_linenumber" name="3138" href="#3138">3138</a>        viv(j, -1, <span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"j 2"</span>);
-<a class="jxr_linenumber" name="3139" href="#3139">3139</a> 
-<a class="jxr_linenumber" name="3140" href="#3140">3140</a>        j = jauPlan94(2400000.5, -320000, 3, pv);
-<a class="jxr_linenumber" name="3141" href="#3141">3141</a> 
-<a class="jxr_linenumber" name="3142" href="#3142">3142</a>        vvd(pv[0][0], 0.9308038666832975759, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"x 3"</span>);
-<a class="jxr_linenumber" name="3143" href="#3143">3143</a>        vvd(pv[0][1], 0.3258319040261346000, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"y 3"</span>);
-<a class="jxr_linenumber" name="3144" href="#3144">3144</a>        vvd(pv[0][2], 0.1422794544481140560, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"z 3"</span>);
-<a class="jxr_linenumber" name="3145" href="#3145">3145</a> 
-<a class="jxr_linenumber" name="3146" href="#3146">3146</a>        vvd(pv[1][0], -0.6429458958255170006e-2, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"xd 3"</span>);
-<a class="jxr_linenumber" name="3147" href="#3147">3147</a>        vvd(pv[1][1], 0.1468570657704237764e-1, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"yd 3"</span>);
-<a class="jxr_linenumber" name="3148" href="#3148">3148</a>        vvd(pv[1][2], 0.6406996426270981189e-2, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"zd 3"</span>);
+<a class="jxr_linenumber" name="3138" href="#3138">3138</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="3139" href="#3139">3139</a>             pv = jauPlan94(2400000.5, -320000, 3);
+<a class="jxr_linenumber" name="3140" href="#3140">3140</a> 
+<a class="jxr_linenumber" name="3141" href="#3141">3141</a>             vvd(pv[0][0], 0.9308038666832975759, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"x 3"</span>);
+<a class="jxr_linenumber" name="3142" href="#3142">3142</a>             vvd(pv[0][1], 0.3258319040261346000, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"y 3"</span>);
+<a class="jxr_linenumber" name="3143" href="#3143">3143</a>             vvd(pv[0][2], 0.1422794544481140560, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"z 3"</span>);
+<a class="jxr_linenumber" name="3144" href="#3144">3144</a> 
+<a class="jxr_linenumber" name="3145" href="#3145">3145</a>             vvd(pv[1][0], -0.6429458958255170006e-2, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"xd 3"</span>);
+<a class="jxr_linenumber" name="3146" href="#3146">3146</a>             vvd(pv[1][1], 0.1468570657704237764e-1, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"yd 3"</span>);
+<a class="jxr_linenumber" name="3147" href="#3147">3147</a>             vvd(pv[1][2], 0.6406996426270981189e-2, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"zd 3"</span>);
+<a class="jxr_linenumber" name="3148" href="#3148">3148</a> 
 <a class="jxr_linenumber" name="3149" href="#3149">3149</a> 
-<a class="jxr_linenumber" name="3150" href="#3150">3150</a>        viv(j, 1, <span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"j 3"</span>);
+<a class="jxr_linenumber" name="3150" href="#3150">3150</a>             pv = jauPlan94(2400000.5, 43999.9, 1);
 <a class="jxr_linenumber" name="3151" href="#3151">3151</a> 
-<a class="jxr_linenumber" name="3152" href="#3152">3152</a>        j = jauPlan94(2400000.5, 43999.9, 1, pv);
-<a class="jxr_linenumber" name="3153" href="#3153">3153</a> 
-<a class="jxr_linenumber" name="3154" href="#3154">3154</a>        vvd(pv[0][0], 0.2945293959257430832, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"x 4"</span>);
-<a class="jxr_linenumber" name="3155" href="#3155">3155</a>        vvd(pv[0][1], -0.2452204176601049596, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"y 4"</span>);
-<a class="jxr_linenumber" name="3156" href="#3156">3156</a>        vvd(pv[0][2], -0.1615427700571978153, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"z 4"</span>);
-<a class="jxr_linenumber" name="3157" href="#3157">3157</a> 
-<a class="jxr_linenumber" name="3158" href="#3158">3158</a>        vvd(pv[1][0], 0.1413867871404614441e-1, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"xd 4"</span>);
-<a class="jxr_linenumber" name="3159" href="#3159">3159</a>        vvd(pv[1][1], 0.1946548301104706582e-1, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"yd 4"</span>);
-<a class="jxr_linenumber" name="3160" href="#3160">3160</a>        vvd(pv[1][2], 0.8929809783898904786e-2, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"zd 4"</span>);
-<a class="jxr_linenumber" name="3161" href="#3161">3161</a> 
-<a class="jxr_linenumber" name="3162" href="#3162">3162</a>        viv(j, 0, <span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"j 4"</span>);
+<a class="jxr_linenumber" name="3152" href="#3152">3152</a>             vvd(pv[0][0], 0.2945293959257430832, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"x 4"</span>);
+<a class="jxr_linenumber" name="3153" href="#3153">3153</a>             vvd(pv[0][1], -0.2452204176601049596, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"y 4"</span>);
+<a class="jxr_linenumber" name="3154" href="#3154">3154</a>             vvd(pv[0][2], -0.1615427700571978153, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"z 4"</span>);
+<a class="jxr_linenumber" name="3155" href="#3155">3155</a> 
+<a class="jxr_linenumber" name="3156" href="#3156">3156</a>             vvd(pv[1][0], 0.1413867871404614441e-1, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"xd 4"</span>);
+<a class="jxr_linenumber" name="3157" href="#3157">3157</a>             vvd(pv[1][1], 0.1946548301104706582e-1, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"yd 4"</span>);
+<a class="jxr_linenumber" name="3158" href="#3158">3158</a>             vvd(pv[1][2], 0.8929809783898904786e-2, 1e-11,<span class="jxr_string">"jauPlan94"</span>, <span class="jxr_string">"zd 4"</span>);
+<a class="jxr_linenumber" name="3159" href="#3159">3159</a>         } <strong class="jxr_keyword">catch</strong> (JSOFAIllegalParameter e) {
+<a class="jxr_linenumber" name="3160" href="#3160">3160</a>             fail(<span class="jxr_string">"legal call threw exception"</span>);
+<a class="jxr_linenumber" name="3161" href="#3161">3161</a>         }
+<a class="jxr_linenumber" name="3162" href="#3162">3162</a> 
 <a class="jxr_linenumber" name="3163" href="#3163">3163</a> 
 <a class="jxr_linenumber" name="3164" href="#3164">3164</a>     }
 <a class="jxr_linenumber" name="3165" href="#3165">3165</a> 
@@ -8708,128 +8708,236 @@
 <a class="jxr_linenumber" name="8698" href="#8698">8698</a> 
 <a class="jxr_linenumber" name="8699" href="#8699">8699</a> }
 <a class="jxr_linenumber" name="8700" href="#8700">8700</a> 
-<a class="jxr_linenumber" name="8701" href="#8701">8701</a> 
-<a class="jxr_linenumber" name="8702" href="#8702">8702</a> <em class="jxr_comment">//end of tests</em>
-<a class="jxr_linenumber" name="8703" href="#8703">8703</a> }
-<a class="jxr_linenumber" name="8704" href="#8704">8704</a> 
-<a class="jxr_linenumber" name="8705" href="#8705">8705</a> <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="8706" href="#8706">8706</a> <em class="jxr_comment"> * Copyright © 2018 Paul Harrison, University of Manchester.</em>
-<a class="jxr_linenumber" name="8707" href="#8707">8707</a> <em class="jxr_comment"> * </em>
-<a class="jxr_linenumber" name="8708" href="#8708">8708</a> <em class="jxr_comment"> * This JSOFA software is derived from the official C release of the "Standards Of Fundamental Astronomy" (SOFA) library </em>
-<a class="jxr_linenumber" name="8709" href="#8709">8709</a> <em class="jxr_comment"> * of the International Astronomical Union. The intention is to reproduce the functionality and algorithms of </em>
-<a class="jxr_linenumber" name="8710" href="#8710">8710</a> <em class="jxr_comment"> * the official SOFA library in a pure Java form.</em>
-<a class="jxr_linenumber" name="8711" href="#8711">8711</a> <em class="jxr_comment"> * </em>
-<a class="jxr_linenumber" name="8712" href="#8712">8712</a> <em class="jxr_comment"> * The responsibility for the maintenance and supply of the JSOFA library lies with the author (not the IAU SOFA Board), </em>
-<a class="jxr_linenumber" name="8713" href="#8713">8713</a> <em class="jxr_comment"> * However, The JSOFA software is provided "as is" and the author makes no warranty as to its use or performance. </em>
-<a class="jxr_linenumber" name="8714" href="#8714">8714</a> <em class="jxr_comment"> * The author does not and cannot warrant the performance or results which the user may obtain by using the JSOFA software. </em>
-<a class="jxr_linenumber" name="8715" href="#8715">8715</a> <em class="jxr_comment"> * The author makes no warranties, express or implied, as to non-infringement of third party rights, merchantability,</em>
-<a class="jxr_linenumber" name="8716" href="#8716">8716</a> <em class="jxr_comment"> * or fitness for any particular purpose. In no event will the author be liable to the user for any consequential, </em>
-<a class="jxr_linenumber" name="8717" href="#8717">8717</a> <em class="jxr_comment"> * incidental, or special damages, including any lost profits or lost savings, even if the author has been advised</em>
-<a class="jxr_linenumber" name="8718" href="#8718">8718</a> <em class="jxr_comment"> * of such damages, or for any claim by any third party.</em>
-<a class="jxr_linenumber" name="8719" href="#8719">8719</a> <em class="jxr_comment"> * </em>
-<a class="jxr_linenumber" name="8720" href="#8720">8720</a> <em class="jxr_comment"> * Other conditions of the original license (reproduced below) are carried over as applicable.</em>
-<a class="jxr_linenumber" name="8721" href="#8721">8721</a> <em class="jxr_comment"> */</em>
-<a class="jxr_linenumber" name="8722" href="#8722">8722</a> 
-<a class="jxr_linenumber" name="8723" href="#8723">8723</a> <em class="jxr_comment">/*<em class="jxr_comment">----------------------------------------------------------------------</em></em>
-<a class="jxr_linenumber" name="8724" href="#8724">8724</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8725" href="#8725">8725</a> <em class="jxr_comment">**  Copyright (C) 2018</em>
-<a class="jxr_linenumber" name="8726" href="#8726">8726</a> <em class="jxr_comment">**  Standards Of Fundamental Astronomy Board</em>
-<a class="jxr_linenumber" name="8727" href="#8727">8727</a> <em class="jxr_comment">**  of the International Astronomical Union.</em>
-<a class="jxr_linenumber" name="8728" href="#8728">8728</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8729" href="#8729">8729</a> <em class="jxr_comment">**  =====================</em>
-<a class="jxr_linenumber" name="8730" href="#8730">8730</a> <em class="jxr_comment">**  SOFA Software License</em>
-<a class="jxr_linenumber" name="8731" href="#8731">8731</a> <em class="jxr_comment">**  =====================</em>
-<a class="jxr_linenumber" name="8732" href="#8732">8732</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8733" href="#8733">8733</a> <em class="jxr_comment">**  NOTICE TO USER:</em>
-<a class="jxr_linenumber" name="8734" href="#8734">8734</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8735" href="#8735">8735</a> <em class="jxr_comment">**  BY USING THIS SOFTWARE YOU ACCEPT THE FOLLOWING TERMS AND CONDITIONS</em>
-<a class="jxr_linenumber" name="8736" href="#8736">8736</a> <em class="jxr_comment">**  WHICH APPLY TO ITS USE.</em>
-<a class="jxr_linenumber" name="8737" href="#8737">8737</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8738" href="#8738">8738</a> <em class="jxr_comment">**  1. The Software is owned by the IAU SOFA Board ("SOFA").</em>
-<a class="jxr_linenumber" name="8739" href="#8739">8739</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8740" href="#8740">8740</a> <em class="jxr_comment">**  2. Permission is granted to anyone to use the SOFA software for any</em>
-<a class="jxr_linenumber" name="8741" href="#8741">8741</a> <em class="jxr_comment">**     purpose, including commercial applications, free of charge and</em>
-<a class="jxr_linenumber" name="8742" href="#8742">8742</a> <em class="jxr_comment">**     without payment of royalties, subject to the conditions and</em>
-<a class="jxr_linenumber" name="8743" href="#8743">8743</a> <em class="jxr_comment">**     restrictions listed below.</em>
-<a class="jxr_linenumber" name="8744" href="#8744">8744</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8745" href="#8745">8745</a> <em class="jxr_comment">**  3. You (the user) may copy and distribute SOFA source code to others,</em>
-<a class="jxr_linenumber" name="8746" href="#8746">8746</a> <em class="jxr_comment">**     and use and adapt its code and algorithms in your own software,</em>
-<a class="jxr_linenumber" name="8747" href="#8747">8747</a> <em class="jxr_comment">**     on a world-wide, royalty-free basis.  That portion of your</em>
-<a class="jxr_linenumber" name="8748" href="#8748">8748</a> <em class="jxr_comment">**     distribution that does not consist of intact and unchanged copies</em>
-<a class="jxr_linenumber" name="8749" href="#8749">8749</a> <em class="jxr_comment">**     of SOFA source code files is a "derived work" that must comply</em>
-<a class="jxr_linenumber" name="8750" href="#8750">8750</a> <em class="jxr_comment">**     with the following requirements:</em>
-<a class="jxr_linenumber" name="8751" href="#8751">8751</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8752" href="#8752">8752</a> <em class="jxr_comment">**     a) Your work shall be marked or carry a statement that it</em>
-<a class="jxr_linenumber" name="8753" href="#8753">8753</a> <em class="jxr_comment">**        (i) uses routines and computations derived by you from</em>
-<a class="jxr_linenumber" name="8754" href="#8754">8754</a> <em class="jxr_comment">**        software provided by SOFA under license to you; and</em>
-<a class="jxr_linenumber" name="8755" href="#8755">8755</a> <em class="jxr_comment">**        (ii) does not itself constitute software provided by and/or</em>
-<a class="jxr_linenumber" name="8756" href="#8756">8756</a> <em class="jxr_comment">**        endorsed by SOFA.</em>
-<a class="jxr_linenumber" name="8757" href="#8757">8757</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8758" href="#8758">8758</a> <em class="jxr_comment">**     b) The source code of your derived work must contain descriptions</em>
-<a class="jxr_linenumber" name="8759" href="#8759">8759</a> <em class="jxr_comment">**        of how the derived work is based upon, contains and/or differs</em>
-<a class="jxr_linenumber" name="8760" href="#8760">8760</a> <em class="jxr_comment">**        from the original SOFA software.</em>
-<a class="jxr_linenumber" name="8761" href="#8761">8761</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8762" href="#8762">8762</a> <em class="jxr_comment">**     c) The name(s) of all routine(s) in your derived work shall not</em>
-<a class="jxr_linenumber" name="8763" href="#8763">8763</a> <em class="jxr_comment">**        include the prefix "iau".</em>
-<a class="jxr_linenumber" name="8764" href="#8764">8764</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8765" href="#8765">8765</a> <em class="jxr_comment">**     d) The origin of the SOFA components of your derived work must</em>
-<a class="jxr_linenumber" name="8766" href="#8766">8766</a> <em class="jxr_comment">**        not be misrepresented;  you must not claim that you wrote the</em>
-<a class="jxr_linenumber" name="8767" href="#8767">8767</a> <em class="jxr_comment">**        original software, nor file a patent application for SOFA</em>
-<a class="jxr_linenumber" name="8768" href="#8768">8768</a> <em class="jxr_comment">**        software or algorithms embedded in the SOFA software.</em>
-<a class="jxr_linenumber" name="8769" href="#8769">8769</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8770" href="#8770">8770</a> <em class="jxr_comment">**     e) These requirements must be reproduced intact in any source</em>
-<a class="jxr_linenumber" name="8771" href="#8771">8771</a> <em class="jxr_comment">**        distribution and shall apply to anyone to whom you have</em>
-<a class="jxr_linenumber" name="8772" href="#8772">8772</a> <em class="jxr_comment">**        granted a further right to modify the source code of your</em>
-<a class="jxr_linenumber" name="8773" href="#8773">8773</a> <em class="jxr_comment">**        derived work.</em>
-<a class="jxr_linenumber" name="8774" href="#8774">8774</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8775" href="#8775">8775</a> <em class="jxr_comment">**     Note that, as originally distributed, the SOFA software is</em>
-<a class="jxr_linenumber" name="8776" href="#8776">8776</a> <em class="jxr_comment">**     intended to be a definitive implementation of the IAU standards,</em>
-<a class="jxr_linenumber" name="8777" href="#8777">8777</a> <em class="jxr_comment">**     and consequently third-party modifications are discouraged.  All</em>
-<a class="jxr_linenumber" name="8778" href="#8778">8778</a> <em class="jxr_comment">**     variations, no matter how minor, must be explicitly marked as</em>
-<a class="jxr_linenumber" name="8779" href="#8779">8779</a> <em class="jxr_comment">**     such, as explained above.</em>
-<a class="jxr_linenumber" name="8780" href="#8780">8780</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8781" href="#8781">8781</a> <em class="jxr_comment">**  4. In any published work or commercial products which includes</em>
-<a class="jxr_linenumber" name="8782" href="#8782">8782</a> <em class="jxr_comment">**     results achieved by using the SOFA software, you shall</em>
-<a class="jxr_linenumber" name="8783" href="#8783">8783</a> <em class="jxr_comment">**     acknowledge that the SOFA software was used in obtaining those</em>
-<a class="jxr_linenumber" name="8784" href="#8784">8784</a> <em class="jxr_comment">**     results.</em>
-<a class="jxr_linenumber" name="8785" href="#8785">8785</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8786" href="#8786">8786</a> <em class="jxr_comment">**  5. You shall not cause the SOFA software to be brought into</em>
-<a class="jxr_linenumber" name="8787" href="#8787">8787</a> <em class="jxr_comment">**     disrepute, either by misuse, or use for inappropriate tasks, or</em>
-<a class="jxr_linenumber" name="8788" href="#8788">8788</a> <em class="jxr_comment">**     by inappropriate modification.</em>
-<a class="jxr_linenumber" name="8789" href="#8789">8789</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8790" href="#8790">8790</a> <em class="jxr_comment">**  6. The SOFA software is provided "as is" and SOFA makes no warranty</em>
-<a class="jxr_linenumber" name="8791" href="#8791">8791</a> <em class="jxr_comment">**     as to its use or performance.   SOFA does not and cannot warrant</em>
-<a class="jxr_linenumber" name="8792" href="#8792">8792</a> <em class="jxr_comment">**     the performance or results which the user may obtain by using the</em>
-<a class="jxr_linenumber" name="8793" href="#8793">8793</a> <em class="jxr_comment">**     SOFA software.  SOFA makes no warranties, express or implied, as</em>
-<a class="jxr_linenumber" name="8794" href="#8794">8794</a> <em class="jxr_comment">**     to non-infringement of third party rights, merchantability, or</em>
-<a class="jxr_linenumber" name="8795" href="#8795">8795</a> <em class="jxr_comment">**     fitness for any particular purpose.  In no event will SOFA be</em>
-<a class="jxr_linenumber" name="8796" href="#8796">8796</a> <em class="jxr_comment">**     liable to the user for any consequential, incidental, or special</em>
-<a class="jxr_linenumber" name="8797" href="#8797">8797</a> <em class="jxr_comment">**     damages, including any lost profits or lost savings, even if a</em>
-<a class="jxr_linenumber" name="8798" href="#8798">8798</a> <em class="jxr_comment">**     SOFA representative has been advised of such damages, or for any</em>
-<a class="jxr_linenumber" name="8799" href="#8799">8799</a> <em class="jxr_comment">**     claim by any third party.</em>
-<a class="jxr_linenumber" name="8800" href="#8800">8800</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8801" href="#8801">8801</a> <em class="jxr_comment">**  7. The provision of any version of the SOFA software under the terms</em>
-<a class="jxr_linenumber" name="8802" href="#8802">8802</a> <em class="jxr_comment">**     and conditions specified herein does not imply that future</em>
-<a class="jxr_linenumber" name="8803" href="#8803">8803</a> <em class="jxr_comment">**     versions will also be made available under the same terms and</em>
-<a class="jxr_linenumber" name="8804" href="#8804">8804</a> <em class="jxr_comment">**     conditions.</em>
-<a class="jxr_linenumber" name="8805" href="#8805">8805</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8806" href="#8806">8806</a> <em class="jxr_comment">**  Correspondence concerning SOFA software should be addressed as</em>
-<a class="jxr_linenumber" name="8807" href="#8807">8807</a> <em class="jxr_comment">**  follows:</em>
-<a class="jxr_linenumber" name="8808" href="#8808">8808</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8809" href="#8809">8809</a> <em class="jxr_comment">**      By email:  sofa@ukho.gov.uk</em>
-<a class="jxr_linenumber" name="8810" href="#8810">8810</a> <em class="jxr_comment">**      By post:   IAU SOFA Center</em>
-<a class="jxr_linenumber" name="8811" href="#8811">8811</a> <em class="jxr_comment">**                 HM Nautical Almanac Office</em>
-<a class="jxr_linenumber" name="8812" href="#8812">8812</a> <em class="jxr_comment">**                 UK Hydrographic Office</em>
-<a class="jxr_linenumber" name="8813" href="#8813">8813</a> <em class="jxr_comment">**                 Admiralty Way, Taunton</em>
-<a class="jxr_linenumber" name="8814" href="#8814">8814</a> <em class="jxr_comment">**                 Somerset, TA1 2DN</em>
-<a class="jxr_linenumber" name="8815" href="#8815">8815</a> <em class="jxr_comment">**                 United Kingdom</em>
-<a class="jxr_linenumber" name="8816" href="#8816">8816</a> <em class="jxr_comment">**</em>
-<a class="jxr_linenumber" name="8817" href="#8817">8817</a> <em class="jxr_comment">**--------------------------------------------------------------------*/</em>
-<a class="jxr_linenumber" name="8818" href="#8818">8818</a> 
-<a class="jxr_linenumber" name="8819" href="#8819">8819</a> 
-<a class="jxr_linenumber" name="8820" href="#8820">8820</a> <em class="jxr_comment">/*</em>
-<a class="jxr_linenumber" name="8821" href="#8821">8821</a> <em class="jxr_comment"> * $Log$</em>
-<a class="jxr_linenumber" name="8822" href="#8822">8822</a> <em class="jxr_comment"> */</em>
+<a class="jxr_linenumber" name="8701" href="#8701">8701</a> <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="8702" href="#8702">8702</a> <em class="jxr_javadoccomment">**  - - - - - - - - -</em>
+<a class="jxr_linenumber" name="8703" href="#8703">8703</a> <em class="jxr_javadoccomment">**   t _ a t c c 1 3</em>
+<a class="jxr_linenumber" name="8704" href="#8704">8704</a> <em class="jxr_javadoccomment">**  - - - - - - - - -</em>
+<a class="jxr_linenumber" name="8705" href="#8705">8705</a> <em class="jxr_javadoccomment">**</em>
+<a class="jxr_linenumber" name="8706" href="#8706">8706</a> <em class="jxr_javadoccomment">**  Test iauAtcc13 function.</em>
+<a class="jxr_linenumber" name="8707" href="#8707">8707</a> <em class="jxr_javadoccomment">**</em>
+<a class="jxr_linenumber" name="8708" href="#8708">8708</a> <em class="jxr_javadoccomment">**  Returned:</em>
+<a class="jxr_linenumber" name="8709" href="#8709">8709</a> <em class="jxr_javadoccomment">**     status    int         FALSE = success, TRUE = fail</em>
+<a class="jxr_linenumber" name="8710" href="#8710">8710</a> <em class="jxr_javadoccomment">**</em>
+<a class="jxr_linenumber" name="8711" href="#8711">8711</a> <em class="jxr_javadoccomment">**  Called:  iauAtcc13, vvd</em>
+<a class="jxr_linenumber" name="8712" href="#8712">8712</a> <em class="jxr_javadoccomment">**</em>
+<a class="jxr_linenumber" name="8713" href="#8713">8713</a> <em class="jxr_javadoccomment">**  This revision:  2021 April 18</em>
+<a class="jxr_linenumber" name="8714" href="#8714">8714</a> <em class="jxr_javadoccomment">*/</em>
+<a class="jxr_linenumber" name="8715" href="#8715">8715</a> @Test
+<a class="jxr_linenumber" name="8716" href="#8716">8716</a> <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> t_atcc13()
+<a class="jxr_linenumber" name="8717" href="#8717">8717</a> {
+<a class="jxr_linenumber" name="8718" href="#8718">8718</a>    <strong class="jxr_keyword">double</strong> rc, dc, pr, pd, px, rv, date1, date2;
+<a class="jxr_linenumber" name="8719" href="#8719">8719</a> 
+<a class="jxr_linenumber" name="8720" href="#8720">8720</a> 
+<a class="jxr_linenumber" name="8721" href="#8721">8721</a>    rc = 2.71;
+<a class="jxr_linenumber" name="8722" href="#8722">8722</a>    dc = 0.174;
+<a class="jxr_linenumber" name="8723" href="#8723">8723</a>    pr = 1e-5;
+<a class="jxr_linenumber" name="8724" href="#8724">8724</a>    pd = 5e-6;
+<a class="jxr_linenumber" name="8725" href="#8725">8725</a>    px = 0.1;
+<a class="jxr_linenumber" name="8726" href="#8726">8726</a>    rv = 55.0;
+<a class="jxr_linenumber" name="8727" href="#8727">8727</a>    date1 = 2456165.5;
+<a class="jxr_linenumber" name="8728" href="#8728">8728</a>    date2 = 0.401182685;
+<a class="jxr_linenumber" name="8729" href="#8729">8729</a> 
+<a class="jxr_linenumber" name="8730" href="#8730">8730</a>    SphericalCoordinate co = jauAtcc13(rc, dc, pr, pd, px, rv, date1, date2);
+<a class="jxr_linenumber" name="8731" href="#8731">8731</a> 
+<a class="jxr_linenumber" name="8732" href="#8732">8732</a>    vvd(co.alpha,  2.710126504531372384, 1e-12,
+<a class="jxr_linenumber" name="8733" href="#8733">8733</a>            <span class="jxr_string">"iauAtcc13"</span>, <span class="jxr_string">"ra"</span>);
+<a class="jxr_linenumber" name="8734" href="#8734">8734</a>    vvd(co.delta, 0.1740632537628350152, 1e-12,
+<a class="jxr_linenumber" name="8735" href="#8735">8735</a>            <span class="jxr_string">"iauAtcc13"</span>, <span class="jxr_string">"da"</span>);
+<a class="jxr_linenumber" name="8736" href="#8736">8736</a> 
+<a class="jxr_linenumber" name="8737" href="#8737">8737</a> }
+<a class="jxr_linenumber" name="8738" href="#8738">8738</a> 
+<a class="jxr_linenumber" name="8739" href="#8739">8739</a> <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="8740" href="#8740">8740</a> <em class="jxr_javadoccomment">**  - - - - - - - -</em>
+<a class="jxr_linenumber" name="8741" href="#8741">8741</a> <em class="jxr_javadoccomment">**   t _ a t c c q</em>
+<a class="jxr_linenumber" name="8742" href="#8742">8742</a> <em class="jxr_javadoccomment">**  - - - - - - - -</em>
+<a class="jxr_linenumber" name="8743" href="#8743">8743</a> <em class="jxr_javadoccomment">**</em>
+<a class="jxr_linenumber" name="8744" href="#8744">8744</a> <em class="jxr_javadoccomment">**  Test iauAtccq function.</em>
+<a class="jxr_linenumber" name="8745" href="#8745">8745</a> <em class="jxr_javadoccomment">**</em>
+<a class="jxr_linenumber" name="8746" href="#8746">8746</a> <em class="jxr_javadoccomment">**  Returned:</em>
+<a class="jxr_linenumber" name="8747" href="#8747">8747</a> <em class="jxr_javadoccomment">**     status    int         FALSE = success, TRUE = fail</em>
+<a class="jxr_linenumber" name="8748" href="#8748">8748</a> <em class="jxr_javadoccomment">**</em>
+<a class="jxr_linenumber" name="8749" href="#8749">8749</a> <em class="jxr_javadoccomment">**  Called:  iauApcc13, iauAtccq, vvd</em>
+<a class="jxr_linenumber" name="8750" href="#8750">8750</a> <em class="jxr_javadoccomment">**</em>
+<a class="jxr_linenumber" name="8751" href="#8751">8751</a> <em class="jxr_javadoccomment">**  This revision:  2021 April 18</em>
+<a class="jxr_linenumber" name="8752" href="#8752">8752</a> <em class="jxr_javadoccomment">*/</em>
+<a class="jxr_linenumber" name="8753" href="#8753">8753</a> @Test
+<a class="jxr_linenumber" name="8754" href="#8754">8754</a> <strong class="jxr_keyword">public</strong>  <strong class="jxr_keyword">void</strong> t_atccq()
+<a class="jxr_linenumber" name="8755" href="#8755">8755</a> {
+<a class="jxr_linenumber" name="8756" href="#8756">8756</a>    <strong class="jxr_keyword">double</strong> date1, date2, eo, rc, dc, pr, pd, px, rv;
+<a class="jxr_linenumber" name="8757" href="#8757">8757</a>    Astrom astrom = <strong class="jxr_keyword">new</strong> Astrom();
+<a class="jxr_linenumber" name="8758" href="#8758">8758</a> 
+<a class="jxr_linenumber" name="8759" href="#8759">8759</a>    date1 = 2456165.5;
+<a class="jxr_linenumber" name="8760" href="#8760">8760</a>    date2 = 0.401182685;
+<a class="jxr_linenumber" name="8761" href="#8761">8761</a>    eo = jauApci13(date1, date2, astrom);
+<a class="jxr_linenumber" name="8762" href="#8762">8762</a>    rc = 2.71;
+<a class="jxr_linenumber" name="8763" href="#8763">8763</a>    dc = 0.174;
+<a class="jxr_linenumber" name="8764" href="#8764">8764</a>    pr = 1e-5;
+<a class="jxr_linenumber" name="8765" href="#8765">8765</a>    pd = 5e-6;
+<a class="jxr_linenumber" name="8766" href="#8766">8766</a>    px = 0.1;
+<a class="jxr_linenumber" name="8767" href="#8767">8767</a>    rv = 55.0;
+<a class="jxr_linenumber" name="8768" href="#8768">8768</a> 
+<a class="jxr_linenumber" name="8769" href="#8769">8769</a>    SphericalCoordinate co = jauAtccq(rc, dc, pr, pd, px, rv, astrom);
+<a class="jxr_linenumber" name="8770" href="#8770">8770</a> 
+<a class="jxr_linenumber" name="8771" href="#8771">8771</a>    vvd(co.alpha, 2.710126504531372384, 1e-12, <span class="jxr_string">"iauAtccq"</span>, <span class="jxr_string">"ra"</span>);
+<a class="jxr_linenumber" name="8772" href="#8772">8772</a>    vvd(co.delta, 0.1740632537628350152, 1e-12, <span class="jxr_string">"iauAtccq"</span>, <span class="jxr_string">"da"</span>);
+<a class="jxr_linenumber" name="8773" href="#8773">8773</a> 
+<a class="jxr_linenumber" name="8774" href="#8774">8774</a> }
+<a class="jxr_linenumber" name="8775" href="#8775">8775</a> 
+<a class="jxr_linenumber" name="8776" href="#8776">8776</a> <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="8777" href="#8777">8777</a> <em class="jxr_javadoccomment">**  - - - - - - - - -</em>
+<a class="jxr_linenumber" name="8778" href="#8778">8778</a> <em class="jxr_javadoccomment">**   t _ m o o n 9 8</em>
+<a class="jxr_linenumber" name="8779" href="#8779">8779</a> <em class="jxr_javadoccomment">**  - - - - - - - - -</em>
+<a class="jxr_linenumber" name="8780" href="#8780">8780</a> <em class="jxr_javadoccomment">**</em>
+<a class="jxr_linenumber" name="8781" href="#8781">8781</a> <em class="jxr_javadoccomment">**  Test iauMoon98 function.</em>
+<a class="jxr_linenumber" name="8782" href="#8782">8782</a> <em class="jxr_javadoccomment">**</em>
+<a class="jxr_linenumber" name="8783" href="#8783">8783</a> <em class="jxr_javadoccomment">**  Returned:</em>
+<a class="jxr_linenumber" name="8784" href="#8784">8784</a> <em class="jxr_javadoccomment">**     status    int         FALSE = success, TRUE = fail</em>
+<a class="jxr_linenumber" name="8785" href="#8785">8785</a> <em class="jxr_javadoccomment">**</em>
+<a class="jxr_linenumber" name="8786" href="#8786">8786</a> <em class="jxr_javadoccomment">**  Called:  iauMoon98, vvd, viv</em>
+<a class="jxr_linenumber" name="8787" href="#8787">8787</a> <em class="jxr_javadoccomment">**</em>
+<a class="jxr_linenumber" name="8788" href="#8788">8788</a> <em class="jxr_javadoccomment">**  This revision:  2021 April 12</em>
+<a class="jxr_linenumber" name="8789" href="#8789">8789</a> <em class="jxr_javadoccomment">*/</em>
+<a class="jxr_linenumber" name="8790" href="#8790">8790</a> @Test
+<a class="jxr_linenumber" name="8791" href="#8791">8791</a> <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> t_moon98()
+<a class="jxr_linenumber" name="8792" href="#8792">8792</a> {
+<a class="jxr_linenumber" name="8793" href="#8793">8793</a>    <strong class="jxr_keyword">double</strong> pv[][] = jauMoon98(2400000.5, 43999.9);
+<a class="jxr_linenumber" name="8794" href="#8794">8794</a> 
+<a class="jxr_linenumber" name="8795" href="#8795">8795</a>    vvd(pv[0][0], -0.2601295959971044180e-2, 1e-11,
+<a class="jxr_linenumber" name="8796" href="#8796">8796</a>        <span class="jxr_string">"iauMoon98"</span>, <span class="jxr_string">"x 4"</span>);
+<a class="jxr_linenumber" name="8797" href="#8797">8797</a>    vvd(pv[0][1], 0.6139750944302742189e-3, 1e-11,
+<a class="jxr_linenumber" name="8798" href="#8798">8798</a>        <span class="jxr_string">"iauMoon98"</span>, <span class="jxr_string">"y 4"</span>);
+<a class="jxr_linenumber" name="8799" href="#8799">8799</a>    vvd(pv[0][2], 0.2640794528229828909e-3, 1e-11,
+<a class="jxr_linenumber" name="8800" href="#8800">8800</a>        <span class="jxr_string">"iauMoon98"</span>, <span class="jxr_string">"z 4"</span>);
+<a class="jxr_linenumber" name="8801" href="#8801">8801</a> 
+<a class="jxr_linenumber" name="8802" href="#8802">8802</a>    vvd(pv[1][0], -0.1244321506649895021e-3, 1e-11,
+<a class="jxr_linenumber" name="8803" href="#8803">8803</a>        <span class="jxr_string">"iauMoon98"</span>, <span class="jxr_string">"xd 4"</span>);
+<a class="jxr_linenumber" name="8804" href="#8804">8804</a>    vvd(pv[1][1], -0.5219076942678119398e-3, 1e-11,
+<a class="jxr_linenumber" name="8805" href="#8805">8805</a>        <span class="jxr_string">"iauMoon98"</span>, <span class="jxr_string">"yd 4"</span>);
+<a class="jxr_linenumber" name="8806" href="#8806">8806</a>    vvd(pv[1][2], -0.1716132214378462047e-3, 1e-11,
+<a class="jxr_linenumber" name="8807" href="#8807">8807</a>        <span class="jxr_string">"iauMoon98"</span>, <span class="jxr_string">"zd 4"</span>);
+<a class="jxr_linenumber" name="8808" href="#8808">8808</a> 
+<a class="jxr_linenumber" name="8809" href="#8809">8809</a> }
+<a class="jxr_linenumber" name="8810" href="#8810">8810</a> <em class="jxr_comment">//end of tests</em>
+<a class="jxr_linenumber" name="8811" href="#8811">8811</a> }
+<a class="jxr_linenumber" name="8812" href="#8812">8812</a> 
+<a class="jxr_linenumber" name="8813" href="#8813">8813</a> <em class="jxr_comment">/*</em>
+<a class="jxr_linenumber" name="8814" href="#8814">8814</a> <em class="jxr_comment"> * Copyright © 2018 Paul Harrison, University of Manchester.</em>
+<a class="jxr_linenumber" name="8815" href="#8815">8815</a> <em class="jxr_comment"> * </em>
+<a class="jxr_linenumber" name="8816" href="#8816">8816</a> <em class="jxr_comment"> * This JSOFA software is derived from the official C release of the "Standards Of Fundamental Astronomy" (SOFA) library </em>
+<a class="jxr_linenumber" name="8817" href="#8817">8817</a> <em class="jxr_comment"> * of the International Astronomical Union. The intention is to reproduce the functionality and algorithms of </em>
+<a class="jxr_linenumber" name="8818" href="#8818">8818</a> <em class="jxr_comment"> * the official SOFA library in a pure Java form.</em>
+<a class="jxr_linenumber" name="8819" href="#8819">8819</a> <em class="jxr_comment"> * </em>
+<a class="jxr_linenumber" name="8820" href="#8820">8820</a> <em class="jxr_comment"> * The responsibility for the maintenance and supply of the JSOFA library lies with the author (not the IAU SOFA Board), </em>
+<a class="jxr_linenumber" name="8821" href="#8821">8821</a> <em class="jxr_comment"> * However, The JSOFA software is provided "as is" and the author makes no warranty as to its use or performance. </em>
+<a class="jxr_linenumber" name="8822" href="#8822">8822</a> <em class="jxr_comment"> * The author does not and cannot warrant the performance or results which the user may obtain by using the JSOFA software. </em>
+<a class="jxr_linenumber" name="8823" href="#8823">8823</a> <em class="jxr_comment"> * The author makes no warranties, express or implied, as to non-infringement of third party rights, merchantability,</em>
+<a class="jxr_linenumber" name="8824" href="#8824">8824</a> <em class="jxr_comment"> * or fitness for any particular purpose. In no event will the author be liable to the user for any consequential, </em>
+<a class="jxr_linenumber" name="8825" href="#8825">8825</a> <em class="jxr_comment"> * incidental, or special damages, including any lost profits or lost savings, even if the author has been advised</em>
+<a class="jxr_linenumber" name="8826" href="#8826">8826</a> <em class="jxr_comment"> * of such damages, or for any claim by any third party.</em>
+<a class="jxr_linenumber" name="8827" href="#8827">8827</a> <em class="jxr_comment"> * </em>
+<a class="jxr_linenumber" name="8828" href="#8828">8828</a> <em class="jxr_comment"> * Other conditions of the original license (reproduced below) are carried over as applicable.</em>
+<a class="jxr_linenumber" name="8829" href="#8829">8829</a> <em class="jxr_comment"> */</em>
+<a class="jxr_linenumber" name="8830" href="#8830">8830</a> 
+<a class="jxr_linenumber" name="8831" href="#8831">8831</a> <em class="jxr_comment">/*<em class="jxr_comment">----------------------------------------------------------------------</em></em>
+<a class="jxr_linenumber" name="8832" href="#8832">8832</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8833" href="#8833">8833</a> <em class="jxr_comment">**  Copyright (C) 2018</em>
+<a class="jxr_linenumber" name="8834" href="#8834">8834</a> <em class="jxr_comment">**  Standards Of Fundamental Astronomy Board</em>
+<a class="jxr_linenumber" name="8835" href="#8835">8835</a> <em class="jxr_comment">**  of the International Astronomical Union.</em>
+<a class="jxr_linenumber" name="8836" href="#8836">8836</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8837" href="#8837">8837</a> <em class="jxr_comment">**  =====================</em>
+<a class="jxr_linenumber" name="8838" href="#8838">8838</a> <em class="jxr_comment">**  SOFA Software License</em>
+<a class="jxr_linenumber" name="8839" href="#8839">8839</a> <em class="jxr_comment">**  =====================</em>
+<a class="jxr_linenumber" name="8840" href="#8840">8840</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8841" href="#8841">8841</a> <em class="jxr_comment">**  NOTICE TO USER:</em>
+<a class="jxr_linenumber" name="8842" href="#8842">8842</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8843" href="#8843">8843</a> <em class="jxr_comment">**  BY USING THIS SOFTWARE YOU ACCEPT THE FOLLOWING TERMS AND CONDITIONS</em>
+<a class="jxr_linenumber" name="8844" href="#8844">8844</a> <em class="jxr_comment">**  WHICH APPLY TO ITS USE.</em>
+<a class="jxr_linenumber" name="8845" href="#8845">8845</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8846" href="#8846">8846</a> <em class="jxr_comment">**  1. The Software is owned by the IAU SOFA Board ("SOFA").</em>
+<a class="jxr_linenumber" name="8847" href="#8847">8847</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8848" href="#8848">8848</a> <em class="jxr_comment">**  2. Permission is granted to anyone to use the SOFA software for any</em>
+<a class="jxr_linenumber" name="8849" href="#8849">8849</a> <em class="jxr_comment">**     purpose, including commercial applications, free of charge and</em>
+<a class="jxr_linenumber" name="8850" href="#8850">8850</a> <em class="jxr_comment">**     without payment of royalties, subject to the conditions and</em>
+<a class="jxr_linenumber" name="8851" href="#8851">8851</a> <em class="jxr_comment">**     restrictions listed below.</em>
+<a class="jxr_linenumber" name="8852" href="#8852">8852</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8853" href="#8853">8853</a> <em class="jxr_comment">**  3. You (the user) may copy and distribute SOFA source code to others,</em>
+<a class="jxr_linenumber" name="8854" href="#8854">8854</a> <em class="jxr_comment">**     and use and adapt its code and algorithms in your own software,</em>
+<a class="jxr_linenumber" name="8855" href="#8855">8855</a> <em class="jxr_comment">**     on a world-wide, royalty-free basis.  That portion of your</em>
+<a class="jxr_linenumber" name="8856" href="#8856">8856</a> <em class="jxr_comment">**     distribution that does not consist of intact and unchanged copies</em>
+<a class="jxr_linenumber" name="8857" href="#8857">8857</a> <em class="jxr_comment">**     of SOFA source code files is a "derived work" that must comply</em>
+<a class="jxr_linenumber" name="8858" href="#8858">8858</a> <em class="jxr_comment">**     with the following requirements:</em>
+<a class="jxr_linenumber" name="8859" href="#8859">8859</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8860" href="#8860">8860</a> <em class="jxr_comment">**     a) Your work shall be marked or carry a statement that it</em>
+<a class="jxr_linenumber" name="8861" href="#8861">8861</a> <em class="jxr_comment">**        (i) uses routines and computations derived by you from</em>
+<a class="jxr_linenumber" name="8862" href="#8862">8862</a> <em class="jxr_comment">**        software provided by SOFA under license to you; and</em>
+<a class="jxr_linenumber" name="8863" href="#8863">8863</a> <em class="jxr_comment">**        (ii) does not itself constitute software provided by and/or</em>
+<a class="jxr_linenumber" name="8864" href="#8864">8864</a> <em class="jxr_comment">**        endorsed by SOFA.</em>
+<a class="jxr_linenumber" name="8865" href="#8865">8865</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8866" href="#8866">8866</a> <em class="jxr_comment">**     b) The source code of your derived work must contain descriptions</em>
+<a class="jxr_linenumber" name="8867" href="#8867">8867</a> <em class="jxr_comment">**        of how the derived work is based upon, contains and/or differs</em>
+<a class="jxr_linenumber" name="8868" href="#8868">8868</a> <em class="jxr_comment">**        from the original SOFA software.</em>
+<a class="jxr_linenumber" name="8869" href="#8869">8869</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8870" href="#8870">8870</a> <em class="jxr_comment">**     c) The name(s) of all routine(s) in your derived work shall not</em>
+<a class="jxr_linenumber" name="8871" href="#8871">8871</a> <em class="jxr_comment">**        include the prefix "iau".</em>
+<a class="jxr_linenumber" name="8872" href="#8872">8872</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8873" href="#8873">8873</a> <em class="jxr_comment">**     d) The origin of the SOFA components of your derived work must</em>
+<a class="jxr_linenumber" name="8874" href="#8874">8874</a> <em class="jxr_comment">**        not be misrepresented;  you must not claim that you wrote the</em>
+<a class="jxr_linenumber" name="8875" href="#8875">8875</a> <em class="jxr_comment">**        original software, nor file a patent application for SOFA</em>
+<a class="jxr_linenumber" name="8876" href="#8876">8876</a> <em class="jxr_comment">**        software or algorithms embedded in the SOFA software.</em>
+<a class="jxr_linenumber" name="8877" href="#8877">8877</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8878" href="#8878">8878</a> <em class="jxr_comment">**     e) These requirements must be reproduced intact in any source</em>
+<a class="jxr_linenumber" name="8879" href="#8879">8879</a> <em class="jxr_comment">**        distribution and shall apply to anyone to whom you have</em>
+<a class="jxr_linenumber" name="8880" href="#8880">8880</a> <em class="jxr_comment">**        granted a further right to modify the source code of your</em>
+<a class="jxr_linenumber" name="8881" href="#8881">8881</a> <em class="jxr_comment">**        derived work.</em>
+<a class="jxr_linenumber" name="8882" href="#8882">8882</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8883" href="#8883">8883</a> <em class="jxr_comment">**     Note that, as originally distributed, the SOFA software is</em>
+<a class="jxr_linenumber" name="8884" href="#8884">8884</a> <em class="jxr_comment">**     intended to be a definitive implementation of the IAU standards,</em>
+<a class="jxr_linenumber" name="8885" href="#8885">8885</a> <em class="jxr_comment">**     and consequently third-party modifications are discouraged.  All</em>
+<a class="jxr_linenumber" name="8886" href="#8886">8886</a> <em class="jxr_comment">**     variations, no matter how minor, must be explicitly marked as</em>
+<a class="jxr_linenumber" name="8887" href="#8887">8887</a> <em class="jxr_comment">**     such, as explained above.</em>
+<a class="jxr_linenumber" name="8888" href="#8888">8888</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8889" href="#8889">8889</a> <em class="jxr_comment">**  4. In any published work or commercial products which includes</em>
+<a class="jxr_linenumber" name="8890" href="#8890">8890</a> <em class="jxr_comment">**     results achieved by using the SOFA software, you shall</em>
+<a class="jxr_linenumber" name="8891" href="#8891">8891</a> <em class="jxr_comment">**     acknowledge that the SOFA software was used in obtaining those</em>
+<a class="jxr_linenumber" name="8892" href="#8892">8892</a> <em class="jxr_comment">**     results.</em>
+<a class="jxr_linenumber" name="8893" href="#8893">8893</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8894" href="#8894">8894</a> <em class="jxr_comment">**  5. You shall not cause the SOFA software to be brought into</em>
+<a class="jxr_linenumber" name="8895" href="#8895">8895</a> <em class="jxr_comment">**     disrepute, either by misuse, or use for inappropriate tasks, or</em>
+<a class="jxr_linenumber" name="8896" href="#8896">8896</a> <em class="jxr_comment">**     by inappropriate modification.</em>
+<a class="jxr_linenumber" name="8897" href="#8897">8897</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8898" href="#8898">8898</a> <em class="jxr_comment">**  6. The SOFA software is provided "as is" and SOFA makes no warranty</em>
+<a class="jxr_linenumber" name="8899" href="#8899">8899</a> <em class="jxr_comment">**     as to its use or performance.   SOFA does not and cannot warrant</em>
+<a class="jxr_linenumber" name="8900" href="#8900">8900</a> <em class="jxr_comment">**     the performance or results which the user may obtain by using the</em>
+<a class="jxr_linenumber" name="8901" href="#8901">8901</a> <em class="jxr_comment">**     SOFA software.  SOFA makes no warranties, express or implied, as</em>
+<a class="jxr_linenumber" name="8902" href="#8902">8902</a> <em class="jxr_comment">**     to non-infringement of third party rights, merchantability, or</em>
+<a class="jxr_linenumber" name="8903" href="#8903">8903</a> <em class="jxr_comment">**     fitness for any particular purpose.  In no event will SOFA be</em>
+<a class="jxr_linenumber" name="8904" href="#8904">8904</a> <em class="jxr_comment">**     liable to the user for any consequential, incidental, or special</em>
+<a class="jxr_linenumber" name="8905" href="#8905">8905</a> <em class="jxr_comment">**     damages, including any lost profits or lost savings, even if a</em>
+<a class="jxr_linenumber" name="8906" href="#8906">8906</a> <em class="jxr_comment">**     SOFA representative has been advised of such damages, or for any</em>
+<a class="jxr_linenumber" name="8907" href="#8907">8907</a> <em class="jxr_comment">**     claim by any third party.</em>
+<a class="jxr_linenumber" name="8908" href="#8908">8908</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8909" href="#8909">8909</a> <em class="jxr_comment">**  7. The provision of any version of the SOFA software under the terms</em>
+<a class="jxr_linenumber" name="8910" href="#8910">8910</a> <em class="jxr_comment">**     and conditions specified herein does not imply that future</em>
+<a class="jxr_linenumber" name="8911" href="#8911">8911</a> <em class="jxr_comment">**     versions will also be made available under the same terms and</em>
+<a class="jxr_linenumber" name="8912" href="#8912">8912</a> <em class="jxr_comment">**     conditions.</em>
+<a class="jxr_linenumber" name="8913" href="#8913">8913</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8914" href="#8914">8914</a> <em class="jxr_comment">**  Correspondence concerning SOFA software should be addressed as</em>
+<a class="jxr_linenumber" name="8915" href="#8915">8915</a> <em class="jxr_comment">**  follows:</em>
+<a class="jxr_linenumber" name="8916" href="#8916">8916</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8917" href="#8917">8917</a> <em class="jxr_comment">**      By email:  sofa@ukho.gov.uk</em>
+<a class="jxr_linenumber" name="8918" href="#8918">8918</a> <em class="jxr_comment">**      By post:   IAU SOFA Center</em>
+<a class="jxr_linenumber" name="8919" href="#8919">8919</a> <em class="jxr_comment">**                 HM Nautical Almanac Office</em>
+<a class="jxr_linenumber" name="8920" href="#8920">8920</a> <em class="jxr_comment">**                 UK Hydrographic Office</em>
+<a class="jxr_linenumber" name="8921" href="#8921">8921</a> <em class="jxr_comment">**                 Admiralty Way, Taunton</em>
+<a class="jxr_linenumber" name="8922" href="#8922">8922</a> <em class="jxr_comment">**                 Somerset, TA1 2DN</em>
+<a class="jxr_linenumber" name="8923" href="#8923">8923</a> <em class="jxr_comment">**                 United Kingdom</em>
+<a class="jxr_linenumber" name="8924" href="#8924">8924</a> <em class="jxr_comment">**</em>
+<a class="jxr_linenumber" name="8925" href="#8925">8925</a> <em class="jxr_comment">**--------------------------------------------------------------------*/</em>
+<a class="jxr_linenumber" name="8926" href="#8926">8926</a> 
+<a class="jxr_linenumber" name="8927" href="#8927">8927</a> 
+<a class="jxr_linenumber" name="8928" href="#8928">8928</a> <em class="jxr_comment">/*</em>
+<a class="jxr_linenumber" name="8929" href="#8929">8929</a> <em class="jxr_comment"> * $Log$</em>
+<a class="jxr_linenumber" name="8930" href="#8930">8930</a> <em class="jxr_comment"> */</em>
 </pre>
 <hr/><div id="footer">This page was automatically generated by <a href="http://maven.apache.org/">Maven</a></div></body>
 </html>
