@@ -46,7 +46,7 @@ public class JSOFATest {
         assertEquals("sofa release", "2021-05-12", SOFA_RELEASE);
         assertEquals("sofa revision", "18", SOFA_REVISION);
         assertEquals("lastleap second", jauCal2jd(2017,1,1), lastLeapSecondDate());        
-        assertEquals("last omitted leap second", jauCal2jd(2021,06,30), latestConfirmedNoLeapSecondChange);
+        assertEquals("last confirmation of leapsecond data", jauCal2jd(2023,12,31), latestConfirmedNoLeapSecondChange);
         assertEquals("Jsofa release",  System.getProperty("SOFAVERSION"), JSOFA_RELEASE); // check that the correct version is being released - system properly set from POM
         
         

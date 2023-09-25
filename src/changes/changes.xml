@@ -6,6 +6,9 @@
     <author email="paul.harrison@manchester.ac.uk">Paul Harrison</author>
   </properties>
   <body>
+    <release version="20210512b" description="java related updates">
+      <action dev="pah">change the JSOFAExeption to be unchecked (i.e. runtime)</action>
+    </release>
     <release version="20210512" description="tracking updates of SOFA">
        <action  dev="pah" type="update" issue="https://github.com/Javastro/jsofa/issues/9" >
         Update to be in line with IAU sofa 2021-05-12 (see https://www.iausofa.org/2021_0512_C.html)

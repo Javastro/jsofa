@@ -18,7 +18,7 @@ package org.jastronomy.jsofa;
  * @author Paul Harrison (paul.harrison@manchester.ac.uk) 21 Nov 2011
  * @version $Revision$ $date$
  */
-public class JSOFAException extends Exception {
+public class JSOFAException extends RuntimeException {
 
     /** Comment for <code>serialVersionUID</code>
      */

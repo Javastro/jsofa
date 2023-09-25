@@ -41,7 +41,7 @@ public class JSOFA {
     public final static String SOFA_RELEASE = "2021-05-12";
     
     /** JSOFA release {@value}*/
-    public final static String JSOFA_RELEASE = "20210512";
+    public final static String JSOFA_RELEASE = "20210512b";
 
     /** tracked IAU SOFA revision {@value}. */
     public final static String SOFA_REVISION = "18";
@@ -49,17 +49,8 @@ public class JSOFA {
     /** Release year for this version of jauDat {@value} */
 public final static int IYV = 2021;
     /** The latest confirmed omission of a leap second form IERS */
-public final static JulianDate latestConfirmedNoLeapSecondChange;
-static {
-    JulianDate tmpval = new JulianDate(0,0);
-    try {
-        tmpval = jauCal2jd(2021,06,30); // this is from the IERS
-    } catch (JSOFAIllegalParameter e) {
-        // should not happen
-        e.printStackTrace();
-    }
-    latestConfirmedNoLeapSecondChange = tmpval;
-}
+public final static JulianDate latestConfirmedNoLeapSecondChange = jauCal2jd(2023,12,31);
+
 static class LeapInfo {
     final public int iyear, month;
     final public double delat;
