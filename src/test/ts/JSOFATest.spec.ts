@@ -1,6 +1,7 @@
 /* Generated from Java with JSweet 3.1.0 - http://www.jsweet.org */
 
-namespace org.jastronomy.jsofa {
+import {JSOFA} from "../../main/ts/JSOFA"
+
     export class JSOFATest {
         static verbose: boolean = false;
 
@@ -43,6 +44,11 @@ namespace org.jastronomy.jsofa {
             }
             return;
         }
+        
+        aa(x:number, y:number):number[][]
+        {
+           
+        }
 
         /**
          * 
@@ -83,7 +89,7 @@ namespace org.jastronomy.jsofa {
         public t_a2af() {
             const idmsf: number[] = [0, 0, 0, 0];
             let s: string;
-            s = jauA2af(4, 2.345, idmsf);
+            s = JSOFA.jauA2af(4, 2.345, idmsf);
             this.viv((s).charCodeAt(0), ('+').charCodeAt(0), "jauA2af", "s");
             this.viv(idmsf[0], 134, "jauA2af", "0");
             this.viv(idmsf[1], 21, "jauA2af", "1");
@@ -94,7 +100,7 @@ namespace org.jastronomy.jsofa {
         public t_a2tf() {
             const ihmsf: number[] = [0, 0, 0, 0];
             let s: string;
-            s = jauA2tf(4, -3.01234, ihmsf);
+            s = JSOFA.jauA2tf(4, -3.01234, ihmsf);
             this.viv((s).charCodeAt(0), ('-').charCodeAt(0), "jauA2tf", "s");
             this.viv(ihmsf[0], 11, "jauA2tf", "0");
             this.viv(ihmsf[1], 30, "jauA2tf", "1");
@@ -103,15 +109,15 @@ namespace org.jastronomy.jsofa {
         }
 
         public t_anp() {
-            this.vvd(jauAnp(-0.1), 6.183185307179587, 1.0E-12, "jauAnp", "");
+            this.vvd(JSOFA.jauAnp(-0.1), 6.183185307179587, 1.0E-12, "jauAnp", "");
         }
 
         public t_anpm() {
-            this.vvd(jauAnpm(-4.0), 2.2831853071795867, 1.0E-12, "jauAnpm", "");
+            this.vvd(JSOFA.jauAnpm(-4.0), 2.2831853071795867, 1.0E-12, "jauAnpm", "");
         }
 
         public t_bi00() {
-            const ret: JSOFA.FrameBias = jauBi00();
+            const ret: JSOFA.FrameBias = JSOFA.jauBi00();
             this.vvd(ret.dpsibi, -2.0253091528350866E-7, 1.0E-12, "jauBi00", "dpsibi");
             this.vvd(ret.depsbi, -3.3060414542221477E-8, 1.0E-12, "jauBi00", "depsbi");
             this.vvd(ret.dra, -7.078279744199226E-8, 1.0E-12, "jauBi00", "dra");
@@ -121,7 +127,7 @@ namespace org.jastronomy.jsofa {
             const rb: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const rp: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const rbp: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            jauBp00(2400000.5, 50123.9999, rb, rp, rbp);
+            JSOFA.jauBp00(2400000.5, 50123.9999, rb, rp, rbp);
             this.vvd(rb[0][0], 0.9999999999999942, 1.0E-12, "jauBp00", "rb11");
             this.vvd(rb[0][1], -7.078279744199197E-8, 1.0E-16, "jauBp00", "rb12");
             this.vvd(rb[0][2], 8.056217146976134E-8, 1.0E-16, "jauBp00", "rb13");
@@ -155,7 +161,7 @@ namespace org.jastronomy.jsofa {
             const rb: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const rp: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const rbp: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            jauBp06(2400000.5, 50123.9999, rb, rp, rbp);
+            JSOFA.jauBp06(2400000.5, 50123.9999, rb, rp, rbp);
             this.vvd(rb[0][0], 0.9999999999999942, 1.0E-12, "jauBp06", "rb11");
             this.vvd(rb[0][1], -7.078368960971557E-8, 1.0E-14, "jauBp06", "rb12");
             this.vvd(rb[0][2], 8.056213977613186E-8, 1.0E-14, "jauBp06", "rb13");
@@ -196,14 +202,14 @@ namespace org.jastronomy.jsofa {
             rbpn[2][0] = 0.001093465510215479;
             rbpn[2][1] = -4.281337229063151E-5;
             rbpn[2][2] = 0.9999994012499173;
-            const ret: JSOFA.CelestialIntermediatePole = jauBpn2xy(rbpn);
+            const ret: JSOFA.CelestialIntermediatePole = JSOFA.jauBpn2xy(rbpn);
             this.vvd(ret.x, 0.001093465510215479, 1.0E-12, "jauBpn2xy", "x");
             this.vvd(ret.y, -4.281337229063151E-5, 1.0E-12, "jauBpn2xy", "y");
         }
 
         public t_c2i00a() {
             let rc2i: number[][];
-            rc2i = jauC2i00a(2400000.5, 53736.0);
+            rc2i = JSOFA.jauC2i00a(2400000.5, 53736.0);
             this.vvd(rc2i[0][0], 0.9999998323037166, 1.0E-12, "jauC2i00a", "11");
             this.vvd(rc2i[0][1], 5.58152634899214E-10, 1.0E-12, "jauC2i00a", "12");
             this.vvd(rc2i[0][2], -5.791308477073444E-4, 1.0E-12, "jauC2i00a", "13");
@@ -217,7 +223,7 @@ namespace org.jastronomy.jsofa {
 
         public t_c2i00b() {
             let rc2i: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            rc2i = jauC2i00b(2400000.5, 53736.0);
+            rc2i = JSOFA.jauC2i00b(2400000.5, 53736.0);
             this.vvd(rc2i[0][0], 0.9999998323040954, 1.0E-12, "jauC2i00b", "11");
             this.vvd(rc2i[0][1], 5.581526349131824E-10, 1.0E-12, "jauC2i00b", "12");
             this.vvd(rc2i[0][2], -5.791301934855394E-4, 1.0E-12, "jauC2i00b", "13");
@@ -231,7 +237,7 @@ namespace org.jastronomy.jsofa {
 
         public t_c2i06a() {
             let rc2i: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            rc2i = jauC2i06a(2400000.5, 53736.0);
+            rc2i = JSOFA.jauC2i06a(2400000.5, 53736.0);
             this.vvd(rc2i[0][0], 0.9999998323037159, 1.0E-12, "jauC2i06a", "11");
             this.vvd(rc2i[0][1], 5.581121329587614E-10, 1.0E-12, "jauC2i06a", "12");
             this.vvd(rc2i[0][2], -5.79130848774053E-4, 1.0E-12, "jauC2i06a", "13");
@@ -255,7 +261,7 @@ namespace org.jastronomy.jsofa {
             rbpn[2][0] = 0.001093465510215479;
             rbpn[2][1] = -4.281337229063151E-5;
             rbpn[2][2] = 0.9999994012499173;
-            rc2i = jauC2ibpn(2400000.5, 50123.9999, rbpn);
+            rc2i = JSOFA.jauC2ibpn(2400000.5, 50123.9999, rbpn);
             this.vvd(rc2i[0][0], 0.999999402166409, 1.0E-12, "jauC2ibpn", "11");
             this.vvd(rc2i[0][1], -3.869195948017504E-9, 1.0E-12, "jauC2ibpn", "12");
             this.vvd(rc2i[0][2], -0.0010934655113832852, 1.0E-12, "jauC2ibpn", "13");
@@ -273,7 +279,7 @@ namespace org.jastronomy.jsofa {
             let rc2i: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             x = 5.791308486706011E-4;
             y = 4.020579816732961E-5;
-            rc2i = jauC2ixy(2400000.5, 53736, x, y);
+            rc2i = JSOFA.jauC2ixy(2400000.5, 53736, x, y);
             this.vvd(rc2i[0][0], 0.9999998323037157, 1.0E-12, "jauC2ixy", "11");
             this.vvd(rc2i[0][1], 5.581526349032241E-10, 1.0E-12, "jauC2ixy", "12");
             this.vvd(rc2i[0][2], -5.791308491611264E-4, 1.0E-12, "jauC2ixy", "13");
@@ -293,7 +299,7 @@ namespace org.jastronomy.jsofa {
             x = 5.791308486706011E-4;
             y = 4.020579816732961E-5;
             s = -1.220040848472272E-8;
-            rc2i = jauC2ixys(x, y, s);
+            rc2i = JSOFA.jauC2ixys(x, y, s);
             this.vvd(rc2i[0][0], 0.9999998323037157, 1.0E-12, "jauC2ixys", "11");
             this.vvd(rc2i[0][1], 5.581984869168499E-10, 1.0E-12, "jauC2ixys", "12");
             this.vvd(rc2i[0][2], -5.791308491611282E-4, 1.0E-12, "jauC2ixys", "13");
@@ -310,7 +316,7 @@ namespace org.jastronomy.jsofa {
             p[0] = 100.0;
             p[1] = -50.0;
             p[2] = 25.0;
-            const ret: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauC2s(p);
+            const ret: JSOFA.SphericalCoordinate = JSOFA.jauC2s(p);
             this.vvd(ret.alpha, -0.4636476090008061, 1.0E-14, "jauC2s", "theta");
             this.vvd(ret.delta, 0.21998797739545944, 1.0E-14, "jauC2s", "phi");
         }
@@ -329,7 +335,7 @@ namespace org.jastronomy.jsofa {
             utb = 53736.0;
             xp = 2.55060238E-7;
             yp = 1.860359247E-6;
-            rc2t = jauC2t00a(tta, ttb, uta, utb, xp, yp);
+            rc2t = JSOFA.jauC2t00a(tta, ttb, uta, utb, xp, yp);
             this.vvd(rc2t[0][0], -0.18103321283071827, 1.0E-12, "jauC2t00a", "11");
             this.vvd(rc2t[0][1], 0.9834769806938458, 1.0E-12, "jauC2t00a", "12");
             this.vvd(rc2t[0][2], 6.555535638688342E-5, 1.0E-12, "jauC2t00a", "13");
@@ -355,7 +361,7 @@ namespace org.jastronomy.jsofa {
             utb = 53736.0;
             xp = 2.55060238E-7;
             yp = 1.860359247E-6;
-            rc2t = jauC2t00b(tta, ttb, uta, utb, xp, yp);
+            rc2t = JSOFA.jauC2t00b(tta, ttb, uta, utb, xp, yp);
             this.vvd(rc2t[0][0], -0.1810332128439679, 1.0E-12, "jauC2t00b", "11");
             this.vvd(rc2t[0][1], 0.9834769806913872, 1.0E-12, "jauC2t00b", "12");
             this.vvd(rc2t[0][2], 6.555565082458416E-5, 1.0E-12, "jauC2t00b", "13");
@@ -381,7 +387,7 @@ namespace org.jastronomy.jsofa {
             utb = 53736.0;
             xp = 2.55060238E-7;
             yp = 1.860359247E-6;
-            rc2t = jauC2t06a(tta, ttb, uta, utb, xp, yp);
+            rc2t = JSOFA.jauC2t06a(tta, ttb, uta, utb, xp, yp);
             this.vvd(rc2t[0][0], -0.18103321283058973, 1.0E-12, "jauC2t06a", "11");
             this.vvd(rc2t[0][1], 0.9834769806938592, 1.0E-12, "jauC2t06a", "12");
             this.vvd(rc2t[0][2], 6.555550962998436E-5, 1.0E-12, "jauC2t06a", "13");
@@ -417,7 +423,7 @@ namespace org.jastronomy.jsofa {
             rpom[2][0] = -2.5506023797412153E-7;
             rpom[2][1] = 1.860359247002414E-6;
             rpom[2][2] = 0.999999999998237;
-            rc2t = jauC2tcio(rc2i, era, rpom);
+            rc2t = JSOFA.jauC2tcio(rc2i, era, rpom);
             this.vvd(rc2t[0][0], -0.18103321283071105, 1.0E-12, "jauC2tcio", "11");
             this.vvd(rc2t[0][1], 0.983476980693847, 1.0E-12, "jauC2tcio", "12");
             this.vvd(rc2t[0][2], 6.555535638685467E-5, 1.0E-12, "jauC2tcio", "13");
@@ -453,7 +459,7 @@ namespace org.jastronomy.jsofa {
             rpom[2][0] = -2.5506023797412153E-7;
             rpom[2][1] = 1.860359247002414E-6;
             rpom[2][2] = 0.999999999998237;
-            rc2t = jauC2teqx(rbpn, gst, rpom);
+            rc2t = JSOFA.jauC2teqx(rbpn, gst, rpom);
             this.vvd(rc2t[0][0], -0.18103321285286858, 1.0E-12, "jauC2teqx", "11");
             this.vvd(rc2t[0][1], 0.9834769806897685, 1.0E-12, "jauC2teqx", "12");
             this.vvd(rc2t[0][2], 6.555535639982635E-5, 1.0E-12, "jauC2teqx", "13");
@@ -483,7 +489,7 @@ namespace org.jastronomy.jsofa {
             dpsi = -9.630909107115582E-6;
             xp = 2.55060238E-7;
             yp = 1.860359247E-6;
-            rc2t = jauC2tpe(tta, ttb, uta, utb, dpsi, deps, xp, yp);
+            rc2t = JSOFA.jauC2tpe(tta, ttb, uta, utb, dpsi, deps, xp, yp);
             this.vvd(rc2t[0][0], -0.18136779957630295, 1.0E-12, "jauC2tpe", "11");
             this.vvd(rc2t[0][1], 0.9023482206891683, 1.0E-12, "jauC2tpe", "12");
             this.vvd(rc2t[0][2], -0.39099029386410855, 1.0E-12, "jauC2tpe", "13");
@@ -513,7 +519,7 @@ namespace org.jastronomy.jsofa {
             y = 4.020579816732961E-5;
             xp = 2.55060238E-7;
             yp = 1.860359247E-6;
-            rc2t = jauC2txy(tta, ttb, uta, utb, x, y, xp, yp);
+            rc2t = JSOFA.jauC2txy(tta, ttb, uta, utb, x, y, xp, yp);
             this.vvd(rc2t[0][0], -0.18103321283062793, 1.0E-12, "jauC2txy", "11");
             this.vvd(rc2t[0][1], 0.983476980693852, 1.0E-12, "jauC2txy", "12");
             this.vvd(rc2t[0][2], 6.555551248057666E-5, 1.0E-12, "jauC2txy", "13");
@@ -527,7 +533,7 @@ namespace org.jastronomy.jsofa {
 
         public t_cal2jd() {
             try {
-                const jd: JSOFA.JulianDate = jauCal2jd(2003, 6, 1);
+                const jd: JSOFA.JulianDate = JSOFA.jauCal2jd(2003, 6, 1);
                 this.vvd(jd.djm0, 2400000.5, 0.0, "jauCal2jd", "djm0");
                 this.vvd(jd.djm1, 52791.0, 0.0, "jauCal2jd", "djm");
             } catch(e) {
@@ -540,7 +546,7 @@ namespace org.jastronomy.jsofa {
             p[0] = 0.3;
             p[1] = 1.2;
             p[2] = -2.5;
-            jauCp(p, c);
+            JSOFA.jauCp(p, c);
             this.vvd(c[0], 0.3, 0.0, "jauCp", "1");
             this.vvd(c[1], 1.2, 0.0, "jauCp", "2");
             this.vvd(c[2], -2.5, 0.0, "jauCp", "3");
@@ -555,7 +561,7 @@ namespace org.jastronomy.jsofa {
             pv[1][0] = -0.5;
             pv[1][1] = 3.1;
             pv[1][2] = 0.9;
-            jauCpv(pv, c);
+            JSOFA.jauCpv(pv, c);
             this.vvd(c[0][0], 0.3, 0.0, "jauCpv", "p1");
             this.vvd(c[0][1], 1.2, 0.0, "jauCpv", "p2");
             this.vvd(c[0][2], -2.5, 0.0, "jauCpv", "p3");
@@ -576,7 +582,7 @@ namespace org.jastronomy.jsofa {
             r[2][0] = 3.0;
             r[2][1] = 4.0;
             r[2][2] = 5.0;
-            jauCr(r, c);
+            JSOFA.jauCr(r, c);
             this.vvd(c[0][0], 2.0, 0.0, "jauCr", "11");
             this.vvd(c[0][1], 3.0, 0.0, "jauCr", "12");
             this.vvd(c[0][2], 2.0, 0.0, "jauCr", "13");
@@ -591,7 +597,7 @@ namespace org.jastronomy.jsofa {
         public t_d2tf() {
             const ihmsf: number[] = [0, 0, 0, 0];
             let s: string;
-            s = jauD2tf(4, -0.987654321, ihmsf);
+            s = JSOFA.jauD2tf(4, -0.987654321, ihmsf);
             this.viv((s).charCodeAt(0), ('-').charCodeAt(0), "jauD2tf", "s");
             this.viv(ihmsf[0], 23, "jauD2tf", "0");
             this.viv(ihmsf[1], 42, "jauD2tf", "1");
@@ -601,22 +607,22 @@ namespace org.jastronomy.jsofa {
 
         public t_dat() {
             let deltat: number;
-            const nls: number = org.jastronomy.jsofa.JSOFA.leapSeconds_$LI$().length;
+            const nls: number = JSOFA.leapSeconds_$LI$().length;
             this.viv(nls, 42, "jauDat", "number of leap second entries");
-            this.viv(org.jastronomy.jsofa.JSOFA.leapSeconds_$LI$()[nls - 1].iyear, 2017, "jauDat", "year of last leap second");
-            this.viv(org.jastronomy.jsofa.JSOFA.leapSeconds_$LI$()[nls - 1].month, 1, "jauDat", "month of last leap second");
+            this.viv(JSOFA.leapSeconds_$LI$()[nls - 1].iyear, 2017, "jauDat", "year of last leap second");
+            this.viv(JSOFA.leapSeconds_$LI$()[nls - 1].month, 1, "jauDat", "month of last leap second");
             try {
-                deltat = jauDat(2003, 6, 1, 0.0);
+                deltat = JSOFA.jauDat(2003, 6, 1, 0.0);
                 this.vvd(deltat, 32.0, 0.0, "jauDat", "d1");
             } catch(e) {
             }
             try {
-                deltat = jauDat(2008, 1, 17, 0.0);
+                deltat = JSOFA.jauDat(2008, 1, 17, 0.0);
                 this.vvd(deltat, 33.0, 0.0, "jauDat", "d2");
             } catch(e) {
             }
             try {
-                deltat = jauDat(2017, 9, 1, 0.0);
+                deltat = JSOFA.jauDat(2017, 9, 1, 0.0);
                 this.vvd(deltat, 37.0, 0.0, "jauDat", "d3");
             } catch(e) {
             }
@@ -624,7 +630,7 @@ namespace org.jastronomy.jsofa {
 
         public t_dtdb() {
             let dtdb: number;
-            dtdb = jauDtdb(2448939.5, 0.123, 0.76543, 5.0123, 5525.242, 3190.0);
+            dtdb = JSOFA.jauDtdb(2448939.5, 0.123, 0.76543, 5.0123, 5525.242, 3190.0);
             this.vvd(dtdb, -0.001280368005936999, 1.0E-15, "jauDtdb", "");
         }
 
@@ -634,61 +640,61 @@ namespace org.jastronomy.jsofa {
             let ee: number;
             epsa = 0.409078976335651;
             dpsi = -9.630909107115582E-6;
-            ee = jauEe00(2400000.5, 53736.0, epsa, dpsi);
+            ee = JSOFA.jauEe00(2400000.5, 53736.0, epsa, dpsi);
             this.vvd(ee, -8.834193235367966E-6, 1.0E-18, "jauEe00", "");
         }
 
         public t_ee00a() {
             let ee: number;
-            ee = jauEe00a(2400000.5, 53736.0);
+            ee = JSOFA.jauEe00a(2400000.5, 53736.0);
             this.vvd(ee, -8.834192459222587E-6, 1.0E-18, "jauEe00a", "");
         }
 
         public t_ee00b() {
             let ee: number;
-            ee = jauEe00b(2400000.5, 53736.0);
+            ee = JSOFA.jauEe00b(2400000.5, 53736.0);
             this.vvd(ee, -8.835700060003032E-6, 1.0E-18, "jauEe00b", "");
         }
 
         public t_ee06a() {
             let ee: number;
-            ee = jauEe06a(2400000.5, 53736.0);
+            ee = JSOFA.jauEe06a(2400000.5, 53736.0);
             this.vvd(ee, -8.83419507204379E-6, 1.0E-15, "jauEe06a", "");
         }
 
         public t_eect00() {
             let eect: number;
-            eect = jauEect00(2400000.5, 53736.0);
+            eect = JSOFA.jauEect00(2400000.5, 53736.0);
             this.vvd(eect, 2.046085004885125E-9, 1.0E-20, "jauEect00", "");
         }
 
         public t_eform() {
             let ef: JSOFA.ReferenceEllipsoid;
             try {
-                ef = jauEform(0);
+                ef = JSOFA.jauEform(0);
             } catch(e) {
             }
             try {
-                ef = jauEform(1);
+                ef = JSOFA.jauEform(1);
                 this.vvd(ef.a, 6378137.0, 1.0E-10, "jauEform", "a");
                 this.vvd(ef.f, 0.0033528106647474805, 1.0E-18, "jauEform", "f");
-                ef = jauEform(2);
+                ef = JSOFA.jauEform(2);
                 this.vvd(ef.a, 6378137.0, 1.0E-10, "jauEform", "a");
                 this.vvd(ef.f, 0.003352810681182319, 1.0E-18, "jauEform", "f");
-                ef = jauEform(3);
+                ef = JSOFA.jauEform(3);
                 this.vvd(ef.a, 6378135.0, 1.0E-10, "jauEform", "a");
                 this.vvd(ef.f, 0.003352779454167505, 1.0E-18, "jauEform", "f");
             } catch(e) {
             }
             try {
-                ef = jauEform(4);
+                ef = JSOFA.jauEform(4);
             } catch(e) {
             }
         }
 
         public t_eo06a() {
             let eo: number;
-            eo = jauEo06a(2400000.5, 53736.0);
+            eo = JSOFA.jauEo06a(2400000.5, 53736.0);
             this.vvd(eo, -0.0013328823719418337, 1.0E-15, "jauEo06a", "");
         }
 
@@ -706,34 +712,34 @@ namespace org.jastronomy.jsofa {
             rnpb[2][1] = 4.0205956615939944E-5;
             rnpb[2][2] = 0.9999998314954572;
             s = -1.220040848472272E-8;
-            eo = jauEors(rnpb, s);
+            eo = JSOFA.jauEors(rnpb, s);
             this.vvd(eo, -0.0013328827151307446, 1.0E-14, "jauEors", "");
         }
 
         public t_epb() {
             let epb: number;
-            epb = jauEpb(2415019.8135, 30103.18648);
+            epb = JSOFA.jauEpb(2415019.8135, 30103.18648);
             this.vvd(epb, 1982.4184241592786, 1.0E-12, "jauEpb", "");
         }
 
         public t_epb2jd() {
             let epb: number;
             epb = 1957.3;
-            const jd: JSOFA.JulianDate = jauEpb2jd(epb);
+            const jd: JSOFA.JulianDate = JSOFA.jauEpb2jd(epb);
             this.vvd(jd.djm0, 2400000.5, 1.0E-9, "jauEpb2jd", "djm0");
             this.vvd(jd.djm1, 35948.1915101513, 1.0E-9, "jauEpb2jd", "mjd");
         }
 
         public t_epj() {
             let epj: number;
-            epj = jauEpj(2451545, -7392.5);
+            epj = JSOFA.jauEpj(2451545, -7392.5);
             this.vvd(epj, 1979.7604380561258, 1.0E-12, "jauEpj", "");
         }
 
         public t_epj2jd() {
             let epj: number;
             epj = 1996.8;
-            const jd: JSOFA.JulianDate = jauEpj2jd(epj);
+            const jd: JSOFA.JulianDate = JSOFA.jauEpj2jd(epj);
             this.vvd(jd.djm0, 2400000.5, 1.0E-9, "jauEpj2jd", "djm0");
             this.vvd(jd.djm1, 50375.7, 1.0E-9, "jauEpj2jd", "mjd");
         }
@@ -741,7 +747,7 @@ namespace org.jastronomy.jsofa {
         public t_epv00() {
             const pvh: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             const pvb: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
-            const j: number = jauEpv00(2400000.5, 53411.52501161, pvh, pvb);
+            const j: number = JSOFA.jauEpv00(2400000.5, 53411.52501161, pvh, pvb);
             this.vvd(pvh[0][0], -0.7757238809297706, 1.0E-14, "jauEpv00", "ph(x)");
             this.vvd(pvh[0][1], 0.559805224136334, 1.0E-14, "jauEpv00", "ph(y)");
             this.vvd(pvh[0][2], 0.2426998466481687, 1.0E-14, "jauEpv00", "ph(z)");
@@ -759,70 +765,70 @@ namespace org.jastronomy.jsofa {
 
         public t_eqeq94() {
             let eqeq: number;
-            eqeq = jauEqeq94(2400000.5, 41234.0);
+            eqeq = JSOFA.jauEqeq94(2400000.5, 41234.0);
             this.vvd(eqeq, 5.357758254609257E-5, 1.0E-17, "jauEqeq94", "");
         }
 
         public t_era00() {
             let era00: number;
-            era00 = jauEra00(2400000.5, 54388.0);
+            era00 = JSOFA.jauEra00(2400000.5, 54388.0);
             this.vvd(era00, 0.4022837240028158, 1.0E-12, "jauEra00", "");
         }
 
         public t_fad03() {
-            this.vvd(jauFad03(0.8), 1.9467092053969257, 1.0E-12, "jauFad03", "");
+            this.vvd(JSOFA.jauFad03(0.8), 1.9467092053969257, 1.0E-12, "jauFad03", "");
         }
 
         public t_fae03() {
-            this.vvd(jauFae03(0.8), 1.7447137389130818, 1.0E-12, "jauFae03", "");
+            this.vvd(JSOFA.jauFae03(0.8), 1.7447137389130818, 1.0E-12, "jauFae03", "");
         }
 
         public t_faf03() {
-            this.vvd(jauFaf03(0.8), 0.25977113667454993, 1.0E-12, "jauFaf03", "");
+            this.vvd(JSOFA.jauFaf03(0.8), 0.25977113667454993, 1.0E-12, "jauFaf03", "");
         }
 
         public t_faju03() {
-            this.vvd(jauFaju03(0.8), 5.275711665202481, 1.0E-12, "jauFaju03", "");
+            this.vvd(JSOFA.jauFaju03(0.8), 5.275711665202481, 1.0E-12, "jauFaju03", "");
         }
 
         public t_fal03() {
-            this.vvd(jauFal03(0.8), 5.132369751108684, 1.0E-12, "jauFal03", "");
+            this.vvd(JSOFA.jauFal03(0.8), 5.132369751108684, 1.0E-12, "jauFal03", "");
         }
 
         public t_falp03() {
-            this.vvd(jauFalp03(0.8), 6.226797973505508, 1.0E-12, "jauFalp03", "");
+            this.vvd(JSOFA.jauFalp03(0.8), 6.226797973505508, 1.0E-12, "jauFalp03", "");
         }
 
         public t_fama03() {
-            this.vvd(jauFama03(0.8), 3.2755068402777816, 1.0E-12, "jauFama03", "");
+            this.vvd(JSOFA.jauFama03(0.8), 3.2755068402777816, 1.0E-12, "jauFama03", "");
         }
 
         public t_fame03() {
-            this.vvd(jauFame03(0.8), 5.417338184297289, 1.0E-12, "jauFame03", "");
+            this.vvd(JSOFA.jauFame03(0.8), 5.417338184297289, 1.0E-12, "jauFame03", "");
         }
 
         public t_fane03() {
-            this.vvd(jauFane03(0.8), 2.0793438308604135, 1.0E-12, "jauFane03", "");
+            this.vvd(JSOFA.jauFane03(0.8), 2.0793438308604135, 1.0E-12, "jauFane03", "");
         }
 
         public t_faom03() {
-            this.vvd(jauFaom03(0.8), -5.973618440951302, 1.0E-12, "jauFaom03", "");
+            this.vvd(JSOFA.jauFaom03(0.8), -5.973618440951302, 1.0E-12, "jauFaom03", "");
         }
 
         public t_fapa03() {
-            this.vvd(jauFapa03(0.8), 0.0195088476224, 1.0E-12, "jauFapa03", "");
+            this.vvd(JSOFA.jauFapa03(0.8), 0.0195088476224, 1.0E-12, "jauFapa03", "");
         }
 
         public t_fasa03() {
-            this.vvd(jauFasa03(0.8), 5.371574539440827, 1.0E-12, "jauFasa03", "");
+            this.vvd(JSOFA.jauFasa03(0.8), 5.371574539440827, 1.0E-12, "jauFasa03", "");
         }
 
         public t_faur03() {
-            this.vvd(jauFaur03(0.8), 5.180636450180414, 1.0E-12, "jauFaur03", "");
+            this.vvd(JSOFA.jauFaur03(0.8), 5.180636450180414, 1.0E-12, "jauFaur03", "");
         }
 
         public t_fave03() {
-            this.vvd(jauFave03(0.8), 3.424900460533758, 1.0E-12, "jauFave03", "");
+            this.vvd(JSOFA.jauFave03(0.8), 3.424900460533758, 1.0E-12, "jauFave03", "");
         }
 
         public t_fk52h() {
@@ -838,7 +844,7 @@ namespace org.jastronomy.jsofa {
             dd5 = -5.8468475E-6;
             px5 = 0.37921;
             rv5 = -7.6;
-            const cat: org.jastronomy.jsofa.JSOFA.CatalogCoords = jauFk52h(r5, d5, dr5, dd5, px5, rv5);
+            const cat: JSOFA.CatalogCoords = JSOFA.jauFk52h(r5, d5, dr5, dd5, px5, rv5);
             this.vvd(cat.pos.alpha, 1.7677942262999475, 1.0E-14, "jauFk52h", "ra");
             this.vvd(cat.pos.delta, -0.29175160705303915, 1.0E-14, "jauFk52h", "dec");
             this.vvd(cat.pm.alpha, -1.9618741256057212E-7, 1.0E-19, "jauFk52h", "dr5");
@@ -850,7 +856,7 @@ namespace org.jastronomy.jsofa {
         public t_fk5hip() {
             const r5h: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const s5h: number[] = [0, 0, 0];
-            jauFk5hip(r5h, s5h);
+            JSOFA.jauFk5hip(r5h, s5h);
             this.vvd(r5h[0][0], 0.9999999999999929, 1.0E-14, "jauFk5hip", "11");
             this.vvd(r5h[0][1], 1.1102233510229197E-7, 1.0E-17, "jauFk5hip", "12");
             this.vvd(r5h[0][2], 4.4118039625365584E-8, 1.0E-17, "jauFk5hip", "13");
@@ -870,7 +876,7 @@ namespace org.jastronomy.jsofa {
             let d5: number;
             r5 = 1.76779433;
             d5 = -0.2917517103;
-            const pos: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauFk5hz(r5, d5, 2400000.5, 54479.0);
+            const pos: JSOFA.SphericalCoordinate = JSOFA.jauFk5hz(r5, d5, 2400000.5, 54479.0);
             this.vvd(pos.alpha, 1.767794191464424, 1.0E-12, "jauFk5hz", "ra");
             this.vvd(pos.delta, -0.29175160016798846, 1.0E-12, "jauFk5hz", "dec");
         }
@@ -885,7 +891,7 @@ namespace org.jastronomy.jsofa {
             phib = 0.4091014602391313;
             psi = -9.501954178013015E-4;
             eps = 0.40910143165873675;
-            r = jauFw2m(gamb, phib, psi, eps);
+            r = JSOFA.jauFw2m(gamb, phib, psi, eps);
             this.vvd(r[0][0], 0.9999995505176007, 1.0E-12, "jauFw2m", "11");
             this.vvd(r[0][1], 8.695404617348192E-4, 1.0E-12, "jauFw2m", "12");
             this.vvd(r[0][2], 3.7797352018655825E-4, 1.0E-12, "jauFw2m", "13");
@@ -906,7 +912,7 @@ namespace org.jastronomy.jsofa {
             phib = 0.4091014602391313;
             psi = -9.501954178013015E-4;
             eps = 0.40910143165873675;
-            const cip: JSOFA.CelestialIntermediatePole = jauFw2xy(gamb, phib, psi, eps);
+            const cip: JSOFA.CelestialIntermediatePole = JSOFA.jauFw2xy(gamb, phib, psi, eps);
             this.vvd(cip.x, -3.7797349570340826E-4, 1.0E-14, "jauFw2xy", "x");
             this.vvd(cip.y, -1.9248808480876157E-7, 1.0E-14, "jauFw2xy", "y");
         }
@@ -915,26 +921,26 @@ namespace org.jastronomy.jsofa {
             const xyz: number[] = [2000000.0, 3000000.0, 5244000.0];
             let geo: JSOFA.GeodeticCoord;
             try {
-                geo = jauGc2gd(0, xyz);
+                geo = JSOFA.jauGc2gd(0, xyz);
             } catch(e1) {
             }
             try {
-                geo = jauGc2gd(1, xyz);
+                geo = JSOFA.jauGc2gd(1, xyz);
                 this.vvd(geo.elong, 0.982793723247329, 1.0E-14, "jauGc2gd", "e1");
                 this.vvd(geo.phi, 0.9716018481907546, 1.0E-14, "jauGc2gd", "p1");
                 this.vvd(geo.height, 331.417246142606, 1.0E-8, "jauGc2gd", "h1");
-                geo = jauGc2gd(2, xyz);
+                geo = JSOFA.jauGc2gd(2, xyz);
                 this.vvd(geo.elong, 0.982793723247329, 1.0E-14, "jauGc2gd", "e2");
                 this.vvd(geo.phi, 0.9716018482060785, 1.0E-14, "jauGc2gd", "p2");
                 this.vvd(geo.height, 331.41731754844346, 1.0E-8, "jauGc2gd", "h2");
-                geo = jauGc2gd(3, xyz);
+                geo = JSOFA.jauGc2gd(3, xyz);
                 this.vvd(geo.elong, 0.982793723247329, 1.0E-14, "jauGc2gd", "e3");
                 this.vvd(geo.phi, 0.9716018181101512, 1.0E-14, "jauGc2gd", "p3");
                 this.vvd(geo.height, 333.2770726130318, 1.0E-8, "jauGc2gd", "h3");
             } catch(e1) {
             }
             try {
-                geo = jauGc2gd(4, xyz);
+                geo = JSOFA.jauGc2gd(4, xyz);
             } catch(e1) {
             }
         }
@@ -944,7 +950,7 @@ namespace org.jastronomy.jsofa {
             const f: number = 0.0033528;
             const xyz: number[] = [2000000.0, 3000000.0, 5244000.0];
             try {
-                const geo: JSOFA.GeodeticCoord = jauGc2gde(a, f, xyz);
+                const geo: JSOFA.GeodeticCoord = JSOFA.jauGc2gde(a, f, xyz);
                 this.vvd(geo.elong, 0.982793723247329, 1.0E-14, "jauGc2gde", "e");
                 this.vvd(geo.phi, 0.9716018377570411, 1.0E-14, "jauGc2gde", "p");
                 this.vvd(geo.height, 332.368624957644, 1.0E-8, "jauGc2gde", "h");
@@ -958,41 +964,41 @@ namespace org.jastronomy.jsofa {
             const h: number = 2500.0;
             let xyz: number[] = [0, 0, 0];
             try {
-                xyz = jauGd2gc(0, e, p, h);
+                xyz = JSOFA.jauGd2gc(0, e, p, h);
             } catch(__e) {
-                if(__e != null && __e instanceof <any>org.jastronomy.jsofa.JSOFAIllegalParameter) {
-                    const e1: org.jastronomy.jsofa.JSOFAIllegalParameter = <org.jastronomy.jsofa.JSOFAIllegalParameter>__e;
+                if(__e != null && __e instanceof <any>JSOFAIllegalParameter) {
+                    const e1: JSOFAIllegalParameter = <JSOFAIllegalParameter>__e;
 
                 }
-                if(__e != null && __e instanceof <any>org.jastronomy.jsofa.JSOFAInternalError) {
-                    const e1: org.jastronomy.jsofa.JSOFAInternalError = <org.jastronomy.jsofa.JSOFAInternalError>__e;
+                if(__e != null && __e instanceof <any>JSOFAInternalError) {
+                    const e1: JSOFAInternalError = <JSOFAInternalError>__e;
 
                 }
             }
             try {
-                xyz = jauGd2gc(1, e, p, h);
+                xyz = JSOFA.jauGd2gc(1, e, p, h);
                 this.vvd(xyz[0], -5599000.557704994, 1.0E-7, "jauGd2gc", "0/1");
                 this.vvd(xyz[1], 233011.67223479203, 1.0E-7, "jauGd2gc", "1/1");
                 this.vvd(xyz[2], -3040909.470698336, 1.0E-7, "jauGd2gc", "2/1");
-                xyz = jauGd2gc(2, e, p, h);
+                xyz = JSOFA.jauGd2gc(2, e, p, h);
                 this.vvd(xyz[0], -5599000.557726098, 1.0E-7, "jauGd2gc", "0/2");
                 this.vvd(xyz[1], 233011.6722356703, 1.0E-7, "jauGd2gc", "1/2");
                 this.vvd(xyz[2], -3040909.4706095476, 1.0E-7, "jauGd2gc", "2/2");
-                xyz = jauGd2gc(3, e, p, h);
+                xyz = JSOFA.jauGd2gc(3, e, p, h);
                 this.vvd(xyz[0], -5598998.762630149, 1.0E-7, "jauGd2gc", "0/3");
                 this.vvd(xyz[1], 233011.5975297822, 1.0E-7, "jauGd2gc", "1/3");
                 this.vvd(xyz[2], -3040908.686146711, 1.0E-7, "jauGd2gc", "2/3");
             } catch(e1) {
             }
             try {
-                xyz = jauGd2gc(4, e, p, h);
+                xyz = JSOFA.jauGd2gc(4, e, p, h);
             } catch(__e) {
-                if(__e != null && __e instanceof <any>org.jastronomy.jsofa.JSOFAIllegalParameter) {
-                    const e1: org.jastronomy.jsofa.JSOFAIllegalParameter = <org.jastronomy.jsofa.JSOFAIllegalParameter>__e;
+                if(__e != null && __e instanceof <any>JSOFAIllegalParameter) {
+                    const e1: JSOFAIllegalParameter = <JSOFAIllegalParameter>__e;
 
                 }
-                if(__e != null && __e instanceof <any>org.jastronomy.jsofa.JSOFAInternalError) {
-                    const e1: org.jastronomy.jsofa.JSOFAInternalError = <org.jastronomy.jsofa.JSOFAInternalError>__e;
+                if(__e != null && __e instanceof <any>JSOFAInternalError) {
+                    const e1: JSOFAInternalError = <JSOFAInternalError>__e;
 
                 }
             }
@@ -1005,7 +1011,7 @@ namespace org.jastronomy.jsofa {
             const p: number = -0.5;
             const h: number = 2500.0;
             let xyz: number[] = [0, 0, 0];
-            xyz = jauGd2gce(a, f, e, p, h);
+            xyz = JSOFA.jauGd2gce(a, f, e, p, h);
             this.vvd(xyz[0], -5598999.6665116325, 1.0E-7, "jauGd2gce", "0");
             this.vvd(xyz[1], 233011.63514630572, 1.0E-7, "jauGd2gce", "1");
             this.vvd(xyz[2], -3040909.051731413, 1.0E-7, "jauGd2gce", "2");
@@ -1013,31 +1019,31 @@ namespace org.jastronomy.jsofa {
 
         public t_gmst00() {
             let theta: number;
-            theta = jauGmst00(2400000.5, 53736.0, 2400000.5, 53736.0);
+            theta = JSOFA.jauGmst00(2400000.5, 53736.0, 2400000.5, 53736.0);
             this.vvd(theta, 1.7541749722107407, 1.0E-12, "jauGmst00", "");
         }
 
         public t_gmst06() {
             let theta: number;
-            theta = jauGmst06(2400000.5, 53736.0, 2400000.5, 53736.0);
+            theta = JSOFA.jauGmst06(2400000.5, 53736.0, 2400000.5, 53736.0);
             this.vvd(theta, 1.7541749718700912, 1.0E-12, "jauGmst06", "");
         }
 
         public t_gmst82() {
             let theta: number;
-            theta = jauGmst82(2400000.5, 53736.0);
+            theta = JSOFA.jauGmst82(2400000.5, 53736.0);
             this.vvd(theta, 1.754174981860675, 1.0E-12, "jauGmst82", "");
         }
 
         public t_gst00a() {
             let theta: number;
-            theta = jauGst00a(2400000.5, 53736.0, 2400000.5, 53736.0);
+            theta = JSOFA.jauGst00a(2400000.5, 53736.0, 2400000.5, 53736.0);
             this.vvd(theta, 1.7541661380182814, 1.0E-12, "jauGst00a", "");
         }
 
         public t_gst00b() {
             let theta: number;
-            theta = jauGst00b(2400000.5, 53736.0);
+            theta = JSOFA.jauGst00b(2400000.5, 53736.0);
             this.vvd(theta, 1.7541661365106807, 1.0E-12, "jauGst00b", "");
         }
 
@@ -1053,19 +1059,19 @@ namespace org.jastronomy.jsofa {
             rnpb[2][0] = 5.791308472168153E-4;
             rnpb[2][1] = 4.0205956615939944E-5;
             rnpb[2][2] = 0.9999998314954572;
-            theta = jauGst06(2400000.5, 53736.0, 2400000.5, 53736.0, rnpb);
+            theta = JSOFA.jauGst06(2400000.5, 53736.0, 2400000.5, 53736.0, rnpb);
             this.vvd(theta, 1.7541661380181677, 1.0E-12, "jauGst06", "");
         }
 
         public t_gst06a() {
             let theta: number;
-            theta = jauGst06a(2400000.5, 53736.0, 2400000.5, 53736.0);
+            theta = JSOFA.jauGst06a(2400000.5, 53736.0, 2400000.5, 53736.0);
             this.vvd(theta, 1.754166137675019, 1.0E-12, "jauGst06a", "");
         }
 
         public t_gst94() {
             let theta: number;
-            theta = jauGst94(2400000.5, 53736.0);
+            theta = JSOFA.jauGst94(2400000.5, 53736.0);
             this.vvd(theta, 1.7541661360206453, 1.0E-12, "jauGst94", "");
         }
 
@@ -1082,7 +1088,7 @@ namespace org.jastronomy.jsofa {
             ddh = -5.92994449E-6;
             pxh = 0.37921;
             rvh = -7.6;
-            const cat: org.jastronomy.jsofa.JSOFA.CatalogCoords = jauH2fk5(rh, dh, drh, ddh, pxh, rvh);
+            const cat: JSOFA.CatalogCoords = JSOFA.jauH2fk5(rh, dh, drh, ddh, pxh, rvh);
             this.vvd(cat.pos.alpha, 1.7677944557000655, 1.0E-13, "jauH2fk5", "ra");
             this.vvd(cat.pos.delta, -0.2917513626469639, 1.0E-13, "jauH2fk5", "dec");
             this.vvd(cat.pm.alpha, -2.7597945024511204E-6, 1.0E-18, "jauH2fk5", "dr5");
@@ -1096,7 +1102,7 @@ namespace org.jastronomy.jsofa {
             let dh: number;
             rh = 1.767794352;
             dh = -0.2917512594;
-            const cat: org.jastronomy.jsofa.JSOFA.CatalogCoords = jauHfk5z(rh, dh, 2400000.5, 54479.0);
+            const cat: JSOFA.CatalogCoords = JSOFA.jauHfk5z(rh, dh, 2400000.5, 54479.0);
             this.vvd(cat.pos.alpha, 1.7677944905355811, 1.0E-13, "jauHfk5z", "ra");
             this.vvd(cat.pos.delta, -0.2917513695320114, 1.0E-14, "jauHfk5z", "dec");
             this.vvd(cat.pm.alpha, 4.335890983539243E-9, 1.0E-22, "jauHfk5z", "dr5");
@@ -1114,7 +1120,7 @@ namespace org.jastronomy.jsofa {
             r[2][0] = 3.0;
             r[2][1] = 4.0;
             r[2][2] = 5.0;
-            jauIr(r);
+            JSOFA.jauIr(r);
             this.vvd(r[0][0], 1.0, 0.0, "jauIr", "11");
             this.vvd(r[0][1], 0.0, 0.0, "jauIr", "12");
             this.vvd(r[0][2], 0.0, 0.0, "jauIr", "13");
@@ -1131,7 +1137,7 @@ namespace org.jastronomy.jsofa {
             let dj2: number;
             dj1 = 2400000.5;
             dj2 = 50123.9999;
-            const cal: JSOFA.Calendar = jauJd2cal(dj1, dj2);
+            const cal: JSOFA.Calendar = JSOFA.jauJd2cal(dj1, dj2);
             this.viv(cal.iy, 1996, "jauJd2cal", "y");
             this.viv(cal.im, 2, "jauJd2cal", "m");
             this.viv(cal.id, 10, "jauJd2cal", "d");
@@ -1145,7 +1151,7 @@ namespace org.jastronomy.jsofa {
             let j: number;
             dj1 = 2400000.5;
             dj2 = 50123.9999;
-            j = jauJdcalf(4, dj1, dj2, iydmf);
+            j = JSOFA.jauJdcalf(4, dj1, dj2, iydmf);
             this.viv(iydmf[0], 1996, "jauJdcalf", "y");
             this.viv(iydmf[1], 2, "jauJdcalf", "m");
             this.viv(iydmf[2], 10, "jauJdcalf", "d");
@@ -1155,7 +1161,7 @@ namespace org.jastronomy.jsofa {
 
         public t_num00a() {
             let rmatn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            rmatn = jauNum00a(2400000.5, 53736.0);
+            rmatn = JSOFA.jauNum00a(2400000.5, 53736.0);
             this.vvd(rmatn[0][0], 0.9999999999536228, 1.0E-12, "jauNum00a", "11");
             this.vvd(rmatn[0][1], 8.836238544090872E-6, 1.0E-12, "jauNum00a", "12");
             this.vvd(rmatn[0][2], 3.830835237722401E-6, 1.0E-12, "jauNum00a", "13");
@@ -1169,7 +1175,7 @@ namespace org.jastronomy.jsofa {
 
         public t_num00b() {
             let rmatn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            rmatn = jauNum00b(2400000.5, 53736);
+            rmatn = JSOFA.jauNum00b(2400000.5, 53736);
             this.vvd(rmatn[0][0], 0.999999999953607, 1.0E-12, "jauNum00b", "11");
             this.vvd(rmatn[0][1], 8.837746144871248E-6, 1.0E-12, "jauNum00b", "12");
             this.vvd(rmatn[0][2], 3.831488838252203E-6, 1.0E-12, "jauNum00b", "13");
@@ -1183,7 +1189,7 @@ namespace org.jastronomy.jsofa {
 
         public t_num06a() {
             let rmatn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            rmatn = jauNum06a(2400000.5, 53736);
+            rmatn = JSOFA.jauNum06a(2400000.5, 53736);
             this.vvd(rmatn[0][0], 0.9999999999536228, 1.0E-12, "jauNum06a", "11");
             this.vvd(rmatn[0][1], 8.836241998111535E-6, 1.0E-12, "jauNum06a", "12");
             this.vvd(rmatn[0][2], 3.8308346084152875E-6, 1.0E-12, "jauNum06a", "13");
@@ -1203,7 +1209,7 @@ namespace org.jastronomy.jsofa {
             epsa = 0.409078976335651;
             dpsi = -9.630909107115582E-6;
             deps = 4.063239174001679E-5;
-            rmatn = jauNumat(epsa, dpsi, deps);
+            rmatn = JSOFA.jauNumat(epsa, dpsi, deps);
             this.vvd(rmatn[0][0], 0.9999999999536228, 1.0E-12, "jauNumat", "11");
             this.vvd(rmatn[0][1], 8.83623932023625E-6, 1.0E-12, "jauNumat", "12");
             this.vvd(rmatn[0][2], 3.830833447458252E-6, 1.0E-12, "jauNumat", "13");
@@ -1216,32 +1222,32 @@ namespace org.jastronomy.jsofa {
         }
 
         public t_nut00a() {
-            const nut: JSOFA.NutationTerms = jauNut00a(2400000.5, 53736.0);
+            const nut: JSOFA.NutationTerms = JSOFA.jauNut00a(2400000.5, 53736.0);
             this.vvd(nut.dpsi, -9.630909107115518E-6, 1.0E-13, "jauNut00a", "dpsi");
             this.vvd(nut.deps, 4.063239174001679E-5, 1.0E-13, "jauNut00a", "deps");
         }
 
         public t_nut00b() {
-            const nut: JSOFA.NutationTerms = jauNut00b(2400000.5, 53736.0);
+            const nut: JSOFA.NutationTerms = JSOFA.jauNut00b(2400000.5, 53736.0);
             this.vvd(nut.dpsi, -9.632552291148363E-6, 1.0E-13, "jauNut00b", "dpsi");
             this.vvd(nut.deps, 4.063197106621159E-5, 1.0E-13, "jauNut00b", "deps");
         }
 
         public t_nut06a() {
-            const nut: JSOFA.NutationTerms = jauNut06a(2400000.5, 53736.0);
+            const nut: JSOFA.NutationTerms = JSOFA.jauNut06a(2400000.5, 53736.0);
             this.vvd(nut.dpsi, -9.63091202582031E-6, 1.0E-13, "jauNut06a", "dpsi");
             this.vvd(nut.deps, 4.06323849688725E-5, 1.0E-13, "jauNut06a", "deps");
         }
 
         public t_nut80() {
-            const nut: JSOFA.NutationTerms = jauNut80(2400000.5, 53736.0);
+            const nut: JSOFA.NutationTerms = JSOFA.jauNut80(2400000.5, 53736.0);
             this.vvd(nut.dpsi, -9.643658353226563E-6, 1.0E-13, "jauNut80", "dpsi");
             this.vvd(nut.deps, 4.060051006879713E-5, 1.0E-13, "jauNut80", "deps");
         }
 
         public t_nutm80() {
             let rmatn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            rmatn = jauNutm80(2400000.5, 53736.0);
+            rmatn = JSOFA.jauNutm80(2400000.5, 53736.0);
             this.vvd(rmatn[0][0], 0.9999999999535, 1.0E-12, "jauNutm80", "11");
             this.vvd(rmatn[0][1], 8.847935789636432E-6, 1.0E-12, "jauNutm80", "12");
             this.vvd(rmatn[0][2], 3.8359065021640195E-6, 1.0E-12, "jauNutm80", "13");
@@ -1254,17 +1260,17 @@ namespace org.jastronomy.jsofa {
         }
 
         public t_obl06() {
-            this.vvd(jauObl06(2400000.5, 54388.0), 0.4090749229387258, 1.0E-14, "jauObl06", "");
+            this.vvd(JSOFA.jauObl06(2400000.5, 54388.0), 0.4090749229387258, 1.0E-14, "jauObl06", "");
         }
 
         public t_obl80() {
             let eps0: number;
-            eps0 = jauObl80(2400000.5, 54388.0);
+            eps0 = JSOFA.jauObl80(2400000.5, 54388.0);
             this.vvd(eps0, 0.4090751347643816, 1.0E-14, "jauObl80", "");
         }
 
         public t_p06e() {
-            const pa: JSOFA.PrecessionAngles = jauP06e(2400000.5, 52541.0);
+            const pa: JSOFA.PrecessionAngles = JSOFA.jauP06e(2400000.5, 52541.0);
             this.vvd(pa.eps0, 0.4090926006005829, 1.0E-14, "jauP06e", "eps0");
             this.vvd(pa.psia, 6.664369630191613E-4, 1.0E-14, "jauP06e", "psia");
             this.vvd(pa.oma, 0.4090925973783256, 1.0E-14, "jauP06e", "oma");
@@ -1295,7 +1301,7 @@ namespace org.jastronomy.jsofa {
             pv[1][0] = -0.5;
             pv[1][1] = 3.1;
             pv[1][2] = 0.9;
-            pv = jauP2pv(p);
+            pv = JSOFA.jauP2pv(p);
             this.vvd(pv[0][0], 0.25, 0.0, "jauP2pv", "p1");
             this.vvd(pv[0][1], 1.2, 0.0, "jauP2pv", "p2");
             this.vvd(pv[0][2], 3.0, 0.0, "jauP2pv", "p3");
@@ -1309,7 +1315,7 @@ namespace org.jastronomy.jsofa {
             p[0] = 100.0;
             p[1] = -50.0;
             p[2] = 25.0;
-            const co: JSOFA.SphericalPosition = jauP2s(p);
+            const co: JSOFA.SphericalPosition = JSOFA.jauP2s(p);
             this.vvd(co.theta, -0.4636476090008061, 1.0E-12, "jauP2s", "theta");
             this.vvd(co.phi, 0.21998797739545944, 1.0E-12, "jauP2s", "phi");
             this.vvd(co.r, 114.564392373896, 1.0E-9, "jauP2s", "r");
@@ -1325,7 +1331,7 @@ namespace org.jastronomy.jsofa {
             b[0] = -3.0;
             b[1] = 0.001;
             b[2] = 0.2;
-            theta = jauPap(a, b);
+            theta = JSOFA.jauPap(a, b);
             this.vvd(theta, 0.3671514267841114, 1.0E-12, "jauPap", "");
         }
 
@@ -1339,12 +1345,12 @@ namespace org.jastronomy.jsofa {
             ap = 0.1;
             bl = 0.2;
             bp = -1.0;
-            theta = jauPas(al, ap, bl, bp);
+            theta = JSOFA.jauPas(al, ap, bl, bp);
             this.vvd(theta, -2.7245449229322705, 1.0E-12, "jauPas", "");
         }
 
         public t_pb06() {
-            const an: JSOFA.EulerAngles = jauPb06(2400000.5, 50123.9999);
+            const an: JSOFA.EulerAngles = JSOFA.jauPb06(2400000.5, 50123.9999);
             this.vvd(an.zeta, -5.092634016326479E-4, 1.0E-12, "jauPb06", "bzeta");
             this.vvd(an.z, -3.6027720605660444E-4, 1.0E-12, "jauPb06", "bz");
             this.vvd(an.theta, -3.779735537167811E-4, 1.0E-12, "jauPb06", "btheta");
@@ -1360,12 +1366,12 @@ namespace org.jastronomy.jsofa {
             b[0] = 1.0;
             b[1] = 3.0;
             b[2] = 4.0;
-            adb = jauPdp(a, b);
+            adb = JSOFA.jauPdp(a, b);
             this.vvd(adb, 20, 1.0E-12, "jauPdp", "");
         }
 
         public t_pfw06() {
-            const fw: JSOFA.FWPrecessionAngles = jauPfw06(2400000.5, 50123.9999);
+            const fw: JSOFA.FWPrecessionAngles = JSOFA.jauPfw06(2400000.5, 50123.9999);
             this.vvd(fw.gamb, -2.2433876709979958E-6, 1.0E-16, "jauPfw06", "gamb");
             this.vvd(fw.phib, 0.4091014602391313, 1.0E-12, "jauPfw06", "phib");
             this.vvd(fw.psib, -9.501954178013031E-4, 1.0E-14, "jauPfw06", "psib");
@@ -1375,22 +1381,22 @@ namespace org.jastronomy.jsofa {
         public t_plan94() {
             let pv: number[][];
             try {
-                pv = jauPlan94(2400000.5, 1000000.0, 0);
+                pv = JSOFA.jauPlan94(2400000.5, 1000000.0, 0);
             } catch(e) {
             }
             try {
-                pv = jauPlan94(2400000.5, 1000000.0, 10);
+                pv = JSOFA.jauPlan94(2400000.5, 1000000.0, 10);
             } catch(e) {
             }
             try {
-                pv = jauPlan94(2400000.5, -320000, 3);
+                pv = JSOFA.jauPlan94(2400000.5, -320000, 3);
                 this.vvd(pv[0][0], 0.9308038666832976, 1.0E-11, "jauPlan94", "x 3");
                 this.vvd(pv[0][1], 0.3258319040261346, 1.0E-11, "jauPlan94", "y 3");
                 this.vvd(pv[0][2], 0.14227945444811405, 1.0E-11, "jauPlan94", "z 3");
                 this.vvd(pv[1][0], -0.00642945895825517, 1.0E-11, "jauPlan94", "xd 3");
                 this.vvd(pv[1][1], 0.014685706577042377, 1.0E-11, "jauPlan94", "yd 3");
                 this.vvd(pv[1][2], 0.006406996426270981, 1.0E-11, "jauPlan94", "zd 3");
-                pv = jauPlan94(2400000.5, 43999.9, 1);
+                pv = JSOFA.jauPlan94(2400000.5, 43999.9, 1);
                 this.vvd(pv[0][0], 0.29452939592574306, 1.0E-11, "jauPlan94", "x 4");
                 this.vvd(pv[0][1], -0.24522041766010497, 1.0E-11, "jauPlan94", "y 4");
                 this.vvd(pv[0][2], -0.1615427700571978, 1.0E-11, "jauPlan94", "z 4");
@@ -1403,7 +1409,7 @@ namespace org.jastronomy.jsofa {
 
         public t_pmat00() {
             let rbp: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            rbp = jauPmat00(2400000.5, 50123.9999);
+            rbp = JSOFA.jauPmat00(2400000.5, 50123.9999);
             this.vvd(rbp[0][0], 0.9999995505175088, 1.0E-12, "jauPmat00", "11");
             this.vvd(rbp[0][1], 8.695405883617885E-4, 1.0E-14, "jauPmat00", "12");
             this.vvd(rbp[0][2], 3.779734722239007E-4, 1.0E-14, "jauPmat00", "13");
@@ -1417,7 +1423,7 @@ namespace org.jastronomy.jsofa {
 
         public t_pmat06() {
             let rbp: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            rbp = jauPmat06(2400000.5, 50123.9999);
+            rbp = JSOFA.jauPmat06(2400000.5, 50123.9999);
             this.vvd(rbp[0][0], 0.9999995505176007, 1.0E-12, "jauPmat06", "11");
             this.vvd(rbp[0][1], 8.695404617348209E-4, 1.0E-14, "jauPmat06", "12");
             this.vvd(rbp[0][2], 3.779735201865589E-4, 1.0E-14, "jauPmat06", "13");
@@ -1431,7 +1437,7 @@ namespace org.jastronomy.jsofa {
 
         public t_pmat76() {
             let rmatp: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            rmatp = jauPmat76(2400000.5, 50123.9999);
+            rmatp = JSOFA.jauPmat76(2400000.5, 50123.9999);
             this.vvd(rmatp[0][0], 0.9999995504328351, 1.0E-12, "jauPmat76", "11");
             this.vvd(rmatp[0][1], 8.696632209480961E-4, 1.0E-14, "jauPmat76", "12");
             this.vvd(rmatp[0][2], 3.7791534749598884E-4, 1.0E-14, "jauPmat76", "13");
@@ -1449,7 +1455,7 @@ namespace org.jastronomy.jsofa {
             p[0] = 0.3;
             p[1] = 1.2;
             p[2] = -2.5;
-            r = jauPm(p);
+            r = JSOFA.jauPm(p);
             this.vvd(r, 2.7892651361962706, 1.0E-12, "jauPm", "");
         }
 
@@ -1463,7 +1469,7 @@ namespace org.jastronomy.jsofa {
             b[0] = 1.0;
             b[1] = 3.0;
             b[2] = 4.0;
-            amb = jauPmp(a, b);
+            amb = JSOFA.jauPmp(a, b);
             this.vvd(amb[0], 1.0, 1.0E-12, "jauPmp", "0");
             this.vvd(amb[1], -1.0, 1.0E-12, "jauPmp", "1");
             this.vvd(amb[2], -1.0, 1.0E-12, "jauPmp", "2");
@@ -1474,7 +1480,7 @@ namespace org.jastronomy.jsofa {
             p[0] = 0.3;
             p[1] = 1.2;
             p[2] = -2.5;
-            const mv: JSOFA.NormalizedVector = jauPn(p);
+            const mv: JSOFA.NormalizedVector = JSOFA.jauPn(p);
             this.vvd(mv.r, 2.7892651361962706, 1.0E-12, "jauPn", "r");
             this.vvd(mv.u[0], 0.10755521090731121, 1.0E-12, "jauPn", "u1");
             this.vvd(mv.u[1], 0.43022084362924484, 1.0E-12, "jauPn", "u2");
@@ -1486,7 +1492,7 @@ namespace org.jastronomy.jsofa {
             let deps: number;
             dpsi = -9.632552291149336E-6;
             deps = 4.0631971066211414E-5;
-            const pn: JSOFA.PrecessionNutation = jauPn00(2400000.5, 53736.0, dpsi, deps);
+            const pn: JSOFA.PrecessionNutation = JSOFA.jauPn00(2400000.5, 53736.0, dpsi, deps);
             this.vvd(pn.epsa, 0.409079178940423, 1.0E-12, "jauPn00", "epsa");
             this.vvd(pn.rb[0][0], 0.9999999999999942, 1.0E-12, "jauPn00", "rb11");
             this.vvd(pn.rb[0][1], -7.078279744199197E-8, 1.0E-18, "jauPn00", "rb12");
@@ -1536,7 +1542,7 @@ namespace org.jastronomy.jsofa {
         }
 
         public t_pn00a() {
-            const pn: JSOFA.PrecessionNutation = jauPn00a(2400000.5, 53736.0);
+            const pn: JSOFA.PrecessionNutation = JSOFA.jauPn00a(2400000.5, 53736.0);
             this.vvd(pn.nut.dpsi, -9.630909107115518E-6, 1.0E-12, "jauPn00a", "dpsi");
             this.vvd(pn.nut.deps, 4.063239174001679E-5, 1.0E-12, "jauPn00a", "deps");
             this.vvd(pn.epsa, 0.409079178940423, 1.0E-12, "jauPn00a", "epsa");
@@ -1588,7 +1594,7 @@ namespace org.jastronomy.jsofa {
         }
 
         public t_pn00b() {
-            const pn: JSOFA.PrecessionNutation = jauPn00b(2400000.5, 53736.0);
+            const pn: JSOFA.PrecessionNutation = JSOFA.jauPn00b(2400000.5, 53736.0);
             this.vvd(pn.nut.dpsi, -9.632552291148363E-6, 1.0E-12, "jauPn00b", "dpsi");
             this.vvd(pn.nut.deps, 4.063197106621159E-5, 1.0E-12, "jauPn00b", "deps");
             this.vvd(pn.epsa, 0.409079178940423, 1.0E-12, "jauPn00b", "epsa");
@@ -1640,7 +1646,7 @@ namespace org.jastronomy.jsofa {
         }
 
         public t_pn06a() {
-            const pn: JSOFA.PrecessionNutation = jauPn06a(2400000.5, 53736.0);
+            const pn: JSOFA.PrecessionNutation = JSOFA.jauPn06a(2400000.5, 53736.0);
             this.vvd(pn.nut.dpsi, -9.63091202582031E-6, 1.0E-12, "jauPn06a", "dpsi");
             this.vvd(pn.nut.deps, 4.06323849688725E-5, 1.0E-12, "jauPn06a", "deps");
             this.vvd(pn.epsa, 0.409078976335651, 1.0E-12, "jauPn06a", "epsa");
@@ -1696,7 +1702,7 @@ namespace org.jastronomy.jsofa {
             let deps: number;
             dpsi = -9.632552291149336E-6;
             deps = 4.0631971066211414E-5;
-            const pn: JSOFA.PrecessionNutation = jauPn06(2400000.5, 53736.0, dpsi, deps);
+            const pn: JSOFA.PrecessionNutation = JSOFA.jauPn06(2400000.5, 53736.0, dpsi, deps);
             this.vvd(pn.epsa, 0.409078976335651, 1.0E-12, "jauPn06", "epsa");
             this.vvd(pn.rb[0][0], 0.9999999999999942, 1.0E-12, "jauPn06", "rb11");
             this.vvd(pn.rb[0][1], -7.078368960971557E-8, 1.0E-14, "jauPn06", "rb12");
@@ -1747,7 +1753,7 @@ namespace org.jastronomy.jsofa {
 
         public t_pnm00a() {
             let rbpn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            rbpn = jauPnm00a(2400000.5, 50123.9999);
+            rbpn = JSOFA.jauPnm00a(2400000.5, 50123.9999);
             this.vvd(rbpn[0][0], 0.9999995832793134, 1.0E-12, "jauPnm00a", "11");
             this.vvd(rbpn[0][1], 8.372384254137809E-4, 1.0E-14, "jauPnm00a", "12");
             this.vvd(rbpn[0][2], 3.639684306407151E-4, 1.0E-14, "jauPnm00a", "13");
@@ -1761,7 +1767,7 @@ namespace org.jastronomy.jsofa {
 
         public t_pnm00b() {
             let rbpn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            rbpn = jauPnm00b(2400000.5, 50123.9999);
+            rbpn = JSOFA.jauPnm00b(2400000.5, 50123.9999);
             this.vvd(rbpn[0][0], 0.9999995832776208, 1.0E-12, "jauPnm00b", "11");
             this.vvd(rbpn[0][1], 8.372401264429655E-4, 1.0E-14, "jauPnm00b", "12");
             this.vvd(rbpn[0][2], 3.6396916814502716E-4, 1.0E-14, "jauPnm00b", "13");
@@ -1775,7 +1781,7 @@ namespace org.jastronomy.jsofa {
 
         public t_pnm06a() {
             let rbpn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            rbpn = jauPnm06a(2400000.5, 50123.9999);
+            rbpn = JSOFA.jauPnm06a(2400000.5, 50123.9999);
             this.vvd(rbpn[0][0], 0.9999995832794205, 1.0E-12, "jauPnm06a", "11");
             this.vvd(rbpn[0][1], 8.372382772630962E-4, 1.0E-14, "jauPnm06a", "12");
             this.vvd(rbpn[0][2], 3.639684771140623E-4, 1.0E-14, "jauPnm06a", "13");
@@ -1789,7 +1795,7 @@ namespace org.jastronomy.jsofa {
 
         public t_pnm80() {
             let rmatpn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
-            rmatpn = jauPnm80(2400000.5, 50123.9999);
+            rmatpn = JSOFA.jauPnm80(2400000.5, 50123.9999);
             this.vvd(rmatpn[0][0], 0.9999995831934612, 1.0E-12, "jauPnm80", "11");
             this.vvd(rmatpn[0][1], 8.373654045728124E-4, 1.0E-14, "jauPnm80", "12");
             this.vvd(rmatpn[0][2], 3.639121916933106E-4, 1.0E-14, "jauPnm80", "13");
@@ -1809,7 +1815,7 @@ namespace org.jastronomy.jsofa {
             xp = 2.55060238E-7;
             yp = 1.860359247E-6;
             sp = -1.3671745807288915E-11;
-            rpom = jauPom00(xp, yp, sp);
+            rpom = JSOFA.jauPom00(xp, yp, sp);
             this.vvd(rpom[0][0], 0.9999999999999675, 1.0E-12, "jauPom00", "11");
             this.vvd(rpom[0][1], -1.367174580728847E-11, 1.0E-16, "jauPom00", "12");
             this.vvd(rpom[0][2], 2.550602379999972E-7, 1.0E-16, "jauPom00", "13");
@@ -1820,7 +1826,7 @@ namespace org.jastronomy.jsofa {
             this.vvd(rpom[2][1], 1.860359247002414E-6, 1.0E-16, "jauPom00", "32");
             this.vvd(rpom[2][2], 0.999999999998237, 1.0E-12, "jauPom00", "33");
             const vec: number[] = [0, 0, 1];
-            const vec2: number[] = jauRxp(rpom, vec);
+            const vec2: number[] = JSOFA.jauRxp(rpom, vec);
             for(let index = 0; index < vec2.length; index++) {
                 let d = vec2[index];
                 {
@@ -1839,7 +1845,7 @@ namespace org.jastronomy.jsofa {
             b[0] = 1.0;
             b[1] = 3.0;
             b[2] = 4.0;
-            apb = jauPpp(a, b);
+            apb = JSOFA.jauPpp(a, b);
             this.vvd(apb[0], 3.0, 1.0E-12, "jauPpp", "0");
             this.vvd(apb[1], 5.0, 1.0E-12, "jauPpp", "1");
             this.vvd(apb[2], 7.0, 1.0E-12, "jauPpp", "2");
@@ -1857,14 +1863,14 @@ namespace org.jastronomy.jsofa {
             b[0] = 1.0;
             b[1] = 3.0;
             b[2] = 4.0;
-            apsb = jauPpsp(a, s, b);
+            apsb = JSOFA.jauPpsp(a, s, b);
             this.vvd(apsb[0], 7.0, 1.0E-12, "jauPpsp", "0");
             this.vvd(apsb[1], 17.0, 1.0E-12, "jauPpsp", "1");
             this.vvd(apsb[2], 23.0, 1.0E-12, "jauPpsp", "2");
         }
 
         public t_pr00() {
-            const nut: JSOFA.PrecessionDeltaTerms = jauPr00(2400000.5, 53736);
+            const nut: JSOFA.PrecessionDeltaTerms = JSOFA.jauPr00(2400000.5, 53736);
             this.vvd(nut.dpsipr, -8.716465172668348E-8, 1.0E-22, "jauPr00", "dpsipr");
             this.vvd(nut.depspr, -7.342018386722813E-9, 1.0E-22, "jauPr00", "depspr");
         }
@@ -1878,7 +1884,7 @@ namespace org.jastronomy.jsofa {
             ep02 = 33282.0;
             ep11 = 2400000.5;
             ep12 = 51544.0;
-            const an: JSOFA.EulerAngles = jauPrec76(ep01, ep02, ep11, ep12);
+            const an: JSOFA.EulerAngles = JSOFA.jauPrec76(ep01, ep02, ep11, ep12);
             this.vvd(an.zeta, 0.005588961642000161, 1.0E-12, "jauPrec76", "zeta");
             this.vvd(an.z, 0.005589922365870681, 1.0E-12, "jauPrec76", "z");
             this.vvd(an.theta, 0.004858945471687297, 1.0E-12, "jauPrec76", "theta");
@@ -1893,7 +1899,7 @@ namespace org.jastronomy.jsofa {
             pv[1][0] = -0.5;
             pv[1][1] = 3.1;
             pv[1][2] = 0.9;
-            p = jauPv2p(pv);
+            p = JSOFA.jauPv2p(pv);
             this.vvd(p[0], 0.3, 0.0, "jauPv2p", "1");
             this.vvd(p[1], 1.2, 0.0, "jauPv2p", "2");
             this.vvd(p[2], -2.5, 0.0, "jauPv2p", "3");
@@ -1907,7 +1913,7 @@ namespace org.jastronomy.jsofa {
             pv[1][0] = 1.29227085066326E-5;
             pv[1][1] = 2.652814182060692E-6;
             pv[1][2] = 2.568431853930293E-6;
-            const pvs: JSOFA.SphericalPositionVelocity = jauPv2s(pv);
+            const pvs: JSOFA.SphericalPositionVelocity = JSOFA.jauPv2s(pv);
             this.vvd(pvs.pos.theta, 3.0731853071795867, 1.0E-12, "jauPv2s", "theta");
             this.vvd(pvs.pos.phi, 0.123, 1.0E-12, "jauPv2s", "phi");
             this.vvd(pvs.pos.r, 0.45599999999999996, 1.0E-12, "jauPv2s", "r");
@@ -1932,7 +1938,7 @@ namespace org.jastronomy.jsofa {
             b[1][0] = 0.0;
             b[1][1] = 2.0;
             b[1][2] = 8.0;
-            adb = jauPvdpv(a, b);
+            adb = JSOFA.jauPvdpv(a, b);
             this.vvd(adb[0], 20.0, 1.0E-12, "jauPvdpv", "1");
             this.vvd(adb[1], 50.0, 1.0E-12, "jauPvdpv", "2");
         }
@@ -1945,7 +1951,7 @@ namespace org.jastronomy.jsofa {
             pv[1][0] = 0.45;
             pv[1][1] = -0.25;
             pv[1][2] = 1.1;
-            const ret: JSOFA.PVModulus = jauPvm(pv);
+            const ret: JSOFA.PVModulus = JSOFA.jauPvm(pv);
             this.vvd(ret.r, 2.7892651361962706, 1.0E-12, "jauPvm", "r");
             this.vvd(ret.s, 1.2144957801491119, 1.0E-12, "jauPvm", "s");
         }
@@ -1966,7 +1972,7 @@ namespace org.jastronomy.jsofa {
             b[1][0] = 3.0;
             b[1][1] = 2.0;
             b[1][2] = 1.0;
-            amb = jauPvmpv(a, b);
+            amb = JSOFA.jauPvmpv(a, b);
             this.vvd(amb[0][0], 1.0, 1.0E-12, "jauPvmpv", "11");
             this.vvd(amb[0][1], -1.0, 1.0E-12, "jauPvmpv", "21");
             this.vvd(amb[0][2], -1.0, 1.0E-12, "jauPvmpv", "31");
@@ -1991,7 +1997,7 @@ namespace org.jastronomy.jsofa {
             b[1][0] = 3.0;
             b[1][1] = 2.0;
             b[1][2] = 1.0;
-            apb = jauPvppv(a, b);
+            apb = JSOFA.jauPvppv(a, b);
             this.vvd(apb[0][0], 3.0, 1.0E-12, "jauPvppv", "p1");
             this.vvd(apb[0][1], 5.0, 1.0E-12, "jauPvppv", "p2");
             this.vvd(apb[0][2], 7.0, 1.0E-12, "jauPvppv", "p3");
@@ -2009,7 +2015,7 @@ namespace org.jastronomy.jsofa {
             pv[1][1] = -0.006253919754866174;
             pv[1][2] = 0.011893537197741073;
             try {
-                const cat: org.jastronomy.jsofa.JSOFA.CatalogCoords = jauPvstar(pv);
+                const cat: JSOFA.CatalogCoords = JSOFA.jauPvstar(pv);
                 this.vvd(cat.pos.alpha, 0.01686756, 1.0E-12, "jauPvstar", "ra");
                 this.vvd(cat.pos.delta, -1.093989828, 1.0E-12, "jauPvstar", "dec");
                 this.vvd(cat.pm.alpha, -1.7832351600004728E-5, 1.0E-16, "jauPvstar", "pmr");
@@ -2029,7 +2035,7 @@ namespace org.jastronomy.jsofa {
             pv[1][0] = -0.004051854035740713;
             pv[1][1] = -0.006253919754866176;
             pv[1][2] = 0.011893537197741076;
-            upv = jauPvu(2920.0, pv);
+            upv = JSOFA.jauPvu(2920.0, pv);
             this.vvd(upv[0][0], 126656.7598605317, 1.0E-6, "jauPvu", "p1");
             this.vvd(upv[0][1], 2118.5312711557262, 1.0E-8, "jauPvu", "p2");
             this.vvd(upv[0][2], -245216.5048590656, 1.0E-6, "jauPvu", "p3");
@@ -2047,7 +2053,7 @@ namespace org.jastronomy.jsofa {
             pv[1][0] = -0.004051854035740713;
             pv[1][1] = -0.006253919754866176;
             pv[1][2] = 0.011893537197741076;
-            p = jauPvup(2920.0, pv);
+            p = JSOFA.jauPvup(2920.0, pv);
             this.vvd(p[0], 126656.7598605317, 1.0E-12, "jauPvup", "1");
             this.vvd(p[1], 2118.5312711557262, 1.0E-12, "jauPvup", "2");
             this.vvd(p[2], -245216.5048590656, 1.0E-12, "jauPvup", "3");
@@ -2069,7 +2075,7 @@ namespace org.jastronomy.jsofa {
             b[1][0] = 0.0;
             b[1][1] = 2.0;
             b[1][2] = 8.0;
-            axb = jauPvxpv(a, b);
+            axb = JSOFA.jauPvxpv(a, b);
             this.vvd(axb[0][0], -1.0, 1.0E-12, "jauPvxpv", "p1");
             this.vvd(axb[0][1], -5.0, 1.0E-12, "jauPvxpv", "p2");
             this.vvd(axb[0][2], 4.0, 1.0E-12, "jauPvxpv", "p3");
@@ -2088,7 +2094,7 @@ namespace org.jastronomy.jsofa {
             b[0] = 1.0;
             b[1] = 3.0;
             b[2] = 4.0;
-            axb = jauPxp(a, b);
+            axb = JSOFA.jauPxp(a, b);
             this.vvd(axb[0], -1.0, 1.0E-12, "jauPxp", "1");
             this.vvd(axb[1], -5.0, 1.0E-12, "jauPxp", "2");
             this.vvd(axb[2], 4.0, 1.0E-12, "jauPxp", "3");
@@ -2106,7 +2112,7 @@ namespace org.jastronomy.jsofa {
             r[2][0] = 0.6;
             r[2][1] = 0.48;
             r[2][2] = -0.64;
-            w = jauRm2v(r);
+            w = JSOFA.jauRm2v(r);
             this.vvd(w[0], 0.0, 1.0E-12, "jauRm2v", "1");
             this.vvd(w[1], 1.413716694115407, 1.0E-12, "jauRm2v", "2");
             this.vvd(w[2], -1.8849555921538759, 1.0E-12, "jauRm2v", "3");
@@ -2118,7 +2124,7 @@ namespace org.jastronomy.jsofa {
             w[0] = 0.0;
             w[1] = 1.41371669;
             w[2] = -1.88495559;
-            r = jauRv2m(w);
+            r = JSOFA.jauRv2m(w);
             this.vvd(r[0][0], -0.707106778222112, 1.0E-14, "jauRv2m", "11");
             this.vvd(r[0][1], -0.565685427680913, 1.0E-14, "jauRv2m", "12");
             this.vvd(r[0][2], -0.4242640700104211, 1.0E-14, "jauRv2m", "13");
@@ -2143,7 +2149,7 @@ namespace org.jastronomy.jsofa {
             r[2][0] = 3.0;
             r[2][1] = 4.0;
             r[2][2] = 5.0;
-            jauRx(phi, r);
+            JSOFA.jauRx(phi, r);
             this.vvd(r[0][0], 2.0, 0.0, "jauRx", "11");
             this.vvd(r[0][1], 3.0, 0.0, "jauRx", "12");
             this.vvd(r[0][2], 2.0, 0.0, "jauRx", "13");
@@ -2171,7 +2177,7 @@ namespace org.jastronomy.jsofa {
             p[0] = 0.2;
             p[1] = 1.5;
             p[2] = 0.1;
-            rp = jauRxp(r, p);
+            rp = JSOFA.jauRxp(r, p);
             this.vvd(rp[0], 5.1, 1.0E-12, "jauRxp", "1");
             this.vvd(rp[1], 3.9, 1.0E-12, "jauRxp", "2");
             this.vvd(rp[2], 7.1, 1.0E-12, "jauRxp", "3");
@@ -2196,7 +2202,7 @@ namespace org.jastronomy.jsofa {
             pv[1][0] = 1.5;
             pv[1][1] = 0.2;
             pv[1][2] = 0.1;
-            rpv = jauRxpv(r, pv);
+            rpv = JSOFA.jauRxpv(r, pv);
             this.vvd(rpv[0][0], 5.1, 1.0E-12, "jauRxpv", "11");
             this.vvd(rpv[1][0], 3.8, 1.0E-12, "jauRxpv", "12");
             this.vvd(rpv[0][1], 3.9, 1.0E-12, "jauRxpv", "21");
@@ -2227,7 +2233,7 @@ namespace org.jastronomy.jsofa {
             b[2][0] = 3.0;
             b[2][1] = 0.0;
             b[2][2] = 1.0;
-            atb = jauRxr(a, b);
+            atb = JSOFA.jauRxr(a, b);
             this.vvd(atb[0][0], 20.0, 1.0E-12, "jauRxr", "11");
             this.vvd(atb[0][1], 7.0, 1.0E-12, "jauRxr", "12");
             this.vvd(atb[0][2], 9.0, 1.0E-12, "jauRxr", "13");
@@ -2252,7 +2258,7 @@ namespace org.jastronomy.jsofa {
             r[2][0] = 3.0;
             r[2][1] = 4.0;
             r[2][2] = 5.0;
-            jauRy(theta, r);
+            JSOFA.jauRy(theta, r);
             this.vvd(r[0][0], 0.865184781897816, 1.0E-12, "jauRy", "11");
             this.vvd(r[0][1], 1.4671949205393167, 1.0E-12, "jauRy", "12");
             this.vvd(r[0][2], 0.18751379112744573, 1.0E-12, "jauRy", "13");
@@ -2277,7 +2283,7 @@ namespace org.jastronomy.jsofa {
             r[2][0] = 3.0;
             r[2][1] = 4.0;
             r[2][2] = 5.0;
-            jauRz(psi, r);
+            JSOFA.jauRz(psi, r);
             this.vvd(r[0][0], 2.8981977542089266, 1.0E-12, "jauRz", "11");
             this.vvd(r[0][1], 3.5002078928504274, 1.0E-12, "jauRz", "12");
             this.vvd(r[0][2], 2.8981977542089266, 1.0E-12, "jauRz", "13");
@@ -2291,13 +2297,13 @@ namespace org.jastronomy.jsofa {
 
         public t_s00a() {
             let s: number;
-            s = jauS00a(2400000.5, 52541.0);
+            s = JSOFA.jauS00a(2400000.5, 52541.0);
             this.vvd(s, -1.3406844489191635E-8, 1.0E-18, "jauS00a", "");
         }
 
         public t_s00b() {
             let s: number;
-            s = jauS00b(2400000.5, 52541.0);
+            s = JSOFA.jauS00b(2400000.5, 52541.0);
             this.vvd(s, -1.3406957829510266E-8, 1.0E-18, "jauS00b", "");
         }
 
@@ -2307,13 +2313,13 @@ namespace org.jastronomy.jsofa {
             let s: number;
             x = 5.791308486706011E-4;
             y = 4.020579816732961E-5;
-            s = jauS00(2400000.5, 53736.0, x, y);
+            s = JSOFA.jauS00(2400000.5, 53736.0, x, y);
             this.vvd(s, -1.2200362632709057E-8, 1.0E-18, "jauS00", "");
         }
 
         public t_s06a() {
             let s: number;
-            s = jauS06a(2400000.5, 52541.0);
+            s = JSOFA.jauS06a(2400000.5, 52541.0);
             this.vvd(s, -1.3406804372918124E-8, 1.0E-18, "jauS06a", "");
         }
 
@@ -2323,13 +2329,13 @@ namespace org.jastronomy.jsofa {
             let s: number;
             x = 5.791308486706011E-4;
             y = 4.020579816732961E-5;
-            s = jauS06(2400000.5, 53736.0, x, y);
+            s = JSOFA.jauS06(2400000.5, 53736.0, x, y);
             this.vvd(s, -1.220032213076463E-8, 1.0E-18, "jauS06", "");
         }
 
         public t_s2c() {
             let c: number[] = [0, 0, 0];
-            c = jauS2c(3.0123, -0.999);
+            c = JSOFA.jauS2c(3.0123, -0.999);
             this.vvd(c[0], -0.5366267667260524, 1.0E-12, "jauS2c", "1");
             this.vvd(c[1], 0.06977111097651453, 1.0E-12, "jauS2c", "2");
             this.vvd(c[2], -0.8409302618566215, 1.0E-12, "jauS2c", "3");
@@ -2337,7 +2343,7 @@ namespace org.jastronomy.jsofa {
 
         public t_s2p() {
             let p: number[] = [0, 0, 0];
-            p = jauS2p(-3.21, 0.123, 0.456);
+            p = JSOFA.jauS2p(-3.21, 0.123, 0.456);
             this.vvd(p[0], -0.4514964673880165, 1.0E-12, "jauS2p", "x");
             this.vvd(p[1], 0.030933942773425867, 1.0E-12, "jauS2p", "y");
             this.vvd(p[2], 0.05594668105108779, 1.0E-12, "jauS2p", "z");
@@ -2345,7 +2351,7 @@ namespace org.jastronomy.jsofa {
 
         public t_s2pv() {
             let pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
-            pv = jauS2pv(-3.21, 0.123, 0.456, -7.8E-6, 9.01E-6, -1.23E-5);
+            pv = JSOFA.jauS2pv(-3.21, 0.123, 0.456, -7.8E-6, 9.01E-6, -1.23E-5);
             this.vvd(pv[0][0], -0.4514964673880165, 1.0E-12, "jauS2pv", "x");
             this.vvd(pv[0][1], 0.030933942773425867, 1.0E-12, "jauS2pv", "y");
             this.vvd(pv[0][2], 0.05594668105108779, 1.0E-12, "jauS2pv", "z");
@@ -2367,7 +2373,7 @@ namespace org.jastronomy.jsofa {
             pv[1][0] = 0.5;
             pv[1][1] = 2.3;
             pv[1][2] = -0.4;
-            spv = jauS2xpv(s1, s2, pv);
+            spv = JSOFA.jauS2xpv(s1, s2, pv);
             this.vvd(spv[0][0], 0.6, 1.0E-12, "jauS2xpv", "p1");
             this.vvd(spv[0][1], 2.4, 1.0E-12, "jauS2xpv", "p2");
             this.vvd(spv[0][2], -5.0, 1.0E-12, "jauS2xpv", "p3");
@@ -2386,7 +2392,7 @@ namespace org.jastronomy.jsofa {
             b[0] = -3.0;
             b[1] = 0.001;
             b[2] = 0.2;
-            s = jauSepp(a, b);
+            s = JSOFA.jauSepp(a, b);
             this.vvd(s, 2.8603919190246607, 1.0E-12, "jauSepp", "");
         }
 
@@ -2400,12 +2406,12 @@ namespace org.jastronomy.jsofa {
             ap = 0.1;
             bl = 0.2;
             bp = -3.0;
-            s = jauSeps(al, ap, bl, bp);
+            s = JSOFA.jauSeps(al, ap, bl, bp);
             this.vvd(s, 2.3467220169969987, 1.0E-14, "jauSeps", "");
         }
 
         public t_sp00() {
-            this.vvd(jauSp00(2400000.5, 52541.0), -6.216698469981019E-12, 1.0E-12, "jauSp00", "");
+            this.vvd(JSOFA.jauSp00(2400000.5, 52541.0), -6.216698469981019E-12, 1.0E-12, "jauSp00", "");
         }
 
         public t_starpm() {
@@ -2422,7 +2428,7 @@ namespace org.jastronomy.jsofa {
             px1 = 0.74723;
             rv1 = -21.6;
             try {
-                const cat: org.jastronomy.jsofa.JSOFA.CatalogCoords = jauStarpm(ra1, dec1, pmr1, pmd1, px1, rv1, 2400000.5, 50083.0, 2400000.5, 53736.0);
+                const cat: JSOFA.CatalogCoords = JSOFA.jauStarpm(ra1, dec1, pmr1, pmd1, px1, rv1, 2400000.5, 50083.0, 2400000.5, 53736.0);
                 this.vvd(cat.pos.alpha, 0.016689190694142562, 1.0E-13, "jauStarpm", "ra");
                 this.vvd(cat.pos.delta, -1.093966454217128, 1.0E-13, "jauStarpm", "dec");
                 this.vvd(cat.pm.alpha, -1.7836626821531766E-5, 1.0E-17, "jauStarpm", "pmr");
@@ -2448,7 +2454,7 @@ namespace org.jastronomy.jsofa {
             pmd = 2.336024047E-6;
             px = 0.74723;
             rv = -21.6;
-            const j: number = jauStarpv(ra, dec, pmr, pmd, px, rv, pv);
+            const j: number = JSOFA.jauStarpv(ra, dec, pmr, pmd, px, rv, pv);
             this.vvd(pv[0][0], 126668.59127431606, 1.0E-10, "jauStarpv", "11");
             this.vvd(pv[0][1], 2136.792716839935, 1.0E-12, "jauStarpv", "12");
             this.vvd(pv[0][2], -245251.23398768302, 1.0E-10, "jauStarpv", "13");
@@ -2466,7 +2472,7 @@ namespace org.jastronomy.jsofa {
             p[0] = 0.3;
             p[1] = 1.2;
             p[2] = -2.5;
-            sp = jauSxp(s, p);
+            sp = JSOFA.jauSxp(s, p);
             this.vvd(sp[0], 0.6, 0.0, "jauSxp", "1");
             this.vvd(sp[1], 2.4, 0.0, "jauSxp", "2");
             this.vvd(sp[2], -5.0, 0.0, "jauSxp", "3");
@@ -2483,7 +2489,7 @@ namespace org.jastronomy.jsofa {
             pv[1][0] = 0.5;
             pv[1][1] = 3.2;
             pv[1][2] = -0.7;
-            spv = jauSxpv(s, pv);
+            spv = JSOFA.jauSxpv(s, pv);
             this.vvd(spv[0][0], 0.6, 0.0, "jauSxpv", "p1");
             this.vvd(spv[0][1], 2.4, 0.0, "jauSxpv", "p2");
             this.vvd(spv[0][2], -5.0, 0.0, "jauSxpv", "p3");
@@ -2493,43 +2499,43 @@ namespace org.jastronomy.jsofa {
         }
 
         public t_taitt() {
-            const jd: JSOFA.JulianDate = jauTaitt(2453750.5, 0.892482639);
+            const jd: JSOFA.JulianDate = JSOFA.jauTaitt(2453750.5, 0.892482639);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTaitt", "t1");
             this.vvd(jd.djm1, 0.892855139, 1.0E-12, "jauTaitt", "t2");
         }
 
         public t_taiut1() {
-            const jd: JSOFA.JulianDate = jauTaiut1(2453750.5, 0.892482639, -32.6659);
+            const jd: JSOFA.JulianDate = JSOFA.jauTaiut1(2453750.5, 0.892482639, -32.6659);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTaiut1", "u1");
             this.vvd(jd.djm1, 0.8921045614537036, 1.0E-12, "jauTaiut1", "u2");
         }
 
         public t_taiutc() {
-            const jd: JSOFA.JulianDate = jauTaiutc(2453750.5, 0.892482639);
+            const jd: JSOFA.JulianDate = JSOFA.jauTaiutc(2453750.5, 0.892482639);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTaiutc", "u1");
             this.vvd(jd.djm1, 0.8921006945555555, 1.0E-12, "jauTaiutc", "u2");
         }
 
         public t_tcbtdb() {
-            const jd: JSOFA.JulianDate = jauTcbtdb(2453750.5, 0.893019599);
+            const jd: JSOFA.JulianDate = JSOFA.jauTcbtdb(2453750.5, 0.893019599);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTcbtdb", "b1");
             this.vvd(jd.djm1, 0.8928551362746343, 1.0E-12, "jauTcbtdb", "b2");
         }
 
         public t_tcgtt() {
-            const jd: JSOFA.JulianDate = jauTcgtt(2453750.5, 0.892862531);
+            const jd: JSOFA.JulianDate = JSOFA.jauTcgtt(2453750.5, 0.892862531);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTcgtt", "t1");
             this.vvd(jd.djm1, 0.8928551387488817, 1.0E-12, "jauTcgtt", "t2");
         }
 
         public t_tdbtcb() {
-            const jd: JSOFA.JulianDate = jauTdbtcb(2453750.5, 0.892855137);
+            const jd: JSOFA.JulianDate = JSOFA.jauTdbtcb(2453750.5, 0.892855137);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTdbtcb", "b1");
             this.vvd(jd.djm1, 0.8930195997253657, 1.0E-12, "jauTdbtcb", "b2");
         }
 
         public t_tdbtt() {
-            const jd: JSOFA.JulianDate = jauTdbtt(2453750.5, 0.892855137, -2.01E-4);
+            const jd: JSOFA.JulianDate = JSOFA.jauTdbtt(2453750.5, 0.892855137, -2.01E-4);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTdbtt", "t1");
             this.vvd(jd.djm1, 0.8928551393263889, 1.0E-12, "jauTdbtt", "t2");
         }
@@ -2546,7 +2552,7 @@ namespace org.jastronomy.jsofa {
             r[2][0] = 3.0;
             r[2][1] = 4.0;
             r[2][2] = 5.0;
-            rt = jauTr(r);
+            rt = JSOFA.jauTr(r);
             this.vvd(rt[0][0], 2.0, 0.0, "jauTr", "11");
             this.vvd(rt[0][1], 3.0, 0.0, "jauTr", "12");
             this.vvd(rt[0][2], 3.0, 0.0, "jauTr", "13");
@@ -2574,7 +2580,7 @@ namespace org.jastronomy.jsofa {
             p[0] = 0.2;
             p[1] = 1.5;
             p[2] = 0.1;
-            trp = jauTrxp(r, p);
+            trp = JSOFA.jauTrxp(r, p);
             this.vvd(trp[0], 5.2, 1.0E-12, "jauTrxp", "1");
             this.vvd(trp[1], 4.0, 1.0E-12, "jauTrxp", "2");
             this.vvd(trp[2], 5.4, 1.0E-12, "jauTrxp", "3");
@@ -2599,7 +2605,7 @@ namespace org.jastronomy.jsofa {
             pv[1][0] = 1.5;
             pv[1][1] = 0.2;
             pv[1][2] = 0.1;
-            trpv = jauTrxpv(r, pv);
+            trpv = JSOFA.jauTrxpv(r, pv);
             this.vvd(trpv[0][0], 5.2, 1.0E-12, "jauTrxpv", "p1");
             this.vvd(trpv[0][1], 4.0, 1.0E-12, "jauTrxpv", "p1");
             this.vvd(trpv[0][2], 5.4, 1.0E-12, "jauTrxpv", "p1");
@@ -2609,81 +2615,81 @@ namespace org.jastronomy.jsofa {
         }
 
         public t_tttai() {
-            const jd: JSOFA.JulianDate = jauTttai(2453750.5, 0.892482639);
+            const jd: JSOFA.JulianDate = JSOFA.jauTttai(2453750.5, 0.892482639);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTttai", "a1");
             this.vvd(jd.djm1, 0.892110139, 1.0E-12, "jauTttai", "a2");
         }
 
         public t_tttcg() {
-            const jd: JSOFA.JulianDate = jauTttcg(2453750.5, 0.892482639);
+            const jd: JSOFA.JulianDate = JSOFA.jauTttcg(2453750.5, 0.892482639);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTttcg", "g1");
             this.vvd(jd.djm1, 0.8924900312508587, 1.0E-12, "jauTttcg", "g2");
         }
 
         public t_tttdb() {
-            const jd: JSOFA.JulianDate = jauTttdb(2453750.5, 0.892855139, -2.01E-4);
+            const jd: JSOFA.JulianDate = JSOFA.jauTttdb(2453750.5, 0.892855139, -2.01E-4);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTttdb", "b1");
             this.vvd(jd.djm1, 0.8928551366736112, 1.0E-12, "jauTttdb", "b2");
         }
 
         public t_ttut1() {
-            const jd: JSOFA.JulianDate = jauTtut1(2453750.5, 0.892855139, 64.8499);
+            const jd: JSOFA.JulianDate = JSOFA.jauTtut1(2453750.5, 0.892855139, 64.8499);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTtut1", "u1");
             this.vvd(jd.djm1, 0.8921045614537036, 1.0E-12, "jauTtut1", "u2");
         }
 
         public t_ut1tai() {
-            const jd: JSOFA.JulianDate = jauUt1tai(2453750.5, 0.892104561, -32.6659);
+            const jd: JSOFA.JulianDate = JSOFA.jauUt1tai(2453750.5, 0.892104561, -32.6659);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauUt1tai", "a1");
             this.vvd(jd.djm1, 0.8924826385462963, 1.0E-12, "jauUt1tai", "a2");
         }
 
         public t_ut1tt() {
-            const jd: JSOFA.JulianDate = jauUt1tt(2453750.5, 0.892104561, 64.8499);
+            const jd: JSOFA.JulianDate = JSOFA.jauUt1tt(2453750.5, 0.892104561, 64.8499);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauUt1tt", "t1");
             this.vvd(jd.djm1, 0.8928551385462963, 1.0E-12, "jauUt1tt", "t2");
         }
 
         public t_ut1utc() {
-            const jd: JSOFA.JulianDate = jauUt1utc(2453750.5, 0.892104561, 0.3341);
+            const jd: JSOFA.JulianDate = JSOFA.jauUt1utc(2453750.5, 0.892104561, 0.3341);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauUt1utc", "u1");
             this.vvd(jd.djm1, 0.8921006941018519, 1.0E-12, "jauUt1utc", "u2");
         }
 
         public t_utctai() {
-            const jd: JSOFA.JulianDate = jauUtctai(2453750.5, 0.892100694);
+            const jd: JSOFA.JulianDate = JSOFA.jauUtctai(2453750.5, 0.892100694);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauUtctai", "u1");
             this.vvd(jd.djm1, 0.8924826384444444, 1.0E-12, "jauUtctai", "u2");
         }
 
         public t_utcut1() {
-            const jd: JSOFA.JulianDate = jauUtcut1(2453750.5, 0.892100694, 0.3341);
+            const jd: JSOFA.JulianDate = JSOFA.jauUtcut1(2453750.5, 0.892100694, 0.3341);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauUtcut1", "u1");
             this.vvd(jd.djm1, 0.8921045608981482, 1.0E-12, "jauUtcut1", "u2");
         }
 
         public t_xy06() {
-            const cip: JSOFA.CelestialIntermediatePole = jauXy06(2400000.5, 53736.0);
+            const cip: JSOFA.CelestialIntermediatePole = JSOFA.jauXy06(2400000.5, 53736.0);
             this.vvd(cip.x, 5.791308486706011E-4, 1.0E-15, "jauXy06", "x");
             this.vvd(cip.y, 4.020579816732958E-5, 1.0E-16, "jauXy06", "y");
         }
 
         public t_xys00a() {
-            const fr: JSOFA.ICRFrame = jauXys00a(2400000.5, 53736.0);
+            const fr: JSOFA.ICRFrame = JSOFA.jauXys00a(2400000.5, 53736.0);
             this.vvd(fr.cip.x, 5.791308472168153E-4, 1.0E-14, "jauXys00a", "x");
             this.vvd(fr.cip.y, 4.0205956615915E-5, 1.0E-15, "jauXys00a", "y");
             this.vvd(fr.s, -1.2200408484715497E-8, 1.0E-18, "jauXys00a", "s");
         }
 
         public t_xys00b() {
-            const fr: JSOFA.ICRFrame = jauXys00b(2400000.5, 53736.0);
+            const fr: JSOFA.ICRFrame = JSOFA.jauXys00b(2400000.5, 53736.0);
             this.vvd(fr.cip.x, 5.791301929950209E-4, 1.0E-14, "jauXys00b", "x");
             this.vvd(fr.cip.y, 4.0205536813737205E-5, 1.0E-15, "jauXys00b", "y");
             this.vvd(fr.s, -1.2200273772850832E-8, 1.0E-18, "jauXys00b", "s");
         }
 
         public t_xys06a() {
-            const fr: JSOFA.ICRFrame = jauXys06a(2400000.5, 53736.0);
+            const fr: JSOFA.ICRFrame = JSOFA.jauXys06a(2400000.5, 53736.0);
             this.vvd(fr.cip.x, 5.791308482835292E-4, 1.0E-14, "jauXys06a", "x");
             this.vvd(fr.cip.y, 4.0205800994540205E-5, 1.0E-15, "jauXys06a", "y");
             this.vvd(fr.s, -1.22003229416458E-8, 1.0E-18, "jauXys06a", "s");
@@ -2694,7 +2700,7 @@ namespace org.jastronomy.jsofa {
             p[0] = 0.3;
             p[1] = 1.2;
             p[2] = -2.5;
-            jauZp(p);
+            JSOFA.jauZp(p);
             this.vvd(p[0], 0.0, 0.0, "jauZp", "1");
             this.vvd(p[1], 0.0, 0.0, "jauZp", "2");
             this.vvd(p[2], 0.0, 0.0, "jauZp", "3");
@@ -2708,7 +2714,7 @@ namespace org.jastronomy.jsofa {
             pv[1][0] = -0.5;
             pv[1][1] = 3.1;
             pv[1][2] = 0.9;
-            jauZpv(pv);
+            JSOFA.jauZpv(pv);
             this.vvd(pv[0][0], 0.0, 0.0, "jauZpv", "p1");
             this.vvd(pv[0][1], 0.0, 0.0, "jauZpv", "p2");
             this.vvd(pv[0][2], 0.0, 0.0, "jauZpv", "p3");
@@ -2728,7 +2734,7 @@ namespace org.jastronomy.jsofa {
             r[0][2] = 3.0;
             r[1][2] = 4.0;
             r[2][2] = 5.0;
-            jauZr(r);
+            JSOFA.jauZr(r);
             this.vvd(r[0][0], 0.0, 0.0, "jauZr", "00");
             this.vvd(r[1][0], 0.0, 0.0, "jauZr", "01");
             this.vvd(r[2][0], 0.0, 0.0, "jauZr", "02");
@@ -2757,7 +2763,7 @@ namespace org.jastronomy.jsofa {
             ehp[0] = 0.903358544;
             ehp[1] = -0.415395237;
             ehp[2] = -0.180084014;
-            jauApcg(date1, date2, ebpv, ehp, astrom);
+            JSOFA.jauApcg(date1, date2, ebpv, ehp, astrom);
             this.vvd(astrom.pmt, 12.651337940273786, 1.0E-11, "jauApcg", "pmt");
             this.vvd(astrom.eb[0], 0.901310875, 1.0E-12, "jauApcg", "eb(1)");
             this.vvd(astrom.eb[1], -0.417402664, 1.0E-12, "jauApcg", "eb(2)");
@@ -2795,7 +2801,7 @@ namespace org.jastronomy.jsofa {
             v[2] = -3.863371479771657E-5;
             s = 0.9998092139570879;
             bm1 = 0.9999999950620926;
-            ppr = jauAb(pnat, v, s, bm1);
+            ppr = JSOFA.jauAb(pnat, v, s, bm1);
             this.vvd(ppr[0], -0.7631631094219556, 1.0E-12, "jauAb", "1");
             this.vvd(ppr[1], -0.6087553082505591, 1.0E-12, "jauAb", "2");
             this.vvd(ppr[2], -0.21679262693684712, 1.0E-12, "jauAb", "3");
@@ -2807,7 +2813,7 @@ namespace org.jastronomy.jsofa {
             const astrom: JSOFA.Astrom = new JSOFA.Astrom();
             date1 = 2456165.5;
             date2 = 0.401182685;
-            jauApcg13(date1, date2, astrom);
+            JSOFA.jauApcg13(date1, date2, astrom);
             this.vvd(astrom.pmt, 12.651337940273786, 1.0E-11, "jauApcg13", "pmt");
             this.vvd(astrom.eb[0], 0.9013108747340645, 1.0E-12, "jauApcg13", "eb(1)");
             this.vvd(astrom.eb[1], -0.417402664040612, 1.0E-12, "jauApcg13", "eb(2)");
@@ -2854,7 +2860,7 @@ namespace org.jastronomy.jsofa {
             x = 0.0013122272;
             y = -2.92808623E-5;
             s = 3.05749468E-8;
-            jauApci(date1, date2, ebpv, ehp, x, y, s, astrom);
+            JSOFA.jauApci(date1, date2, ebpv, ehp, x, y, s, astrom);
             this.vvd(astrom.pmt, 12.651337940273786, 1.0E-11, "jauApci", "pmt");
             this.vvd(astrom.eb[0], 0.901310875, 1.0E-12, "jauApci", "eb(1)");
             this.vvd(astrom.eb[1], -0.417402664, 1.0E-12, "jauApci", "eb(2)");
@@ -2885,7 +2891,7 @@ namespace org.jastronomy.jsofa {
             const astrom: JSOFA.Astrom = new JSOFA.Astrom();
             date1 = 2456165.5;
             date2 = 0.401182685;
-            eo = jauApci13(date1, date2, astrom);
+            eo = JSOFA.jauApci13(date1, date2, astrom);
             this.vvd(astrom.pmt, 12.651337940273786, 1.0E-11, "jauApci13", "pmt");
             this.vvd(astrom.eb[0], 0.9013108747340645, 1.0E-12, "jauApci13", "eb(1)");
             this.vvd(astrom.eb[1], -0.417402664040612, 1.0E-12, "jauApci13", "eb(2)");
@@ -2951,7 +2957,7 @@ namespace org.jastronomy.jsofa {
             sp = -3.01974337E-11;
             refa = 2.01418779E-4;
             refb = -2.36140831E-7;
-            jauApco(date1, date2, ebpv, ehp, x, y, s, theta, elong, phi, hm, xp, yp, sp, refa, refb, astrom);
+            JSOFA.jauApco(date1, date2, ebpv, ehp, x, y, s, theta, elong, phi, hm, xp, yp, sp, refa, refb, astrom);
             this.vvd(astrom.pmt, 13.252484686225873, 1.0E-11, "jauApco", "pmt");
             this.vvd(astrom.eb[0], -0.9741827110630322, 1.0E-12, "jauApco", "eb(1)");
             this.vvd(astrom.eb[1], -0.21151301901353448, 1.0E-12, "jauApco", "eb(2)");
@@ -3011,7 +3017,7 @@ namespace org.jastronomy.jsofa {
             tc = 12.8;
             rh = 0.59;
             wl = 0.55;
-            eo = jauApco13(utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, astrom);
+            eo = JSOFA.jauApco13(utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, astrom);
             this.vvd(astrom.pmt, 13.252484686224758, 1.0E-11, "jauApco13", "pmt");
             this.vvd(astrom.eb[0], -0.9741827107320875, 1.0E-12, "jauApco13", "eb(1)");
             this.vvd(astrom.eb[1], -0.21151301904897166, 1.0E-12, "jauApco13", "eb(2)");
@@ -3069,7 +3075,7 @@ namespace org.jastronomy.jsofa {
             ehp[0] = -0.973458265;
             ehp[1] = -0.209215307;
             ehp[2] = -0.0906996477;
-            jauApcs(date1, date2, pv, ebpv, ehp, astrom);
+            JSOFA.jauApcs(date1, date2, pv, ebpv, ehp, astrom);
             this.vvd(astrom.pmt, 13.252484686225873, 1.0E-11, "jauApcs", "pmt");
             this.vvd(astrom.eb[0], -0.9741827110629881, 1.0E-12, "jauApcs", "eb(1)");
             this.vvd(astrom.eb[1], -0.2115130190136416, 1.0E-12, "jauApcs", "eb(2)");
@@ -3106,7 +3112,7 @@ namespace org.jastronomy.jsofa {
             pv[1][0] = -29.264597;
             pv[1][1] = -455.021831;
             pv[1][2] = 0.0266151194;
-            jauApcs13(date1, date2, pv, astrom);
+            JSOFA.jauApcs13(date1, date2, pv, astrom);
             this.vvd(astrom.pmt, 12.651337940273786, 1.0E-11, "jauApcs13", "pmt");
             this.vvd(astrom.eb[0], 0.9012691529025251, 1.0E-12, "jauApcs13", "eb(1)");
             this.vvd(astrom.eb[1], -0.4173999812023194, 1.0E-12, "jauApcs13", "eb(2)");
@@ -3135,7 +3141,7 @@ namespace org.jastronomy.jsofa {
             const astrom: JSOFA.Astrom = new JSOFA.Astrom();
             astrom.along = 1.234;
             theta = 5.678;
-            jauAper(theta, astrom);
+            JSOFA.jauAper(theta, astrom);
             this.vvd(astrom.eral, 6.912, 1.0E-12, "jauAper", "pmt");
         }
 
@@ -3146,7 +3152,7 @@ namespace org.jastronomy.jsofa {
             astrom.along = 1.234;
             ut11 = 2456165.5;
             ut12 = 0.401182685;
-            jauAper13(ut11, ut12, astrom);
+            JSOFA.jauAper13(ut11, ut12, astrom);
             this.vvd(astrom.eral, 3.316236661789695, 1.0E-12, "jauAper13", "pmt");
         }
 
@@ -3170,7 +3176,7 @@ namespace org.jastronomy.jsofa {
             yp = 1.82640464E-6;
             refa = 2.01418779E-4;
             refb = -2.36140831E-7;
-            jauApio(sp, theta, elong, phi, hm, xp, yp, refa, refb, astrom);
+            JSOFA.jauApio(sp, theta, elong, phi, hm, xp, yp, refa, refb, astrom);
             this.vvd(astrom.along, -0.5278008060295996, 1.0E-12, "jauApio", "along");
             this.vvd(astrom.xpl, 1.133427418130753E-6, 1.0E-17, "jauApio", "xpl");
             this.vvd(astrom.ypl, 1.4533475957806462E-6, 1.0E-17, "jauApio", "ypl");
@@ -3208,7 +3214,7 @@ namespace org.jastronomy.jsofa {
             tc = 12.8;
             rh = 0.59;
             wl = 0.55;
-            jauApio13(utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, astrom);
+            JSOFA.jauApio13(utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, astrom);
             this.vvd(astrom.along, -0.5278008060295996, 1.0E-12, "jauApio13", "along");
             this.vvd(astrom.xpl, 1.133427418130753E-6, 1.0E-17, "jauApio13", "xpl");
             this.vvd(astrom.ypl, 1.4533475957806462E-6, 1.0E-17, "jauApio13", "ypl");
@@ -3237,7 +3243,7 @@ namespace org.jastronomy.jsofa {
             rv = 55.0;
             date1 = 2456165.5;
             date2 = 0.401182685;
-            const coe: JSOFA.SphericalCoordinateEO = jauAtci13(rc, dc, pr, pd, px, rv, date1, date2);
+            const coe: JSOFA.SphericalCoordinateEO = JSOFA.jauAtci13(rc, dc, pr, pd, px, rv, date1, date2);
             this.vvd(coe.pos.alpha, 2.710121572968697, 1.0E-12, "jauAtci13", "ri");
             this.vvd(coe.pos.delta, 0.1729371367219539, 1.0E-12, "jauAtci13", "di");
             this.vvd(coe.eo, -0.0029006187126573756, 1.0E-14, "jauAtci13", "eo");
@@ -3255,14 +3261,14 @@ namespace org.jastronomy.jsofa {
             const astrom: JSOFA.Astrom = new JSOFA.Astrom();
             date1 = 2456165.5;
             date2 = 0.401182685;
-            jauApci13(date1, date2, astrom);
+            JSOFA.jauApci13(date1, date2, astrom);
             rc = 2.71;
             dc = 0.174;
             pr = 1.0E-5;
             pd = 5.0E-6;
             px = 0.1;
             rv = 55.0;
-            const co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauAtciq(rc, dc, pr, pd, px, rv, astrom);
+            const co: JSOFA.SphericalCoordinate = JSOFA.jauAtciq(rc, dc, pr, pd, px, rv, astrom);
             this.vvd(co.alpha, 2.710121572968697, 1.0E-12, "jauAtciq", "ri");
             this.vvd(co.delta, 0.1729371367219539, 1.0E-12, "jauAtciq", "di");
         }
@@ -3280,7 +3286,7 @@ namespace org.jastronomy.jsofa {
             const astrom: JSOFA.Astrom = new JSOFA.Astrom();
             date1 = 2456165.5;
             date2 = 0.401182685;
-            jauApci13(date1, date2, astrom);
+            JSOFA.jauApci13(date1, date2, astrom);
             rc = 2.71;
             dc = 0.174;
             pr = 1.0E-5;
@@ -3311,7 +3317,7 @@ namespace org.jastronomy.jsofa {
             b[2].pv[1][0] = 6.29235213E-6;
             b[2].pv[1][1] = -3.30888387E-7;
             b[2].pv[1][2] = -2.96486623E-7;
-            const co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauAtciqn(rc, dc, pr, pd, px, rv, astrom, 3, b);
+            const co: JSOFA.SphericalCoordinate = JSOFA.jauAtciqn(rc, dc, pr, pd, px, rv, astrom, 3, b);
             this.vvd(co.alpha, 2.7101220081049835, 1.0E-12, "jauAtciqn", "ri");
             this.vvd(co.delta, 0.1729371916492768, 1.0E-12, "jauAtciqn", "di");
         }
@@ -3324,10 +3330,10 @@ namespace org.jastronomy.jsofa {
             const astrom: JSOFA.Astrom = new JSOFA.Astrom();
             date1 = 2456165.5;
             date2 = 0.401182685;
-            jauApci13(date1, date2, astrom);
+            JSOFA.jauApci13(date1, date2, astrom);
             rc = 2.71;
             dc = 0.174;
-            const co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauAtciqz(rc, dc, astrom);
+            const co: JSOFA.SphericalCoordinate = JSOFA.jauAtciqz(rc, dc, astrom);
             this.vvd(co.alpha, 2.709994899247257, 1.0E-12, "jauAtciqz", "ri");
             this.vvd(co.delta, 0.17287407209849318, 1.0E-12, "jauAtciqz", "di");
         }
@@ -3369,7 +3375,7 @@ namespace org.jastronomy.jsofa {
             tc = 12.8;
             rh = 0.59;
             wl = 0.55;
-            const ope: JSOFA.ObservedPositionEO = jauAtco13(rc, dc, pr, pd, px, rv, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
+            const ope: JSOFA.ObservedPositionEO = JSOFA.jauAtco13(rc, dc, pr, pd, px, rv, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
             this.vvd(ope.op.aob, 0.09251774485485516, 1.0E-12, "jauAtco13", "aob");
             this.vvd(ope.op.zob, 1.4076614052564993, 1.0E-12, "jauAtco13", "zob");
             this.vvd(ope.op.hob, -0.09265154431529725, 1.0E-12, "jauAtco13", "hob");
@@ -3387,7 +3393,7 @@ namespace org.jastronomy.jsofa {
             di = 0.17293713672182304;
             date1 = 2456165.5;
             date2 = 0.401182685;
-            const oe: JSOFA.SphericalCoordinateEO = jauAtic13(ri, di, date1, date2);
+            const oe: JSOFA.SphericalCoordinateEO = JSOFA.jauAtic13(ri, di, date1, date2);
             this.vvd(oe.pos.alpha, 2.7101265045317167, 1.0E-12, "jauAtic13", "rc");
             this.vvd(oe.pos.delta, 0.17406325376270346, 1.0E-12, "jauAtic13", "dc");
             this.vvd(oe.eo, -0.0029006187126573756, 1.0E-14, "jauAtic13", "eo");
@@ -3401,10 +3407,10 @@ namespace org.jastronomy.jsofa {
             const astrom: JSOFA.Astrom = new JSOFA.Astrom();
             date1 = 2456165.5;
             date2 = 0.401182685;
-            jauApci13(date1, date2, astrom);
+            JSOFA.jauApci13(date1, date2, astrom);
             ri = 2.710121572969039;
             di = 0.17293713672182304;
-            const co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauAticq(ri, di, astrom);
+            const co: JSOFA.SphericalCoordinate = JSOFA.jauAticq(ri, di, astrom);
             this.vvd(co.alpha, 2.7101265045317167, 1.0E-12, "jauAticq", "rc");
             this.vvd(co.delta, 0.17406325376270346, 1.0E-12, "jauAticq", "dc");
         }
@@ -3418,7 +3424,7 @@ namespace org.jastronomy.jsofa {
             const astrom: JSOFA.Astrom = new JSOFA.Astrom();
             date1 = 2456165.5;
             date2 = 0.401182685;
-            jauApci13(date1, date2, astrom);
+            JSOFA.jauApci13(date1, date2, astrom);
             ri = 2.709994899247599;
             di = 0.17287407209836234;
             b[0].bm = 2.8574E-4;
@@ -3445,7 +3451,7 @@ namespace org.jastronomy.jsofa {
             b[2].pv[1][0] = 6.29235213E-6;
             b[2].pv[1][1] = -3.30888387E-7;
             b[2].pv[1][2] = -2.96486623E-7;
-            const co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauAticqn(ri, di, astrom, 3, b);
+            const co: JSOFA.SphericalCoordinate = JSOFA.jauAticqn(ri, di, astrom, 3, b);
             this.vvd(co.alpha, 2.7099995750330272, 1.0E-12, "jauAtciqn", "rc");
             this.vvd(co.delta, 0.173999965631647, 1.0E-12, "jauAtciqn", "dc");
         }
@@ -3479,7 +3485,7 @@ namespace org.jastronomy.jsofa {
             tc = 12.8;
             rh = 0.59;
             wl = 0.55;
-            const o: JSOFA.ObservedPosition = jauAtio13(ri, di, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
+            const o: JSOFA.ObservedPosition = JSOFA.jauAtio13(ri, di, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
             this.vvd(o.aob, 0.09233952224895123, 1.0E-12, "jauAtio13", "aob");
             this.vvd(o.zob, 1.40775870451355, 1.0E-12, "jauAtio13", "zob");
             this.vvd(o.hob, -0.09247619879881698, 1.0E-12, "jauAtio13", "hob");
@@ -3515,10 +3521,10 @@ namespace org.jastronomy.jsofa {
             tc = 12.8;
             rh = 0.59;
             wl = 0.55;
-            jauApio13(utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, astrom);
+            JSOFA.jauApio13(utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, astrom);
             ri = 2.710121572969039;
             di = 0.17293713672182304;
-            const o: JSOFA.ObservedPosition = jauAtioq(ri, di, astrom);
+            const o: JSOFA.ObservedPosition = JSOFA.jauAtioq(ri, di, astrom);
             this.vvd(o.aob, 0.09233952224895123, 1.0E-12, "jauAtioq", "aob");
             this.vvd(o.zob, 1.40775870451355, 1.0E-12, "jauAtioq", "zob");
             this.vvd(o.hob, -0.09247619879881698, 1.0E-12, "jauAtioq", "hob");
@@ -3555,17 +3561,17 @@ namespace org.jastronomy.jsofa {
             wl = 0.55;
             ob1 = 2.7100851079868864;
             ob2 = 0.1717653435758265;
-            let oc: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauAtoc13("R", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
+            let oc: JSOFA.SphericalCoordinate = JSOFA.jauAtoc13("R", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
             this.vvd(oc.alpha, 2.709956744659136, 1.0E-12, "jauAtoc13", "R/rc");
             this.vvd(oc.delta, 0.17416965008984714, 1.0E-12, "jauAtoc13", "R/dc");
             ob1 = -0.09247619879782006;
             ob2 = 0.1717653435758265;
-            oc = jauAtoc13("H", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
+            oc = JSOFA.jauAtoc13("H", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
             this.vvd(oc.alpha, 2.709956744659734, 1.0E-12, "jauAtoc13", "H/rc");
             this.vvd(oc.delta, 0.17416965008984714, 1.0E-12, "jauAtoc13", "H/dc");
             ob1 = 0.0923395222479499;
             ob2 = 1.4077587045137225;
-            oc = jauAtoc13("A", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
+            oc = JSOFA.jauAtoc13("A", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
             this.vvd(oc.alpha, 2.709956744659734, 1.0E-12, "jauAtoc13", "A/rc");
             this.vvd(oc.delta, 0.17416965008984714, 1.0E-12, "jauAtoc13", "A/dc");
         }
@@ -3599,17 +3605,17 @@ namespace org.jastronomy.jsofa {
             wl = 0.55;
             ob1 = 2.7100851079868864;
             ob2 = 0.1717653435758265;
-            let co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauAtoi13("R", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
+            let co: JSOFA.SphericalCoordinate = JSOFA.jauAtoi13("R", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
             this.vvd(co.alpha, 2.7101215744475406, 1.0E-12, "jauAtoi13", "R/ri");
             this.vvd(co.delta, 0.17293718391166088, 1.0E-12, "jauAtoi13", "R/di");
             ob1 = -0.09247619879782006;
             ob2 = 0.1717653435758265;
-            co = jauAtoi13("H", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
+            co = JSOFA.jauAtoi13("H", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
             this.vvd(co.alpha, 2.710121574448139, 1.0E-12, "jauAtoi13", "H/ri");
             this.vvd(co.delta, 0.17293718391166088, 1.0E-12, "jauAtoi13", "H/di");
             ob1 = 0.0923395222479499;
             ob2 = 1.4077587045137225;
-            co = jauAtoi13("A", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
+            co = JSOFA.jauAtoi13("A", ob1, ob2, utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl);
             this.vvd(co.alpha, 2.710121574448139, 1.0E-12, "jauAtoi13", "A/ri");
             this.vvd(co.delta, 0.17293718391166088, 1.0E-12, "jauAtoi13", "A/di");
         }
@@ -3642,20 +3648,20 @@ namespace org.jastronomy.jsofa {
             tc = 12.8;
             rh = 0.59;
             wl = 0.55;
-            jauApio13(utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, astrom);
+            JSOFA.jauApio13(utc1, utc2, dut1, elong, phi, hm, xp, yp, phpa, tc, rh, wl, astrom);
             ob1 = 2.7100851079868864;
             ob2 = 0.1717653435758265;
-            let co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauAtoiq("R", ob1, ob2, astrom);
+            let co: JSOFA.SphericalCoordinate = JSOFA.jauAtoiq("R", ob1, ob2, astrom);
             this.vvd(co.alpha, 2.7101215744475406, 1.0E-12, "jauAtoiq", "R/ri");
             this.vvd(co.delta, 0.17293718391166088, 1.0E-12, "jauAtoiq", "R/di");
             ob1 = -0.09247619879782006;
             ob2 = 0.1717653435758265;
-            co = jauAtoiq("H", ob1, ob2, astrom);
+            co = JSOFA.jauAtoiq("H", ob1, ob2, astrom);
             this.vvd(co.alpha, 2.710121574448139, 1.0E-12, "jauAtoiq", "H/ri");
             this.vvd(co.delta, 0.17293718391166088, 1.0E-12, "jauAtoiq", "H/di");
             ob1 = 0.0923395222479499;
             ob2 = 1.4077587045137225;
-            co = jauAtoiq("A", ob1, ob2, astrom);
+            co = JSOFA.jauAtoiq("A", ob1, ob2, astrom);
             this.vvd(co.alpha, 2.710121574448139, 1.0E-12, "jauAtoiq", "A/ri");
             this.vvd(co.delta, 0.17293718391166088, 1.0E-12, "jauAtoiq", "A/di");
         }
@@ -3680,7 +3686,7 @@ namespace org.jastronomy.jsofa {
             e[2] = 0.211937094;
             em = 8.91276983;
             dlim = 3.0E-10;
-            p1 = jauLd(bm, p, q, e, em, dlim);
+            p1 = JSOFA.jauLd(bm, p, q, e, em, dlim);
             this.vvd(p1[0], -0.7632762548968159, 1.0E-12, "jauLd", "1");
             this.vvd(p1[1], -0.6086337670823763, 1.0E-12, "jauLd", "2");
             this.vvd(p1[2], -0.2167355431320547, 1.0E-12, "jauLd", "3");
@@ -3723,7 +3729,7 @@ namespace org.jastronomy.jsofa {
             sc[0] = -0.763276255;
             sc[1] = -0.608633767;
             sc[2] = -0.216735543;
-            sn = jauLdn(n, b, ob, sc);
+            sn = JSOFA.jauLdn(n, b, ob, sc);
             this.vvd(sn[0], -0.7632762579693334, 1.0E-12, "jauLdn", "1");
             this.vvd(sn[1], -0.6086337636093002, 1.0E-12, "jauLdn", "2");
             this.vvd(sn[2], -0.2167355420646328, 1.0E-12, "jauLdn", "3");
@@ -3741,7 +3747,7 @@ namespace org.jastronomy.jsofa {
             e[1] = -0.20925523;
             e[2] = -0.0907169552;
             em = 0.999809214;
-            p1 = jauLdsun(p, e, em);
+            p1 = JSOFA.jauLdsun(p, e, em);
             this.vvd(p1[0], -0.7632762580731414, 1.0E-12, "jauLdsun", "1");
             this.vvd(p1[1], -0.6086337635262647, 1.0E-12, "jauLdsun", "2");
             this.vvd(p1[2], -0.21673554193223213, 1.0E-12, "jauLdsun", "3");
@@ -3767,7 +3773,7 @@ namespace org.jastronomy.jsofa {
             pob[0] = 0.9;
             pob[1] = 0.4;
             pob[2] = 0.1;
-            pco = jauPmpx(rc, dc, pr, pd, px, rv, pmt, pob);
+            pco = JSOFA.jauPmpx(rc, dc, pr, pd, px, rv, pmt, pob);
             this.vvd(pco[0], 0.23281376239603085, 1.0E-12, "jauPmpx", "1");
             this.vvd(pco[1], 0.6651097085397856, 1.0E-12, "jauPmpx", "2");
             this.vvd(pco[2], 0.709525776589636, 1.0E-12, "jauPmpx", "3");
@@ -3794,7 +3800,7 @@ namespace org.jastronomy.jsofa {
             ep1b = 48348.5625;
             ep2a = 2400000.5;
             ep2b = 51544.5;
-            const cc: org.jastronomy.jsofa.JSOFA.CatalogCoords = jauPmsafe(ra1, dec1, pmr1, pmd1, px1, rv1, ep1a, ep1b, ep2a, ep2b);
+            const cc: JSOFA.CatalogCoords = JSOFA.jauPmsafe(ra1, dec1, pmr1, pmd1, px1, rv1, ep1a, ep1b, ep2a, ep2b);
             this.vvd(cc.pos.alpha, 1.234087484501017, 1.0E-12, "jauPmsafe", "ra2");
             this.vvd(cc.pos.delta, 0.7888249982450468, 1.0E-12, "jauPmsafe", "dec2");
             this.vvd(cc.pm.alpha, 9.996457663586074E-6, 1.0E-12, "jauPmsafe", "pmr2");
@@ -3819,7 +3825,7 @@ namespace org.jastronomy.jsofa {
             yp = -5.0E-7;
             sp = 1.0E-8;
             theta = 5.0;
-            pv = jauPvtob(elong, phi, hm, xp, yp, sp, theta);
+            pv = JSOFA.jauPvtob(elong, phi, hm, xp, yp, sp, theta);
             this.vvd(pv[0][0], 4225081.367071159, 1.0E-5, "jauPvtob", "p(1)");
             this.vvd(pv[0][1], 3681943.215856198, 1.0E-5, "jauPvtob", "p(2)");
             this.vvd(pv[0][2], 3041149.3992412607, 1.0E-5, "jauPvtob", "p(3)");
@@ -3837,13 +3843,13 @@ namespace org.jastronomy.jsofa {
             tc = 10.0;
             rh = 0.9;
             wl = 0.4;
-            const ref: JSOFA.RefCos = jauRefco(phpa, tc, rh, wl);
+            const ref: JSOFA.RefCos = JSOFA.jauRefco(phpa, tc, rh, wl);
             this.vvd(ref.a, 2.264949956241415E-4, 1.0E-15, "jauRefco", "refa");
             this.vvd(ref.b, -2.598658261729344E-7, 1.0E-18, "jauRefco", "refb");
         }
 
         public t_d2dtf() {
-            const c: JSOFA.CalendarHMS = jauD2dtf("UTC", 5, 2400000.5, 49533.99999);
+            const c: JSOFA.CalendarHMS = JSOFA.jauD2dtf("UTC", 5, 2400000.5, 49533.99999);
             this.viv(c.iy, 1994, "jauD2dtf", "y");
             this.viv(c.im, 6, "jauD2dtf", "mo");
             this.viv(c.id, 30, "jauD2dtf", "d");
@@ -3858,46 +3864,46 @@ namespace org.jastronomy.jsofa {
          * t _ d t f 2 d
          * - - - - - - - -
          * 
-         * Test jauDtf2d function.
+         * Test JSOFA.jauDtf2d function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauDtf2d, vvd, viv
+         * Called:  JSOFA.jauDtf2d, vvd, viv
          * 
          * This revision:  2013 August 7
          * @throws JSOFAInternalError
          * @throws JSOFAIllegalParameter
          */
         public t_dtf2d() {
-            const jd: JSOFA.JulianDate = jauDtf2d("UTC", 1994, 6, 30, 23, 59, 60.13599);
+            const jd: JSOFA.JulianDate = JSOFA.jauDtf2d("UTC", 1994, 6, 30, 23, 59, 60.13599);
             this.vvd(jd.djm0 + jd.djm1, 2449534.49999, 1.0E-6, "jauDtf2d", "u");
         }
 
         /**
          * 
-         * Test jauG2icrs function.
+         * Test JSOFA.jauG2icrs function.
          * 
-         * Called:  jauG2icrs, vvd
+         * Called:  JSOFA.jauG2icrs, vvd
          * 
          * This revision:  2015 March 02
          */
         public t_g2icrs() {
             let dl: number;
             let db: number;
-            let co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate;
+            let co: JSOFA.SphericalCoordinate;
             dl = 5.585053606381854;
             db = -0.7853981633974483;
-            co = jauG2icrs(dl, db);
+            co = JSOFA.jauG2icrs(dl, db);
             this.vvd(co.alpha, 5.933807430222719, 1.0E-14, "jauG2icrs", "Ra");
             this.vvd(co.delta, -1.1784870613579945, 1.0E-14, "jauG2icrs", "Dec");
         }
 
         /**
          * 
-         * Test jauIcrs2g function.
+         * Test JSOFA.jauIcrs2g function.
          * 
-         * Called:  jauIcrs2g, vvd
+         * Called:  JSOFA.jauIcrs2g, vvd
          * 
          * This revision:  2015 March 02
          */
@@ -3906,19 +3912,19 @@ namespace org.jastronomy.jsofa {
             let dd: number;
             dr = 5.933807430222719;
             dd = -1.1784870613579945;
-            const co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauIcrs2g(dr, dd);
+            const co: JSOFA.SphericalCoordinate = JSOFA.jauIcrs2g(dr, dd);
             this.vvd(co.alpha, 5.585053606381854, 1.0E-14, "jauIcrs2g", "L");
             this.vvd(co.delta, -0.7853981633974483, 1.0E-14, "jauIcrs2g", "B");
         }
 
         /**
          * 
-         * Test jauEceq06 function.
+         * Test JSOFA.jauEceq06 function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauEceq06, vvd
+         * Called:  JSOFA.jauEceq06, vvd
          * 
          * This revision:  2016 March 12
          */
@@ -3931,19 +3937,19 @@ namespace org.jastronomy.jsofa {
             date2 = 0.401182685;
             dl = 5.1;
             db = -0.9;
-            const co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauEceq06(date1, date2, dl, db);
+            const co: JSOFA.SphericalCoordinate = JSOFA.jauEceq06(date1, date2, dl, db);
             this.vvd(co.alpha, 5.533459733613628, 1.0E-14, "jauEceq06", "dr");
             this.vvd(co.delta, -1.2465429325544806, 1.0E-14, "jauEceq06", "dd");
         }
 
         /**
          * 
-         * Test jauEcm06 function.
+         * Test JSOFA.jauEcm06 function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauEcm06, vvd
+         * Called:  JSOFA.jauEcm06, vvd
          * 
          * This revision:  2016 March 12
          */
@@ -3952,7 +3958,7 @@ namespace org.jastronomy.jsofa {
             let date2: number;
             date1 = 2456165.5;
             date2 = 0.401182685;
-            const rm: number[][] = jauEcm06(date1, date2);
+            const rm: number[][] = JSOFA.jauEcm06(date1, date2);
             this.vvd(rm[0][0], 0.9999952427708702, 1.0E-14, "jauEcm06", "rm11");
             this.vvd(rm[0][1], -0.0028290620576630426, 1.0E-14, "jauEcm06", "rm12");
             this.vvd(rm[0][2], -0.0012291637411000176, 1.0E-14, "jauEcm06", "rm13");
@@ -3966,12 +3972,12 @@ namespace org.jastronomy.jsofa {
 
         /**
          * 
-         * Test jauEqec06 function.
+         * Test JSOFA.jauEqec06 function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauEqec06, vvd
+         * Called:  JSOFA.jauEqec06, vvd
          * 
          * This revision:  2016 March 12
          */
@@ -3984,18 +3990,18 @@ namespace org.jastronomy.jsofa {
             date2 = 2440000.5;
             dr = 1.234;
             dd = 0.987;
-            const co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauEqec06(date1, date2, dr, dd);
+            const co: JSOFA.SphericalCoordinate = JSOFA.jauEqec06(date1, date2, dr, dd);
             this.vvd(co.alpha, 1.3425099189946545, 1.0E-14, "jauEqec06", "dl");
             this.vvd(co.delta, 0.5926215259704608, 1.0E-14, "jauEqec06", "db");
         }
 
         /**
-         * Test jauLteceq function.
+         * Test JSOFA.jauLteceq function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauLteceq, vvd
+         * Called:  JSOFA.jauLteceq, vvd
          * 
          * This revision:  2016 March 12
          */
@@ -4006,25 +4012,25 @@ namespace org.jastronomy.jsofa {
             epj = 2500.0;
             dl = 1.5;
             db = 0.6;
-            const co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauLteceq(epj, dl, db);
+            const co: JSOFA.SphericalCoordinate = JSOFA.jauLteceq(epj, dl, db);
             this.vvd(co.alpha, 1.2751560218619211, 1.0E-14, "jauLteceq", "dr");
             this.vvd(co.delta, 0.9966573543519205, 1.0E-14, "jauLteceq", "dd");
         }
 
         /**
-         * Test jauLtecm function.
+         * Test JSOFA.jauLtecm function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauLtecm, vvd
+         * Called:  JSOFA.jauLtecm, vvd
          * 
          * This revision:  2016 March 12
          */
         public t_ltecm() {
             let epj: number;
             epj = -3000.0;
-            const rm: number[][] = jauLtecm(epj);
+            const rm: number[][] = JSOFA.jauLtecm(epj);
             this.vvd(rm[0][0], 0.3564105644859789, 1.0E-14, "jauLtecm", "rm11");
             this.vvd(rm[0][1], 0.8530575738617683, 1.0E-14, "jauLtecm", "rm12");
             this.vvd(rm[0][2], 0.381135520779506, 1.0E-14, "jauLtecm", "rm13");
@@ -4038,12 +4044,12 @@ namespace org.jastronomy.jsofa {
 
         /**
          * 
-         * Test jauLteqec function.
+         * Test JSOFA.jauLteqec function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauLteqec, vvd
+         * Called:  JSOFA.jauLteqec, vvd
          * 
          * This revision:  2016 March 12
          */
@@ -4054,25 +4060,25 @@ namespace org.jastronomy.jsofa {
             epj = -1500.0;
             dr = 1.234;
             dd = 0.987;
-            const co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauLteqec(epj, dr, dd);
+            const co: JSOFA.SphericalCoordinate = JSOFA.jauLteqec(epj, dr, dd);
             this.vvd(co.alpha, 0.5039483649047115, 1.0E-14, "jauLteqec", "dl");
             this.vvd(co.delta, 0.5848534459726225, 1.0E-14, "jauLteqec", "db");
         }
 
         /**
-         * Test jauLtp function.
+         * Test JSOFA.jauLtp function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauLtp, vvd
+         * Called:  JSOFA.jauLtp, vvd
          * 
          * This revision:  2016 March 12
          */
         public t_ltp() {
             let epj: number;
             epj = 1666.666;
-            const rp: number[][] = jauLtp(epj);
+            const rp: number[][] = JSOFA.jauLtp(epj);
             this.vvd(rp[0][0], 0.9967044141159214, 1.0E-14, "jauLtp", "rp11");
             this.vvd(rp[0][1], 0.0743780189319321, 1.0E-14, "jauLtp", "rp12");
             this.vvd(rp[0][2], 0.03237624409345603, 1.0E-14, "jauLtp", "rp13");
@@ -4085,19 +4091,19 @@ namespace org.jastronomy.jsofa {
         }
 
         /**
-         * Test jauLtpb function.
+         * Test JSOFA.jauLtpb function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauLtpb, vvd
+         * Called:  JSOFA.jauLtpb, vvd
          * 
          * This revision:  2016 March 12
          */
         public t_ltpb() {
             let epj: number;
             epj = 1666.666;
-            const rpb: number[][] = jauLtpb(epj);
+            const rpb: number[][] = JSOFA.jauLtpb(epj);
             this.vvd(rpb[0][0], 0.9967044167723272, 1.0E-14, "jauLtpb", "rpb11");
             this.vvd(rpb[0][1], 0.0743779473120334, 1.0E-14, "jauLtpb", "rpb12");
             this.vvd(rpb[0][2], 0.03237632684841626, 1.0E-14, "jauLtpb", "rpb13");
@@ -4110,19 +4116,19 @@ namespace org.jastronomy.jsofa {
         }
 
         /**
-         * Test jauLtpecl function.
+         * Test JSOFA.jauLtpecl function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauLtpecl, vvd
+         * Called:  JSOFA.jauLtpecl, vvd
          * 
          * This revision:  2016 March 12
          */
         public t_ltpecl() {
             let epj: number;
             epj = -1500.0;
-            const vec: number[] = jauLtpecl(epj);
+            const vec: number[] = JSOFA.jauLtpecl(epj);
             this.vvd(vec[0], 4.7686256764770964E-4, 1.0E-14, "jauLtpecl", "vec1");
             this.vvd(vec[1], -0.40522595330918754, 1.0E-14, "jauLtpecl", "vec2");
             this.vvd(vec[2], 0.9142164401096448, 1.0E-14, "jauLtpecl", "vec3");
@@ -4130,19 +4136,19 @@ namespace org.jastronomy.jsofa {
 
         /**
          * 
-         * Test jauLtpequ function.
+         * Test JSOFA.jauLtpequ function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauLtpequ, vvd
+         * Called:  JSOFA.jauLtpequ, vvd
          * 
          * This revision:  2016 March 12
          */
         public t_ltpequ() {
             let epj: number;
             epj = -2500.0;
-            const veq: number[] = jauLtpequ(epj);
+            const veq: number[] = JSOFA.jauLtpequ(epj);
             this.vvd(veq[0], -0.35866525602373267, 1.0E-14, "jauLtpequ", "veq1");
             this.vvd(veq[1], -0.19969789107711286, 1.0E-14, "jauLtpequ", "veq2");
             this.vvd(veq[2], 0.911855244225082, 1.0E-14, "jauLtpequ", "veq3");
@@ -4169,7 +4175,7 @@ namespace org.jastronomy.jsofa {
             a = 5.5;
             e = 1.1;
             p = 0.7;
-            const ec: JSOFA.EquatorialCoordinate = jauAe2hd(a, e, p);
+            const ec: JSOFA.EquatorialCoordinate = JSOFA.jauAe2hd(a, e, p);
             this.vvd(ec.ha, 0.593329111550731, 1.0E-14, "jauAe2hd", "h");
             this.vvd(ec.dec, 0.9613934761647818, 1.0E-14, "jauAe2hd", "d");
         }
@@ -4181,7 +4187,7 @@ namespace org.jastronomy.jsofa {
             h = 1.1;
             d = 1.2;
             p = 0.3;
-            const hc: JSOFA.HorizonCoordinate = jauHd2ae(h, d, p);
+            const hc: JSOFA.HorizonCoordinate = JSOFA.jauHd2ae(h, d, p);
             this.vvd(hc.az, 5.916889243730066, 1.0E-13, "jauHd2ae", "a");
             this.vvd(hc.el, 0.44721863049904864, 1.0E-14, "jauHd2ae", "e");
         }
@@ -4191,12 +4197,12 @@ namespace org.jastronomy.jsofa {
          * t _ h d 2 p a
          * - - - - - - - -
          * 
-         * Test jauHd2pa function.
+         * Test JSOFA.jauHd2pa function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauHd2pa and vvd
+         * Called:  JSOFA.jauHd2pa and vvd
          * 
          * This revision:  2017 October 21
          */
@@ -4208,7 +4214,7 @@ namespace org.jastronomy.jsofa {
             h = 1.1;
             d = 1.2;
             p = 0.3;
-            q = jauHd2pa(h, d, p);
+            q = JSOFA.jauHd2pa(h, d, p);
             this.vvd(q, 1.9062274280019955, 1.0E-13, "jauHd2pa", "q");
         }
 
@@ -4217,12 +4223,12 @@ namespace org.jastronomy.jsofa {
          * t _ t p o r s
          * - - - - - - - -
          * 
-         * Test jauTpors function.
+         * Test JSOFA.jauTpors function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauTpors, vvd, viv
+         * Called:  JSOFA.jauTpors, vvd, viv
          * 
          * This revision:  2017 October 21
          */
@@ -4235,7 +4241,7 @@ namespace org.jastronomy.jsofa {
             eta = 0.07;
             ra = 1.3;
             dec = 1.5;
-            const tps: JSOFA.TangentPointSolution = jauTpors(xi, eta, ra, dec);
+            const tps: JSOFA.TangentPointSolution = JSOFA.jauTpors(xi, eta, ra, dec);
             this.vvd(tps.sol1.alpha, 1.7366215777832088, 1.0E-13, "jauTpors", "az1");
             this.vvd(tps.sol1.delta, 1.4367365618440904, 1.0E-13, "jauTpors", "bz1");
             this.vvd(tps.sol2.alpha, 4.004971075806584, 1.0E-13, "jauTpors", "az2");
@@ -4253,8 +4259,8 @@ namespace org.jastronomy.jsofa {
             eta = 0.07;
             ra = 1.3;
             dec = 1.5;
-            v = jauS2c(ra, dec);
-            const tpc: JSOFA.TangentPointDirectionCosines = jauTporv(xi, eta, v);
+            v = JSOFA.jauS2c(ra, dec);
+            const tpc: JSOFA.TangentPointDirectionCosines = JSOFA.jauTporv(xi, eta, v);
             this.vvd(tpc.dc1[0], -0.022062528223668887, 1.0E-15, "jauTporv", "x1");
             this.vvd(tpc.dc1[1], 0.1318251060359645, 1.0E-14, "jauTporv", "y1");
             this.vvd(tpc.dc1[2], 0.9910274397144544, 1.0E-14, "jauTporv", "z1");
@@ -4269,12 +4275,12 @@ namespace org.jastronomy.jsofa {
          * t _ t p s t s
          * - - - - - - - -
          * 
-         * Test jauTpsts function.
+         * Test JSOFA.jauTpsts function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauTpsts, vvd
+         * Called:  JSOFA.jauTpsts, vvd
          * 
          * This revision:  2017 October 21
          */
@@ -4287,7 +4293,7 @@ namespace org.jastronomy.jsofa {
             eta = 0.07;
             raz = 2.3;
             decz = 1.5;
-            const sc: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauTpsts(xi, eta, raz, decz);
+            const sc: JSOFA.SphericalCoordinate = JSOFA.jauTpsts(xi, eta, raz, decz);
             this.vvd(sc.alpha, 0.759612716735963, 1.0E-14, "jauTpsts", "ra");
             this.vvd(sc.delta, 1.5408646451092631, 1.0E-13, "jauTpsts", "dec");
         }
@@ -4297,12 +4303,12 @@ namespace org.jastronomy.jsofa {
          * t _ t p s t v
          * - - - - - - - -
          * 
-         * Test jauTpstv function.
+         * Test JSOFA.jauTpstv function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauTpstv, jauS2c, vvd
+         * Called:  JSOFA.jauTpstv, JSOFA.jauS2c, vvd
          * 
          * This revision:  2017 October 21
          */
@@ -4317,8 +4323,8 @@ namespace org.jastronomy.jsofa {
             eta = 0.07;
             raz = 2.3;
             decz = 1.5;
-            vz = jauS2c(raz, decz);
-            v = jauTpstv(xi, eta, vz);
+            vz = JSOFA.jauS2c(raz, decz);
+            v = JSOFA.jauTpstv(xi, eta, vz);
             this.vvd(v[0], 0.021700304549073766, 1.0E-15, "jauTpstv", "x");
             this.vvd(v[1], 0.020609095905353675, 1.0E-15, "jauTpstv", "y");
             this.vvd(v[2], 0.9995520806583523, 1.0E-14, "jauTpstv", "z");
@@ -4333,7 +4339,7 @@ namespace org.jastronomy.jsofa {
             dec = 1.55;
             raz = 2.3;
             decz = 1.5;
-            const tpc: JSOFA.TangentPlaneCoordinate = jauTpxes(ra, dec, raz, decz);
+            const tpc: JSOFA.TangentPlaneCoordinate = JSOFA.jauTpxes(ra, dec, raz, decz);
             this.vvd(tpc.xi, -0.017532009832369806, 1.0E-15, "jauTpxes", "xi");
             this.vvd(tpc.eta, 0.05962940005778713, 1.0E-15, "jauTpxes", "eta");
             this.viv(tpc.status, 0, "jauTpxes", "j");
@@ -4344,12 +4350,12 @@ namespace org.jastronomy.jsofa {
          * t _ t p x e v
          * - - - - - - - -
          * 
-         * Test jauTpxev function.
+         * Test JSOFA.jauTpxev function.
          * 
          * Returned:
          * status    int         FALSE = success, TRUE = fail
          * 
-         * Called:  jauTpxev, jauS2c, vvd
+         * Called:  JSOFA.jauTpxev, JSOFA.jauS2c, vvd
          * 
          * This revision:  2017 October 21
          */
@@ -4364,9 +4370,9 @@ namespace org.jastronomy.jsofa {
             dec = 1.55;
             raz = 2.3;
             decz = 1.5;
-            v = jauS2c(ra, dec);
-            vz = jauS2c(raz, decz);
-            const tpc: JSOFA.TangentPlaneCoordinate = jauTpxev(v, vz);
+            v = JSOFA.jauS2c(ra, dec);
+            vz = JSOFA.jauS2c(raz, decz);
+            const tpc: JSOFA.TangentPlaneCoordinate = JSOFA.jauTpxev(v, vz);
             this.vvd(tpc.xi, -0.017532009832369806, 1.0E-15, "jauTpxev", "xi");
             this.vvd(tpc.eta, 0.05962940005778713, 1.0E-15, "jauTpxev", "eta");
             this.viv(tpc.status, 0, "jauTpxev", "j");
@@ -4399,7 +4405,7 @@ namespace org.jastronomy.jsofa {
             dd1950 = 5.659714913272723E-6;
             p1950 = 0.134;
             v1950 = 8.7;
-            const c: org.jastronomy.jsofa.JSOFA.CatalogCoords = jauFk425(r1950, d1950, dr1950, dd1950, p1950, v1950);
+            const c: JSOFA.CatalogCoords = JSOFA.jauFk425(r1950, d1950, dr1950, dd1950, p1950, v1950);
             this.vvd(c.pos.alpha, 0.08757989933556445, 1.0E-14, "iauFk425", "r2000");
             this.vvd(c.pos.delta, -1.132279113042092, 1.0E-12, "iauFk425", "d2000");
             this.vvd(c.pm.alpha, 1.953670614474396E-5, 1.0E-17, "iauFk425", "dr2000");
@@ -4429,7 +4435,7 @@ namespace org.jastronomy.jsofa {
             r1950 = 0.01602284975382961;
             d1950 = -0.1164347929099906;
             bepoch = 1954.6776176252567;
-            const r: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauFk45z(r1950, d1950, bepoch);
+            const r: JSOFA.SphericalCoordinate = JSOFA.jauFk45z(r1950, d1950, bepoch);
             this.vvd(r.alpha, 0.027192959116068623, 1.0E-15, "iauFk45z", "r2000");
             this.vvd(r.delta, -0.1115766001565927, 1.0E-13, "iauFk45z", "d2000");
         }
@@ -4461,7 +4467,7 @@ namespace org.jastronomy.jsofa {
             dd2000 = 3.5415639405051605E-6;
             p2000 = 0.1559;
             v2000 = 86.87;
-            const r: org.jastronomy.jsofa.JSOFA.CatalogCoords = jauFk524(r2000, d2000, dr2000, dd2000, p2000, v2000);
+            const r: JSOFA.CatalogCoords = JSOFA.jauFk524(r2000, d2000, dr2000, dd2000, p2000, v2000);
             this.vvd(r.pos.alpha, 0.8636359659799604, 1.0E-13, "iauFk524", "r1950");
             this.vvd(r.pos.delta, -0.7550281733160843, 1.0E-13, "iauFk524", "d1950");
             this.vvd(r.pm.alpha, 2.0236281927471725E-5, 1.0E-17, "iauFk524", "dr1950");
@@ -4491,7 +4497,7 @@ namespace org.jastronomy.jsofa {
             r2000 = 0.02719026625066316;
             d2000 = -0.11158151707387548;
             bepoch = 1954.6773081603164;
-            const r: org.jastronomy.jsofa.JSOFA.CatalogCoords = jauFk54z(r2000, d2000, bepoch);
+            const r: JSOFA.CatalogCoords = JSOFA.jauFk54z(r2000, d2000, bepoch);
             this.vvd(r.pos.alpha, 0.016020155883900655, 1.0E-14, "iauFk54z", "r1950");
             this.vvd(r.pos.delta, -0.11643971011107654, 1.0E-13, "iauFk54z", "d1950");
             this.vvd(r.pm.alpha, -1.1757126484710908E-8, 1.0E-20, "iauFk54z", "dr1950");
@@ -4531,7 +4537,7 @@ namespace org.jastronomy.jsofa {
             rv = 55.0;
             date1 = 2456165.5;
             date2 = 0.401182685;
-            const co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauAtcc13(rc, dc, pr, pd, px, rv, date1, date2);
+            const co: JSOFA.SphericalCoordinate = JSOFA.jauAtcc13(rc, dc, pr, pd, px, rv, date1, date2);
             this.vvd(co.alpha, 2.7101265045313725, 1.0E-12, "iauAtcc13", "ra");
             this.vvd(co.delta, 0.17406325376283502, 1.0E-12, "iauAtcc13", "da");
         }
@@ -4563,14 +4569,14 @@ namespace org.jastronomy.jsofa {
             const astrom: JSOFA.Astrom = new JSOFA.Astrom();
             date1 = 2456165.5;
             date2 = 0.401182685;
-            eo = jauApci13(date1, date2, astrom);
+            eo = JSOFA.jauApci13(date1, date2, astrom);
             rc = 2.71;
             dc = 0.174;
             pr = 1.0E-5;
             pd = 5.0E-6;
             px = 0.1;
             rv = 55.0;
-            const co: org.jastronomy.jsofa.JSOFA.SphericalCoordinate = jauAtccq(rc, dc, pr, pd, px, rv, astrom);
+            const co: JSOFA.SphericalCoordinate = JSOFA.jauAtccq(rc, dc, pr, pd, px, rv, astrom);
             this.vvd(co.alpha, 2.7101265045313725, 1.0E-12, "iauAtccq", "ra");
             this.vvd(co.delta, 0.17406325376283502, 1.0E-12, "iauAtccq", "da");
         }
@@ -4590,7 +4596,7 @@ namespace org.jastronomy.jsofa {
          * This revision:  2021 April 12
          */
         public t_moon98() {
-            const pv: number[][] = jauMoon98(2400000.5, 43999.9);
+            const pv: number[][] = JSOFA.jauMoon98(2400000.5, 43999.9);
             this.vvd(pv[0][0], -0.002601295959971044, 1.0E-11, "iauMoon98", "x 4");
             this.vvd(pv[0][1], 6.139750944302743E-4, 1.0E-11, "iauMoon98", "y 4");
             this.vvd(pv[0][2], 2.640794528229829E-4, 1.0E-11, "iauMoon98", "z 4");
@@ -4599,7 +4605,7 @@ namespace org.jastronomy.jsofa {
             this.vvd(pv[1][2], -1.716132214378462E-4, 1.0E-11, "iauMoon98", "zd 4");
         }
     }
-    JSOFATest["__class"] = "org.jastronomy.jsofa.JSOFATest";
+    JSOFATest["__class"] = "JSOFATest";
 
 }
 

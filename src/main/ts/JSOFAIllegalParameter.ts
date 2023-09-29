@@ -1,5 +1,5 @@
 /* Generated from Java with JSweet 3.1.0 - http://www.jsweet.org */
-namespace org.jastronomy.jsofa {
+import { JSOFAException } from "./JSOFAException";
     /**
      * Various forms of illegal parameters are reported with this execption.
      * .
@@ -10,7 +10,7 @@ namespace org.jastronomy.jsofa {
      * @class
      * @extends org.jastronomy.jsofa.JSOFAException
      */
-    export class JSOFAIllegalParameter extends org.jastronomy.jsofa.JSOFAException {
+    export class JSOFAIllegalParameter extends JSOFAException {
         /**
          * Comment for <code>serialVersionUID</code>
          */
@@ -23,5 +23,5 @@ namespace org.jastronomy.jsofa {
     }
     JSOFAIllegalParameter["__class"] = "org.jastronomy.jsofa.JSOFAIllegalParameter";
 
-}
+
 

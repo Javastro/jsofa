@@ -1,5 +1,4 @@
 /* Generated from Java with JSweet 3.1.0 - http://www.jsweet.org */
-namespace org.jastronomy.jsofa {
     /**
      * Base class for JSOFA exceptions.
      * .
@@ -34,5 +33,5 @@ namespace org.jastronomy.jsofa {
     }
     JSOFAException["__class"] = "org.jastronomy.jsofa.JSOFAException";
 
-}
+
 

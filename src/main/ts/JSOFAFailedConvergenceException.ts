@@ -1,13 +1,14 @@
 /* Generated from Java with JSweet 3.1.0 - http://www.jsweet.org */
-namespace org.jastronomy.jsofa {
+ 
+ import { JSOFAException } from "./JSOFAException";
     /**
      * Exception reporting some form of convergence failure in an algorithm.
      * @param {string} message
      * @param {number} status
      * @class
-     * @extends org.jastronomy.jsofa.JSOFAException
+     * @extends JSOFAException
      */
-    export class JSOFAFailedConvergenceException extends org.jastronomy.jsofa.JSOFAException {
+    export class JSOFAFailedConvergenceException extends JSOFAException {
         /**
          * Comment for <code>serialVersionUID</code>
          */
@@ -20,5 +21,5 @@ namespace org.jastronomy.jsofa {
     }
     JSOFAFailedConvergenceException["__class"] = "org.jastronomy.jsofa.JSOFAFailedConvergenceException";
 
-}
+
 

@@ -15193,7 +15193,8 @@ public static class SphericalCoordinateEO {
     /* Maximum number of iterations allowed to solve Kepler's equation */
        final int KMAX = 10;
 
-       int jstat, i, k;
+       int k;
+       int jstat;
        double t, da, dl, de, dp, di, dom, dmu, arga, argl, am,
               ae, dae, ae2, at, r, v, si2, xq, xp, tl, xsw,
               xcw, xm2, xf, ci2, xms, xmc, xpxq2, x, y, z;
@@ -28439,7 +28440,7 @@ public static class SphericalCoordinateEO {
         double c1, c2, sphi, cphi, ce, xaeo, yaeo, zaeo, v[] = new double[3],
         xmhdo, ymhdo, zmhdo, az, sz, zdo, refa, refb, tz, dref,
         zdt, xaet, yaet, zaet, xmhda, ymhda, zmhda,
-        f, xhd, yhd, zhd, sx, cx, sy, cy, hma;
+        f, xhd, yhd, zhd, sx, cx, sy, cy;
 
 
         /* Coordinate type. */

@@ -1,5 +1,5 @@
-/* Generated from Java with JSweet 3.1.0 - http://www.jsweet.org */
-namespace org.jastronomy.jsofa {
+ import { JSOFAIllegalParameter } from "./JSOFAIllegalParameter";
+ import { JSOFAInternalError } from "./JSOFAInternalError";
     /**
      * Java implementation of Standards of Fundamental Astronomy. <a href="http://www.iausofa.org/">http://www.iausofa.org/</a>
      * 
@@ -403,7 +403,7 @@ namespace org.jastronomy.jsofa {
          * <p>Status:  canonical model.
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.FrameBias} dpsibi,depsbi   double    <u>returned</u> longitude and obliquity corrections
+         * @return {JSOFA.FrameBias} dpsibi,depsbi   double    <u>returned</u> longitude and obliquity corrections
          * dra             double    <u>returned</u> the ICRS RA of the J2000.0 mean equinox
          * 
          * <p>Notes:
@@ -667,7 +667,7 @@ namespace org.jastronomy.jsofa {
          * @param {double[][]} rbpn       double[3][3]   celestial-to-true matrix (Note 1)
          * 
          * <!-- Returned: -->
-         * @return     {org.jastronomy.jsofa.JSOFA.CelestialIntermediatePole} <u>returned</u> Celestial Intermediate Pole (Note 2)
+         * @return     {JSOFA.CelestialIntermediatePole} <u>returned</u> Celestial Intermediate Pole (Note 2)
          * 
          * <p>Notes:
          * <ol>
@@ -1187,7 +1187,7 @@ namespace org.jastronomy.jsofa {
          * @param {double[]} p       double[3]     p-vector
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} theta   double         <u>returned</u> longitude angle (radians)
+         * @return {JSOFA.SphericalCoordinate} theta   double         <u>returned</u> longitude angle (radians)
          * phi     double         <u>returned</u> latitude angle (radians)
          * 
          * <p>Notes:
@@ -1855,7 +1855,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} id   int     day in Gregorian calendar (Note 1)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.JulianDate} d MJD zero-point: always 2400000.5
+         * @return {JSOFA.JulianDate} d MJD zero-point: always 2400000.5
          * <u>returned</u> Modified Julian Date for 0 hrs
          * 
          * <!-- Returned (function value): -->
@@ -1901,8 +1901,8 @@ namespace org.jastronomy.jsofa {
             let djm: number;
             const IYMIN: number = -4799;
             const mtab: number[] = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
-            if (iy < IYMIN)throw new org.jastronomy.jsofa.JSOFAIllegalParameter("bad year", -1);
-            if (im < 1 || im > 12)throw new org.jastronomy.jsofa.JSOFAIllegalParameter("bad month", -2);
+            if (iy < IYMIN)throw new JSOFAIllegalParameter("bad year", -1);
+            if (im < 1 || im > 12)throw new JSOFAIllegalParameter("bad month", -2);
             ly = ((im === 2) && (iy % 4 === 0) && (iy % 100 !== 0 || (iy % 400 === 0))) ? 1 : 0;
             if ((id < 1) || (id > (mtab[im - 1] + ly))){
             }
@@ -2120,7 +2120,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} d2     double  time as a 2-part Julian Date (Notes 3,4)
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.CalendarHMS} the date as a Gregorian calendar
+         * @return {JSOFA.CalendarHMS} the date as a Gregorian calendar
          * iy,im,id  int     year, month, day in Gregorian calendar (Note 5)
          * ihmsf     int[4]  hours, minutes, seconds, fraction (Note 1)
          * 
@@ -2278,7 +2278,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} sec       double  seconds
          * 
          * <!-- Returned: -->
-         * @return     {org.jastronomy.jsofa.JSOFA.JulianDate} 2-part Julian Date (Notes 3,4)
+         * @return     {JSOFA.JulianDate} 2-part Julian Date (Notes 3,4)
          * 
          * @throws JSOFAIllegalParameter bad year
          * 
@@ -2389,14 +2389,14 @@ namespace org.jastronomy.jsofa {
             } else {
                 js = -4;
             }
-            if (js < 0)throw new org.jastronomy.jsofa.JSOFAInternalError("problem with time", js);
+            if (js < 0)throw new JSOFAInternalError("problem with time", js);
             time = (60.0 * (<number>(60 * ihr + imn)) + sec) / day;
             return new JSOFA.JulianDate(dj, time);
         }
 
         /**
          * the date of the last leap second. Note that this is not a SOFA standard fumction.
-         * @return {org.jastronomy.jsofa.JSOFA.JulianDate} the {@link JulianDate} of the last leap second.
+         * @return {JSOFA.JulianDate} the {@link JulianDate} of the last leap second.
          */
         public static lastLeapSecondDate(): JSOFA.JulianDate {
             const lastentry: JSOFA.LeapInfo = JSOFA.leapSeconds_$LI$()[JSOFA.leapSeconds_$LI$().length - 1];
@@ -2538,10 +2538,10 @@ namespace org.jastronomy.jsofa {
             let da: number;
             let djm: number;
             let deltat: number = da = 0.0;
-            if (fd < 0.0 || fd > 1.0)throw new org.jastronomy.jsofa.JSOFAIllegalParameter("bad day fraction", -4);
+            if (fd < 0.0 || fd > 1.0)throw new JSOFAIllegalParameter("bad day fraction", -4);
             const jd: JSOFA.JulianDate = JSOFA.jauCal2jd(iy, im, id);
             djm = jd.djm1;
-            if (iy < JSOFA.leapSeconds_$LI$()[0].iyear)throw new org.jastronomy.jsofa.JSOFAInternalError("year before UTC start", 1);
+            if (iy < JSOFA.leapSeconds_$LI$()[0].iyear)throw new JSOFAInternalError("year before UTC start", 1);
             if (iy > JSOFA.IYV + 5){
             }
             m = 12 * iy + im;
@@ -3224,7 +3224,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} n        int       ellipsoid identifier (Note 1)
          * 
          * <!-- Returned: -->
-         * @return  {org.jastronomy.jsofa.JSOFA.ReferenceEllipsoid} a        double     <u>returned</u> equatorial radius (meters, Note 2)
+         * @return  {JSOFA.ReferenceEllipsoid} a        double     <u>returned</u> equatorial radius (meters, Note 2)
          * f        double     <u>returned</u> flattening (Note 2)
          * 
          * <!-- Returned (function value): -->
@@ -3293,7 +3293,7 @@ namespace org.jastronomy.jsofa {
             default:
                 a = 0.0;
                 f = 0.0;
-                throw new org.jastronomy.jsofa.JSOFAIllegalParameter("illegal ellipsoid identifier", -1);
+                throw new JSOFAIllegalParameter("illegal ellipsoid identifier", -1);
             }
             return new JSOFA.ReferenceEllipsoid(a, f);
         }
@@ -3481,7 +3481,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} epb       double     Besselian Epoch (e.g. 1957.3D0)
          * 
          * <!-- Returned: -->
-         * @return  {org.jastronomy.jsofa.JSOFA.JulianDate} MJD zero-point: always 2400000.5  Modified Julian Date
+         * @return  {JSOFA.JulianDate} MJD zero-point: always 2400000.5  Modified Julian Date
          * 
          * Note:
          * 
@@ -3557,7 +3557,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} epj       double     Julian Epoch (e.g. 1996.8D0)
          * 
          * <!-- Returned: -->
-         * @return  {org.jastronomy.jsofa.JSOFA.JulianDate} MJD zero-point: always 2400000.5  Modified Julian Date
+         * @return  {JSOFA.JulianDate} MJD zero-point: always 2400000.5  Modified Julian Date
          * 
          * Note:
          * 
@@ -3696,15 +3696,15 @@ namespace org.jastronomy.jsofa {
             const ce0: number[][] = [JSOFA.Ephemeris.e0x_$LI$(), JSOFA.Ephemeris.e0y_$LI$(), JSOFA.Ephemeris.e0z_$LI$()];
             const ce1: number[][] = [JSOFA.Ephemeris.e1x_$LI$(), JSOFA.Ephemeris.e1y_$LI$(), JSOFA.Ephemeris.e1z_$LI$()];
             const ce2: number[][] = [JSOFA.Ephemeris.e2x_$LI$(), JSOFA.Ephemeris.e2y_$LI$(), JSOFA.Ephemeris.e2z_$LI$()];
-            const cs0: number[][] = [org.jastronomy.jsofa.JSOFA.SSB.s0x_$LI$(), org.jastronomy.jsofa.JSOFA.SSB.s0y_$LI$(), org.jastronomy.jsofa.JSOFA.SSB.s0z_$LI$()];
-            const cs1: number[][] = [org.jastronomy.jsofa.JSOFA.SSB.s1x_$LI$(), org.jastronomy.jsofa.JSOFA.SSB.s1y_$LI$(), org.jastronomy.jsofa.JSOFA.SSB.s1z_$LI$()];
-            const cs2: number[][] = [org.jastronomy.jsofa.JSOFA.SSB.s2x_$LI$(), org.jastronomy.jsofa.JSOFA.SSB.s2y_$LI$(), org.jastronomy.jsofa.JSOFA.SSB.s2z_$LI$()];
+            const cs0: number[][] = [JSOFA.SSB.s0x_$LI$(), JSOFA.SSB.s0y_$LI$(), JSOFA.SSB.s0z_$LI$()];
+            const cs1: number[][] = [JSOFA.SSB.s1x_$LI$(), JSOFA.SSB.s1y_$LI$(), JSOFA.SSB.s1z_$LI$()];
+            const cs2: number[][] = [JSOFA.SSB.s2x_$LI$(), JSOFA.SSB.s2y_$LI$(), JSOFA.SSB.s2z_$LI$()];
             const ne0: number[] = [(JSOFA.Ephemeris.e0x_$LI$().length / 3|0), (JSOFA.Ephemeris.e0y_$LI$().length / 3|0), (JSOFA.Ephemeris.e0z_$LI$().length / 3|0)];
             const ne1: number[] = [(JSOFA.Ephemeris.e1x_$LI$().length / 3|0), (JSOFA.Ephemeris.e1y_$LI$().length / 3|0), (JSOFA.Ephemeris.e1z_$LI$().length / 3|0)];
             const ne2: number[] = [(JSOFA.Ephemeris.e2x_$LI$().length / 3|0), (JSOFA.Ephemeris.e2y_$LI$().length / 3|0), (JSOFA.Ephemeris.e2z_$LI$().length / 3|0)];
-            const ns0: number[] = [(org.jastronomy.jsofa.JSOFA.SSB.s0x_$LI$().length / 3|0), (org.jastronomy.jsofa.JSOFA.SSB.s0y_$LI$().length / 3|0), (org.jastronomy.jsofa.JSOFA.SSB.s0z_$LI$().length / 3|0)];
-            const ns1: number[] = [(org.jastronomy.jsofa.JSOFA.SSB.s1x_$LI$().length / 3|0), (org.jastronomy.jsofa.JSOFA.SSB.s1y_$LI$().length / 3|0), (org.jastronomy.jsofa.JSOFA.SSB.s1z_$LI$().length / 3|0)];
-            const ns2: number[] = [(org.jastronomy.jsofa.JSOFA.SSB.s2x_$LI$().length / 3|0), (org.jastronomy.jsofa.JSOFA.SSB.s2y_$LI$().length / 3|0), (org.jastronomy.jsofa.JSOFA.SSB.s2z_$LI$().length / 3|0)];
+            const ns0: number[] = [(JSOFA.SSB.s0x_$LI$().length / 3|0), (JSOFA.SSB.s0y_$LI$().length / 3|0), (JSOFA.SSB.s0z_$LI$().length / 3|0)];
+            const ns1: number[] = [(JSOFA.SSB.s1x_$LI$().length / 3|0), (JSOFA.SSB.s1y_$LI$().length / 3|0), (JSOFA.SSB.s1z_$LI$().length / 3|0)];
+            const ns2: number[] = [(JSOFA.SSB.s2x_$LI$().length / 3|0), (JSOFA.SSB.s2y_$LI$().length / 3|0), (JSOFA.SSB.s2z_$LI$().length / 3|0)];
             let nterms: number;
             let jstat: number;
             let i: number;
@@ -4635,7 +4635,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} rv5     double    radial velocity (km/s, positive = receding)
          * 
          * Returned (all Hipparcos, epoch J2000.0):
-         * @return {org.jastronomy.jsofa.JSOFA.CatalogCoords} catalogue coordinates
+         * @return {JSOFA.CatalogCoords} catalogue coordinates
          * 
          * <p>Notes:
          * <ol>
@@ -4778,7 +4778,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2 double    TDB date (Notes 1,2)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} rh            double     <u>returned</u> Hipparcos RA (radians)
+         * @return {JSOFA.SphericalCoordinate} rh            double     <u>returned</u> Hipparcos RA (radians)
          * dh            double     <u>returned</u> Hipparcos Dec (radians)
          * 
          * <p>Notes:
@@ -4959,7 +4959,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} eps       double     F-W angle epsilon (radians)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.CelestialIntermediatePole} CIP unit vector X,Y
+         * @return {JSOFA.CelestialIntermediatePole} CIP unit vector X,Y
          * 
          * <p>Notes:
          * <ol>
@@ -5022,7 +5022,7 @@ namespace org.jastronomy.jsofa {
          * @param {double[]} xyz      double[3]   geocentric vector (Note 2)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.GeodeticCoord} elong    double       <u>returned</u> longitude (radians, east +ve)
+         * @return {JSOFA.GeodeticCoord} elong    double       <u>returned</u> longitude (radians, east +ve)
          * phi      double       <u>returned</u> latitude (geodetic, radians, Note 3)
          * height   double       <u>returned</u> height above ellipsoid (geodetic, Notes 2,3)
          * 
@@ -5085,7 +5085,7 @@ namespace org.jastronomy.jsofa {
          * @param {double[]} xyz      double[3]   geocentric vector (Note 4)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.GeodeticCoord} GeodeticCoord   logitude  (radians, east +ve) latitude (geodetic, radians)  height above ellipsoid (geodetic, Note 4)
+         * @return {JSOFA.GeodeticCoord} GeodeticCoord   logitude  (radians, east +ve) latitude (geodetic, radians)  height above ellipsoid (geodetic, Note 4)
          * 
          * @throws JSOFAIllegalParameter int       status:
          * 
@@ -5165,13 +5165,13 @@ namespace org.jastronomy.jsofa {
             let cc2: number;
             let phi: number;
             let height: number;
-            if (f < 0.0 || f >= 1.0)throw new org.jastronomy.jsofa.JSOFAIllegalParameter("bad f", -1);
-            if (a <= 0.0)throw new org.jastronomy.jsofa.JSOFAIllegalParameter("bad a", -2);
+            if (f < 0.0 || f >= 1.0)throw new JSOFAIllegalParameter("bad f", -1);
+            if (a <= 0.0)throw new JSOFAIllegalParameter("bad a", -2);
             aeps2 = a * a * 1.0E-32;
             e2 = (2.0 - f) * f;
             e4t = e2 * e2 * 1.5;
             ec2 = 1.0 - e2;
-            if (ec2 <= 0.0)throw new org.jastronomy.jsofa.JSOFAIllegalParameter("bad f", -1);
+            if (ec2 <= 0.0)throw new JSOFAIllegalParameter("bad f", -1);
             ec = Math.sqrt(ec2);
             b = a * ec;
             x = xyz[0];
@@ -5349,7 +5349,7 @@ namespace org.jastronomy.jsofa {
             w = 1.0 - f;
             w = w * w;
             d = cp * cp + w * sp * sp;
-            if (d <= 0.0)throw new org.jastronomy.jsofa.JSOFAInternalError("illegal combination of arguments d< 0", -1);
+            if (d <= 0.0)throw new JSOFAInternalError("illegal combination of arguments d< 0", -1);
             ac = a / Math.sqrt(d);
             as = w * ac;
             r = (ac + height) * cp;
@@ -6051,7 +6051,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} pxh     double    parallax (arcsec)
          * @param {number} rvh     double    radial velocity (km/s, positive = receding)
          * 
-         * @return {org.jastronomy.jsofa.JSOFA.CatalogCoords} cc CatalogCoords all FK5, equinox J2000.0, epoch J2000.0:
+         * @return {JSOFA.CatalogCoords} cc CatalogCoords all FK5, equinox J2000.0, epoch J2000.0:
          * 
          * <p>Notes:
          * <ol>
@@ -6130,7 +6130,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2 double     TDB date (Note 1)
          * 
          * FIXME original did not return the parallax and radial velocity of the CatalogCoords type.
-         * @return {org.jastronomy.jsofa.JSOFA.CatalogCoords} cc CatalogCoords (all FK5, equinox J2000.0, date date1+date2)
+         * @return {JSOFA.CatalogCoords} cc CatalogCoords (all FK5, equinox J2000.0, date date1+date2)
          * RA (radians),  Dec (radians), FK5 RA proper motion (rad/year, Note 4), Dec proper motion (rad/year, Note 4)
          * 
          * <p>Notes:
@@ -6250,9 +6250,9 @@ namespace org.jastronomy.jsofa {
          */
         public static jauIr(r?: any) {
             if (((r != null && r instanceof <any>Array && (r.length == 0 || r[0] == null ||r[0] instanceof Array)) || r === null)) {
-                return <any>org.jastronomy.jsofa.JSOFA.jauIr$double_A_A(r);
+                return <any>JSOFA.jauIr$double_A_A(r);
             } else if (r === undefined) {
-                return <any>org.jastronomy.jsofa.JSOFA.jauIr$();
+                return <any>JSOFA.jauIr$();
             } else throw new Error('invalid overload');
         }
 
@@ -6281,7 +6281,7 @@ namespace org.jastronomy.jsofa {
          * fd        double   fraction of day
          * 
          * <!-- Returned (function value): -->
-         * @return {org.jastronomy.jsofa.JSOFA.Calendar} Calendar the date represented in Java.
+         * @return {JSOFA.Calendar} Calendar the date represented in Java.
          * 
          * @throws JSOFAIllegalParameter unacceptable date (Note 3)
          * <p>Notes:
@@ -6343,7 +6343,7 @@ namespace org.jastronomy.jsofa {
             let t: number;
             let f: number;
             dj = dj1 + dj2;
-            if (dj < djmin || dj > djmax)throw new org.jastronomy.jsofa.JSOFAIllegalParameter("input julian date out of range", -1);
+            if (dj < djmin || dj > djmax)throw new JSOFAIllegalParameter("input julian date out of range", -1);
             d = JSOFA.dnint(dj1);
             f1 = dj1 - d;
             jd = (n => n<0?Math.ceil(n):Math.floor(n))(<number>d);
@@ -6795,7 +6795,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2 double TT as a 2-part Julian Date (Note 1)
          * 
          * <!-- Returned: -->
-         * @return    {org.jastronomy.jsofa.JSOFA.NutationTerms} <u>returned</u> nutation, luni-solar + planetary (Note 2)
+         * @return    {JSOFA.NutationTerms} <u>returned</u> nutation, luni-solar + planetary (Note 2)
          * 
          * <p>Notes:
          * <ol>
@@ -7029,7 +7029,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2 double TT as a 2-part Julian Date (Note 1)
          * 
          * <!-- Returned: -->
-         * @return  {org.jastronomy.jsofa.JSOFA.NutationTerms} nutation, luni-solar + planetary (Note 2)
+         * @return  {JSOFA.NutationTerms} nutation, luni-solar + planetary (Note 2)
          * 
          * <p>Notes:
          * <ol>
@@ -7193,7 +7193,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2 double TT as a 2-part Julian Date (Note 1)
          * 
          * <!-- Returned: -->
-         * @return  {org.jastronomy.jsofa.JSOFA.NutationTerms} nutation, luni-solar + planetary (Note 2)
+         * @return  {JSOFA.NutationTerms} nutation, luni-solar + planetary (Note 2)
          * 
          * <p>Status:  canonical model.
          * 
@@ -7286,7 +7286,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2 double TT as a 2-part Julian Date (Note 1)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.NutationTerms} dpsi           double      <u>returned</u> nutation in longitude (radians)
+         * @return {JSOFA.NutationTerms} dpsi           double      <u>returned</u> nutation in longitude (radians)
          * deps           double      <u>returned</u> nutation in obliquity (radians)
          * 
          * <p>Notes:
@@ -7554,7 +7554,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date1 double TT as a 2-part Julian Date (Note 1)
          * @param {number} date2 double TT as a 2-part Julian Date (Note 1)
          * 
-         * @return {org.jastronomy.jsofa.JSOFA.PrecessionAngles} (see Note 2):
+         * @return {JSOFA.PrecessionAngles} (see Note 2):
          * eps0          double   epsilon_0
          * psia          double   psi_A
          * oma           double   omega_A
@@ -7750,7 +7750,7 @@ namespace org.jastronomy.jsofa {
          * @param {double[]} p         double[3]     p-vector
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.SphericalPosition} theta     double         <u>returned</u> longitude angle (radians)
+         * @return {JSOFA.SphericalPosition} theta     double         <u>returned</u> longitude angle (radians)
          * phi       double         <u>returned</u> latitude angle (radians)
          * r         double         <u>returned</u> radial distance
          * 
@@ -7918,7 +7918,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2 double TT as a 2-part Julian Date (Note 1)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.EulerAngles} bzeta          1st rotation: radians cw around z,
+         * @return {JSOFA.EulerAngles} bzeta          1st rotation: radians cw around z,
          * 3rd rotation: radians cw around z,
          * 2nd rotation: radians ccw around y.
          * 
@@ -8035,7 +8035,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2 double TT as a 2-part Julian Date (Note 1)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.FWPrecessionAngles} gamb          double     <u>returned</u> F-W angle gamma_bar (radians)
+         * @return {JSOFA.FWPrecessionAngles} gamb          double     <u>returned</u> F-W angle gamma_bar (radians)
          * phib          double     <u>returned</u> F-W angle phi_bar (radians)
          * psib          double     <u>returned</u> F-W angle psi_bar (radians)
          * epsa          double     <u>returned</u> F-W angle epsilon_A (radians)
@@ -8328,7 +8328,7 @@ namespace org.jastronomy.jsofa {
             const cl: number[][] = [[21, -95, -157, 41, -5, 42, 23, 30, 0, 0], [-160, -313, -235, 60, -74, -76, -27, 34, 0, 0], [-325, -322, -79, 232, -52, 97, 55, -41, 0, 0], [2268, -979, 802, 602, -668, -33, 345, 201, -55, 0], [7610, -4997, -7689, -5841, -2617, 1115, -748, -607, 6074, 354], [-18549, 30125, 20012, -730, 824, 23, 1289, -352, -14767, -2062], [-135245, -14594, 4197, -4030, -5630, -2898, 2540, -306, 2939, 1986], [89948, 2103, 8963, 2695, 3682, 1648, 866, -154, -1963, -283]];
             const sl: number[][] = [[-342, 136, -23, 62, 66, -52, -33, 17, 0, 0], [524, -149, -35, 117, 151, 122, -71, -62, 0, 0], [-105, -137, 258, 35, -116, -88, -112, -80, 0, 0], [854, -205, -936, -240, 140, -341, -97, -232, 536, 0], [-56980, 8016, 1012, 1448, -3024, -3710, 318, 503, 3767, 577], [138606, -13478, -4964, 1441, -1319, -1482, 427, 1236, -9167, -1918], [71234, -41116, 5334, -4935, -1848, 66, 434, -1748, 3780, -701], [-47645, 11647, 2166, 3194, 679, 0, -244, -419, -2531, 48]];
             if ((np < 1) || (np > 8)){
-                throw new org.jastronomy.jsofa.JSOFAIllegalParameter("planet number out of range", -1);
+                throw new JSOFAIllegalParameter("planet number out of range", -1);
             } else {
                 np--;
                 t = ((date1 - JSOFA.DJ00_$LI$()) + date2) / JSOFA.DJM_$LI$();
@@ -8685,7 +8685,7 @@ namespace org.jastronomy.jsofa {
          * @param {double[]} p         double[3]       p-vector
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.NormalizedVector} r         double           <u>returned</u> modulus
+         * @return {JSOFA.NormalizedVector} r         double           <u>returned</u> modulus
          * u         double[3]        <u>returned</u> unit vector
          * 
          * <p>Notes:
@@ -8737,7 +8737,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} deps double           nutation (Note 2)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.PrecessionNutation} epsa          double            <u>returned</u> mean obliquity (Note 3),
+         * @return {JSOFA.PrecessionNutation} epsa          double            <u>returned</u> mean obliquity (Note 3),
          * rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4),
          * rp            double[3][3]      <u>returned</u> precession matrix (Note 5),
          * rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 6),
@@ -8854,7 +8854,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2 double TT as a 2-part Julian Date (Note 1)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.PrecessionNutation} dpsi double            <u>returned</u> nutation (Note 2)
+         * @return {JSOFA.PrecessionNutation} dpsi double            <u>returned</u> nutation (Note 2)
          * deps double            <u>returned</u> nutation (Note 2)
          * epsa          double            <u>returned</u> mean obliquity (Note 3)
          * rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
@@ -8960,7 +8960,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2 double TT as a 2-part Julian Date (Note 1)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.PrecessionNutation} dpsi,deps     double            <u>returned</u> nutation (Note 2)
+         * @return {JSOFA.PrecessionNutation} dpsi,deps     double            <u>returned</u> nutation (Note 2)
          * epsa          double            <u>returned</u> mean obliquity (Note 3)
          * rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
          * rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
@@ -9066,7 +9066,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} deps double           nutation (Note 2)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.PrecessionNutation} epsa          double            <u>returned</u> mean obliquity (Note 3)
+         * @return {JSOFA.PrecessionNutation} epsa          double            <u>returned</u> mean obliquity (Note 3)
          * rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
          * rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
          * rbp           double[3][3]      <u>returned</u> bias-precession matrix (Note 6)
@@ -9183,7 +9183,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2 double TT as a 2-part Julian Date (Note 1)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.PrecessionNutation} dpsi,deps     double            <u>returned</u> nutation (Note 2)
+         * @return {JSOFA.PrecessionNutation} dpsi,deps     double            <u>returned</u> nutation (Note 2)
          * epsa          double            <u>returned</u> mean obliquity (Note 3)
          * rb            double[3][3]      <u>returned</u> frame bias matrix (Note 4)
          * rp            double[3][3]      <u>returned</u> precession matrix (Note 5)
@@ -9735,7 +9735,7 @@ namespace org.jastronomy.jsofa {
          * @since Release 20101201
          * 
          * <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
-         * @return {org.jastronomy.jsofa.JSOFA.PrecessionDeltaTerms}
+         * @return {JSOFA.PrecessionDeltaTerms}
          */
         static jauPr00(date1: number, date2: number): JSOFA.PrecessionDeltaTerms {
             let t: number;
@@ -9820,7 +9820,7 @@ namespace org.jastronomy.jsofa {
          * @since Release 20101201
          * 
          * <!-- Copyright (C) 2009 IAU SOFA Review Board.  See notes at end -->
-         * @return {org.jastronomy.jsofa.JSOFA.EulerAngles}
+         * @return {JSOFA.EulerAngles}
          */
         static jauPrec76(ep01: number, ep02: number, ep11: number, ep12: number): JSOFA.EulerAngles {
             let t0: number;
@@ -9878,7 +9878,7 @@ namespace org.jastronomy.jsofa {
          * @param {double[][]} pv        double[2][3]   pv-vector
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.SphericalPositionVelocity} theta     double          <u>returned</u> longitude angle (radians)
+         * @return {JSOFA.SphericalPositionVelocity} theta     double          <u>returned</u> longitude angle (radians)
          * phi       double          <u>returned</u> latitude angle (radians)
          * r         double          <u>returned</u> radial distance
          * td        double          <u>returned</u> rate of change of theta
@@ -10014,7 +10014,7 @@ namespace org.jastronomy.jsofa {
          * @param {double[][]} pv      double[2][3]    pv-vector
          * 
          * <!-- Returned: -->
-         * @return           {org.jastronomy.jsofa.JSOFA.PVModulus} modulus of position component,
+         * @return           {JSOFA.PVModulus} modulus of position component,
          * modulus of velocity component
          * 
          * <p>Called:<ul>
@@ -10115,7 +10115,7 @@ namespace org.jastronomy.jsofa {
          * 
          * 
          * <!-- Returned (function value): -->
-         * @return {org.jastronomy.jsofa.JSOFA.CatalogCoords} catalogue value
+         * @return {JSOFA.CatalogCoords} catalogue value
          * 
          * 
          * @throws    JSOFAInternalError  superluminal speed (Note 5), or null position vector
@@ -10217,14 +10217,14 @@ namespace org.jastronomy.jsofa {
             betr = vr / JSOFA.DC_$LI$();
             d = 1.0 + betr;
             w = betr * betr + bett * bett;
-            if (d === 0.0 || w > 1)throw new org.jastronomy.jsofa.JSOFAInternalError("Superluminal speed", -1);
+            if (d === 0.0 || w > 1)throw new JSOFAInternalError("Superluminal speed", -1);
             del = -w / (Math.sqrt(1.0 - w) + 1.0);
             w = (betr !== 0) ? (betr - del) / (betr * d) : 1.0;
             usr = JSOFA.jauSxp(w, ur);
             ust = JSOFA.jauSxp(1.0 / d, ut);
             pv[1] = JSOFA.jauPpp(usr, ust);
             const pvs: JSOFA.SphericalPositionVelocity = JSOFA.jauPv2s(pv);
-            if (pvs.pos.r === 0.0)throw new org.jastronomy.jsofa.JSOFAInternalError("null position vector", -2);
+            if (pvs.pos.r === 0.0)throw new JSOFAInternalError("null position vector", -2);
             const ra: number = JSOFA.jauAnp(pvs.pos.theta);
             const pmr: number = pvs.vel.theta * JSOFA.DJY_$LI$();
             const pmd: number = pvs.vel.phi * JSOFA.DJY_$LI$();
@@ -11715,7 +11715,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} ep2b    double      "after" epoch, part B (Note 1)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.CatalogCoords} ra2     double       <u>returned</u> right ascension (radians), after
+         * @return {JSOFA.CatalogCoords} ra2     double       <u>returned</u> right ascension (radians), after
          * dec2    double       <u>returned</u> declination (radians), after
          * pmr2    double       <u>returned</u> RA proper motion (radians/year), after
          * pmd2    double       <u>returned</u> Dec proper motion (radians/year), after
@@ -11723,7 +11723,7 @@ namespace org.jastronomy.jsofa {
          * rv2     double       <u>returned</u> radial velocity (km/s, +ve = receding), after
          * 
          * <!-- Returned (function value): -->
-         * @return {org.jastronomy.jsofa.JSOFA.CatalogCoords} int        status:
+         * @return {JSOFA.CatalogCoords} int        status:
          * -1 = system error (should not occur)
          * 0 = no warnings or errors
          * 1 = distance overridden (Note 6)
@@ -11822,7 +11822,7 @@ namespace org.jastronomy.jsofa {
             rdv = JSOFA.jauPdp(pv[0], pv[1]);
             v2 = JSOFA.jauPdp(pv[1], pv[1]);
             c2mv2 = JSOFA.DC_$LI$() * JSOFA.DC_$LI$() - v2;
-            if (c2mv2 <= 0)throw new org.jastronomy.jsofa.JSOFAInternalError("internal error", -1);
+            if (c2mv2 <= 0)throw new JSOFAInternalError("internal error", -1);
             tl2 = (-rdv + Math.sqrt(rdv * rdv + c2mv2 * r2)) / c2mv2;
             pv2 = JSOFA.jauPvu(dt + (tl1 - tl2), pv1);
             const cat: JSOFA.CatalogCoords = JSOFA.jauPvstar(pv2);
@@ -12109,7 +12109,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} tai2 double    TAI as a 2-part Julian Date
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.JulianDate} JulianDate   TT as a 2-part Julian Date
+         * @return {JSOFA.JulianDate} JulianDate   TT as a 2-part Julian Date
          * 
          * 
          * Note:
@@ -12163,7 +12163,7 @@ namespace org.jastronomy.jsofa {
          * @param   {number} dta        double    UT1-TAI in seconds
          * 
          * <!-- Returned:-->
-         * @return      {org.jastronomy.jsofa.JSOFA.JulianDate} UT1 as a 2-part Julian Date
+         * @return      {JSOFA.JulianDate} UT1 as a 2-part Julian Date
          * 
          * 
          * <p>Notes:
@@ -12217,7 +12217,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} tai2 TAI as a 2-part Julian Date (Note 1)
          * 
          * <!-- Returned:-->
-         * @return   {org.jastronomy.jsofa.JSOFA.JulianDate} UTC as a 2-part quasi Julian Date (Notes 1-3)
+         * @return   {JSOFA.JulianDate} UTC as a 2-part quasi Julian Date (Notes 1-3)
          * 
          * Returned (function value):
          * int      status: +1 = dubious year (Note 4)
@@ -12345,7 +12345,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} tcb2 double    TCB as a 2-part Julian Date
          * 
          * <!-- Returned:-->
-         * @return    {org.jastronomy.jsofa.JSOFA.JulianDate} TDB as a 2-part Julian Date
+         * @return    {JSOFA.JulianDate} TDB as a 2-part Julian Date
          * 
          * 
          * <p>Notes:
@@ -12416,7 +12416,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} tcg2 double    TCG as a 2-part Julian Date
          * 
          * <!-- Returned:-->
-         * @return    {org.jastronomy.jsofa.JSOFA.JulianDate} TT as a 2-part Julian Date
+         * @return    {JSOFA.JulianDate} TT as a 2-part Julian Date
          * 
          * 
          * Note:
@@ -12468,7 +12468,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} tdb2 TDB as a 2-part Julian Date
          * 
          * <!-- Returned:-->
-         * @return    {org.jastronomy.jsofa.JSOFA.JulianDate} TCB as a 2-part Julian Date
+         * @return    {JSOFA.JulianDate} TCB as a 2-part Julian Date
          * 
          * <p>Notes:
          * <ol>
@@ -12544,7 +12544,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} dtr        double    TDB-TT in seconds
          * 
          * <!-- Returned:-->
-         * @return   {org.jastronomy.jsofa.JSOFA.JulianDate} TT as a 2-part Julian Date
+         * @return   {JSOFA.JulianDate} TT as a 2-part Julian Date
          * 
          * 
          * <p>Notes:
@@ -12632,9 +12632,9 @@ namespace org.jastronomy.jsofa {
         public static jauTf2a(s: string, ihour: number, imin: number, sec: number): number {
             let rad: number;
             rad = ((c => c.charCodeAt==null?<any>c:c.charCodeAt(0))(s) == '-'.charCodeAt(0) ? -1.0 : 1.0) * (60.0 * (60.0 * (<number>Math.abs(ihour)) + (<number>Math.abs(imin))) + Math.abs(sec)) * JSOFA.DS2R_$LI$();
-            if (ihour < 0 || ihour > 23)throw new org.jastronomy.jsofa.JSOFAIllegalParameter("bad hour", 1);
-            if (imin < 0 || imin > 59)throw new org.jastronomy.jsofa.JSOFAIllegalParameter("bad minute", 2);
-            if (sec < 0.0 || sec >= 60.0)throw new org.jastronomy.jsofa.JSOFAIllegalParameter("bad second", 3);
+            if (ihour < 0 || ihour > 23)throw new JSOFAIllegalParameter("bad hour", 1);
+            if (imin < 0 || imin > 59)throw new JSOFAIllegalParameter("bad minute", 2);
+            if (sec < 0.0 || sec >= 60.0)throw new JSOFAIllegalParameter("bad second", 3);
             return rad;
         }
 
@@ -12679,9 +12679,9 @@ namespace org.jastronomy.jsofa {
         public static jauTf2d(s: string, ihour: number, imin: number, sec: number): number {
             let days: number;
             days = ((c => c.charCodeAt==null?<any>c:c.charCodeAt(0))(s) == '-'.charCodeAt(0) ? -1.0 : 1.0) * (60.0 * (60.0 * (<number>Math.abs(ihour)) + (<number>Math.abs(imin))) + Math.abs(sec)) / JSOFA.DAYSEC_$LI$();
-            if (ihour < 0 || ihour > 23)throw new org.jastronomy.jsofa.JSOFAIllegalParameter("bad hour", 1);
-            if (imin < 0 || imin > 59)throw new org.jastronomy.jsofa.JSOFAIllegalParameter("bad minute", 2);
-            if (sec < 0.0 || sec >= 60.0)throw new org.jastronomy.jsofa.JSOFAIllegalParameter("bad second", 3);
+            if (ihour < 0 || ihour > 23)throw new JSOFAIllegalParameter("bad hour", 1);
+            if (imin < 0 || imin > 59)throw new JSOFAIllegalParameter("bad minute", 2);
+            if (sec < 0.0 || sec >= 60.0)throw new JSOFAIllegalParameter("bad second", 3);
             return days;
         }
 
@@ -12825,7 +12825,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} tt2    double    TT as a 2-part Julian Date
          * 
          * <!-- Returned:-->
-         * @return   {org.jastronomy.jsofa.JSOFA.JulianDate} TAI as a 2-part Julian Date
+         * @return   {JSOFA.JulianDate} TAI as a 2-part Julian Date
          * 
          * Returned (function value):
          * int       status:  0 = OK
@@ -12880,7 +12880,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} tt2 double    TT as a 2-part Julian Date
          * 
          * <!-- Returned:-->
-         * @return   {org.jastronomy.jsofa.JSOFA.JulianDate} TCG as a 2-part Julian Date
+         * @return   {JSOFA.JulianDate} TCG as a 2-part Julian Date
          * 
          * Returned (function value):
          * int       status:  0 = OK
@@ -12936,7 +12936,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} dtr        double    TDB-TT in seconds
          * 
          * <!-- Returned:-->
-         * @return   {org.jastronomy.jsofa.JSOFA.JulianDate} TDB as a 2-part Julian Date
+         * @return   {JSOFA.JulianDate} TDB as a 2-part Julian Date
          * 
          * Returned (function value):
          * int       status:  0 = OK
@@ -13003,7 +13003,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} dt         double    TT-UT1 in seconds
          * 
          * <!-- Returned:-->
-         * @return   {org.jastronomy.jsofa.JSOFA.JulianDate} UT1 as a 2-part Julian Date
+         * @return   {JSOFA.JulianDate} UT1 as a 2-part Julian Date
          * 
          * Returned (function value):
          * int       status:  0 = OK
@@ -13059,7 +13059,7 @@ namespace org.jastronomy.jsofa {
          * @param  {number} dta        double    UT1-TAI in seconds
          * 
          * <!-- Returned:-->
-         * @return    {org.jastronomy.jsofa.JSOFA.JulianDate} TAI as a 2-part Julian Date
+         * @return    {JSOFA.JulianDate} TAI as a 2-part Julian Date
          * 
          * Returned (function value):
          * int       status:  0 = OK
@@ -13116,7 +13116,7 @@ namespace org.jastronomy.jsofa {
          * @param  {number} dt         double    TT-UT1 in seconds
          * 
          * <!-- Returned:-->
-         * @return    {org.jastronomy.jsofa.JSOFA.JulianDate} TAI as a 2-part Julian Date
+         * @return    {JSOFA.JulianDate} TAI as a 2-part Julian Date
          * 
          * Returned (function value):
          * int       status:  0 = OK
@@ -13172,7 +13172,7 @@ namespace org.jastronomy.jsofa {
          * @param   {number} dut1       double   Delta UT1: UT1-UTC in seconds (Note 2)
          * 
          * <!-- Returned:-->
-         * @return  {org.jastronomy.jsofa.JSOFA.JulianDate} JulianDate   UTC as a 2-part quasi Julian Date (Notes 3,4)
+         * @return  {JSOFA.JulianDate} JulianDate   UTC as a 2-part quasi Julian Date (Notes 3,4)
          * 
          * Returned (function value):
          * int      status: +1 = dubious year (Note 5)
@@ -13305,7 +13305,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} utc2 double   UTC as a 2-part quasi Julian Date (Notes 1-4)
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.JulianDate} JulianDate     TAI as a 2-part Julian Date (Note 5)
+         * @return {JSOFA.JulianDate} JulianDate     TAI as a 2-part Julian Date (Note 5)
          * 
          * Returned (function value):
          * int      status: +1 = dubious year (Note 3)
@@ -13411,7 +13411,7 @@ namespace org.jastronomy.jsofa {
          * @param  {number} dut1       double   Delta UT1 = UT1-UTC in seconds (Note 5)
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.JulianDate} UT1 as a 2-part Julian Date (Note 6)
+         * @return {JSOFA.JulianDate} UT1 as a 2-part Julian Date (Note 6)
          * 
          * Returned (function value):
          * int      status: +1 = dubious year (Note 7)
@@ -13596,7 +13596,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2 double TT as a 2-part Julian Date (Note 1)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.ICRFrame} x double     <u>returned</u> Celestial Intermediate Pole (Note 2)
+         * @return {JSOFA.ICRFrame} x double     <u>returned</u> Celestial Intermediate Pole (Note 2)
          * y double     <u>returned</u> Celestial Intermediate Pole (Note 2)
          * s double     <u>returned</u> the CIO locator s (Note 2)
          * 
@@ -13670,7 +13670,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2 double TT as a 2-part Julian Date (Note 1)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.ICRFrame} x double     <u>returned</u> Celestial Intermediate Pole (Note 2)
+         * @return {JSOFA.ICRFrame} x double     <u>returned</u> Celestial Intermediate Pole (Note 2)
          * y double     <u>returned</u> Celestial Intermediate Pole (Note 2)
          * s             double     <u>returned</u> the CIO locator s (Note 2)
          * 
@@ -13745,7 +13745,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2 double TT as a 2-part Julian Date (Note 1)
          * 
          * <!-- Returned: -->
-         * @return {org.jastronomy.jsofa.JSOFA.ICRFrame} x double    <u>returned</u> Celestial Intermediate Pole (Note 2)
+         * @return {JSOFA.ICRFrame} x double    <u>returned</u> Celestial Intermediate Pole (Note 2)
          * y double    <u>returned</u> Celestial Intermediate Pole (Note 2)
          * s             double    <u>returned</u> the CIO locator s (Note 2)
          * 
@@ -13831,9 +13831,9 @@ namespace org.jastronomy.jsofa {
          */
         public static jauZp(p?: any) {
             if (((p != null && p instanceof <any>Array && (p.length == 0 || p[0] == null ||(typeof p[0] === 'number'))) || p === null)) {
-                return <any>org.jastronomy.jsofa.JSOFA.jauZp$double_A(p);
+                return <any>JSOFA.jauZp$double_A(p);
             } else if (p === undefined) {
-                return <any>org.jastronomy.jsofa.JSOFA.jauZp$();
+                return <any>JSOFA.jauZp$();
             } else throw new Error('invalid overload');
         }
 
@@ -13871,9 +13871,9 @@ namespace org.jastronomy.jsofa {
          */
         public static jauZpv(pv?: any) {
             if (((pv != null && pv instanceof <any>Array && (pv.length == 0 || pv[0] == null ||pv[0] instanceof Array)) || pv === null)) {
-                return <any>org.jastronomy.jsofa.JSOFA.jauZpv$double_A_A(pv);
+                return <any>JSOFA.jauZpv$double_A_A(pv);
             } else if (pv === undefined) {
-                return <any>org.jastronomy.jsofa.JSOFA.jauZpv$();
+                return <any>JSOFA.jauZpv$();
             } else throw new Error('invalid overload');
         }
 
@@ -13913,9 +13913,9 @@ namespace org.jastronomy.jsofa {
          */
         public static jauZr(r?: any) {
             if (((r != null && r instanceof <any>Array && (r.length == 0 || r[0] == null ||r[0] instanceof Array)) || r === null)) {
-                return <any>org.jastronomy.jsofa.JSOFA.jauZr$double_A_A(r);
+                return <any>JSOFA.jauZr$double_A_A(r);
             } else if (r === undefined) {
-                return <any>org.jastronomy.jsofa.JSOFA.jauZr$();
+                return <any>JSOFA.jauZr$();
             } else throw new Error('invalid overload');
         }
 
@@ -14046,7 +14046,7 @@ namespace org.jastronomy.jsofa {
          * @param {double[]} ehp     double[3]     Earth heliocentric position (au)
          * 
          * <!-- Returned:-->
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom  jauASTROM     <b>Returned</b> star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom  jauASTROM     <b>Returned</b> star-independent astrometry parameters:
          * 
          * <p>Notes:
          * <ol>
@@ -14145,7 +14145,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2   double      ...Julian Date (Note 1)
          * 
          * <!-- Returned:-->
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom     <b>Returned</b> star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom     <b>Returned</b> star-independent astrometry parameters:
          * 
          * <p>Notes:
          * <ol>
@@ -14257,7 +14257,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} s       double        the CIO locator s (radians)
          * 
          * <!-- Returned:-->
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom       <b>Returned</b> star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom       <b>Returned</b> star-independent astrometry parameters:
          * 
          * <p>Notes:
          * <ol>
@@ -14361,7 +14361,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2   double       ...Julian Date (Note 1)
          * 
          * <!-- Returned:-->
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom  jauASTROM    <b>Returned</b> star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom  jauASTROM    <b>Returned</b> star-independent astrometry parameters:
          * pmt     double         <b>Returned</b> PM time interval (SSB, Julian years)
          * eb      double[3]      <b>Returned</b> SSB to observer (vector, au)
          * eh      double[3]      <b>Returned</b> Sun to observer (unit vector)
@@ -14504,7 +14504,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} refb    double        refraction constant B (radians, Note 5)
          * 
          * <!-- Returned:-->
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom       <b>Returned</b> star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom       <b>Returned</b> star-independent astrometry parameters:
          * 
          * <p>Notes:
          * <ol>
@@ -14688,7 +14688,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} wl      double      wavelength (micrometers, Note 7)
          * 
          * <!-- Returned:-->
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom     <b>Returned</b> star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom     <b>Returned</b> star-independent astrometry parameters:
          * 
          * 
          * @return       {number} double      <b>Returned</b> equation of the origins (ERA-GST)
@@ -14872,7 +14872,7 @@ namespace org.jastronomy.jsofa {
          * @param {double[]} ehp     double[3]     Earth heliocentric P (au)
          * 
          * <!-- Returned:-->
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom       <b>Returned</b> star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom       <b>Returned</b> star-independent astrometry parameters:
          * 
          * <p>Notes:
          * <ol>
@@ -15017,7 +15017,7 @@ namespace org.jastronomy.jsofa {
          * @param {double[][]} pv      double[2][3]  observer's geocentric pos/vel (Note 3)
          * 
          * <!-- Returned:-->
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom       <b>Returned</b> star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom       <b>Returned</b> star-independent astrometry parameters:
          * 
          * <p>Notes:
          * <ol>
@@ -15119,7 +15119,7 @@ namespace org.jastronomy.jsofa {
          * 
          * <!-- Given: -->
          * @param {number} theta    double       Earth rotation angle (radians, Note 2)
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom  Astrom    star-independent astrometry parameters:{@code
+         * @param {JSOFA.Astrom} astrom  Astrom    star-independent astrometry parameters:{@code
          * pmt     double        not used
          * eb      double[3]     not used
          * eh      double[3]     not used
@@ -15205,7 +15205,7 @@ namespace org.jastronomy.jsofa {
          * <!-- Given: -->
          * @param {number} ut11     double       UT1 as a 2-part...
          * @param {number} ut12     double       ...Julian Date (Note 1)
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom      star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom      star-independent astrometry parameters:
          * pmt     double        not used
          * eb      double[3]     not used
          * eh      double[3]     not used
@@ -15224,7 +15224,7 @@ namespace org.jastronomy.jsofa {
          * refb    double        not used
          * 
          * <!-- Returned:-->
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom       <b>Returned</b> star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom       <b>Returned</b> star-independent astrometry parameters:
          * 
          * <p>Notes:
          * <ol>
@@ -15322,7 +15322,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} refb    double       refraction constant B (radians, Note 4)
          * 
          * <!-- Returned:-->
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom  {@link Astrom}    <b>Returned</b> star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom  {@link Astrom}    <b>Returned</b> star-independent astrometry parameters:
          * 
          * <p>Notes:
          * <ol>
@@ -15463,7 +15463,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} wl      double       wavelength (micrometers, Note 7)
          * 
          * <!-- Returned:-->
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom      <b>Returned</b> star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom      <b>Returned</b> star-independent astrometry parameters:
          * @throws JSOFAInternalError an internal error has occured
          * @throws JSOFAIllegalParameter int          status:   <b>Returned</b> +1 = dubious year (Note 2)
          * 0  =   <b>Returned</b> OK
@@ -15623,7 +15623,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2   double    ...Julian Date (Note 3)
          * 
          * <!-- Returned:-->
-         * @return    {org.jastronomy.jsofa.JSOFA.SphericalCoordinateEO} double*    <b>Returned</b> CIRS geocentric RA,Dec (radians)
+         * @return    {JSOFA.SphericalCoordinateEO} double*    <b>Returned</b> CIRS geocentric RA,Dec (radians)
          * eo      double*    <b>Returned</b> equation of the origins (ERA-GST, Note 5)
          * 
          * <p>Notes:
@@ -15720,10 +15720,10 @@ namespace org.jastronomy.jsofa {
          * @param {number} pd      double      Dec proper motion (radians/year)
          * @param {number} px      double      parallax (arcsec)
          * @param {number} rv      double      radial velocity (km/s, +ve if receding)
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom    star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom    star-independent astrometry parameters:
          * 
          * <!-- Returned:-->
-         * @return     {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} double      <b>Returned</b> CIRS RA,Dec (radians)
+         * @return     {JSOFA.SphericalCoordinate} double      <b>Returned</b> CIRS RA,Dec (radians)
          * 
          * <p>Notes:
          * <ol>
@@ -15795,12 +15795,12 @@ namespace org.jastronomy.jsofa {
          * @param {number} pd      double        Dec proper motion (radians/year)
          * @param {number} px      double        parallax (arcsec)
          * @param {number} rv      double        radial velocity (km/s, +ve if receding)
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom      star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom      star-independent astrometry parameters:
          * @param {number} n      int            number of bodies (Note 3)
-         * @param {org.jastronomy.jsofa.JSOFA.Ldbody[]} b      jauLDBODY[n]  data for each of the n bodies (Notes 3,4):
+         * @param {JSOFA.Ldbody[]} b      jauLDBODY[n]  data for each of the n bodies (Notes 3,4):
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} ri,di    double      <b>Returned</b> CIRS RA,Dec (radians)
+         * @return {JSOFA.SphericalCoordinate} ri,di    double      <b>Returned</b> CIRS RA,Dec (radians)
          * 
          * <p>Notes:
          * <ol>
@@ -15893,14 +15893,14 @@ namespace org.jastronomy.jsofa {
          * <!-- Given: -->
          * @param {number} rc double      ICRS astrometric RA,Dec (radians)
          * @param {number} dc double      ICRS astrometric RA,Dec (radians)
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom    star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom    star-independent astrometry parameters:
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} ri,di   double       <b>Returned</b> CIRS RA,Dec (radians)
+         * @return {JSOFA.SphericalCoordinate} ri,di   double       <b>Returned</b> CIRS RA,Dec (radians)
          * 
          * Note:
          * 
-         * @return {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} All  the   <b>Returned</b> vectors are with respect to BCRS axes.
+         * @return {JSOFA.SphericalCoordinate} All  the   <b>Returned</b> vectors are with respect to BCRS axes.
          * 
          * <p>References:
          * <ul>
@@ -15976,7 +15976,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} wl      double    wavelength (micrometers, Note 9)
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.ObservedPositionEO} aob     double*    <b>Returned</b> observed azimuth (radians: N=0,E=90)
+         * @return {JSOFA.ObservedPositionEO} aob     double*    <b>Returned</b> observed azimuth (radians: N=0,E=90)
          * zob     double*    <b>Returned</b> observed zenith distance (radians)
          * hob     double*    <b>Returned</b> observed hour angle (radians)
          * dob     double*    <b>Returned</b> observed declination (radians)
@@ -16125,7 +16125,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} date2   double   ...Julian Date (Note 1)
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.SphericalCoordinateEO} rc,dc   double    <b>Returned</b> ICRS astrometric RA,Dec (radians)
+         * @return {JSOFA.SphericalCoordinateEO} rc,dc   double    <b>Returned</b> ICRS astrometric RA,Dec (radians)
          * eo      double    <b>Returned</b> equation of the origins (ERA-GST, Note 4)
          * 
          * <p>Notes:
@@ -16216,10 +16216,10 @@ namespace org.jastronomy.jsofa {
          * <!-- Given: -->
          * @param {number} ri double      CIRS RA,Dec (radians)
          * @param {number} di double      CIRS RA,Dec (radians)
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom    star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom    star-independent astrometry parameters:
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} rc,dc   double       <b>Returned</b> ICRS astrometric RA,Dec (radians)
+         * @return {JSOFA.SphericalCoordinate} rc,dc   double       <b>Returned</b> ICRS astrometric RA,Dec (radians)
          * 
          * <p>Notes:
          * <ol>
@@ -16343,12 +16343,12 @@ namespace org.jastronomy.jsofa {
          * <!-- Given: -->
          * @param {number} ri double       CIRS RA,Dec (radians)
          * @param {number} di double       CIRS RA,Dec (radians)
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom     star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom     star-independent astrometry parameters:
          * @param {number} n number of bodies.
-         * @param {org.jastronomy.jsofa.JSOFA.Ldbody[]} b[] data for each of the n bodies.
+         * @param {JSOFA.Ldbody[]} b[] data for each of the n bodies.
          * 
          * <!-- Returned:-->
-         * @return        {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} ICRS astrometric RA,Dec (radians)
+         * @return        {JSOFA.SphericalCoordinate} ICRS astrometric RA,Dec (radians)
          * 
          * <p>Notes:
          * <ol>
@@ -16505,7 +16505,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} wl      double    wavelength (micrometers, Note 7)
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.ObservedPosition} aob     double*    <b>Returned</b> observed azimuth (radians: N=0,E=90)
+         * @return {JSOFA.ObservedPosition} aob     double*    <b>Returned</b> observed azimuth (radians: N=0,E=90)
          * zob     double*    <b>Returned</b> observed zenith distance (radians)
          * hob     double*    <b>Returned</b> observed hour angle (radians)
          * dob     double*    <b>Returned</b> observed declination (radians)
@@ -16643,10 +16643,10 @@ namespace org.jastronomy.jsofa {
          * <!-- Given: -->
          * @param {number} ri      double      CIRS right ascension
          * @param {number} di      double      CIRS declination
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom    star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom    star-independent astrometry parameters:
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.ObservedPosition} aob     double*      <b>Returned</b> observed azimuth (radians: N=0,E=90)
+         * @return {JSOFA.ObservedPosition} aob     double*      <b>Returned</b> observed azimuth (radians: N=0,E=90)
          * zob     double*      <b>Returned</b> observed zenith distance (radians)
          * hob     double*      <b>Returned</b> observed hour angle (radians)
          * dob     double*      <b>Returned</b> observed declination (radians)
@@ -16817,7 +16817,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} wl      double    wavelength (micrometers, Note 9)
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} rc,dc   double     <b>Returned</b> ICRS astrometric RA,Dec (radians)
+         * @return {JSOFA.SphericalCoordinate} rc,dc   double     <b>Returned</b> ICRS astrometric RA,Dec (radians)
          * 
          * @throws JSOFAInternalError an internal error has occured
          * @throws JSOFAIllegalParameter int       status:   <b>Returned</b> +1 = dubious year (Note 4)
@@ -16974,7 +16974,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} wl      double    wavelength (micrometers, Note 9)
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} ri      double*    <b>Returned</b> CIRS right ascension (CIO-based, radians)
+         * @return {JSOFA.SphericalCoordinate} ri      double*    <b>Returned</b> CIRS right ascension (CIO-based, radians)
          * di      double*    <b>Returned</b> CIRS declination (radians)
          * 
          * @throws JSOFAInternalError an internal error has occured
@@ -17118,10 +17118,10 @@ namespace org.jastronomy.jsofa {
          * @param {string} type    char[]      type of coordinates: "R", "H" or "A" (Note 1)
          * @param {number} ob1     double      observed Az, HA or RA (radians; Az is N=0,E=90)
          * @param {number} ob2     double      observed ZD or Dec (radians)
-         * @param {org.jastronomy.jsofa.JSOFA.Astrom} astrom    star-independent astrometry parameters:
+         * @param {JSOFA.Astrom} astrom    star-independent astrometry parameters:
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} ri      double*      <b>Returned</b> CIRS right ascension (CIO-based, radians)
+         * @return {JSOFA.SphericalCoordinate} ri      double*      <b>Returned</b> CIRS right ascension (CIO-based, radians)
          * di      double*      <b>Returned</b> CIRS declination (radians)
          * 
          * <p>Notes:
@@ -17563,7 +17563,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} ep2b    double       "after" epoch, part B (Note 1)
          * 
          * <!-- Returned:-->
-         * @return {org.jastronomy.jsofa.JSOFA.CatalogCoords} ra2     double        <b>Returned</b> right ascension (radians), after
+         * @return {JSOFA.CatalogCoords} ra2     double        <b>Returned</b> right ascension (radians), after
          * dec2    double        <b>Returned</b> declination (radians), after
          * pmr2    double        <b>Returned</b> RA proper motion (radians/year), after
          * pmd2    double        <b>Returned</b> Dec proper motion (radians/year), after
@@ -17752,9 +17752,9 @@ namespace org.jastronomy.jsofa {
          */
         public static jauPvtob(elong?: any, phi?: any, hm?: any, xp?: any, yp?: any, sp?: any, theta?: any): number[][] {
             if (((typeof elong === 'number') || elong === null) && ((typeof phi === 'number') || phi === null) && ((typeof hm === 'number') || hm === null) && ((typeof xp === 'number') || xp === null) && ((typeof yp === 'number') || yp === null) && ((typeof sp === 'number') || sp === null) && ((typeof theta === 'number') || theta === null)) {
-                return <any>org.jastronomy.jsofa.JSOFA.jauPvtob$double$double$double$double$double$double$double(elong, phi, hm, xp, yp, sp, theta);
+                return <any>JSOFA.jauPvtob$double$double$double$double$double$double$double(elong, phi, hm, xp, yp, sp, theta);
             } else if (((elong != null && elong instanceof <any>Array && (elong.length == 0 || elong[0] == null ||(typeof elong[0] === 'number'))) || elong === null) && ((typeof phi === 'number') || phi === null) && ((typeof hm === 'number') || hm === null) && ((typeof xp === 'number') || xp === null) && ((typeof yp === 'number') || yp === null) && sp === undefined && theta === undefined) {
-                return <any>org.jastronomy.jsofa.JSOFA.jauPvtob$double_A$double$double$double$double(elong, phi, hm, xp, yp);
+                return <any>JSOFA.jauPvtob$double_A$double$double$double$double(elong, phi, hm, xp, yp);
             } else throw new Error('invalid overload');
         }
 
@@ -17804,7 +17804,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} wl      double     wavelength (micrometers)
          * 
          * <!-- Returned:-->
-         * @return      {org.jastronomy.jsofa.JSOFA.RefCos} <b>Returned</b> tan Z coefficient (radians)
+         * @return      {JSOFA.RefCos} <b>Returned</b> tan Z coefficient (radians)
          * <b>Returned</b> tan^3 Z coefficient (radians)
          * 
          * <p>Notes:
@@ -17992,7 +17992,7 @@ namespace org.jastronomy.jsofa {
          * @param   {number} dl     double      galactic longitude (radians)
          * @param   {number} db     double      galactic latitude (radians)
          * 
-         * @return {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} co ICRS right ascension, declination.
+         * @return {JSOFA.SphericalCoordinate} co ICRS right ascension, declination.
          * 
          * <p>Notes:<ol>
          * 
@@ -18061,7 +18061,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} dr     double      ICRS right ascension (radians)
          * @param {number} dd     double      ICRS declination (radians)
          * 
-         * @return {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} co galactic longitude (radians), galactic latitude (radians)
+         * @return {JSOFA.SphericalCoordinate} co galactic longitude (radians), galactic latitude (radians)
          * 
          * <p>Notes:<ol>
          * 
@@ -18134,7 +18134,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} db double ecliptic longitude and latitude (radians)
          * 
          * <!-- Returned: -->
-         * @return      {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} double ICRS right ascension and declination (radians)
+         * @return      {JSOFA.SphericalCoordinate} double ICRS right ascension and declination (radians)
          * 
          * <ol>
          * <li> The TT date date1+date2 is a Julian Date, apportioned in any
@@ -18286,7 +18286,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} dd double ICRS right ascension and declination (radians)
          * 
          * <!-- Returned: -->
-         * @return      {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} double ecliptic longitude and latitude (radians)
+         * @return      {JSOFA.SphericalCoordinate} double ecliptic longitude and latitude (radians)
          * <ol>
          * <li> The TT date date1+date2 is a Julian Date, apportioned in any
          * convenient way between the two arguments.  For example,
@@ -18356,7 +18356,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} db double     ecliptic longitude and latitude (radians)
          * 
          * <!-- Returned: -->
-         * @return   {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} double     ICRS right ascension and declination (radians)
+         * @return   {JSOFA.SphericalCoordinate} double     ICRS right ascension and declination (radians)
          * <ol>
          * <li> No assumptions are made about whether the coordinates represent
          * starlight and embody astrometric effects such as parallax or
@@ -18511,7 +18511,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} dd   double     ICRS right ascension and declination (radians)
          * 
          * <!-- Returned: -->
-         * @return     {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} ecliptic longitude and latitude (radians)
+         * @return     {JSOFA.SphericalCoordinate} ecliptic longitude and latitude (radians)
          * <ol>
          * <li> No assumptions are made about whether the coordinates represent
          * starlight and embody astrometric effects such as parallax or
@@ -18881,7 +18881,7 @@ namespace org.jastronomy.jsofa {
          * @param  {number} phi      double       site latitude
          * 
          * <!-- Returned: -->
-         * @return   {org.jastronomy.jsofa.JSOFA.EquatorialCoordinate} ha       double       hour angle (local)
+         * @return   {JSOFA.EquatorialCoordinate} ha       double       hour angle (local)
          * dec      double       declination
          * 
          * <p>Notes: <ol>
@@ -18966,7 +18966,7 @@ namespace org.jastronomy.jsofa {
          * @param   {number} phi      double       site latitude
          * 
          * <!-- Returned: -->
-         * @return   {org.jastronomy.jsofa.JSOFA.HorizonCoordinate} az      double       azimuth
+         * @return   {JSOFA.HorizonCoordinate} az      double       azimuth
          * el      double       altitude (informally, elevation)
          * 
          * <p>Notes: <ol>
@@ -19112,7 +19112,7 @@ namespace org.jastronomy.jsofa {
          * @param  {number} b        double  star's spherical coordinates (Note 3)
          * 
          * <!-- Returned: -->
-         * @return  {org.jastronomy.jsofa.JSOFA.TangentPointSolution} tangent point's spherical coordinate solutions
+         * @return  {JSOFA.TangentPointSolution} tangent point's spherical coordinate solutions
          * 
          * Returned (function value):
          * int     number of solutions:
@@ -19241,7 +19241,7 @@ namespace org.jastronomy.jsofa {
          * @param {double[]} v        double[3] star's direction cosines (Note 3)
          * 
          * <!-- Returned: -->
-         * @return       {org.jastronomy.jsofa.JSOFA.TangentPointDirectionCosines} tangent point's direction cosines, Solutions 1 &amp; 2
+         * @return       {JSOFA.TangentPointDirectionCosines} tangent point's direction cosines, Solutions 1 &amp; 2
          * int     number of solutions:
          * 0 = no solutions returned (Note 4)
          * 1 = only the first solution is useful (Note 5)
@@ -19365,7 +19365,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} b0     double  tangent point's spherical coordinates
          * 
          * <!-- Returned: -->
-         * @return     {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} star's spherical coordinates
+         * @return     {JSOFA.SphericalCoordinate} star's spherical coordinates
          * <ol>
          * <li> The tangent plane projection is also called the "gnomonic
          * projection" and the "central projection".
@@ -19520,7 +19520,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} b0     double  tangent point's spherical coordinates
          * 
          * <!-- Returned: -->
-         * @return  {org.jastronomy.jsofa.JSOFA.TangentPlaneCoordinate} rectangular coordinates of star image (Note 2)
+         * @return  {JSOFA.TangentPlaneCoordinate} rectangular coordinates of star image (Note 2)
          * int     status:  0 = OK
          * 1 = star too far from axis
          * 2 = antistar on tangent plane
@@ -19609,7 +19609,7 @@ namespace org.jastronomy.jsofa {
          * @param {double[]} v0        double[3]  direction cosines of tangent point (Note 4)
          * 
          * <!-- Returned: -->
-         * @return     {org.jastronomy.jsofa.JSOFA.TangentPlaneCoordinate} tangent plane coordinates of star
+         * @return     {JSOFA.TangentPlaneCoordinate} tangent plane coordinates of star
          * int        status: 0 = OK
          * 1 = star too far from axis
          * 2 = antistar on tangent plane
@@ -19723,7 +19723,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} v1950          double   radial velocity (km/s, +ve = moving away)
          * Returned:
          * 
-         * @return  {org.jastronomy.jsofa.JSOFA.CatalogCoords} - catalogue coordinates (all J2000.0, FK5)
+         * @return  {JSOFA.CatalogCoords} - catalogue coordinates (all J2000.0, FK5)
          * 
          * <p>Notes: <ol>
          * 
@@ -19865,7 +19865,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} d1950    double   B1950.0 FK4 Dec at epoch (rad)
          * @param {number} bepoch         double   Besselian epoch (e.g. 1979.3)
          * <!-- Returned: -->
-         * @return  {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} J2000.0 FK5 RA,Dec (rad)
+         * @return  {JSOFA.SphericalCoordinate} J2000.0 FK5 RA,Dec (rad)
          * <p>Notes: <ol>
          * 
          * <li> The epoch bepoch is strictly speaking Besselian, but if a
@@ -19964,7 +19964,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} p2000          double   parallax (arcsec)
          * @param {number} v2000          double   radial velocity (km/s, +ve = moving away)
          * 
-         * @return {org.jastronomy.jsofa.JSOFA.CatalogCoords} (all B1950.0, FK4)
+         * @return {JSOFA.CatalogCoords} (all B1950.0, FK4)
          * <p>Notes: <ol>
          * 
          * <li> The proper motions in RA are dRA/dt rather than cos(Dec)*dRA/dt,
@@ -20106,7 +20106,7 @@ namespace org.jastronomy.jsofa {
          * @param {number} r2000    double   J2000.0 FK5 RA (rad)
          * @param {number} d2000    double   J2000.0 FK5 Dec (rad)
          * @param {number} bepoch         double   Besselian epoch (e.g. 1950.0)
-         * @return    {org.jastronomy.jsofa.JSOFA.CatalogCoords} B1950.0 FK4 RA,Dec (rad) at epoch BEPOCH
+         * @return    {JSOFA.CatalogCoords} B1950.0 FK4 RA,Dec (rad) at epoch BEPOCH
          * 
          * <p>Notes: <ol>
          * 
@@ -20492,7 +20492,7 @@ namespace org.jastronomy.jsofa {
          * @param   {number} date2  double   ...Julian Date (Note 3)
          * 
          * <!-- Returned:-->
-         * @return   {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} ra,da  double*  ICRS astrometric RA,Dec (radians)
+         * @return   {JSOFA.SphericalCoordinate} ra,da  double*  ICRS astrometric RA,Dec (radians)
          * 
          * <p>Notes:
          * <ol>
@@ -20567,10 +20567,10 @@ namespace org.jastronomy.jsofa {
          * @param   {number} pd     double     Dec proper motion (radians/year)
          * @param   {number} px     double     parallax (arcsec)
          * @param   {number} rv     double     radial velocity (km/s, +ve if receding)
-         * @param   {org.jastronomy.jsofa.JSOFA.Astrom} astrom Astrom star-independent astrometry parameters:
+         * @param   {JSOFA.Astrom} astrom Astrom star-independent astrometry parameters:
          * 
          * <!-- Returned: -->
-         * @return  {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} ra,da  SphericalCoordinate    ICRS astrometric RA,Dec (radians)
+         * @return  {JSOFA.SphericalCoordinate} ra,da  SphericalCoordinate    ICRS astrometric RA,Dec (radians)
          * 
          * <p>Notes:
          * <ol>
@@ -20601,7 +20601,7 @@ namespace org.jastronomy.jsofa {
             return co;
         }
     }
-    JSOFA["__class"] = "org.jastronomy.jsofa.JSOFA";
+    JSOFA["__class"] = "JSOFA";
 
 
     export namespace JSOFA {
@@ -20622,7 +20622,7 @@ namespace org.jastronomy.jsofa {
                 this.delat = t;
             }
         }
-        LeapInfo["__class"] = "org.jastronomy.jsofa.JSOFA.LeapInfo";
+        LeapInfo["__class"] = "JSOFA.LeapInfo";
 
 
         /**
@@ -20674,7 +20674,7 @@ namespace org.jastronomy.jsofa {
             /**
              * {@inheritDoc}
              * overrides @see java.lang.Comparable#compareTo(java.lang.Object)
-             * @param {org.jastronomy.jsofa.JSOFA.JulianDate} o
+             * @param {JSOFA.JulianDate} o
              * @return {number}
              */
             public compareTo(o: JSOFA.JulianDate): number {
@@ -20709,7 +20709,7 @@ namespace org.jastronomy.jsofa {
             public equals(obj: any): boolean {
                 if (this === obj)return true;
                 if (obj == null)return false;
-                if (!(obj != null && obj instanceof <any>org.jastronomy.jsofa.JSOFA.JulianDate))return false;
+                if (!(obj != null && obj instanceof <any>JSOFA.JulianDate))return false;
                 const other: JSOFA.JulianDate = <JSOFA.JulianDate>obj;
                 if (/* doubleToLongBits */((f) => { let buf = new ArrayBuffer(4); (new Float32Array(buf))[0]=f; return (new Uint32Array(buf))[0]; })((<any>Math).fround(this.djm0)) !== /* doubleToLongBits */((f) => { let buf = new ArrayBuffer(4); (new Float32Array(buf))[0]=f; return (new Uint32Array(buf))[0]; })((<any>Math).fround(other.djm0)))return false;
                 if (/* doubleToLongBits */((f) => { let buf = new ArrayBuffer(4); (new Float32Array(buf))[0]=f; return (new Uint32Array(buf))[0]; })((<any>Math).fround(this.djm1)) !== /* doubleToLongBits */((f) => { let buf = new ArrayBuffer(4); (new Float32Array(buf))[0]=f; return (new Uint32Array(buf))[0]; })((<any>Math).fround(other.djm1)))return false;
@@ -20722,10 +20722,10 @@ namespace org.jastronomy.jsofa {
              * @return {string}
              */
             public toString(): string {
-                return "MJD=" + /* toString */(''+(this.djm0 + this.djm1 - org.jastronomy.jsofa.JSOFA.DJM0_$LI$()));
+                return "MJD=" + /* toString */(''+(this.djm0 + this.djm1 - JSOFA.DJM0_$LI$()));
             }
         }
-        JulianDate["__class"] = "org.jastronomy.jsofa.JSOFA.JulianDate";
+        JulianDate["__class"] = "JSOFA.JulianDate";
 
 
         /**
@@ -20757,7 +20757,7 @@ namespace org.jastronomy.jsofa {
                 if (this.dra === undefined) { this.dra = 0; }
             }
         }
-        FrameBias["__class"] = "org.jastronomy.jsofa.JSOFA.FrameBias";
+        FrameBias["__class"] = "JSOFA.FrameBias";
 
 
         /**
@@ -20783,7 +20783,7 @@ namespace org.jastronomy.jsofa {
                 this.y = y;
             }
         }
-        CelestialIntermediatePole["__class"] = "org.jastronomy.jsofa.JSOFA.CelestialIntermediatePole";
+        CelestialIntermediatePole["__class"] = "JSOFA.CelestialIntermediatePole";
 
 
         /**
@@ -20817,7 +20817,7 @@ namespace org.jastronomy.jsofa {
                 this.fd = fd;
             }
         }
-        Calendar["__class"] = "org.jastronomy.jsofa.JSOFA.Calendar";
+        Calendar["__class"] = "JSOFA.Calendar";
 
 
         /**
@@ -20851,7 +20851,7 @@ namespace org.jastronomy.jsofa {
                 this.ihmsf = hmsf;
             }
         }
-        CalendarHMS["__class"] = "org.jastronomy.jsofa.JSOFA.CalendarHMS";
+        CalendarHMS["__class"] = "JSOFA.CalendarHMS";
 
 
         export class TERM {
@@ -20870,7 +20870,7 @@ namespace org.jastronomy.jsofa {
                 this.c = c;
             }
         }
-        TERM["__class"] = "org.jastronomy.jsofa.JSOFA.TERM";
+        TERM["__class"] = "JSOFA.TERM";
 
 
         /**
@@ -20905,7 +20905,7 @@ namespace org.jastronomy.jsofa {
                 this.f = f;
             }
         }
-        ReferenceEllipsoid["__class"] = "org.jastronomy.jsofa.JSOFA.ReferenceEllipsoid";
+        ReferenceEllipsoid["__class"] = "JSOFA.ReferenceEllipsoid";
 
 
         export class SSB {
@@ -20930,7 +20930,7 @@ namespace org.jastronomy.jsofa {
             constructor() {
             }
         }
-        SSB["__class"] = "org.jastronomy.jsofa.JSOFA.SSB";
+        SSB["__class"] = "JSOFA.SSB";
 
 
         /**
@@ -20954,11 +20954,11 @@ namespace org.jastronomy.jsofa {
                 this.delta = delta;
             }
         }
-        SphericalCoordinate["__class"] = "org.jastronomy.jsofa.JSOFA.SphericalCoordinate";
+        SphericalCoordinate["__class"] = "JSOFA.SphericalCoordinate";
 
 
         /**
-         * @param {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} pos the spherical position.
+         * @param {JSOFA.SphericalCoordinate} pos the spherical position.
          * @param {number} eo the equation of thr origins.
          * @class
          * @author Paul Harrison (paul.harrison@manchester.ac.uk) 28 Mar 2014
@@ -20975,7 +20975,7 @@ namespace org.jastronomy.jsofa {
                 this.eo = eo;
             }
         }
-        SphericalCoordinateEO["__class"] = "org.jastronomy.jsofa.JSOFA.SphericalCoordinateEO";
+        SphericalCoordinateEO["__class"] = "JSOFA.SphericalCoordinateEO";
 
 
         /**
@@ -21013,7 +21013,7 @@ namespace org.jastronomy.jsofa {
                 this.height = height;
             }
         }
-        GeodeticCoord["__class"] = "org.jastronomy.jsofa.JSOFA.GeodeticCoord";
+        GeodeticCoord["__class"] = "JSOFA.GeodeticCoord";
 
 
         /**
@@ -21043,7 +21043,7 @@ namespace org.jastronomy.jsofa {
                 this.deps = deps;
             }
         }
-        NutationTerms["__class"] = "org.jastronomy.jsofa.JSOFA.NutationTerms";
+        NutationTerms["__class"] = "JSOFA.NutationTerms";
 
 
         export class NutationModel {
@@ -21094,7 +21094,7 @@ namespace org.jastronomy.jsofa {
                 this.se = se;
             }
         }
-        NutationModel["__class"] = "org.jastronomy.jsofa.JSOFA.NutationModel";
+        NutationModel["__class"] = "JSOFA.NutationModel";
 
 
         export class PlanetaryNutModel {
@@ -21169,7 +21169,7 @@ namespace org.jastronomy.jsofa {
                 this.ce = ce;
             }
         }
-        PlanetaryNutModel["__class"] = "org.jastronomy.jsofa.JSOFA.PlanetaryNutModel";
+        PlanetaryNutModel["__class"] = "JSOFA.PlanetaryNutModel";
 
 
         export class LSNutationModel {
@@ -21220,7 +21220,7 @@ namespace org.jastronomy.jsofa {
                 this.es = es;
             }
         }
-        LSNutationModel["__class"] = "org.jastronomy.jsofa.JSOFA.LSNutationModel";
+        LSNutationModel["__class"] = "JSOFA.LSNutationModel";
 
 
         export class NutationModel2 {
@@ -21263,7 +21263,7 @@ namespace org.jastronomy.jsofa {
                 this.cet = cet;
             }
         }
-        NutationModel2["__class"] = "org.jastronomy.jsofa.JSOFA.NutationModel2";
+        NutationModel2["__class"] = "JSOFA.NutationModel2";
 
 
         /**
@@ -21405,7 +21405,7 @@ namespace org.jastronomy.jsofa {
                 this.psi = psi;
             }
         }
-        PrecessionAngles["__class"] = "org.jastronomy.jsofa.JSOFA.PrecessionAngles";
+        PrecessionAngles["__class"] = "JSOFA.PrecessionAngles";
 
 
         /**
@@ -21443,7 +21443,7 @@ namespace org.jastronomy.jsofa {
                 this.r = r;
             }
         }
-        SphericalPosition["__class"] = "org.jastronomy.jsofa.JSOFA.SphericalPosition";
+        SphericalPosition["__class"] = "JSOFA.SphericalPosition";
 
 
         /**
@@ -21490,7 +21490,7 @@ namespace org.jastronomy.jsofa {
                 this.epsa = epsa;
             }
         }
-        FWPrecessionAngles["__class"] = "org.jastronomy.jsofa.JSOFA.FWPrecessionAngles";
+        FWPrecessionAngles["__class"] = "JSOFA.FWPrecessionAngles";
 
 
         /**
@@ -21514,7 +21514,7 @@ namespace org.jastronomy.jsofa {
                 this.u = u;
             }
         }
-        NormalizedVector["__class"] = "org.jastronomy.jsofa.JSOFA.NormalizedVector";
+        NormalizedVector["__class"] = "JSOFA.NormalizedVector";
 
 
         /**
@@ -21582,7 +21582,7 @@ namespace org.jastronomy.jsofa {
                 this.rbpn = rbpn;
             }
         }
-        PrecessionNutation["__class"] = "org.jastronomy.jsofa.JSOFA.PrecessionNutation";
+        PrecessionNutation["__class"] = "JSOFA.PrecessionNutation";
 
 
         /**
@@ -21612,7 +21612,7 @@ namespace org.jastronomy.jsofa {
                 this.depspr = depspr;
             }
         }
-        PrecessionDeltaTerms["__class"] = "org.jastronomy.jsofa.JSOFA.PrecessionDeltaTerms";
+        PrecessionDeltaTerms["__class"] = "JSOFA.PrecessionDeltaTerms";
 
 
         /**
@@ -21650,7 +21650,7 @@ namespace org.jastronomy.jsofa {
                 this.theta = theta;
             }
         }
-        EulerAngles["__class"] = "org.jastronomy.jsofa.JSOFA.EulerAngles";
+        EulerAngles["__class"] = "JSOFA.EulerAngles";
 
 
         /**
@@ -21678,7 +21678,7 @@ namespace org.jastronomy.jsofa {
                 this.vel = new JSOFA.SphericalPosition(td, pd, rd);
             }
         }
-        SphericalPositionVelocity["__class"] = "org.jastronomy.jsofa.JSOFA.SphericalPositionVelocity";
+        SphericalPositionVelocity["__class"] = "JSOFA.SphericalPositionVelocity";
 
 
         /**
@@ -21702,7 +21702,7 @@ namespace org.jastronomy.jsofa {
                 this.s = s;
             }
         }
-        PVModulus["__class"] = "org.jastronomy.jsofa.JSOFA.PVModulus";
+        PVModulus["__class"] = "JSOFA.PVModulus";
 
 
         /**
@@ -21750,7 +21750,7 @@ namespace org.jastronomy.jsofa {
                 this.rv = rv;
             }
         }
-        CatalogCoords["__class"] = "org.jastronomy.jsofa.JSOFA.CatalogCoords";
+        CatalogCoords["__class"] = "JSOFA.CatalogCoords";
 
 
         /**
@@ -21764,7 +21764,7 @@ namespace org.jastronomy.jsofa {
          * @author Paul Harrison (paul.harrison@manchester.ac.uk) 1 Feb 2010
          * 
          * @since AIDA Stage 1
-         * @param {org.jastronomy.jsofa.JSOFA.CelestialIntermediatePole} cip
+         * @param {JSOFA.CelestialIntermediatePole} cip
          * @param {number} s
          * @class
          */
@@ -21780,7 +21780,7 @@ namespace org.jastronomy.jsofa {
                 this.s = s;
             }
         }
-        ICRFrame["__class"] = "org.jastronomy.jsofa.JSOFA.ICRFrame";
+        ICRFrame["__class"] = "JSOFA.ICRFrame";
 
 
         /**
@@ -21894,7 +21894,7 @@ namespace org.jastronomy.jsofa {
                 if (this.refb === undefined) { this.refb = 0; }
             }
         }
-        Astrom["__class"] = "org.jastronomy.jsofa.JSOFA.Astrom";
+        Astrom["__class"] = "JSOFA.Astrom";
 
 
         /**
@@ -21925,7 +21925,7 @@ namespace org.jastronomy.jsofa {
                 this.pv = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             }
         }
-        Ldbody["__class"] = "org.jastronomy.jsofa.JSOFA.Ldbody";
+        Ldbody["__class"] = "JSOFA.Ldbody";
 
 
         /**
@@ -21988,11 +21988,11 @@ namespace org.jastronomy.jsofa {
                 this.rob = rob;
             }
         }
-        ObservedPosition["__class"] = "org.jastronomy.jsofa.JSOFA.ObservedPosition";
+        ObservedPosition["__class"] = "JSOFA.ObservedPosition";
 
 
         /**
-         * @param {org.jastronomy.jsofa.JSOFA.ObservedPosition} op the observed position.
+         * @param {JSOFA.ObservedPosition} op the observed position.
          * @param {number} eo the equation of the origins.
          * @class
          * @author Paul Harrison (paul.harrison@manchester.ac.uk) 29 Mar 2014
@@ -22020,7 +22020,7 @@ namespace org.jastronomy.jsofa {
                 this.eo = eo;
             }
         }
-        ObservedPositionEO["__class"] = "org.jastronomy.jsofa.JSOFA.ObservedPositionEO";
+        ObservedPositionEO["__class"] = "JSOFA.ObservedPositionEO";
 
 
         /**
@@ -22051,7 +22051,7 @@ namespace org.jastronomy.jsofa {
                 this.b = b;
             }
         }
-        RefCos["__class"] = "org.jastronomy.jsofa.JSOFA.RefCos";
+        RefCos["__class"] = "JSOFA.RefCos";
 
 
         /**
@@ -22075,7 +22075,7 @@ namespace org.jastronomy.jsofa {
                 this.dec = dec;
             }
         }
-        EquatorialCoordinate["__class"] = "org.jastronomy.jsofa.JSOFA.EquatorialCoordinate";
+        EquatorialCoordinate["__class"] = "JSOFA.EquatorialCoordinate";
 
 
         /**
@@ -22099,12 +22099,12 @@ namespace org.jastronomy.jsofa {
                 this.el = el;
             }
         }
-        HorizonCoordinate["__class"] = "org.jastronomy.jsofa.JSOFA.HorizonCoordinate";
+        HorizonCoordinate["__class"] = "JSOFA.HorizonCoordinate";
 
 
         /**
-         * @param {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} sol1
-         * @param {org.jastronomy.jsofa.JSOFA.SphericalCoordinate} sol2
+         * @param {JSOFA.SphericalCoordinate} sol1
+         * @param {JSOFA.SphericalCoordinate} sol2
          * @param {number} flag
          * @class
          * @author Paul Harrison (paul.harrison@manchester.ac.uk)
@@ -22120,7 +22120,7 @@ namespace org.jastronomy.jsofa {
             public nsolutions: number;
 
             public constructor(sol1?: any, sol2?: any, flag?: any) {
-                if (((sol1 != null && sol1 instanceof <any>org.jastronomy.jsofa.JSOFA.SphericalCoordinate) || sol1 === null) && ((sol2 != null && sol2 instanceof <any>org.jastronomy.jsofa.JSOFA.SphericalCoordinate) || sol2 === null) && ((typeof flag === 'number') || flag === null)) {
+                if (((sol1 != null && sol1 instanceof <any>JSOFA.SphericalCoordinate) || sol1 === null) && ((sol2 != null && sol2 instanceof <any>JSOFA.SphericalCoordinate) || sol2 === null) && ((typeof flag === 'number') || flag === null)) {
                     let __args = arguments;
                     if (this.sol1 === undefined) { this.sol1 = null; } 
                     if (this.sol2 === undefined) { this.sol2 = null; } 
@@ -22139,7 +22139,7 @@ namespace org.jastronomy.jsofa {
                 } else throw new Error('invalid overload');
             }
         }
-        TangentPointSolution["__class"] = "org.jastronomy.jsofa.JSOFA.TangentPointSolution";
+        TangentPointSolution["__class"] = "JSOFA.TangentPointSolution";
 
 
         /**
@@ -22177,7 +22177,7 @@ namespace org.jastronomy.jsofa {
                 } else throw new Error('invalid overload');
             }
         }
-        TangentPointDirectionCosines["__class"] = "org.jastronomy.jsofa.JSOFA.TangentPointDirectionCosines";
+        TangentPointDirectionCosines["__class"] = "JSOFA.TangentPointDirectionCosines";
 
 
         /**
@@ -22227,7 +22227,7 @@ namespace org.jastronomy.jsofa {
                 this.status = j;
             }
         }
-        TangentPlaneCoordinate["__class"] = "org.jastronomy.jsofa.JSOFA.TangentPlaneCoordinate";
+        TangentPlaneCoordinate["__class"] = "JSOFA.TangentPlaneCoordinate";
 
 
         export class Termlr {
@@ -22258,7 +22258,7 @@ namespace org.jastronomy.jsofa {
                 this.coefr = coefr;
             }
         }
-        Termlr["__class"] = "org.jastronomy.jsofa.JSOFA.Termlr";
+        Termlr["__class"] = "JSOFA.Termlr";
 
 
         export class Termb {
@@ -22285,7 +22285,7 @@ namespace org.jastronomy.jsofa {
                 this.coefb = coefb;
             }
         }
-        Termb["__class"] = "org.jastronomy.jsofa.JSOFA.Termb";
+        Termb["__class"] = "JSOFA.Termb";
 
 
         export class Ephemeris extends JSOFA.SSB {
@@ -22353,11 +22353,10 @@ namespace org.jastronomy.jsofa {
                 super();
             }
         }
-        Ephemeris["__class"] = "org.jastronomy.jsofa.JSOFA.Ephemeris";
+        Ephemeris["__class"] = "JSOFA.Ephemeris";
 
     }
 
-}
 
 
-org.jastronomy.jsofa.JSOFA.__static_initialize();
+JSOFA.__static_initialize();

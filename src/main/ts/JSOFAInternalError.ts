@@ -1,5 +1,5 @@
 /* Generated from Java with JSweet 3.1.0 - http://www.jsweet.org */
-namespace org.jastronomy.jsofa {
+ import { JSOFAException } from "./JSOFAException";
     /**
      * Exception signalling a internal error.
      * .
@@ -10,7 +10,7 @@ namespace org.jastronomy.jsofa {
      * @class
      * @extends org.jastronomy.jsofa.JSOFAException
      */
-    export class JSOFAInternalError extends org.jastronomy.jsofa.JSOFAException {
+    export class JSOFAInternalError extends JSOFAException {
         /**
          * Comment for <code>serialVersionUID</code>
          */
@@ -23,5 +23,4 @@ namespace org.jastronomy.jsofa {
     }
     JSOFAInternalError["__class"] = "org.jastronomy.jsofa.JSOFAInternalError";
 
-}
 
