@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json.schemastore.org/tsconfig",
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "declaration": true,
+    "sourceMap": true,
+    "experimentalDecorators": true,
+    "lib": [ "es6" ] ,  
+    "outDir": "./dist"
+  },
+  "include": [
+    "src/main/ts/**/*"
+  ]
+}

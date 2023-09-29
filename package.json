@@ -1,0 +1,46 @@
+{
+    "name": "jsofa",
+    "version": "20190722",
+    "type": "module",
+    "description": "a typescript transcription of the IAU SOFA library",
+    "author": "Paul Harrison <paul.harrison@manchester.ac.uk>",
+    "license": "MIT",
+    "private": false,
+    "scripts": {
+        "build": "tsc",
+        "test": "mocha --opts ./mocha.opts",
+        "eslint": "eslint ."
+    },
+    "main": "dist/JSOFA.js",
+    "types": "dist/JSOFA.d.ts",
+    "files": [
+        "/dist"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git@github.com:Javastro/jsofa.git"
+    },
+    "keywords": [
+        "Astrometry",
+        "Astronomy"
+    ],
+    "bugs": {
+        "url": "https://github.com/Javastro/jsofa/issues"
+    },
+    "homepage": "https://github.com/Javastro/jsofa#readme",
+    "devDependencies": {
+        "@testdeck/mocha": "^0.3.3",
+        "@types/mocha": "^10.0.2",
+        "@types/node": "^20.7.1",
+        "@typescript-eslint/eslint-plugin": "^6.7.2",
+        "@typescript-eslint/parser": "^6.7.2",
+        "eslint": "^8.49.0",
+        "eslint-plugin-import": "^2.28.1",
+        "eslint-plugin-jsdoc": "^46.8.1",
+        "eslint-plugin-prefer-arrow": "^1.2.3",
+        "mocha": "^10.2.0",
+        "ts-node": "^10.9.1",
+        "typescript": "^5.2.2"
+    },
+
+}

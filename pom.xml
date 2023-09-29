@@ -6,7 +6,7 @@
    <artifactId>jsofa</artifactId>
    <name>JSOFA</name>
    <packaging>jar</packaging>
-   <version>20210512</version>
+   <version>20210512b</version>
    <properties>
       <github.global.server>github</github.global.server>
       <github.global.oauth2Token>${env.GITHUB_OAUTH_TOKEN}</github.global.oauth2Token>
@@ -137,23 +137,24 @@
             </configuration>
          </plugin>
          <plugin>
-              <groupId>org.openclover</groupId>
-              <artifactId>clover-maven-plugin</artifactId>
-             <configuration>
-                 <targetPercentage>80%</targetPercentage>
-             </configuration> 
-             <executions>
-                <execution>
-                <phase>verify</phase>
-            <goals>
-              <goal>instrument</goal>
-              <goal>check</goal>
-            </goals>
-            <inherited>false</inherited>
+            <groupId>org.openclover</groupId>
+            <artifactId>clover-maven-plugin</artifactId>
             <configuration>
+               <targetPercentage>80%</targetPercentage>
             </configuration>
-          </execution>
-             </executions>
+            <executions>
+               <execution>
+                  <id>clover-instrument</id>
+                  <phase>verify</phase>
+                  <goals>
+                     <goal>instrument</goal>
+                     <goal>check</goal>
+                  </goals>
+                  <inherited>false</inherited>
+                  <configuration>
+                  </configuration>
+               </execution>
+            </executions>
          </plugin>
       </plugins>
       <extensions>
@@ -359,40 +360,51 @@
              </plugins>
          </build>
       </profile>
-      
+
       <profile>
-      <id>js</id>
-      <activation>
-      </activation>
-      <build>
-         <plugins>
-        <plugin>
-        <groupId>org.jsweet</groupId>
-        <artifactId>jsweet-maven-plugin</artifactId>
-        <version>3.0.0-RC1</version>
-        
-        <configuration>
-           <sourceMap>true</sourceMap>
-           <outDir>target/js</outDir>
-           <targetVersion>ES6</targetVersion>
-           <module>es2015</module>
-           <verbose>true</verbose>
-           <tsOnly>false</tsOnly> <!-- further transcription to js failing - though not tsc -->
-        </configuration>
-         <executions>
-            <execution>
-               <id>generate-js</id>
-               <phase>generate-sources</phase>
-               <goals>
-                  <goal>jsweet</goal>
-               </goals>
-            </execution>
-         </executions>
-      </plugin>
-         
-         </plugins>
-      </build>
-      
-    </profile>
+         <id>js</id>
+         <activation>
+         </activation>
+         <build>
+            <plugins>
+               <plugin>
+                  <groupId>org.jsweet</groupId>
+                  <artifactId>jsweet-maven-plugin</artifactId>
+                  <version>3.1.0</version>
+                  <configuration>
+                     <sourceMap>false</sourceMap>
+                     <tsOut>src/main/ts</tsOut>
+                     <targetVersion>ES6</targetVersion>
+                     <verbose>true</verbose>
+                     <declaration>true</declaration>
+                     <tsOnly>true</tsOnly> <!-- further transcription to js
+                     failing - though not tsc -->
+                  </configuration>
+                  <executions>
+                     <execution>
+                        <id>generate-js</id>
+                        <phase>test</phase>
+                        <goals>
+                           <goal>jsweet</goal>
+                        </goals>
+                     </execution>
+                  </executions>
+               </plugin>
+         <plugin>
+            <groupId>org.openclover</groupId> <!-- disable in this profile -->
+            <artifactId>clover-maven-plugin</artifactId>
+ 
+            <executions>
+               <execution>
+                  <id>clover-instrument</id>
+                  <phase>none</phase>
+               </execution>
+            </executions>
+         </plugin>
+
+            </plugins>
+         </build>
+
+      </profile>
    </profiles>
 </project>

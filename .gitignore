@@ -5,3 +5,7 @@
 /sofa_c-*
 /.DS_Store
 /sofa/
+/node_modules/
+/.idea/
+/.vscode/
+/dist/
