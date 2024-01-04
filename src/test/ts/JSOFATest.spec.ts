@@ -1,18 +1,15 @@
 /* Generated from Java with JSweet 3.1.0 - http://www.jsweet.org */
-
+import { BeforeEach, expect, Test, TestCase, TestSuite } from 'testyts';
 import {JSOFA} from "../../main/ts/JSOFA"
+import {JSOFAInternalError} from "../../main/ts/JSOFAInternalError";
+import {JSOFAIllegalParameter} from "../../main/ts/JSOFAIllegalParameter";
+import exp = require("node:constants");
 
-    export class JSOFATest {
+
+@TestSuite()
+export class JSOFATest {
         static verbose: boolean = false;
 
-        public static setUpBeforeClass() {
-        }
-
-        public setUp() {
-        }
-
-        public testversion() {
-        }
 
         /**
          * 
@@ -37,18 +34,10 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * @private
          */
         /*private*/ viv(ival: number, ivalok: number, func: string, test: string) {
-            if (ival !== ivalok){
-                console.error("%s failed: %s want %d got %d\n");
-            } else if (JSOFATest.verbose){
-                console.info("%s passed: %s want %d got %d\n");
-            }
-            return;
+
+            expect.toBeEqual(ivalok,ival);
         }
-        
-        aa(x:number, y:number):number[][]
-        {
-           
-        }
+
 
         /**
          * 
@@ -78,15 +67,21 @@ import {JSOFA} from "../../main/ts/JSOFA"
             let a: number;
             let f: number;
             a = val - valok;
-            f = Math.abs(valok / a);
-            const msg: string = javaemul.internal.StringHelper.format("%s: %s want %.20g got %.20g (1/%.3g)\n", func, test, valok, val, f);
-            if (JSOFATest.verbose && Math.abs(a) <= dval){
-                console.info("passed: " + msg);
-            }
-            return;
-        }
+            if(a != 0)
+            {
+                f = Math.abs(valok / a);
+                expect.toBeLessOrEqual(Math.abs(a), dval,  `${val} not equal to ${valok} at fractional level ${f}`)
 
-        public t_a2af() {
+            } else
+            {
+                expect.toBeEqual(val,valok);
+            }
+
+
+
+        }
+ @Test()
+ public t_a2af() {
             const idmsf: number[] = [0, 0, 0, 0];
             let s: string;
             s = JSOFA.jauA2af(4, 2.345, idmsf);
@@ -96,8 +91,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.viv(idmsf[2], 30, "jauA2af", "2");
             this.viv(idmsf[3], 9706, "jauA2af", "3");
         }
-
-        public t_a2tf() {
+ @Test()
+ public t_a2tf() {
             const ihmsf: number[] = [0, 0, 0, 0];
             let s: string;
             s = JSOFA.jauA2tf(4, -3.01234, ihmsf);
@@ -107,23 +102,25 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.viv(ihmsf[2], 22, "jauA2tf", "2");
             this.viv(ihmsf[3], 6484, "jauA2tf", "3");
         }
-
-        public t_anp() {
+ @Test()
+ public t_anp() {
             this.vvd(JSOFA.jauAnp(-0.1), 6.183185307179587, 1.0E-12, "jauAnp", "");
         }
-
-        public t_anpm() {
+ @Test()
+ public t_anpm() {
             this.vvd(JSOFA.jauAnpm(-4.0), 2.2831853071795867, 1.0E-12, "jauAnpm", "");
         }
-
-        public t_bi00() {
+ @Test()
+ public t_bi00() {
             const ret: JSOFA.FrameBias = JSOFA.jauBi00();
             this.vvd(ret.dpsibi, -2.0253091528350866E-7, 1.0E-12, "jauBi00", "dpsibi");
             this.vvd(ret.depsbi, -3.3060414542221477E-8, 1.0E-12, "jauBi00", "depsbi");
             this.vvd(ret.dra, -7.078279744199226E-8, 1.0E-12, "jauBi00", "dra");
         }
 
-        public t_bp00() {
+
+            @Test()
+ public t_bp00() {
             const rb: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const rp: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const rbp: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
@@ -156,8 +153,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rbp[2][1], -1.925857585832024E-7, 1.0E-14, "jauBp00", "rbp32");
             this.vvd(rbp[2][2], 0.9999999285680153, 1.0E-12, "jauBp00", "rbp33");
         }
-
-        public t_bp06() {
+ @Test()
+ public t_bp06() {
             const rb: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const rp: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const rbp: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
@@ -190,8 +187,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rbp[2][1], -1.924880847894457E-7, 1.0E-14, "jauBp06", "rbp32");
             this.vvd(rbp[2][2], 0.9999999285679972, 1.0E-12, "jauBp06", "rbp33");
         }
-
-        public t_bpn2xy() {
+ @Test()
+ public t_bpn2xy() {
             const rbpn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rbpn[0][0] = 0.9999962358680738;
             rbpn[0][1] = -0.002516417057665452;
@@ -206,8 +203,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(ret.x, 0.001093465510215479, 1.0E-12, "jauBpn2xy", "x");
             this.vvd(ret.y, -4.281337229063151E-5, 1.0E-12, "jauBpn2xy", "y");
         }
-
-        public t_c2i00a() {
+ @Test()
+ public t_c2i00a() {
             let rc2i: number[][];
             rc2i = JSOFA.jauC2i00a(2400000.5, 53736.0);
             this.vvd(rc2i[0][0], 0.9999998323037166, 1.0E-12, "jauC2i00a", "11");
@@ -220,8 +217,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rc2i[2][1], 4.0205956615915E-5, 1.0E-12, "jauC2i00a", "32");
             this.vvd(rc2i[2][2], 0.9999998314954572, 1.0E-12, "jauC2i00a", "33");
         }
-
-        public t_c2i00b() {
+ @Test()
+ public t_c2i00b() {
             let rc2i: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rc2i = JSOFA.jauC2i00b(2400000.5, 53736.0);
             this.vvd(rc2i[0][0], 0.9999998323040954, 1.0E-12, "jauC2i00b", "11");
@@ -234,8 +231,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rc2i[2][1], 4.0205536813737205E-5, 1.0E-12, "jauC2i00b", "32");
             this.vvd(rc2i[2][2], 0.999999831495853, 1.0E-12, "jauC2i00b", "33");
         }
-
-        public t_c2i06a() {
+ @Test()
+ public t_c2i06a() {
             let rc2i: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rc2i = JSOFA.jauC2i06a(2400000.5, 53736.0);
             this.vvd(rc2i[0][0], 0.9999998323037159, 1.0E-12, "jauC2i06a", "11");
@@ -248,8 +245,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rc2i[2][1], 4.0205800994540205E-5, 1.0E-12, "jauC2i06a", "32");
             this.vvd(rc2i[2][2], 0.9999998314954629, 1.0E-12, "jauC2i06a", "33");
         }
-
-        public t_c2ibpn() {
+ @Test()
+ public t_c2ibpn() {
             const rbpn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             let rc2i: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rbpn[0][0] = 0.9999962358680738;
@@ -272,8 +269,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rc2i[2][1], -4.281337229063151E-5, 1.0E-12, "jauC2ibpn", "32");
             this.vvd(rc2i[2][2], 0.9999994012499173, 1.0E-12, "jauC2ibpn", "33");
         }
-
-        public t_c2ixy() {
+ @Test()
+ public t_c2ixy() {
             let x: number;
             let y: number;
             let rc2i: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
@@ -290,8 +287,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rc2i[2][1], 4.020579816732961E-5, 1.0E-12, "jauC2ixy", "32");
             this.vvd(rc2i[2][2], 0.9999998314954628, 1.0E-12, "jauC2ixy", "33");
         }
-
-        public t_c2ixys() {
+ @Test()
+ public t_c2ixys() {
             let x: number;
             let y: number;
             let s: number;
@@ -310,8 +307,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rc2i[2][1], 4.020579816732961E-5, 1.0E-12, "jauC2ixys", "32");
             this.vvd(rc2i[2][2], 0.9999998314954628, 1.0E-12, "jauC2ixys", "33");
         }
-
-        public t_c2s() {
+ @Test()
+ public t_c2s() {
             const p: number[] = [0, 0, 0];
             p[0] = 100.0;
             p[1] = -50.0;
@@ -320,8 +317,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(ret.alpha, -0.4636476090008061, 1.0E-14, "jauC2s", "theta");
             this.vvd(ret.delta, 0.21998797739545944, 1.0E-14, "jauC2s", "phi");
         }
-
-        public t_c2t00a() {
+ @Test()
+ public t_c2t00a() {
             let tta: number;
             let ttb: number;
             let uta: number;
@@ -346,8 +343,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rc2t[2][1], 3.9618323917701634E-5, 1.0E-12, "jauC2t00a", "32");
             this.vvd(rc2t[2][2], 0.9999998325501692, 1.0E-12, "jauC2t00a", "33");
         }
-
-        public t_c2t00b() {
+ @Test()
+ public t_c2t00b() {
             let tta: number;
             let ttb: number;
             let uta: number;
@@ -372,8 +369,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rc2t[2][1], 3.961790411549945E-5, 1.0E-12, "jauC2t00b", "32");
             this.vvd(rc2t[2][2], 0.9999998325505636, 1.0E-12, "jauC2t00b", "33");
         }
-
-        public t_c2t06a() {
+ @Test()
+ public t_c2t06a() {
             let tta: number;
             let ttb: number;
             let uta: number;
@@ -398,8 +395,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rc2t[2][1], 3.9618168296326906E-5, 1.0E-12, "jauC2t06a", "32");
             this.vvd(rc2t[2][2], 0.9999998325501748, 1.0E-12, "jauC2t06a", "33");
         }
-
-        public t_c2tcio() {
+ @Test()
+ public t_c2tcio() {
             const rc2i: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             let era: number;
             const rpom: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
@@ -434,8 +431,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rc2t[2][1], 3.961832391772659E-5, 1.0E-12, "jauC2tcio", "32");
             this.vvd(rc2t[2][2], 0.9999998325501692, 1.0E-12, "jauC2tcio", "33");
         }
-
-        public t_c2teqx() {
+ @Test()
+ public t_c2teqx() {
             const rbpn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             let gst: number;
             const rpom: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
@@ -470,8 +467,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rc2t[2][1], 3.961832391768641E-5, 1.0E-12, "jauC2teqx", "32");
             this.vvd(rc2t[2][2], 0.9999998325501692, 1.0E-12, "jauC2teqx", "33");
         }
-
-        public t_c2tpe() {
+ @Test()
+ public t_c2tpe() {
             let tta: number;
             let ttb: number;
             let uta: number;
@@ -500,8 +497,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rc2t[2][1], 0.3977631855605079, 1.0E-12, "jauC2tpe", "32");
             this.vvd(rc2t[2][2], 0.9174875068792735, 1.0E-12, "jauC2tpe", "33");
         }
-
-        public t_c2txy() {
+ @Test()
+ public t_c2txy() {
             let tta: number;
             let ttb: number;
             let uta: number;
@@ -530,8 +527,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rc2t[2][1], 3.9618165469116246E-5, 1.0E-12, "jauC2txy", "32");
             this.vvd(rc2t[2][2], 0.9999998325501747, 1.0E-12, "jauC2txy", "33");
         }
-
-        public t_cal2jd() {
+ @Test()
+ public t_cal2jd() {
             try {
                 const jd: JSOFA.JulianDate = JSOFA.jauCal2jd(2003, 6, 1);
                 this.vvd(jd.djm0, 2400000.5, 0.0, "jauCal2jd", "djm0");
@@ -539,8 +536,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             } catch(e) {
             }
         }
-
-        public t_cp() {
+ @Test()
+ public t_cp() {
             const p: number[] = [0, 0, 0];
             const c: number[] = [0, 0, 0];
             p[0] = 0.3;
@@ -551,8 +548,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(c[1], 1.2, 0.0, "jauCp", "2");
             this.vvd(c[2], -2.5, 0.0, "jauCp", "3");
         }
-
-        public t_cpv() {
+ @Test()
+ public t_cpv() {
             const pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             const c: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             pv[0][0] = 0.3;
@@ -569,8 +566,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(c[1][1], 3.1, 0.0, "jauCpv", "v2");
             this.vvd(c[1][2], 0.9, 0.0, "jauCpv", "v3");
         }
-
-        public t_cr() {
+ @Test()
+ public t_cr() {
             const r: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const c: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             r[0][0] = 2.0;
@@ -593,8 +590,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(c[2][1], 4.0, 0.0, "jauCr", "32");
             this.vvd(c[2][2], 5.0, 0.0, "jauCr", "33");
         }
-
-        public t_d2tf() {
+ @Test()
+ public t_d2tf() {
             const ihmsf: number[] = [0, 0, 0, 0];
             let s: string;
             s = JSOFA.jauD2tf(4, -0.987654321, ihmsf);
@@ -604,8 +601,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.viv(ihmsf[2], 13, "jauD2tf", "2");
             this.viv(ihmsf[3], 3333, "jauD2tf", "3");
         }
-
-        public t_dat() {
+ @Test()
+ public t_dat() {
             let deltat: number;
             const nls: number = JSOFA.leapSeconds_$LI$().length;
             this.viv(nls, 42, "jauDat", "number of leap second entries");
@@ -627,14 +624,14 @@ import {JSOFA} from "../../main/ts/JSOFA"
             } catch(e) {
             }
         }
-
-        public t_dtdb() {
+ @Test()
+ public t_dtdb() {
             let dtdb: number;
             dtdb = JSOFA.jauDtdb(2448939.5, 0.123, 0.76543, 5.0123, 5525.242, 3190.0);
             this.vvd(dtdb, -0.001280368005936999, 1.0E-15, "jauDtdb", "");
         }
-
-        public t_ee00() {
+ @Test()
+ public t_ee00() {
             let epsa: number;
             let dpsi: number;
             let ee: number;
@@ -643,32 +640,32 @@ import {JSOFA} from "../../main/ts/JSOFA"
             ee = JSOFA.jauEe00(2400000.5, 53736.0, epsa, dpsi);
             this.vvd(ee, -8.834193235367966E-6, 1.0E-18, "jauEe00", "");
         }
-
-        public t_ee00a() {
+ @Test()
+ public t_ee00a() {
             let ee: number;
             ee = JSOFA.jauEe00a(2400000.5, 53736.0);
             this.vvd(ee, -8.834192459222587E-6, 1.0E-18, "jauEe00a", "");
         }
-
-        public t_ee00b() {
+ @Test()
+ public t_ee00b() {
             let ee: number;
             ee = JSOFA.jauEe00b(2400000.5, 53736.0);
             this.vvd(ee, -8.835700060003032E-6, 1.0E-18, "jauEe00b", "");
         }
-
-        public t_ee06a() {
+ @Test()
+ public t_ee06a() {
             let ee: number;
             ee = JSOFA.jauEe06a(2400000.5, 53736.0);
             this.vvd(ee, -8.83419507204379E-6, 1.0E-15, "jauEe06a", "");
         }
-
-        public t_eect00() {
+ @Test()
+ public t_eect00() {
             let eect: number;
             eect = JSOFA.jauEect00(2400000.5, 53736.0);
             this.vvd(eect, 2.046085004885125E-9, 1.0E-20, "jauEect00", "");
         }
-
-        public t_eform() {
+ @Test()
+ public t_eform() {
             let ef: JSOFA.ReferenceEllipsoid;
             try {
                 ef = JSOFA.jauEform(0);
@@ -691,14 +688,14 @@ import {JSOFA} from "../../main/ts/JSOFA"
             } catch(e) {
             }
         }
-
-        public t_eo06a() {
+ @Test()
+ public t_eo06a() {
             let eo: number;
             eo = JSOFA.jauEo06a(2400000.5, 53736.0);
             this.vvd(eo, -0.0013328823719418337, 1.0E-15, "jauEo06a", "");
         }
-
-        public t_eors() {
+ @Test()
+ public t_eors() {
             const rnpb: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             let s: number;
             let eo: number;
@@ -715,36 +712,36 @@ import {JSOFA} from "../../main/ts/JSOFA"
             eo = JSOFA.jauEors(rnpb, s);
             this.vvd(eo, -0.0013328827151307446, 1.0E-14, "jauEors", "");
         }
-
-        public t_epb() {
+ @Test()
+ public t_epb() {
             let epb: number;
             epb = JSOFA.jauEpb(2415019.8135, 30103.18648);
             this.vvd(epb, 1982.4184241592786, 1.0E-12, "jauEpb", "");
         }
-
-        public t_epb2jd() {
+ @Test()
+ public t_epb2jd() {
             let epb: number;
             epb = 1957.3;
             const jd: JSOFA.JulianDate = JSOFA.jauEpb2jd(epb);
             this.vvd(jd.djm0, 2400000.5, 1.0E-9, "jauEpb2jd", "djm0");
             this.vvd(jd.djm1, 35948.1915101513, 1.0E-9, "jauEpb2jd", "mjd");
         }
-
-        public t_epj() {
+ @Test()
+ public t_epj() {
             let epj: number;
             epj = JSOFA.jauEpj(2451545, -7392.5);
             this.vvd(epj, 1979.7604380561258, 1.0E-12, "jauEpj", "");
         }
-
-        public t_epj2jd() {
+ @Test()
+ public t_epj2jd() {
             let epj: number;
             epj = 1996.8;
             const jd: JSOFA.JulianDate = JSOFA.jauEpj2jd(epj);
             this.vvd(jd.djm0, 2400000.5, 1.0E-9, "jauEpj2jd", "djm0");
             this.vvd(jd.djm1, 50375.7, 1.0E-9, "jauEpj2jd", "mjd");
         }
-
-        public t_epv00() {
+ @Test()
+ public t_epv00() {
             const pvh: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             const pvb: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             const j: number = JSOFA.jauEpv00(2400000.5, 53411.52501161, pvh, pvb);
@@ -762,76 +759,76 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pvb[1][2], -0.0054047731809662315, 1.0E-15, "jauEpv00", "vb(z)");
             this.viv(j, 0, "jauEpv00", "j");
         }
-
-        public t_eqeq94() {
+ @Test()
+ public t_eqeq94() {
             let eqeq: number;
             eqeq = JSOFA.jauEqeq94(2400000.5, 41234.0);
             this.vvd(eqeq, 5.357758254609257E-5, 1.0E-17, "jauEqeq94", "");
         }
-
-        public t_era00() {
+ @Test()
+ public t_era00() {
             let era00: number;
             era00 = JSOFA.jauEra00(2400000.5, 54388.0);
             this.vvd(era00, 0.4022837240028158, 1.0E-12, "jauEra00", "");
         }
-
-        public t_fad03() {
+ @Test()
+ public t_fad03() {
             this.vvd(JSOFA.jauFad03(0.8), 1.9467092053969257, 1.0E-12, "jauFad03", "");
         }
-
-        public t_fae03() {
+ @Test()
+ public t_fae03() {
             this.vvd(JSOFA.jauFae03(0.8), 1.7447137389130818, 1.0E-12, "jauFae03", "");
         }
-
-        public t_faf03() {
+ @Test()
+ public t_faf03() {
             this.vvd(JSOFA.jauFaf03(0.8), 0.25977113667454993, 1.0E-12, "jauFaf03", "");
         }
-
-        public t_faju03() {
+ @Test()
+ public t_faju03() {
             this.vvd(JSOFA.jauFaju03(0.8), 5.275711665202481, 1.0E-12, "jauFaju03", "");
         }
-
-        public t_fal03() {
+ @Test()
+ public t_fal03() {
             this.vvd(JSOFA.jauFal03(0.8), 5.132369751108684, 1.0E-12, "jauFal03", "");
         }
-
-        public t_falp03() {
+ @Test()
+ public t_falp03() {
             this.vvd(JSOFA.jauFalp03(0.8), 6.226797973505508, 1.0E-12, "jauFalp03", "");
         }
-
-        public t_fama03() {
+ @Test()
+ public t_fama03() {
             this.vvd(JSOFA.jauFama03(0.8), 3.2755068402777816, 1.0E-12, "jauFama03", "");
         }
-
-        public t_fame03() {
+ @Test()
+ public t_fame03() {
             this.vvd(JSOFA.jauFame03(0.8), 5.417338184297289, 1.0E-12, "jauFame03", "");
         }
-
-        public t_fane03() {
+ @Test()
+ public t_fane03() {
             this.vvd(JSOFA.jauFane03(0.8), 2.0793438308604135, 1.0E-12, "jauFane03", "");
         }
-
-        public t_faom03() {
+ @Test()
+ public t_faom03() {
             this.vvd(JSOFA.jauFaom03(0.8), -5.973618440951302, 1.0E-12, "jauFaom03", "");
         }
-
-        public t_fapa03() {
+ @Test()
+ public t_fapa03() {
             this.vvd(JSOFA.jauFapa03(0.8), 0.0195088476224, 1.0E-12, "jauFapa03", "");
         }
-
-        public t_fasa03() {
+ @Test()
+ public t_fasa03() {
             this.vvd(JSOFA.jauFasa03(0.8), 5.371574539440827, 1.0E-12, "jauFasa03", "");
         }
-
-        public t_faur03() {
+ @Test()
+ public t_faur03() {
             this.vvd(JSOFA.jauFaur03(0.8), 5.180636450180414, 1.0E-12, "jauFaur03", "");
         }
-
-        public t_fave03() {
+ @Test()
+ public t_fave03() {
             this.vvd(JSOFA.jauFave03(0.8), 3.424900460533758, 1.0E-12, "jauFave03", "");
         }
-
-        public t_fk52h() {
+ @Test()
+ public t_fk52h() {
             let r5: number;
             let d5: number;
             let dr5: number;
@@ -852,8 +849,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(cat.px, 0.37921, 1.0E-14, "jauFk52h", "px");
             this.vvd(cat.rv, -7.600000094000025, 1.0E-11, "jauFk52h", "rv");
         }
-
-        public t_fk5hip() {
+ @Test()
+ public t_fk5hip() {
             const r5h: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const s5h: number[] = [0, 0, 0];
             JSOFA.jauFk5hip(r5h, s5h);
@@ -870,8 +867,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(s5h[1], 2.908882086657216E-9, 1.0E-17, "jauFk5hip", "s2");
             this.vvd(s5h[2], 3.393695767766752E-9, 1.0E-17, "jauFk5hip", "s3");
         }
-
-        public t_fk5hz() {
+ @Test()
+ public t_fk5hz() {
             let r5: number;
             let d5: number;
             r5 = 1.76779433;
@@ -880,8 +877,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pos.alpha, 1.767794191464424, 1.0E-12, "jauFk5hz", "ra");
             this.vvd(pos.delta, -0.29175160016798846, 1.0E-12, "jauFk5hz", "dec");
         }
-
-        public t_fw2m() {
+ @Test()
+ public t_fw2m() {
             let gamb: number;
             let phib: number;
             let psi: number;
@@ -902,8 +899,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(r[2][1], -1.9248808480876157E-7, 1.0E-12, "jauFw2m", "32");
             this.vvd(r[2][2], 0.9999999285679972, 1.0E-12, "jauFw2m", "33");
         }
-
-        public t_fw2xy() {
+ @Test()
+ public t_fw2xy() {
             let gamb: number;
             let phib: number;
             let psi: number;
@@ -916,8 +913,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(cip.x, -3.7797349570340826E-4, 1.0E-14, "jauFw2xy", "x");
             this.vvd(cip.y, -1.9248808480876157E-7, 1.0E-14, "jauFw2xy", "y");
         }
-
-        public t_gc2gd() {
+ @Test()
+ public t_gc2gd() {
             const xyz: number[] = [2000000.0, 3000000.0, 5244000.0];
             let geo: JSOFA.GeodeticCoord;
             try {
@@ -944,8 +941,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             } catch(e1) {
             }
         }
-
-        public t_gc2gde() {
+ @Test()
+ public t_gc2gde() {
             const a: number = 6378136.0;
             const f: number = 0.0033528;
             const xyz: number[] = [2000000.0, 3000000.0, 5244000.0];
@@ -957,8 +954,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             } catch(e1) {
             }
         }
-
-        public t_gd2gc() {
+ @Test()
+ public t_gd2gc() {
             const e: number = 3.1;
             const p: number = -0.5;
             const h: number = 2500.0;
@@ -1003,8 +1000,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
                 }
             }
         }
-
-        public t_gd2gce() {
+ @Test()
+ public t_gd2gce() {
             const a: number = 6378136.0;
             const f: number = 0.0033528;
             const e: number = 3.1;
@@ -1016,38 +1013,38 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(xyz[1], 233011.63514630572, 1.0E-7, "jauGd2gce", "1");
             this.vvd(xyz[2], -3040909.051731413, 1.0E-7, "jauGd2gce", "2");
         }
-
-        public t_gmst00() {
+ @Test()
+ public t_gmst00() {
             let theta: number;
             theta = JSOFA.jauGmst00(2400000.5, 53736.0, 2400000.5, 53736.0);
             this.vvd(theta, 1.7541749722107407, 1.0E-12, "jauGmst00", "");
         }
-
-        public t_gmst06() {
+ @Test()
+ public t_gmst06() {
             let theta: number;
             theta = JSOFA.jauGmst06(2400000.5, 53736.0, 2400000.5, 53736.0);
             this.vvd(theta, 1.7541749718700912, 1.0E-12, "jauGmst06", "");
         }
-
-        public t_gmst82() {
+ @Test()
+ public t_gmst82() {
             let theta: number;
             theta = JSOFA.jauGmst82(2400000.5, 53736.0);
             this.vvd(theta, 1.754174981860675, 1.0E-12, "jauGmst82", "");
         }
-
-        public t_gst00a() {
+ @Test()
+ public t_gst00a() {
             let theta: number;
             theta = JSOFA.jauGst00a(2400000.5, 53736.0, 2400000.5, 53736.0);
             this.vvd(theta, 1.7541661380182814, 1.0E-12, "jauGst00a", "");
         }
-
-        public t_gst00b() {
+ @Test()
+ public t_gst00b() {
             let theta: number;
             theta = JSOFA.jauGst00b(2400000.5, 53736.0);
             this.vvd(theta, 1.7541661365106807, 1.0E-12, "jauGst00b", "");
         }
-
-        public t_gst06() {
+ @Test()
+ public t_gst06() {
             const rnpb: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             let theta: number;
             rnpb[0][0] = 0.9999989440476104;
@@ -1062,20 +1059,20 @@ import {JSOFA} from "../../main/ts/JSOFA"
             theta = JSOFA.jauGst06(2400000.5, 53736.0, 2400000.5, 53736.0, rnpb);
             this.vvd(theta, 1.7541661380181677, 1.0E-12, "jauGst06", "");
         }
-
-        public t_gst06a() {
+ @Test()
+ public t_gst06a() {
             let theta: number;
             theta = JSOFA.jauGst06a(2400000.5, 53736.0, 2400000.5, 53736.0);
             this.vvd(theta, 1.754166137675019, 1.0E-12, "jauGst06a", "");
         }
-
-        public t_gst94() {
+ @Test()
+ public t_gst94() {
             let theta: number;
             theta = JSOFA.jauGst94(2400000.5, 53736.0);
             this.vvd(theta, 1.7541661360206453, 1.0E-12, "jauGst94", "");
         }
-
-        public t_h2fk5() {
+ @Test()
+ public t_h2fk5() {
             let rh: number;
             let dh: number;
             let drh: number;
@@ -1096,8 +1093,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(cat.px, 0.37921, 1.0E-13, "jauH2fk5", "px");
             this.vvd(cat.rv, -7.600000130907112, 2.0E-11, "jauH2fk5", "rv");
         }
-
-        public t_hfk5z() {
+ @Test()
+ public t_hfk5z() {
             let rh: number;
             let dh: number;
             rh = 1.767794352;
@@ -1108,8 +1105,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(cat.pm.alpha, 4.335890983539243E-9, 1.0E-22, "jauHfk5z", "dr5");
             this.vvd(cat.pm.delta, -8.569648841237746E-10, 1.0E-23, "jauHfk5z", "dd5");
         }
-
-        public t_ir() {
+ @Test()
+ public t_ir() {
             const r: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             r[0][0] = 2.0;
             r[0][1] = 3.0;
@@ -1131,8 +1128,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(r[2][1], 0.0, 0.0, "jauIr", "32");
             this.vvd(r[2][2], 1.0, 0.0, "jauIr", "33");
         }
-
-        public t_jd2cal() {
+ @Test()
+ public t_jd2cal() {
             let dj1: number;
             let dj2: number;
             dj1 = 2400000.5;
@@ -1143,8 +1140,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.viv(cal.id, 10, "jauJd2cal", "d");
             this.vvd(cal.fd, 0.9999, 1.0E-7, "jauJd2cal", "fd");
         }
-
-        public t_jdcalf() {
+ @Test()
+ public t_jdcalf() {
             let dj1: number;
             let dj2: number;
             const iydmf: number[] = [0, 0, 0, 0];
@@ -1158,8 +1155,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.viv(iydmf[3], 9999, "jauJdcalf", "f");
             this.viv(j, 0, "jauJdcalf", "j");
         }
-
-        public t_num00a() {
+ @Test()
+ public t_num00a() {
             let rmatn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rmatn = JSOFA.jauNum00a(2400000.5, 53736.0);
             this.vvd(rmatn[0][0], 0.9999999999536228, 1.0E-12, "jauNum00a", "11");
@@ -1172,8 +1169,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rmatn[2][1], 4.063237480216292E-5, 1.0E-12, "jauNum00a", "32");
             this.vvd(rmatn[2][2], 0.9999999991671661, 1.0E-12, "jauNum00a", "33");
         }
-
-        public t_num00b() {
+ @Test()
+ public t_num00b() {
             let rmatn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rmatn = JSOFA.jauNum00b(2400000.5, 53736);
             this.vvd(rmatn[0][0], 0.999999999953607, 1.0E-12, "jauNum00b", "11");
@@ -1186,8 +1183,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rmatn[2][1], 4.063195412258168E-5, 1.0E-12, "jauNum00b", "32");
             this.vvd(rmatn[2][2], 0.9999999991671806, 1.0E-12, "jauNum00b", "33");
         }
-
-        public t_num06a() {
+ @Test()
+ public t_num06a() {
             let rmatn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rmatn = JSOFA.jauNum06a(2400000.5, 53736);
             this.vvd(rmatn[0][0], 0.9999999999536228, 1.0E-12, "jauNum06a", "11");
@@ -1200,8 +1197,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rmatn[2][1], 4.0632368031014796E-5, 1.0E-12, "jauNum06a", "32");
             this.vvd(rmatn[2][2], 0.9999999991671663, 1.0E-12, "jauNum06a", "33");
         }
-
-        public t_numat() {
+ @Test()
+ public t_numat() {
             let epsa: number;
             let dpsi: number;
             let deps: number;
@@ -1220,32 +1217,32 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rmatn[2][1], 4.063237480216934E-5, 1.0E-12, "jauNumat", "32");
             this.vvd(rmatn[2][2], 0.9999999991671661, 1.0E-12, "jauNumat", "33");
         }
-
-        public t_nut00a() {
+ @Test()
+ public t_nut00a() {
             const nut: JSOFA.NutationTerms = JSOFA.jauNut00a(2400000.5, 53736.0);
             this.vvd(nut.dpsi, -9.630909107115518E-6, 1.0E-13, "jauNut00a", "dpsi");
             this.vvd(nut.deps, 4.063239174001679E-5, 1.0E-13, "jauNut00a", "deps");
         }
-
-        public t_nut00b() {
+ @Test()
+ public t_nut00b() {
             const nut: JSOFA.NutationTerms = JSOFA.jauNut00b(2400000.5, 53736.0);
             this.vvd(nut.dpsi, -9.632552291148363E-6, 1.0E-13, "jauNut00b", "dpsi");
             this.vvd(nut.deps, 4.063197106621159E-5, 1.0E-13, "jauNut00b", "deps");
         }
-
-        public t_nut06a() {
+ @Test()
+ public t_nut06a() {
             const nut: JSOFA.NutationTerms = JSOFA.jauNut06a(2400000.5, 53736.0);
             this.vvd(nut.dpsi, -9.63091202582031E-6, 1.0E-13, "jauNut06a", "dpsi");
             this.vvd(nut.deps, 4.06323849688725E-5, 1.0E-13, "jauNut06a", "deps");
         }
-
-        public t_nut80() {
+ @Test()
+ public t_nut80() {
             const nut: JSOFA.NutationTerms = JSOFA.jauNut80(2400000.5, 53736.0);
             this.vvd(nut.dpsi, -9.643658353226563E-6, 1.0E-13, "jauNut80", "dpsi");
             this.vvd(nut.deps, 4.060051006879713E-5, 1.0E-13, "jauNut80", "deps");
         }
-
-        public t_nutm80() {
+ @Test()
+ public t_nutm80() {
             let rmatn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rmatn = JSOFA.jauNutm80(2400000.5, 53736.0);
             this.vvd(rmatn[0][0], 0.9999999999535, 1.0E-12, "jauNutm80", "11");
@@ -1258,18 +1255,18 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rmatn[2][1], 4.0600493086126384E-5, 1.0E-12, "jauNutm80", "32");
             this.vvd(rmatn[2][2], 0.9999999991684415, 1.0E-12, "jauNutm80", "33");
         }
-
-        public t_obl06() {
+ @Test()
+ public t_obl06() {
             this.vvd(JSOFA.jauObl06(2400000.5, 54388.0), 0.4090749229387258, 1.0E-14, "jauObl06", "");
         }
-
-        public t_obl80() {
+ @Test()
+ public t_obl80() {
             let eps0: number;
             eps0 = JSOFA.jauObl80(2400000.5, 54388.0);
             this.vvd(eps0, 0.4090751347643816, 1.0E-14, "jauObl80", "");
         }
-
-        public t_p06e() {
+ @Test()
+ public t_p06e() {
             const pa: JSOFA.PrecessionAngles = JSOFA.jauP06e(2400000.5, 52541.0);
             this.vvd(pa.eps0, 0.4090926006005829, 1.0E-14, "jauP06e", "eps0");
             this.vvd(pa.psia, 6.664369630191613E-4, 1.0E-14, "jauP06e", "psia");
@@ -1288,8 +1285,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pa.phi, 0.40908640908374627, 1.0E-14, "jauP06e", "phi");
             this.vvd(pa.psi, 6.664464807480921E-4, 1.0E-14, "jauP06e", "psi");
         }
-
-        public t_p2pv() {
+ @Test()
+ public t_p2pv() {
             const p: number[] = [0, 0, 0];
             let pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             p[0] = 0.25;
@@ -1309,8 +1306,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pv[1][1], 0.0, 0.0, "jauP2pv", "v2");
             this.vvd(pv[1][2], 0.0, 0.0, "jauP2pv", "v3");
         }
-
-        public t_p2s() {
+ @Test()
+ public t_p2s() {
             const p: number[] = [0, 0, 0];
             p[0] = 100.0;
             p[1] = -50.0;
@@ -1320,8 +1317,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(co.phi, 0.21998797739545944, 1.0E-12, "jauP2s", "phi");
             this.vvd(co.r, 114.564392373896, 1.0E-9, "jauP2s", "r");
         }
-
-        public t_pap() {
+ @Test()
+ public t_pap() {
             const a: number[] = [0, 0, 0];
             const b: number[] = [0, 0, 0];
             let theta: number;
@@ -1334,8 +1331,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             theta = JSOFA.jauPap(a, b);
             this.vvd(theta, 0.3671514267841114, 1.0E-12, "jauPap", "");
         }
-
-        public t_pas() {
+ @Test()
+ public t_pas() {
             let al: number;
             let ap: number;
             let bl: number;
@@ -1348,15 +1345,15 @@ import {JSOFA} from "../../main/ts/JSOFA"
             theta = JSOFA.jauPas(al, ap, bl, bp);
             this.vvd(theta, -2.7245449229322705, 1.0E-12, "jauPas", "");
         }
-
-        public t_pb06() {
+ @Test()
+ public t_pb06() {
             const an: JSOFA.EulerAngles = JSOFA.jauPb06(2400000.5, 50123.9999);
             this.vvd(an.zeta, -5.092634016326479E-4, 1.0E-12, "jauPb06", "bzeta");
             this.vvd(an.z, -3.6027720605660444E-4, 1.0E-12, "jauPb06", "bz");
             this.vvd(an.theta, -3.779735537167811E-4, 1.0E-12, "jauPb06", "btheta");
         }
-
-        public t_pdp() {
+ @Test()
+ public t_pdp() {
             const a: number[] = [0, 0, 0];
             const b: number[] = [0, 0, 0];
             let adb: number;
@@ -1369,16 +1366,16 @@ import {JSOFA} from "../../main/ts/JSOFA"
             adb = JSOFA.jauPdp(a, b);
             this.vvd(adb, 20, 1.0E-12, "jauPdp", "");
         }
-
-        public t_pfw06() {
+ @Test()
+ public t_pfw06() {
             const fw: JSOFA.FWPrecessionAngles = JSOFA.jauPfw06(2400000.5, 50123.9999);
             this.vvd(fw.gamb, -2.2433876709979958E-6, 1.0E-16, "jauPfw06", "gamb");
             this.vvd(fw.phib, 0.4091014602391313, 1.0E-12, "jauPfw06", "phib");
             this.vvd(fw.psib, -9.501954178013031E-4, 1.0E-14, "jauPfw06", "psib");
             this.vvd(fw.epsa, 0.40910143165873675, 1.0E-12, "jauPfw06", "epsa");
         }
-
-        public t_plan94() {
+ @Test()
+ public t_plan94() {
             let pv: number[][];
             try {
                 pv = JSOFA.jauPlan94(2400000.5, 1000000.0, 0);
@@ -1406,8 +1403,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             } catch(e) {
             }
         }
-
-        public t_pmat00() {
+ @Test()
+ public t_pmat00() {
             let rbp: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rbp = JSOFA.jauPmat00(2400000.5, 50123.9999);
             this.vvd(rbp[0][0], 0.9999995505175088, 1.0E-12, "jauPmat00", "11");
@@ -1420,8 +1417,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rbp[2][1], -1.925857585832024E-7, 1.0E-14, "jauPmat00", "32");
             this.vvd(rbp[2][2], 0.9999999285680153, 1.0E-12, "jauPmat00", "33");
         }
-
-        public t_pmat06() {
+ @Test()
+ public t_pmat06() {
             let rbp: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rbp = JSOFA.jauPmat06(2400000.5, 50123.9999);
             this.vvd(rbp[0][0], 0.9999995505176007, 1.0E-12, "jauPmat06", "11");
@@ -1434,8 +1431,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rbp[2][1], -1.924880847894457E-7, 1.0E-14, "jauPmat06", "32");
             this.vvd(rbp[2][2], 0.9999999285679972, 1.0E-12, "jauPmat06", "33");
         }
-
-        public t_pmat76() {
+ @Test()
+ public t_pmat76() {
             let rmatp: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rmatp = JSOFA.jauPmat76(2400000.5, 50123.9999);
             this.vvd(rmatp[0][0], 0.9999995504328351, 1.0E-12, "jauPmat76", "11");
@@ -1448,8 +1445,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rmatp[2][1], -1.643306746147367E-7, 1.0E-14, "jauPmat76", "32");
             this.vvd(rmatp[2][2], 0.999999928589979, 1.0E-12, "jauPmat76", "33");
         }
-
-        public t_pm() {
+ @Test()
+ public t_pm() {
             const p: number[] = [0, 0, 0];
             let r: number;
             p[0] = 0.3;
@@ -1458,8 +1455,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             r = JSOFA.jauPm(p);
             this.vvd(r, 2.7892651361962706, 1.0E-12, "jauPm", "");
         }
-
-        public t_pmp() {
+ @Test()
+ public t_pmp() {
             const a: number[] = [0, 0, 0];
             const b: number[] = [0, 0, 0];
             let amb: number[] = [0, 0, 0];
@@ -1474,8 +1471,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(amb[1], -1.0, 1.0E-12, "jauPmp", "1");
             this.vvd(amb[2], -1.0, 1.0E-12, "jauPmp", "2");
         }
-
-        public t_pn() {
+ @Test()
+ public t_pn() {
             const p: number[] = [0, 0, 0];
             p[0] = 0.3;
             p[1] = 1.2;
@@ -1486,8 +1483,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(mv.u[1], 0.43022084362924484, 1.0E-12, "jauPn", "u2");
             this.vvd(mv.u[2], -0.8962934242275934, 1.0E-12, "jauPn", "u3");
         }
-
-        public t_pn00() {
+ @Test()
+ public t_pn00() {
             let dpsi: number;
             let deps: number;
             dpsi = -9.632552291149336E-6;
@@ -1540,8 +1537,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pn.rbpn[2][1], 4.020553681373703E-5, 1.0E-14, "jauPn00", "rbpn32");
             this.vvd(pn.rbpn[2][2], 0.999999831495853, 1.0E-12, "jauPn00", "rbpn33");
         }
-
-        public t_pn00a() {
+ @Test()
+ public t_pn00a() {
             const pn: JSOFA.PrecessionNutation = JSOFA.jauPn00a(2400000.5, 53736.0);
             this.vvd(pn.nut.dpsi, -9.630909107115518E-6, 1.0E-12, "jauPn00a", "dpsi");
             this.vvd(pn.nut.deps, 4.063239174001679E-5, 1.0E-12, "jauPn00a", "deps");
@@ -1592,8 +1589,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pn.rbpn[2][1], 4.0205956615915E-5, 1.0E-14, "jauPn00a", "rbpn32");
             this.vvd(pn.rbpn[2][2], 0.9999998314954572, 1.0E-12, "jauPn00a", "rbpn33");
         }
-
-        public t_pn00b() {
+ @Test()
+ public t_pn00b() {
             const pn: JSOFA.PrecessionNutation = JSOFA.jauPn00b(2400000.5, 53736.0);
             this.vvd(pn.nut.dpsi, -9.632552291148363E-6, 1.0E-12, "jauPn00b", "dpsi");
             this.vvd(pn.nut.deps, 4.063197106621159E-5, 1.0E-12, "jauPn00b", "deps");
@@ -1644,8 +1641,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pn.rbpn[2][1], 4.0205536813737205E-5, 1.0E-14, "jauPn00b", "rbpn32");
             this.vvd(pn.rbpn[2][2], 0.999999831495853, 1.0E-12, "jauPn00b", "rbpn33");
         }
-
-        public t_pn06a() {
+ @Test()
+ public t_pn06a() {
             const pn: JSOFA.PrecessionNutation = JSOFA.jauPn06a(2400000.5, 53736.0);
             this.vvd(pn.nut.dpsi, -9.63091202582031E-6, 1.0E-12, "jauPn06a", "dpsi");
             this.vvd(pn.nut.deps, 4.06323849688725E-5, 1.0E-12, "jauPn06a", "deps");
@@ -1696,8 +1693,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pn.rbpn[2][1], 4.0205800994540205E-5, 1.0E-14, "jauPn06a", "rbpn32");
             this.vvd(pn.rbpn[2][2], 0.9999998314954629, 1.0E-12, "jauPn06a", "rbpn33");
         }
-
-        public t_pn06() {
+ @Test()
+ public t_pn06() {
             let dpsi: number;
             let deps: number;
             dpsi = -9.632552291149336E-6;
@@ -1750,8 +1747,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pn.rbpn[2][1], 4.02053879619523E-5, 1.0E-14, "jauPn06", "rbpn32");
             this.vvd(pn.rbpn[2][2], 0.9999998314958577, 1.0E-12, "jauPn06", "rbpn33");
         }
-
-        public t_pnm00a() {
+ @Test()
+ public t_pnm00a() {
             let rbpn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rbpn = JSOFA.jauPnm00a(2400000.5, 50123.9999);
             this.vvd(rbpn[0][0], 0.9999995832793134, 1.0E-12, "jauPnm00a", "11");
@@ -1764,8 +1761,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rbpn[2][1], -4.163386925461776E-5, 1.0E-14, "jauPnm00a", "32");
             this.vvd(rbpn[2][2], 0.9999999329094391, 1.0E-12, "jauPnm00a", "33");
         }
-
-        public t_pnm00b() {
+ @Test()
+ public t_pnm00b() {
             let rbpn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rbpn = JSOFA.jauPnm00b(2400000.5, 50123.9999);
             this.vvd(rbpn[0][0], 0.9999995832776208, 1.0E-12, "jauPnm00b", "11");
@@ -1778,8 +1775,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rbpn[2][1], -4.1633039774215225E-5, 1.0E-14, "jauPnm00b", "32");
             this.vvd(rbpn[2][2], 0.999999932909205, 1.0E-12, "jauPnm00b", "33");
         }
-
-        public t_pnm06a() {
+ @Test()
+ public t_pnm06a() {
             let rbpn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rbpn = JSOFA.jauPnm06a(2400000.5, 50123.9999);
             this.vvd(rbpn[0][0], 0.9999995832794205, 1.0E-12, "jauPnm06a", "11");
@@ -1792,8 +1789,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rbpn[2][1], -4.163377605910664E-5, 1.0E-14, "jauPnm06a", "32");
             this.vvd(rbpn[2][2], 0.999999932909426, 1.0E-12, "jauPnm06a", "33");
         }
-
-        public t_pnm80() {
+ @Test()
+ public t_pnm80() {
             let rmatpn: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             rmatpn = JSOFA.jauPnm80(2400000.5, 50123.9999);
             this.vvd(rmatpn[0][0], 0.9999995831934612, 1.0E-12, "jauPnm80", "11");
@@ -1806,8 +1803,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rmatpn[2][1], -4.160674085851722E-5, 1.0E-14, "jauPnm80", "32");
             this.vvd(rmatpn[2][2], 0.9999999329310275, 1.0E-12, "jauPnm80", "33");
         }
-
-        public t_pom00() {
+ @Test()
+ public t_pom00() {
             let xp: number;
             let yp: number;
             let sp: number;
@@ -1834,8 +1831,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
                 }
             }
         }
-
-        public t_ppp() {
+ @Test()
+ public t_ppp() {
             const a: number[] = [0, 0, 0];
             const b: number[] = [0, 0, 0];
             let apb: number[] = [0, 0, 0];
@@ -1850,8 +1847,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(apb[1], 5.0, 1.0E-12, "jauPpp", "1");
             this.vvd(apb[2], 7.0, 1.0E-12, "jauPpp", "2");
         }
-
-        public t_ppsp() {
+ @Test()
+ public t_ppsp() {
             const a: number[] = [0, 0, 0];
             let s: number;
             const b: number[] = [0, 0, 0];
@@ -1868,14 +1865,14 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(apsb[1], 17.0, 1.0E-12, "jauPpsp", "1");
             this.vvd(apsb[2], 23.0, 1.0E-12, "jauPpsp", "2");
         }
-
-        public t_pr00() {
+ @Test()
+ public t_pr00() {
             const nut: JSOFA.PrecessionDeltaTerms = JSOFA.jauPr00(2400000.5, 53736);
             this.vvd(nut.dpsipr, -8.716465172668348E-8, 1.0E-22, "jauPr00", "dpsipr");
             this.vvd(nut.depspr, -7.342018386722813E-9, 1.0E-22, "jauPr00", "depspr");
         }
-
-        public t_prec76() {
+ @Test()
+ public t_prec76() {
             let ep01: number;
             let ep02: number;
             let ep11: number;
@@ -1889,8 +1886,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(an.z, 0.005589922365870681, 1.0E-12, "jauPrec76", "z");
             this.vvd(an.theta, 0.004858945471687297, 1.0E-12, "jauPrec76", "theta");
         }
-
-        public t_pv2p() {
+ @Test()
+ public t_pv2p() {
             const pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             let p: number[] = [0, 0, 0];
             pv[0][0] = 0.3;
@@ -1904,8 +1901,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(p[1], 1.2, 0.0, "jauPv2p", "2");
             this.vvd(p[2], -2.5, 0.0, "jauPv2p", "3");
         }
-
-        public t_pv2s() {
+ @Test()
+ public t_pv2s() {
             const pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             pv[0][0] = -0.4514964673880165;
             pv[0][1] = 0.03093394277342585;
@@ -1921,8 +1918,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pvs.vel.phi, 9.010000000000002E-6, 1.0E-16, "jauPv2s", "pd");
             this.vvd(pvs.vel.r, -1.2299999999999999E-5, 1.0E-16, "jauPv2s", "rd");
         }
-
-        public t_pvdpv() {
+ @Test()
+ public t_pvdpv() {
             const a: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             const b: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             let adb: number[] = [0, 0];
@@ -1942,8 +1939,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(adb[0], 20.0, 1.0E-12, "jauPvdpv", "1");
             this.vvd(adb[1], 50.0, 1.0E-12, "jauPvdpv", "2");
         }
-
-        public t_pvm() {
+ @Test()
+ public t_pvm() {
             const pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             pv[0][0] = 0.3;
             pv[0][1] = 1.2;
@@ -1955,8 +1952,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(ret.r, 2.7892651361962706, 1.0E-12, "jauPvm", "r");
             this.vvd(ret.s, 1.2144957801491119, 1.0E-12, "jauPvm", "s");
         }
-
-        public t_pvmpv() {
+ @Test()
+ public t_pvmpv() {
             const a: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             const b: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             let amb: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
@@ -1980,8 +1977,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(amb[1][1], 4.0, 1.0E-12, "jauPvmpv", "22");
             this.vvd(amb[1][2], 2.0, 1.0E-12, "jauPvmpv", "32");
         }
-
-        public t_pvppv() {
+ @Test()
+ public t_pvppv() {
             const a: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             const b: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             let apb: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
@@ -2005,8 +2002,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(apb[1][1], 8.0, 1.0E-12, "jauPvppv", "v2");
             this.vvd(apb[1][2], 4.0, 1.0E-12, "jauPvppv", "v3");
         }
-
-        public t_pvstar() {
+ @Test()
+ public t_pvstar() {
             const pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             pv[0][0] = 126668.59127431606;
             pv[0][1] = 2136.792716839935;
@@ -2025,8 +2022,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             } catch(e) {
             }
         }
-
-        public t_pvu() {
+ @Test()
+ public t_pvu() {
             const pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             let upv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             pv[0][0] = 126668.59127431607;
@@ -2043,8 +2040,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(upv[1][1], -0.006253919754866176, 1.0E-12, "jauPvu", "v2");
             this.vvd(upv[1][2], 0.011893537197741076, 1.0E-12, "jauPvu", "v3");
         }
-
-        public t_pvup() {
+ @Test()
+ public t_pvup() {
             const pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             let p: number[] = [0, 0, 0];
             pv[0][0] = 126668.59127431607;
@@ -2058,8 +2055,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(p[1], 2118.5312711557262, 1.0E-12, "jauPvup", "2");
             this.vvd(p[2], -245216.5048590656, 1.0E-12, "jauPvup", "3");
         }
-
-        public t_pvxpv() {
+ @Test()
+ public t_pvxpv() {
             const a: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             const b: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             let axb: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
@@ -2083,8 +2080,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(axb[1][1], -36.0, 1.0E-12, "jauPvxpv", "v2");
             this.vvd(axb[1][2], 22.0, 1.0E-12, "jauPvxpv", "v3");
         }
-
-        public t_pxp() {
+ @Test()
+ public t_pxp() {
             const a: number[] = [0, 0, 0];
             const b: number[] = [0, 0, 0];
             let axb: number[] = [0, 0, 0];
@@ -2099,8 +2096,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(axb[1], -5.0, 1.0E-12, "jauPxp", "2");
             this.vvd(axb[2], 4.0, 1.0E-12, "jauPxp", "3");
         }
-
-        public t_rm2v() {
+ @Test()
+ public t_rm2v() {
             const r: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             let w: number[] = [0, 0, 0];
             r[0][0] = 0.0;
@@ -2117,8 +2114,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(w[1], 1.413716694115407, 1.0E-12, "jauRm2v", "2");
             this.vvd(w[2], -1.8849555921538759, 1.0E-12, "jauRm2v", "3");
         }
-
-        public t_rv2m() {
+ @Test()
+ public t_rv2m() {
             const w: number[] = [0, 0, 0];
             let r: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             w[0] = 0.0;
@@ -2135,8 +2132,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(r[2][1], -0.8194112531408834, 1.0E-14, "jauRv2m", "32");
             this.vvd(r[2][2], 0.38544156123111545, 1.0E-14, "jauRv2m", "33");
         }
-
-        public t_rx() {
+ @Test()
+ public t_rx() {
             let phi: number;
             const r: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             phi = 0.3456789;
@@ -2160,8 +2157,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(r[2][1], 3.0857115453363724, 1.0E-12, "jauRx", "32");
             this.vvd(r[2][2], 3.6877216839778733, 1.0E-12, "jauRx", "33");
         }
-
-        public t_rxp() {
+ @Test()
+ public t_rxp() {
             const r: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const p: number[] = [0, 0, 0];
             let rp: number[] = [0, 0, 0];
@@ -2182,8 +2179,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rp[1], 3.9, 1.0E-12, "jauRxp", "2");
             this.vvd(rp[2], 7.1, 1.0E-12, "jauRxp", "3");
         }
-
-        public t_rxpv() {
+ @Test()
+ public t_rxpv() {
             const r: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             let rpv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
@@ -2210,8 +2207,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rpv[0][2], 7.1, 1.0E-12, "jauRxpv", "31");
             this.vvd(rpv[1][2], 5.8, 1.0E-12, "jauRxpv", "32");
         }
-
-        public t_rxr() {
+ @Test()
+ public t_rxr() {
             const a: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const b: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             let atb: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
@@ -2244,8 +2241,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(atb[2][1], 10.0, 1.0E-12, "jauRxr", "32");
             this.vvd(atb[2][2], 15.0, 1.0E-12, "jauRxr", "33");
         }
-
-        public t_ry() {
+ @Test()
+ public t_ry() {
             let theta: number;
             const r: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             theta = 0.3456789;
@@ -2269,8 +2266,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(r[2][1], 4.7798890222622985, 1.0E-12, "jauRy", "32");
             this.vvd(r[2][2], 5.3818991609037985, 1.0E-12, "jauRy", "33");
         }
-
-        public t_rz() {
+ @Test()
+ public t_rz() {
             let psi: number;
             const r: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             psi = 0.3456789;
@@ -2294,20 +2291,20 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(r[2][1], 4.0, 1.0E-12, "jauRz", "32");
             this.vvd(r[2][2], 5.0, 1.0E-12, "jauRz", "33");
         }
-
-        public t_s00a() {
+ @Test()
+ public t_s00a() {
             let s: number;
             s = JSOFA.jauS00a(2400000.5, 52541.0);
             this.vvd(s, -1.3406844489191635E-8, 1.0E-18, "jauS00a", "");
         }
-
-        public t_s00b() {
+ @Test()
+ public t_s00b() {
             let s: number;
             s = JSOFA.jauS00b(2400000.5, 52541.0);
             this.vvd(s, -1.3406957829510266E-8, 1.0E-18, "jauS00b", "");
         }
-
-        public t_s00() {
+ @Test()
+ public t_s00() {
             let x: number;
             let y: number;
             let s: number;
@@ -2316,14 +2313,14 @@ import {JSOFA} from "../../main/ts/JSOFA"
             s = JSOFA.jauS00(2400000.5, 53736.0, x, y);
             this.vvd(s, -1.2200362632709057E-8, 1.0E-18, "jauS00", "");
         }
-
-        public t_s06a() {
+ @Test()
+ public t_s06a() {
             let s: number;
             s = JSOFA.jauS06a(2400000.5, 52541.0);
             this.vvd(s, -1.3406804372918124E-8, 1.0E-18, "jauS06a", "");
         }
-
-        public t_s06() {
+ @Test()
+ public t_s06() {
             let x: number;
             let y: number;
             let s: number;
@@ -2332,24 +2329,24 @@ import {JSOFA} from "../../main/ts/JSOFA"
             s = JSOFA.jauS06(2400000.5, 53736.0, x, y);
             this.vvd(s, -1.220032213076463E-8, 1.0E-18, "jauS06", "");
         }
-
-        public t_s2c() {
+ @Test()
+ public t_s2c() {
             let c: number[] = [0, 0, 0];
             c = JSOFA.jauS2c(3.0123, -0.999);
             this.vvd(c[0], -0.5366267667260524, 1.0E-12, "jauS2c", "1");
             this.vvd(c[1], 0.06977111097651453, 1.0E-12, "jauS2c", "2");
             this.vvd(c[2], -0.8409302618566215, 1.0E-12, "jauS2c", "3");
         }
-
-        public t_s2p() {
+ @Test()
+ public t_s2p() {
             let p: number[] = [0, 0, 0];
             p = JSOFA.jauS2p(-3.21, 0.123, 0.456);
             this.vvd(p[0], -0.4514964673880165, 1.0E-12, "jauS2p", "x");
             this.vvd(p[1], 0.030933942773425867, 1.0E-12, "jauS2p", "y");
             this.vvd(p[2], 0.05594668105108779, 1.0E-12, "jauS2p", "z");
         }
-
-        public t_s2pv() {
+ @Test()
+ public t_s2pv() {
             let pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             pv = JSOFA.jauS2pv(-3.21, 0.123, 0.456, -7.8E-6, 9.01E-6, -1.23E-5);
             this.vvd(pv[0][0], -0.4514964673880165, 1.0E-12, "jauS2pv", "x");
@@ -2359,8 +2356,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pv[1][1], 2.6528141820606914E-6, 1.0E-16, "jauS2pv", "vy");
             this.vvd(pv[1][2], 2.568431853930292E-6, 1.0E-16, "jauS2pv", "vz");
         }
-
-        public t_s2xpv() {
+ @Test()
+ public t_s2xpv() {
             let s1: number;
             let s2: number;
             const pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
@@ -2381,8 +2378,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(spv[1][1], 6.9, 1.0E-12, "jauS2xpv", "v2");
             this.vvd(spv[1][2], -1.2, 1.0E-12, "jauS2xpv", "v3");
         }
-
-        public t_sepp() {
+ @Test()
+ public t_sepp() {
             const a: number[] = [0, 0, 0];
             const b: number[] = [0, 0, 0];
             let s: number;
@@ -2395,8 +2392,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             s = JSOFA.jauSepp(a, b);
             this.vvd(s, 2.8603919190246607, 1.0E-12, "jauSepp", "");
         }
-
-        public t_seps() {
+ @Test()
+ public t_seps() {
             let al: number;
             let ap: number;
             let bl: number;
@@ -2409,12 +2406,12 @@ import {JSOFA} from "../../main/ts/JSOFA"
             s = JSOFA.jauSeps(al, ap, bl, bp);
             this.vvd(s, 2.3467220169969987, 1.0E-14, "jauSeps", "");
         }
-
-        public t_sp00() {
+ @Test()
+ public t_sp00() {
             this.vvd(JSOFA.jauSp00(2400000.5, 52541.0), -6.216698469981019E-12, 1.0E-12, "jauSp00", "");
         }
-
-        public t_starpm() {
+ @Test()
+ public t_starpm() {
             let ra1: number;
             let dec1: number;
             let pmr1: number;
@@ -2439,8 +2436,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
                 console.error(e.message, e);
             }
         }
-
-        public t_starpv() {
+ @Test()
+ public t_starpv() {
             let ra: number;
             let dec: number;
             let pmr: number;
@@ -2463,8 +2460,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pv[1][2], 0.011893537145881093, 1.0E-13, "jauStarpv", "23");
             this.viv(j, 0, "jauStarpv", "j");
         }
-
-        public t_sxp() {
+ @Test()
+ public t_sxp() {
             let s: number;
             const p: number[] = [0, 0, 0];
             let sp: number[] = [0, 0, 0];
@@ -2477,8 +2474,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(sp[1], 2.4, 0.0, "jauSxp", "2");
             this.vvd(sp[2], -5.0, 0.0, "jauSxp", "3");
         }
-
-        public t_sxpv() {
+ @Test()
+ public t_sxpv() {
             let s: number;
             const pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             let spv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
@@ -2497,50 +2494,50 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(spv[1][1], 6.4, 0.0, "jauSxpv", "v2");
             this.vvd(spv[1][2], -1.4, 0.0, "jauSxpv", "v3");
         }
-
-        public t_taitt() {
+ @Test()
+ public t_taitt() {
             const jd: JSOFA.JulianDate = JSOFA.jauTaitt(2453750.5, 0.892482639);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTaitt", "t1");
             this.vvd(jd.djm1, 0.892855139, 1.0E-12, "jauTaitt", "t2");
         }
-
-        public t_taiut1() {
+ @Test()
+ public t_taiut1() {
             const jd: JSOFA.JulianDate = JSOFA.jauTaiut1(2453750.5, 0.892482639, -32.6659);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTaiut1", "u1");
             this.vvd(jd.djm1, 0.8921045614537036, 1.0E-12, "jauTaiut1", "u2");
         }
-
-        public t_taiutc() {
+ @Test()
+ public t_taiutc() {
             const jd: JSOFA.JulianDate = JSOFA.jauTaiutc(2453750.5, 0.892482639);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTaiutc", "u1");
             this.vvd(jd.djm1, 0.8921006945555555, 1.0E-12, "jauTaiutc", "u2");
         }
-
-        public t_tcbtdb() {
+ @Test()
+ public t_tcbtdb() {
             const jd: JSOFA.JulianDate = JSOFA.jauTcbtdb(2453750.5, 0.893019599);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTcbtdb", "b1");
             this.vvd(jd.djm1, 0.8928551362746343, 1.0E-12, "jauTcbtdb", "b2");
         }
-
-        public t_tcgtt() {
+ @Test()
+ public t_tcgtt() {
             const jd: JSOFA.JulianDate = JSOFA.jauTcgtt(2453750.5, 0.892862531);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTcgtt", "t1");
             this.vvd(jd.djm1, 0.8928551387488817, 1.0E-12, "jauTcgtt", "t2");
         }
-
-        public t_tdbtcb() {
+ @Test()
+ public t_tdbtcb() {
             const jd: JSOFA.JulianDate = JSOFA.jauTdbtcb(2453750.5, 0.892855137);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTdbtcb", "b1");
             this.vvd(jd.djm1, 0.8930195997253657, 1.0E-12, "jauTdbtcb", "b2");
         }
-
-        public t_tdbtt() {
+ @Test()
+ public t_tdbtt() {
             const jd: JSOFA.JulianDate = JSOFA.jauTdbtt(2453750.5, 0.892855137, -2.01E-4);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTdbtt", "t1");
             this.vvd(jd.djm1, 0.8928551393263889, 1.0E-12, "jauTdbtt", "t2");
         }
-
-        public t_tr() {
+ @Test()
+ public t_tr() {
             const r: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             let rt: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             r[0][0] = 2.0;
@@ -2563,8 +2560,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(rt[2][1], 3.0, 0.0, "jauTr", "32");
             this.vvd(rt[2][2], 5.0, 0.0, "jauTr", "33");
         }
-
-        public t_trxp() {
+ @Test()
+ public t_trxp() {
             const r: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const p: number[] = [0, 0, 0];
             let trp: number[] = [0, 0, 0];
@@ -2585,8 +2582,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(trp[1], 4.0, 1.0E-12, "jauTrxp", "2");
             this.vvd(trp[2], 5.4, 1.0E-12, "jauTrxp", "3");
         }
-
-        public t_trxpv() {
+ @Test()
+ public t_trxpv() {
             const r: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             const pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             let trpv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
@@ -2613,89 +2610,89 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(trpv[1][1], 5.3, 1.0E-12, "jauTrxpv", "v2");
             this.vvd(trpv[1][2], 4.1, 1.0E-12, "jauTrxpv", "v3");
         }
-
-        public t_tttai() {
+ @Test()
+ public t_tttai() {
             const jd: JSOFA.JulianDate = JSOFA.jauTttai(2453750.5, 0.892482639);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTttai", "a1");
             this.vvd(jd.djm1, 0.892110139, 1.0E-12, "jauTttai", "a2");
         }
-
-        public t_tttcg() {
+ @Test()
+ public t_tttcg() {
             const jd: JSOFA.JulianDate = JSOFA.jauTttcg(2453750.5, 0.892482639);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTttcg", "g1");
             this.vvd(jd.djm1, 0.8924900312508587, 1.0E-12, "jauTttcg", "g2");
         }
-
-        public t_tttdb() {
+ @Test()
+ public t_tttdb() {
             const jd: JSOFA.JulianDate = JSOFA.jauTttdb(2453750.5, 0.892855139, -2.01E-4);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTttdb", "b1");
             this.vvd(jd.djm1, 0.8928551366736112, 1.0E-12, "jauTttdb", "b2");
         }
-
-        public t_ttut1() {
+ @Test()
+ public t_ttut1() {
             const jd: JSOFA.JulianDate = JSOFA.jauTtut1(2453750.5, 0.892855139, 64.8499);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauTtut1", "u1");
             this.vvd(jd.djm1, 0.8921045614537036, 1.0E-12, "jauTtut1", "u2");
         }
-
-        public t_ut1tai() {
+ @Test()
+ public t_ut1tai() {
             const jd: JSOFA.JulianDate = JSOFA.jauUt1tai(2453750.5, 0.892104561, -32.6659);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauUt1tai", "a1");
             this.vvd(jd.djm1, 0.8924826385462963, 1.0E-12, "jauUt1tai", "a2");
         }
-
-        public t_ut1tt() {
+ @Test()
+ public t_ut1tt() {
             const jd: JSOFA.JulianDate = JSOFA.jauUt1tt(2453750.5, 0.892104561, 64.8499);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauUt1tt", "t1");
             this.vvd(jd.djm1, 0.8928551385462963, 1.0E-12, "jauUt1tt", "t2");
         }
-
-        public t_ut1utc() {
+ @Test()
+ public t_ut1utc() {
             const jd: JSOFA.JulianDate = JSOFA.jauUt1utc(2453750.5, 0.892104561, 0.3341);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauUt1utc", "u1");
             this.vvd(jd.djm1, 0.8921006941018519, 1.0E-12, "jauUt1utc", "u2");
         }
-
-        public t_utctai() {
+ @Test()
+ public t_utctai() {
             const jd: JSOFA.JulianDate = JSOFA.jauUtctai(2453750.5, 0.892100694);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauUtctai", "u1");
             this.vvd(jd.djm1, 0.8924826384444444, 1.0E-12, "jauUtctai", "u2");
         }
-
-        public t_utcut1() {
+ @Test()
+ public t_utcut1() {
             const jd: JSOFA.JulianDate = JSOFA.jauUtcut1(2453750.5, 0.892100694, 0.3341);
             this.vvd(jd.djm0, 2453750.5, 1.0E-6, "jauUtcut1", "u1");
             this.vvd(jd.djm1, 0.8921045608981482, 1.0E-12, "jauUtcut1", "u2");
         }
-
-        public t_xy06() {
+ @Test()
+ public t_xy06() {
             const cip: JSOFA.CelestialIntermediatePole = JSOFA.jauXy06(2400000.5, 53736.0);
             this.vvd(cip.x, 5.791308486706011E-4, 1.0E-15, "jauXy06", "x");
             this.vvd(cip.y, 4.020579816732958E-5, 1.0E-16, "jauXy06", "y");
         }
-
-        public t_xys00a() {
+ @Test()
+ public t_xys00a() {
             const fr: JSOFA.ICRFrame = JSOFA.jauXys00a(2400000.5, 53736.0);
             this.vvd(fr.cip.x, 5.791308472168153E-4, 1.0E-14, "jauXys00a", "x");
             this.vvd(fr.cip.y, 4.0205956615915E-5, 1.0E-15, "jauXys00a", "y");
             this.vvd(fr.s, -1.2200408484715497E-8, 1.0E-18, "jauXys00a", "s");
         }
-
-        public t_xys00b() {
+ @Test()
+ public t_xys00b() {
             const fr: JSOFA.ICRFrame = JSOFA.jauXys00b(2400000.5, 53736.0);
             this.vvd(fr.cip.x, 5.791301929950209E-4, 1.0E-14, "jauXys00b", "x");
             this.vvd(fr.cip.y, 4.0205536813737205E-5, 1.0E-15, "jauXys00b", "y");
             this.vvd(fr.s, -1.2200273772850832E-8, 1.0E-18, "jauXys00b", "s");
         }
-
-        public t_xys06a() {
+ @Test()
+ public t_xys06a() {
             const fr: JSOFA.ICRFrame = JSOFA.jauXys06a(2400000.5, 53736.0);
             this.vvd(fr.cip.x, 5.791308482835292E-4, 1.0E-14, "jauXys06a", "x");
             this.vvd(fr.cip.y, 4.0205800994540205E-5, 1.0E-15, "jauXys06a", "y");
             this.vvd(fr.s, -1.22003229416458E-8, 1.0E-18, "jauXys06a", "s");
         }
-
-        public t_zp() {
+ @Test()
+ public t_zp() {
             const p: number[] = [0, 0, 0];
             p[0] = 0.3;
             p[1] = 1.2;
@@ -2705,8 +2702,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(p[1], 0.0, 0.0, "jauZp", "2");
             this.vvd(p[2], 0.0, 0.0, "jauZp", "3");
         }
-
-        public t_zpv() {
+ @Test()
+ public t_zpv() {
             const pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
             pv[0][0] = 0.3;
             pv[0][1] = 1.2;
@@ -2722,8 +2719,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pv[1][1], 0.0, 0.0, "jauZpv", "v2");
             this.vvd(pv[1][2], 0.0, 0.0, "jauZpv", "v3");
         }
-
-        public t_zr() {
+ @Test()
+ public t_zr() {
             const r: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             r[0][0] = 2.0;
             r[1][0] = 3.0;
@@ -2745,8 +2742,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(r[1][2], 0.0, 0.0, "jauZr", "21");
             this.vvd(r[2][2], 0.0, 0.0, "jauZr", "22");
         }
-
-        public t_apcg() {
+ @Test()
+ public t_apcg() {
             let date1: number;
             let date2: number;
             const ebpv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
@@ -2786,8 +2783,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(astrom.bpn[1][2], 0.0, 0.0, "jauApcg", "bpn(2,3)");
             this.vvd(astrom.bpn[2][2], 1.0, 0.0, "jauApcg", "bpn(3,3)");
         }
-
-        public t_ab() {
+ @Test()
+ public t_ab() {
             const pnat: number[] = [0, 0, 0];
             const v: number[] = [0, 0, 0];
             let s: number;
@@ -2806,8 +2803,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(ppr[1], -0.6087553082505591, 1.0E-12, "jauAb", "2");
             this.vvd(ppr[2], -0.21679262693684712, 1.0E-12, "jauAb", "3");
         }
-
-        public t_apcg13() {
+ @Test()
+ public t_apcg13() {
             let date1: number;
             let date2: number;
             const astrom: JSOFA.Astrom = new JSOFA.Astrom();
@@ -2836,8 +2833,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(astrom.bpn[1][2], 0.0, 0.0, "jauApcg13", "bpn(2,3)");
             this.vvd(astrom.bpn[2][2], 1.0, 0.0, "jauApcg13", "bpn(3,3)");
         }
-
-        public t_apci() {
+ @Test()
+ public t_apci() {
             let date1: number;
             let date2: number;
             const ebpv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
@@ -2883,8 +2880,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(astrom.bpn[1][2], 2.928082217872316E-5, 1.0E-12, "jauApci", "bpn(2,3)");
             this.vvd(astrom.bpn[2][2], 0.9999991386008323, 1.0E-12, "jauApci", "bpn(3,3)");
         }
-
-        public t_apci13() {
+ @Test()
+ public t_apci13() {
             let date1: number;
             let date2: number;
             let eo: number;
@@ -2915,8 +2912,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(astrom.bpn[2][2], 0.9999992057833604, 1.0E-12, "jauApci13", "bpn(3,3)");
             this.vvd(eo, -0.0029006187126573756, 1.0E-12, "jauApci13", "eo");
         }
-
-        public t_apco() {
+ @Test()
+ public t_apco() {
             let date1: number;
             let date2: number;
             const ebpv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
@@ -2989,8 +2986,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(astrom.refa, 2.01418779E-4, 1.0E-15, "jauApco", "refa");
             this.vvd(astrom.refb, -2.36140831E-7, 1.0E-18, "jauApco", "refb");
         }
-
-        public t_apco13() {
+ @Test()
+ public t_apco13() {
             let utc1: number;
             let utc2: number;
             let dut1: number;
@@ -3050,8 +3047,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(astrom.refb, -2.3614083149436963E-7, 1.0E-18, "jauApco13", "refb");
             this.vvd(eo, -0.0030205483548024128, 1.0E-14, "jauApco13", "eo");
         }
-
-        public t_apcs() {
+ @Test()
+ public t_apcs() {
             let date1: number;
             let date2: number;
             const pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
@@ -3098,8 +3095,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(astrom.bpn[1][2], 0, 0, "jauApcs", "bpn(2,3)");
             this.vvd(astrom.bpn[2][2], 1, 0, "jauApcs", "bpn(3,3)");
         }
-
-        public t_apcs13() {
+ @Test()
+ public t_apcs13() {
             let date1: number;
             let date2: number;
             const pv: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([2, 3]);
@@ -3135,8 +3132,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(astrom.bpn[1][2], 0, 0, "jauApcs13", "bpn(2,3)");
             this.vvd(astrom.bpn[2][2], 1, 0, "jauApcs13", "bpn(3,3)");
         }
-
-        public t_aper() {
+ @Test()
+ public t_aper() {
             let theta: number;
             const astrom: JSOFA.Astrom = new JSOFA.Astrom();
             astrom.along = 1.234;
@@ -3144,8 +3141,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             JSOFA.jauAper(theta, astrom);
             this.vvd(astrom.eral, 6.912, 1.0E-12, "jauAper", "pmt");
         }
-
-        public t_aper13() {
+ @Test()
+ public t_aper13() {
             let ut11: number;
             let ut12: number;
             const astrom: JSOFA.Astrom = new JSOFA.Astrom();
@@ -3155,8 +3152,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             JSOFA.jauAper13(ut11, ut12, astrom);
             this.vvd(astrom.eral, 3.316236661789695, 1.0E-12, "jauAper13", "pmt");
         }
-
-        public t_apio() {
+ @Test()
+ public t_apio() {
             let sp: number;
             let theta: number;
             let elong: number;
@@ -3187,8 +3184,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(astrom.refa, 2.01418779E-4, 1.0E-15, "jauApio", "refa");
             this.vvd(astrom.refb, -2.36140831E-7, 1.0E-18, "jauApio", "refb");
         }
-
-        public t_apio13() {
+ @Test()
+ public t_apio13() {
             let utc1: number;
             let utc2: number;
             let dut1: number;
@@ -3225,8 +3222,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(astrom.refa, 2.014187785940397E-4, 1.0E-15, "jauApio13", "refa");
             this.vvd(astrom.refb, -2.3614083149436963E-7, 1.0E-18, "jauApio13", "refb");
         }
-
-        public t_atci13() {
+ @Test()
+ public t_atci13() {
             let rc: number;
             let dc: number;
             let pr: number;
@@ -3248,8 +3245,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(coe.pos.delta, 0.1729371367219539, 1.0E-12, "jauAtci13", "di");
             this.vvd(coe.eo, -0.0029006187126573756, 1.0E-14, "jauAtci13", "eo");
         }
-
-        public t_atciq() {
+ @Test()
+ public t_atciq() {
             let date1: number;
             let date2: number;
             let rc: number;
@@ -3272,8 +3269,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(co.alpha, 2.710121572968697, 1.0E-12, "jauAtciq", "ri");
             this.vvd(co.delta, 0.1729371367219539, 1.0E-12, "jauAtciq", "di");
         }
-
-        public t_atciqn() {
+ @Test()
+ public t_atciqn() {
             const b: JSOFA.Ldbody[] = [new JSOFA.Ldbody(), new JSOFA.Ldbody(), new JSOFA.Ldbody()];
             let date1: number;
             let date2: number;
@@ -3321,8 +3318,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(co.alpha, 2.7101220081049835, 1.0E-12, "jauAtciqn", "ri");
             this.vvd(co.delta, 0.1729371916492768, 1.0E-12, "jauAtciqn", "di");
         }
-
-        public t_atciqz() {
+ @Test()
+ public t_atciqz() {
             let date1: number;
             let date2: number;
             let rc: number;
@@ -3337,8 +3334,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(co.alpha, 2.709994899247257, 1.0E-12, "jauAtciqz", "ri");
             this.vvd(co.delta, 0.17287407209849318, 1.0E-12, "jauAtciqz", "di");
         }
-
-        public t_atco13() {
+ @Test()
+ public t_atco13() {
             let rc: number;
             let dc: number;
             let pr: number;
@@ -3383,8 +3380,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(ope.op.rob, 2.710260453504961, 1.0E-12, "jauAtco13", "rob");
             this.vvd(ope.eo, -0.0030205483548024128, 1.0E-14, "jauAtco13", "eo");
         }
-
-        public t_atic13() {
+ @Test()
+ public t_atic13() {
             let ri: number;
             let di: number;
             let date1: number;
@@ -3398,8 +3395,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(oe.pos.delta, 0.17406325376270346, 1.0E-12, "jauAtic13", "dc");
             this.vvd(oe.eo, -0.0029006187126573756, 1.0E-14, "jauAtic13", "eo");
         }
-
-        public t_aticq() {
+ @Test()
+ public t_aticq() {
             let date1: number;
             let date2: number;
             let ri: number;
@@ -3414,8 +3411,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(co.alpha, 2.7101265045317167, 1.0E-12, "jauAticq", "rc");
             this.vvd(co.delta, 0.17406325376270346, 1.0E-12, "jauAticq", "dc");
         }
-
-        public t_aticqn() {
+ @Test()
+ public t_aticqn() {
             let date1: number;
             let date2: number;
             let ri: number;
@@ -3455,8 +3452,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(co.alpha, 2.7099995750330272, 1.0E-12, "jauAtciqn", "rc");
             this.vvd(co.delta, 0.173999965631647, 1.0E-12, "jauAtciqn", "dc");
         }
-
-        public t_atio13() {
+ @Test()
+ public t_atio13() {
             let ri: number;
             let di: number;
             let utc1: number;
@@ -3492,8 +3489,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(o.dob, 0.17176534357562348, 1.0E-12, "jauAtio13", "dob");
             this.vvd(o.rob, 2.7100851079884807, 1.0E-12, "jauAtio13", "rob");
         }
-
-        public t_atioq() {
+ @Test()
+ public t_atioq() {
             let utc1: number;
             let utc2: number;
             let dut1: number;
@@ -3531,8 +3528,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(o.dob, 0.17176534357562348, 1.0E-12, "jauAtioq", "dob");
             this.vvd(o.rob, 2.7100851079884807, 1.0E-12, "jauAtioq", "rob");
         }
-
-        public t_atoc13() {
+ @Test()
+ public t_atoc13() {
             let utc1: number;
             let utc2: number;
             let dut1: number;
@@ -3575,8 +3572,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(oc.alpha, 2.709956744659734, 1.0E-12, "jauAtoc13", "A/rc");
             this.vvd(oc.delta, 0.17416965008984714, 1.0E-12, "jauAtoc13", "A/dc");
         }
-
-        public t_atoi13() {
+ @Test()
+ public t_atoi13() {
             let utc1: number;
             let utc2: number;
             let dut1: number;
@@ -3619,8 +3616,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(co.alpha, 2.710121574448139, 1.0E-12, "jauAtoi13", "A/ri");
             this.vvd(co.delta, 0.17293718391166088, 1.0E-12, "jauAtoi13", "A/di");
         }
-
-        public t_atoiq() {
+ @Test()
+ public t_atoiq() {
             let utc1: number;
             let utc2: number;
             let dut1: number;
@@ -3665,8 +3662,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(co.alpha, 2.710121574448139, 1.0E-12, "jauAtoiq", "A/ri");
             this.vvd(co.delta, 0.17293718391166088, 1.0E-12, "jauAtoiq", "A/di");
         }
-
-        public t_ld() {
+ @Test()
+ public t_ld() {
             let bm: number;
             const p: number[] = [0, 0, 0];
             const q: number[] = [0, 0, 0];
@@ -3691,8 +3688,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(p1[1], -0.6086337670823763, 1.0E-12, "jauLd", "2");
             this.vvd(p1[2], -0.2167355431320547, 1.0E-12, "jauLd", "3");
         }
-
-        public t_ldn() {
+ @Test()
+ public t_ldn() {
             let n: number;
             const b: JSOFA.Ldbody[] = [new JSOFA.Ldbody(), new JSOFA.Ldbody(), new JSOFA.Ldbody()];
             const ob: number[] = [0, 0, 0];
@@ -3734,8 +3731,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(sn[1], -0.6086337636093002, 1.0E-12, "jauLdn", "2");
             this.vvd(sn[2], -0.2167355420646328, 1.0E-12, "jauLdn", "3");
         }
-
-        public t_ldsun() {
+ @Test()
+ public t_ldsun() {
             const p: number[] = [0, 0, 0];
             const e: number[] = [0, 0, 0];
             let em: number;
@@ -3752,8 +3749,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(p1[1], -0.6086337635262647, 1.0E-12, "jauLdsun", "2");
             this.vvd(p1[2], -0.21673554193223213, 1.0E-12, "jauLdsun", "3");
         }
-
-        public t_pmpx() {
+ @Test()
+ public t_pmpx() {
             let rc: number;
             let dc: number;
             let pr: number;
@@ -3778,8 +3775,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pco[1], 0.6651097085397856, 1.0E-12, "jauPmpx", "2");
             this.vvd(pco[2], 0.709525776589636, 1.0E-12, "jauPmpx", "3");
         }
-
-        public t_pmsafe() {
+ @Test()
+ public t_pmsafe() {
             let ra1: number;
             let dec1: number;
             let pmr1: number;
@@ -3808,8 +3805,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(cc.px, 0.009999997295356831, 1.0E-12, "jauPmsafe", "px2");
             this.vvd(cc.rv, 10.3846838029392, 1.0E-10, "jauPmsafe", "rv2");
         }
-
-        public t_pvtob() {
+ @Test()
+ public t_pvtob() {
             let elong: number;
             let phi: number;
             let hm: number;
@@ -3833,8 +3830,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pv[1][1], 308.0977983288903, 1.0E-9, "jauPvtob", "v(2)");
             this.vvd(pv[1][2], 0, 0, "jauPvtob", "v(3)");
         }
-
-        public t_refco() {
+ @Test()
+ public t_refco() {
             let phpa: number;
             let tc: number;
             let rh: number;
@@ -3847,8 +3844,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(ref.a, 2.264949956241415E-4, 1.0E-15, "jauRefco", "refa");
             this.vvd(ref.b, -2.598658261729344E-7, 1.0E-18, "jauRefco", "refb");
         }
-
-        public t_d2dtf() {
+ @Test()
+ public t_d2dtf() {
             const c: JSOFA.CalendarHMS = JSOFA.jauD2dtf("UTC", 5, 2400000.5, 49533.99999);
             this.viv(c.iy, 1994, "jauD2dtf", "y");
             this.viv(c.im, 6, "jauD2dtf", "mo");
@@ -3874,8 +3871,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * This revision:  2013 August 7
          * @throws JSOFAInternalError
          * @throws JSOFAIllegalParameter
-         */
-        public t_dtf2d() {
+         */ @Test()
+ public t_dtf2d() {
             const jd: JSOFA.JulianDate = JSOFA.jauDtf2d("UTC", 1994, 6, 30, 23, 59, 60.13599);
             this.vvd(jd.djm0 + jd.djm1, 2449534.49999, 1.0E-6, "jauDtf2d", "u");
         }
@@ -3887,8 +3884,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauG2icrs, vvd
          * 
          * This revision:  2015 March 02
-         */
-        public t_g2icrs() {
+         */ @Test()
+ public t_g2icrs() {
             let dl: number;
             let db: number;
             let co: JSOFA.SphericalCoordinate;
@@ -3906,8 +3903,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauIcrs2g, vvd
          * 
          * This revision:  2015 March 02
-         */
-        public t_icrs2g() {
+         */ @Test()
+ public t_icrs2g() {
             let dr: number;
             let dd: number;
             dr = 5.933807430222719;
@@ -3927,8 +3924,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauEceq06, vvd
          * 
          * This revision:  2016 March 12
-         */
-        public t_eceq06() {
+         */ @Test()
+ public t_eceq06() {
             let date1: number;
             let date2: number;
             let dl: number;
@@ -3952,8 +3949,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauEcm06, vvd
          * 
          * This revision:  2016 March 12
-         */
-        public t_ecm06() {
+         */ @Test()
+ public t_ecm06() {
             let date1: number;
             let date2: number;
             date1 = 2456165.5;
@@ -3980,8 +3977,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauEqec06, vvd
          * 
          * This revision:  2016 March 12
-         */
-        public t_eqec06() {
+         */ @Test()
+ public t_eqec06() {
             let date1: number;
             let date2: number;
             let dr: number;
@@ -4004,8 +4001,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauLteceq, vvd
          * 
          * This revision:  2016 March 12
-         */
-        public t_lteceq() {
+         */ @Test()
+ public t_lteceq() {
             let epj: number;
             let dl: number;
             let db: number;
@@ -4026,8 +4023,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauLtecm, vvd
          * 
          * This revision:  2016 March 12
-         */
-        public t_ltecm() {
+         */ @Test()
+ public t_ltecm() {
             let epj: number;
             epj = -3000.0;
             const rm: number[][] = JSOFA.jauLtecm(epj);
@@ -4052,8 +4049,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauLteqec, vvd
          * 
          * This revision:  2016 March 12
-         */
-        public t_lteqec() {
+         */ @Test()
+ public t_lteqec() {
             let epj: number;
             let dr: number;
             let dd: number;
@@ -4074,8 +4071,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauLtp, vvd
          * 
          * This revision:  2016 March 12
-         */
-        public t_ltp() {
+         */ @Test()
+ public t_ltp() {
             let epj: number;
             epj = 1666.666;
             const rp: number[][] = JSOFA.jauLtp(epj);
@@ -4099,8 +4096,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauLtpb, vvd
          * 
          * This revision:  2016 March 12
-         */
-        public t_ltpb() {
+         */ @Test()
+ public t_ltpb() {
             let epj: number;
             epj = 1666.666;
             const rpb: number[][] = JSOFA.jauLtpb(epj);
@@ -4124,8 +4121,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauLtpecl, vvd
          * 
          * This revision:  2016 March 12
-         */
-        public t_ltpecl() {
+         */ @Test()
+ public t_ltpecl() {
             let epj: number;
             epj = -1500.0;
             const vec: number[] = JSOFA.jauLtpecl(epj);
@@ -4144,8 +4141,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauLtpequ, vvd
          * 
          * This revision:  2016 March 12
-         */
-        public t_ltpequ() {
+         */ @Test()
+ public t_ltpequ() {
             let epj: number;
             epj = -2500.0;
             const veq: number[] = JSOFA.jauLtpequ(epj);
@@ -4167,8 +4164,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  iauAe2hd and vvd
          * 
          * This revision:  2017 October 21
-         */
-        public t_ae2hd() {
+         */ @Test()
+ public t_ae2hd() {
             let a: number;
             let e: number;
             let p: number;
@@ -4179,8 +4176,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(ec.ha, 0.593329111550731, 1.0E-14, "jauAe2hd", "h");
             this.vvd(ec.dec, 0.9613934761647818, 1.0E-14, "jauAe2hd", "d");
         }
-
-        public t_hd2ae() {
+ @Test()
+ public t_hd2ae() {
             let h: number;
             let d: number;
             let p: number;
@@ -4205,8 +4202,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauHd2pa and vvd
          * 
          * This revision:  2017 October 21
-         */
-        public t_hd2pa() {
+         */ @Test()
+ public t_hd2pa() {
             let h: number;
             let d: number;
             let p: number;
@@ -4231,8 +4228,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauTpors, vvd, viv
          * 
          * This revision:  2017 October 21
-         */
-        public t_tpors() {
+         */ @Test()
+ public t_tpors() {
             let xi: number;
             let eta: number;
             let ra: number;
@@ -4248,8 +4245,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(tps.sol2.delta, 1.565084088476418, 1.0E-13, "jauTpors", "bz2");
             this.viv(tps.nsolutions, 2, "jauTpors", "n");
         }
-
-        public t_tporv() {
+ @Test()
+ public t_tporv() {
             let xi: number;
             let eta: number;
             let ra: number;
@@ -4283,8 +4280,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauTpsts, vvd
          * 
          * This revision:  2017 October 21
-         */
-        public t_tpsts() {
+         */ @Test()
+ public t_tpsts() {
             let xi: number;
             let eta: number;
             let raz: number;
@@ -4311,8 +4308,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauTpstv, JSOFA.jauS2c, vvd
          * 
          * This revision:  2017 October 21
-         */
-        public t_tpstv() {
+         */ @Test()
+ public t_tpstv() {
             let xi: number;
             let eta: number;
             let raz: number;
@@ -4329,8 +4326,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(v[1], 0.020609095905353675, 1.0E-15, "jauTpstv", "y");
             this.vvd(v[2], 0.9995520806583523, 1.0E-14, "jauTpstv", "z");
         }
-
-        public t_tpxes() {
+ @Test()
+ public t_tpxes() {
             let ra: number;
             let dec: number;
             let raz: number;
@@ -4358,8 +4355,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  JSOFA.jauTpxev, JSOFA.jauS2c, vvd
          * 
          * This revision:  2017 October 21
-         */
-        public t_tpxev() {
+         */ @Test()
+ public t_tpxev() {
             let ra: number;
             let dec: number;
             let raz: number;
@@ -4391,8 +4388,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  iauFk425, vvd
          * 
          * This revision:  2018 December 6
-         */
-        public t_fk425() {
+         */ @Test()
+ public t_fk425() {
             let r1950: number;
             let d1950: number;
             let dr1950: number;
@@ -4427,8 +4424,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  iauFk45z, vvd
          * 
          * This revision:  2018 December 6
-         */
-        public t_fk45z() {
+         */ @Test()
+ public t_fk45z() {
             let r1950: number;
             let d1950: number;
             let bepoch: number;
@@ -4453,8 +4450,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  iauFk524, vvd
          * 
          * This revision:  2018 December 6
-         */
-        public t_fk524() {
+         */ @Test()
+ public t_fk524() {
             let r2000: number;
             let d2000: number;
             let dr2000: number;
@@ -4489,8 +4486,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  iauFk54z, vvd
          * 
          * This revision:  2018 December 6
-         */
-        public t_fk54z() {
+         */ @Test()
+ public t_fk54z() {
             let r2000: number;
             let d2000: number;
             let bepoch: number;
@@ -4519,8 +4516,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  iauAtcc13, vvd
          * 
          * This revision:  2021 April 18
-         */
-        public t_atcc13() {
+         */ @Test()
+ public t_atcc13() {
             let rc: number;
             let dc: number;
             let pr: number;
@@ -4555,8 +4552,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  iauApcc13, iauAtccq, vvd
          * 
          * This revision:  2021 April 18
-         */
-        public t_atccq() {
+         */ @Test()
+ public t_atccq() {
             let date1: number;
             let date2: number;
             let eo: number;
@@ -4594,8 +4591,8 @@ import {JSOFA} from "../../main/ts/JSOFA"
          * Called:  iauMoon98, vvd, viv
          * 
          * This revision:  2021 April 12
-         */
-        public t_moon98() {
+         */ @Test()
+ public t_moon98() {
             const pv: number[][] = JSOFA.jauMoon98(2400000.5, 43999.9);
             this.vvd(pv[0][0], -0.002601295959971044, 1.0E-11, "iauMoon98", "x 4");
             this.vvd(pv[0][1], 6.139750944302743E-4, 1.0E-11, "iauMoon98", "y 4");
@@ -4605,7 +4602,7 @@ import {JSOFA} from "../../main/ts/JSOFA"
             this.vvd(pv[1][2], -1.716132214378462E-4, 1.0E-11, "iauMoon98", "zd 4");
         }
     }
-    JSOFATest["__class"] = "JSOFATest";
 
-}
+
+
 

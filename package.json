@@ -1,6 +1,6 @@
 {
-    "name": "jsofa",
-    "version": "20190722",
+    "name": "@Javastro/jsofa",
+    "version": "18.0.0",
     "type": "module",
     "description": "a typescript transcription of the IAU SOFA library",
     "author": "Paul Harrison <paul.harrison@manchester.ac.uk>",
@@ -8,7 +8,8 @@
     "private": false,
     "scripts": {
         "build": "tsc",
-        "test": "ts-mocha src/test/ts/**/*.spec.ts",
+        "test": "testyts",
+        "doc": "typedoc src/main/ts/JSOFA.ts",
         "eslint": "eslint ."
     },
     "main": "dist/JSOFA.js",
@@ -18,7 +19,10 @@
     ],
     "repository": {
         "type": "git",
-        "url": "git@github.com:Javastro/jsofa.git"
+        "url": "https://github.com/Javastro/jsofa.git"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
     },
     "keywords": [
         "Astrometry",
@@ -29,20 +33,17 @@
     },
     "homepage": "https://github.com/Javastro/jsofa#readme",
     "devDependencies": {
-        "@testdeck/mocha": "^0.3.3",
-        "@types/mocha": "^10.0.2",
         "@types/node": "^20.7.1",
-        "@typescript-eslint/eslint-plugin": "^6.7.2",
-        "@typescript-eslint/parser": "^6.7.2",
+        "@typescript-eslint/eslint-plugin": "^6.17.0",
+        "@typescript-eslint/parser": "^6.17.0",
         "eslint": "^8.49.0",
         "eslint-plugin-import": "^2.28.1",
         "eslint-plugin-jsdoc": "^46.8.1",
         "eslint-plugin-prefer-arrow": "^1.2.3",
-        "mocha": "^10.2.0",
-        "ts-mocha": "^10.0.0",
+        "testyts": "^1.5.0",
         "ts-node": "^10.9.1",
+        "typedoc": "^0.25.6",
         "typescript": "^5.2.2"
     },
-    "dependencies": {
-    }
+    "dependencies": {}
 }

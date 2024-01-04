@@ -542,7 +542,7 @@
             let depspr: number;
             let psia: number;
             let oma: number;
-            const rbw: number[][] = <any> (function(dims) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
+            const rbw: number[][] = <any> (function(dims: number[]) { let allocate = function(dims) { if (dims.length === 0) { return 0; } else { let array = []; for(let i = 0; i < dims[0]; i++) { array.push(allocate(dims.slice(1))); } return array; }}; return allocate(dims);})([3, 3]);
             t = ((date1 - JSOFA.DJ00_$LI$()) + date2) / JSOFA.DJC_$LI$();
             const fb: JSOFA.FrameBias = JSOFA.jauBi00();
             dpsibi = fb.dpsibi;
@@ -20684,37 +20684,6 @@
                 return /* compareTo */(<any>((o1: any, o2: any) => { if (o1 && o1.compareTo) { return o1.compareTo(o2); } else { return o1 < o2 ? -1 : o2 < o1 ? 1 : 0; } })(thismjd,thatmjd));
             }
 
-            /**
-             * {@inheritDoc}
-             * overrides @see java.lang.Object#hashCode()
-             * @return {number}
-             */
-            public hashCode(): number {
-                const prime: number = 31;
-                let result: number = 1;
-                let temp: number;
-                temp = /* doubleToLongBits */((f) => { let buf = new ArrayBuffer(4); (new Float32Array(buf))[0]=f; return (new Uint32Array(buf))[0]; })((<any>Math).fround(this.djm0));
-                result = prime * result + (<number>(temp ^ (temp >>> 32))|0);
-                temp = /* doubleToLongBits */((f) => { let buf = new ArrayBuffer(4); (new Float32Array(buf))[0]=f; return (new Uint32Array(buf))[0]; })((<any>Math).fround(this.djm1));
-                result = prime * result + (<number>(temp ^ (temp >>> 32))|0);
-                return result;
-            }
-
-            /**
-             * {@inheritDoc}
-             * overrides @see java.lang.Object#equals(java.lang.Object)
-             * @param {*} obj
-             * @return {boolean}
-             */
-            public equals(obj: any): boolean {
-                if (this === obj)return true;
-                if (obj == null)return false;
-                if (!(obj != null && obj instanceof <any>JSOFA.JulianDate))return false;
-                const other: JSOFA.JulianDate = <JSOFA.JulianDate>obj;
-                if (/* doubleToLongBits */((f) => { let buf = new ArrayBuffer(4); (new Float32Array(buf))[0]=f; return (new Uint32Array(buf))[0]; })((<any>Math).fround(this.djm0)) !== /* doubleToLongBits */((f) => { let buf = new ArrayBuffer(4); (new Float32Array(buf))[0]=f; return (new Uint32Array(buf))[0]; })((<any>Math).fround(other.djm0)))return false;
-                if (/* doubleToLongBits */((f) => { let buf = new ArrayBuffer(4); (new Float32Array(buf))[0]=f; return (new Uint32Array(buf))[0]; })((<any>Math).fround(this.djm1)) !== /* doubleToLongBits */((f) => { let buf = new ArrayBuffer(4); (new Float32Array(buf))[0]=f; return (new Uint32Array(buf))[0]; })((<any>Math).fround(other.djm1)))return false;
-                return true;
-            }
 
             /**
              * {@inheritDoc}
