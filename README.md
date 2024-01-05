@@ -10,13 +10,3 @@ This is a java translation of the official IAU SOFA library.
 For more information see <http://javastro.github.io/jsofa/>
 
 
-TypeScript
-----------
-
-The typescript version of the library has been transliterated using https://www.jsweet.org and then manually edited.
-
-possible alternatives
-
-* https://github.com/mike-lischke/java2typescript
-* https://github.com/google/j2cl
-

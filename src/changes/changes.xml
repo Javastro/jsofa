@@ -7,7 +7,7 @@
   </properties>
   <body>
     <release version="20210512b" description="java related updates">
-      <action dev="pah">change the JSOFAExeption to be unchecked (i.e. runtime)</action>
+      <action dev="pah">change the JSOFAException to be unchecked (i.e. runtime)</action>
     </release>
     <release version="20210512" description="tracking updates of SOFA">
        <action  dev="pah" type="update" issue="https://github.com/Javastro/jsofa/issues/9" >
