@@ -7,6 +7,8 @@ JSOFA
 
 This is a java translation of the official IAU SOFA library.
 
-For more information see <http://javastro.github.io/jsofa/>
+For more information see <https://javastro.github.io/jsofa/>
+
+If you want a version that will run in your browser try <https://github.com/tsastro/tsofa>
 
 
