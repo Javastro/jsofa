@@ -38,18 +38,18 @@ import static java.lang.Math.pow;
  */
 public class JSOFA {
     /** tracked IAU SOFA release {@value}. */
-    public final static String SOFA_RELEASE = "2021-05-12";
+    public final static String SOFA_RELEASE = "2023-10-11";
     
     /** JSOFA release {@value}*/
-    public final static String JSOFA_RELEASE = "20210512b";
+    public final static String JSOFA_RELEASE = "20231011";
 
     /** tracked IAU SOFA revision {@value}. */
-    public final static String SOFA_REVISION = "18";
+    public final static String SOFA_REVISION = "19";
 
     /** Release year for this version of jauDat {@value} */
-public final static int IYV = 2021;
+public final static int IYV = 2023;
     /** The latest confirmed omission of a leap second form IERS */
-public final static JulianDate latestConfirmedNoLeapSecondChange = jauCal2jd(2023,12,31);
+public final static JulianDate latestConfirmedNoLeapSecondChange = jauCal2jd(2026,01,28);
 
 static class LeapInfo {
     final public int iyear, month;
@@ -425,7 +425,7 @@ static final LeapInfo leapSeconds[] = {
     * <li> The absolute value of angle may exceed 2pi.  In cases where it
     *     does not, it is up to the caller to test for and handle the
     *     case where angle is very nearly 2pi and rounds up to 24 hours,
-    *     by testing for ihmsf[0]=24 and setting ihmsf(0-3) to zero.
+    *     by testing for ihmsf[0]=24 and setting ihmsf[1-3] to zero.
     *</ol>
     *  @version 2008 May 11
     *
@@ -1689,8 +1689,8 @@ static final LeapInfo leapSeconds[] = {
     * <ol>
     *
     * <li> The TT and UT1 dates tta+ttb and uta+utb are Julian Dates,
-    *     apportioned in any convenient way between the arguments uta and
-    *     utb.  For example, JD(UT1)=2450123.7 could be expressed in any of
+    *     apportioned in any convenient way between the arguments.
+    *     For example, JD(UT1)=2450123.7 could be expressed in any of
     *     these ways, among others:
     *<pre>
     *             uta            utb
@@ -2392,7 +2392,7 @@ static final LeapInfo leapSeconds[] = {
     * <li> The absolute value of days may exceed 1.0.  In cases where it
     *     does not, it is up to the caller to test for and handle the
     *     case where days is very nearly 1.0 and rounds up to 24 hours,
-    *     by testing for ihms[0]=24 and setting ihmsf[0-3] to zero.
+    *     by testing for ihms[0]=24 and setting ihmsf[1-3] to zero.
     *</ol>
     *@version 2008 May 11
     *
@@ -10488,7 +10488,7 @@ public static class SphericalCoordinateEO {
     * <li> The position returned by this function is in the FK5 J2000.0
     *     reference system but at date date1+date2.
     *
-    * <li> See also jauFk52h, jauH2fk5, jauFk5zhz.
+    * <li> See also jauFk52h, jauH2fk5, jauFk5hz.
     *</ol>
     *<p>Called:<ul>
     *     <li>{@link #jauS2c} spherical coordinates to unit vector
@@ -17601,7 +17601,7 @@ public static class SphericalCoordinateEO {
     *
     *     Stumpff, P., 1985, Astron.Astrophys. 144, 232-240.
     *
-    *@version 2017 May 30
+    *@version 2023 May 4
     *
     *  @since Release 20101201
     *
@@ -17633,13 +17633,11 @@ public static class SphericalCoordinateEO {
        if (d == 0.0 || w > 1) throw new JSOFAInternalError("Superluminal speed", -1);
        del = -w / (sqrt(1.0 -w) + 1.0);
 
-    /* Apply relativistic correction factor to radial velocity component. */
-       w = (betr != 0) ? (betr - del) / (betr * d) : 1.0;
-       usr = jauSxp(w,ur);
-
-    /* Apply relativistic correction factor to tangential velocity */
-    /* component.                                                  */
+    /* Scale inertial tangential velocity vector into observed (au/d). */
        ust = jauSxp(1.0/d, ut);
+
+    /* Compute observed radial velocity vector (au/d). */
+       usr = jauSxp(DC*(betr-del)/d,x);
 
     /* Combine the two to obtain the observed velocity vector (au/day). */
        pv[1] = jauPpp(usr, ust);
@@ -19827,7 +19825,7 @@ public static class SphericalCoordinateEO {
     *
     *     Stumpff, P., 1985, Astron.Astrophys. 144, 232-240.
     *
-    *@version 2009 July 6
+    *@version 2023 May 4
     *
     *  @since Release 20101201
     *
@@ -19865,7 +19863,7 @@ public static class SphericalCoordinateEO {
        }
        r = DR2AS / w;
 
-    /* Radial velocity (au/day). */
+    /* Radial speed (au/day). */
        rd = DAYSEC * rv * 1e3 / DAU;
 
     /* Proper motion (radian/day). */
@@ -19903,7 +19901,8 @@ public static class SphericalCoordinateEO {
        betr = betsr;
        for (i = 0; i < IMAX; i++) {
           d = 1.0 + betr;
-          del = sqrt(1.0 - betr*betr - bett*bett) - 1.0;
+          w = betr*betr + bett*bett;
+          del = - w / (sqrt(1.0 - w) + 1.0);
           betr = d * betsr + del;
           bett = d * betst;
           if (i > 0) {
@@ -19918,12 +19917,11 @@ public static class SphericalCoordinateEO {
        }
        if (i >= IMAX) iwarn += 4;
 
-    /* Replace observed radial velocity with inertial value. */
-       w = (betsr != 0.0) ? d + del / betsr : 1.0;
-       ur = jauSxp(w,usr);
-
-    /* Replace observed tangential velocity with inertial value. */
+    /* Scale observed tangential velocity vector into inertial (au/d). */
        ut = jauSxp(d,ust);
+
+    /* Compute inertial radial velocity vector (au/d). */
+       ur = jauSxp(DC*(d*betsr+del),x);
 
     /* Combine the two to obtain the inertial space velocity. */
        pv[1] = jauPpp(ur, ut);
@@ -28377,7 +28375,7 @@ public static class SphericalCoordinateEO {
      *<p>Notes:
      * <ol>
      *
-     *  <li> "Observed" Az,El means the position that would be seen by a
+     *  <li> "Observed" Az,ZD means the position that would be seen by a
      *     perfect geodetically aligned theodolite.  This is related to
      *     the observed HA,Dec via the standard rotation, using the geodetic
      *     latitude (corrected for polar motion), while the observed HA and
@@ -30291,7 +30289,7 @@ public static class SphericalCoordinateEO {
     *
     *        P_date = rpb x P_ICRS,
     *
-    *     where P_ICRS is a vector in the Geocentric Celestial Reference
+    *     where P_ICRS is a vector in the International Celestial Reference
     *     System, and P_date is the vector with respect to the Celestial
     *     Intermediate Reference System at that date but with nutation
     *     neglected.
@@ -31828,7 +31826,7 @@ public static class SphericalCoordinateEO {
      *     in past astrometry, and the undesirability of a discontinuity in
      *     the algorithm, the decision has been made in this SOFA algorithm
      *     to include the effects of differential E-terms on the proper
-     *     motions for all stars, whether polar or not.  At epoch 2000.0,
+     *     motions for all stars, whether polar or not.  At epoch J2000.0,
      *     and measuring "on the sky" rather than in terms of RA change, the
      *     errors resulting from this simplification are less than
      *     1 milliarcsecond in position and 1 milliarcsecond per century in
@@ -32142,7 +32140,7 @@ public static class SphericalCoordinateEO {
      *     aberration, such objects have (in general) non-zero proper motion
      *     in FK4, and the present routine returns those fictitious proper
      *     motions.
-     * <li> Conversion from B1950.0 FK4 to J2000.0 FK5 only is provided for.
+     * <li> Conversion from J2000.0 FK5 to B1950.0 FK4 only is provided for.
      *     Conversions involving other equinoxes would require additional
      *     treatment for precession.
      * <li> The position returned by this routine is in the B1950.0 FK4

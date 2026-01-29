@@ -43,10 +43,10 @@ public class JSOFATest {
     @Test
     public void testversion() throws JSOFAIllegalParameter 
     {
-        assertEquals("sofa release", "2021-05-12", SOFA_RELEASE);
-        assertEquals("sofa revision", "18", SOFA_REVISION);
+        assertEquals("sofa release", "2023-10-11", SOFA_RELEASE);
+        assertEquals("sofa revision", "19", SOFA_REVISION);
         assertEquals("lastleap second", jauCal2jd(2017,1,1), lastLeapSecondDate());        
-        assertEquals("last confirmation of leapsecond data", jauCal2jd(2023,12,31), latestConfirmedNoLeapSecondChange);
+        assertEquals("last confirmation of leapsecond data", jauCal2jd(2026,01,28), latestConfirmedNoLeapSecondChange);
         assertEquals("Jsofa release",  System.getProperty("SOFAVERSION"), JSOFA_RELEASE); // check that the correct version is being released - system properly set from POM
         
         
@@ -8776,7 +8776,7 @@ public void t_atcc13()
 **  Returned:
 **     status    int         FALSE = success, TRUE = fail
 **
-**  Called:  iauApcc13, iauAtccq, vvd
+**  Called:  iauApci13, iauAtccq, vvd
 **
 **  This revision:  2021 April 18
 */

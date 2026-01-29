@@ -74,14 +74,12 @@
      {@link org.jastronomy.jsofa.JSOFA#jauLdn}      light deflection by multiple solar-system bodies<br>
      {@link org.jastronomy.jsofa.JSOFA#jauLdsun}    light deflection by the Sun<br>
      {@link org.jastronomy.jsofa.JSOFA#jauPmpx}     apply proper motion and parallax<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPmsafe}   apply proper motion, with zero-parallax precautions <br>
      {@link org.jastronomy.jsofa.JSOFA#jauPvtob}    observatory position and velocity<br>
-     {@link org.jastronomy.jsofa.JSOFA#jauRefco}    refraction constants<br>
      {@link org.jastronomy.jsofa.JSOFA#jauPvstar}    space motion pv-vector to star catalog data<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauRefco}    refraction constants<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauStarpm}    apply proper motion<br>
      {@link org.jastronomy.jsofa.JSOFA#jauStarpv}    star catalog data to space motion pv-vector<br>
- 
-<h3>Galactic</h3> 
-     {@link org.jastronomy.jsofa.JSOFA#jauG2icrs}  Transformation from Galactic Coordinates to ICRS<br>
-     {@link org.jastronomy.jsofa.JSOFA#jauIcrs2g}  Transformation from ICRS to Galactic Coordinates<br>
 
 <h3>Ecliptic coordinates</h3>
 
@@ -91,6 +89,10 @@
      {@link org.jastronomy.jsofa.JSOFA#jauLteceq}    ecliptic to ICRS, long term<br>
      {@link org.jastronomy.jsofa.JSOFA#jauLtecm}     rotation matrix, ICRS to ecliptic, long-term<br>
      {@link org.jastronomy.jsofa.JSOFA#jauLteqec}    ICRS to ecliptic, long term<br>
+ 
+<h3>Galactic</h3> 
+     {@link org.jastronomy.jsofa.JSOFA#jauG2icrs}  Transformation from Galactic Coordinates to ICRS<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauIcrs2g}  Transformation from ICRS to Galactic Coordinates<br>
 
 
  <h3>Time scales</h3>
@@ -140,8 +142,8 @@
   <h3>Ephemerides (limited precision)</h3>
 
      {@link org.jastronomy.jsofa.JSOFA#jauEpv00}     Earth position and velocity<br>
-     {@link org.jastronomy.jsofa.JSOFA#jauPlan94}    major-planet position and velocity<br>
      {@link org.jastronomy.jsofa.JSOFA#jauMoon98}    moon position and velocity<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauPlan94}    major-planet position and velocity<br>
 
   <h3>Precession, nutation, polar motion</h3>
 
@@ -166,11 +168,11 @@
      {@link org.jastronomy.jsofa.JSOFA#jauEors}      equation of the origins, given NPB matrix and s<br>
      {@link org.jastronomy.jsofa.JSOFA#jauFw2m}      Fukushima-Williams angles to r-matrix<br>
      {@link org.jastronomy.jsofa.JSOFA#jauFw2xy}     Fukushima-Williams angles to X,Y<br>
-     {@link org.jastronomy.jsofa.JSOFA#jauNum00a}    nutation matrix, IAU 2000A<br>
      {@link org.jastronomy.jsofa.JSOFA#jauLtp}       long-term precession matrix<br>
      {@link org.jastronomy.jsofa.JSOFA#jauLtpb}      long-term precession matrix, including ICRS frame bias<br>
      {@link org.jastronomy.jsofa.JSOFA#jauLtpecl}    long-term precession of the ecliptic<br>
      {@link org.jastronomy.jsofa.JSOFA#jauLtpequ}    long-term precession of the equator<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauNum00a}    nutation matrix, IAU 2000A<br>
      {@link org.jastronomy.jsofa.JSOFA#jauNum00b}    nutation matrix, IAU 2000B<br>
      {@link org.jastronomy.jsofa.JSOFA#jauNum06a}    nutation matrix, IAU 2006/2000A<br>
      {@link org.jastronomy.jsofa.JSOFA#jauNumat}     form nutation matrix<br>
@@ -230,16 +232,15 @@
 
   <h3>Star catalog conversions</h3>
 
-     {@link org.jastronomy.jsofa.JSOFA#jauFk425}     convert B1950.0 FK4 star catalog data to J2000.0 FK5<br>
-     {@link org.jastronomy.jsofa.JSOFA#jauFk45z}     convert a B1950.0 FK4 star position to J2000.0 FK5, assuming zero proper motion in the FK5 system<br>
-     {@link org.jastronomy.jsofa.JSOFA#jauFk524}     convert J2000.0 FK5 star catalog data to B1950.0 FK4<br>
-     {@link org.jastronomy.jsofa.JSOFA#jauFk54z}     convert a J2000.0 FK5 star position to B1950.0 FK4, assuming zero proper motion in FK5 system and zero parallax<br>
      {@link org.jastronomy.jsofa.JSOFA#jauFk52h}     transform FK5 star data into the Hipparcos system<br>
      {@link org.jastronomy.jsofa.JSOFA#jauFk5hip}    FK5 to Hipparcos rotation and spin<br>
      {@link org.jastronomy.jsofa.JSOFA#jauFk5hz}     FK5 to Hipparcos assuming zero Hipparcos proper motion<br>
      {@link org.jastronomy.jsofa.JSOFA#jauH2fk5}     transform Hipparcos star data into the FK5 system<br>
      {@link org.jastronomy.jsofa.JSOFA#jauHfk5z}     Hipparcos to FK5 assuming zero Hipparcos proper motion<br>
-     {@link org.jastronomy.jsofa.JSOFA#jauStarpm}    proper motion between two epochs<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFk425}     convert B1950.0 FK4 star catalog data to J2000.0 FK5<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFk45z}     convert a B1950.0 FK4 star position to J2000.0 FK5, assuming zero proper motion in the FK5 system<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFk524}     convert J2000.0 FK5 star catalog data to B1950.0 FK4<br>
+     {@link org.jastronomy.jsofa.JSOFA#jauFk54z}     convert a J2000.0 FK5 star position to B1950.0 FK4, assuming zero proper motion in FK5 system and zero parallax<br>
 
   <h3>Geodetic/geocentric</h3>
 
