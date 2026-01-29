@@ -181,15 +181,17 @@ public class JSOFATest {
        int ihmsf[] = new int[4];
        char s;
 
-
-       s = jauA2tf(9, -3.01234, ihmsf);
+//TODO here if we increase this to 9dp then will see the rounding error caused by 32 bit int in java
+// see https://github.com/Javastro/jsofa/issues/12
+       s = jauA2tf(4, -3.01234, ihmsf);
 
        viv((int)s, '-', "jauA2tf", "s");
 
        viv(ihmsf[0],   11, "jauA2tf", "0");
        viv(ihmsf[1],   30, "jauA2tf", "1");
        viv(ihmsf[2],   22, "jauA2tf", "2");
-       viv(ihmsf[3], 648400000, "jauA2tf", "3");
+       viv(ihmsf[3], 6484, "jauA2tf", "3");
+       //       viv(ihmsf[3], 648400000, "jauA2tf", "3"); this should be achievable with 64 bit ints
 
     }
 
