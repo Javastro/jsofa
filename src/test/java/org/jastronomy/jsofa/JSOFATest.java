@@ -182,18 +182,48 @@ public class JSOFATest {
        char s;
 
 
-       s = jauA2tf(4, -3.01234, ihmsf);
+       s = jauA2tf(9, -3.01234, ihmsf);
 
        viv((int)s, '-', "jauA2tf", "s");
 
        viv(ihmsf[0],   11, "jauA2tf", "0");
        viv(ihmsf[1],   30, "jauA2tf", "1");
        viv(ihmsf[2],   22, "jauA2tf", "2");
-       viv(ihmsf[3], 6484, "jauA2tf", "3");
+       viv(ihmsf[3], 648400000, "jauA2tf", "3");
 
     }
 
-    @Test
+   @Test
+   public void t_a2tf2()
+   /**
+    **
+    **  Test jauA2tf function.
+    **
+    **  Returned:
+    **     status    int         TRUE = success, FALSE = fail
+    **
+    **  Called:  jauA2tf, viv
+    **
+    **  This revision:  2008 November 30
+    */
+   {
+      int ihmsf[] = new int[4];
+      char s;
+
+
+      s = jauA2af(9, 89.26410897*DD2R, ihmsf);
+
+      viv((int)s, '+', "jauA2tf", "s");
+
+      viv(ihmsf[0],   89, "jauA2tf", "0");
+      viv(ihmsf[1],   15, "jauA2tf", "1");
+      viv(ihmsf[2],   50, "jauA2tf", "2");
+      viv(ihmsf[3], 792292000, "jauA2tf", "3");
+
+   }
+
+
+   @Test
     public void t_anp()
     /**
     **
@@ -1109,14 +1139,14 @@ public class JSOFATest {
        char s;
 
 
-       s = jauD2tf(4, -0.987654321, ihmsf);
+       s = jauD2tf(9, -0.987654320601852, ihmsf);
 
        viv((int)s, '-', "jauD2tf", "s");
 
        viv(ihmsf[0], 23, "jauD2tf", "0");
        viv(ihmsf[1], 42, "jauD2tf", "1");
        viv(ihmsf[2], 13, "jauD2tf", "2");
-       viv(ihmsf[3], 3333, "jauD2tf", "3");
+       viv(ihmsf[3], 333300000, "jauD2tf", "3");
 
     }
 
