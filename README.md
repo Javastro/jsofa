@@ -3,7 +3,7 @@ JSOFA
 
 [![CI build of JSOFA](../../workflows/Java%20CI%20with%20Maven/badge.svg)](../../actions)
 
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/org.javastro/jsofa/badge.svg)](https://maven-badges.herokuapp.com/maven-central/org.javastro/jsofa/)
+[![Maven Central](https://img.shields.io/maven-central/v/org.javastro/jsofa?Label=jsofa)](https://search.maven.org/artifact/org.javastro/jsofa/)
 
 This is a java translation of the official IAU SOFA library.
 
